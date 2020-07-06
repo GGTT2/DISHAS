@@ -17,7 +17,11 @@ As a pilot attempt, DISHAS focuses on astronomical tables.
 The current repository is a copy (a screenshot taken at a particular moment) of the DISHAS project developped at Paris observatory on a private gitlab. 
 The source code and detailed documentation will be open at the end of the funding and after publication. 
 DISHAS is currently online at the following address: [dishas.obspm.fr](dishas.obspm.fr). 
-
+This project was developped by many developper including: 
+* [Galla Topalian](https://github.com/GGTT2) (lead tech ; back end ; model ; symfony structure...)
+* [Antonin Penon](https://www.linkedin.com/in/antonin-penon-44405010b/) (Dishas Table Interface library ; number convertor...)
+* [Malcom Hamelin](https://github.com/malcomhamelin) (API, Elastica / Elasticsearch integration...)
+* [Segolene Albouy](https://github.com/Segolene-Albouy) (front of the frontoffice developpement, data visualization)
 
 
 ## Getting started
