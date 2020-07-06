@@ -1,0 +1,435 @@
+  /**********************************************************/
+ /********************* GENERAL LAYOUT *********************/
+/**********************************************************/
+#table-edition-view {
+	margin: 50px 0 25px 50px;
+	border-radius: 6px;
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
+	padding: 0 100px 45px 80px;
+}
+
+/* CONTENT ON THE BACKGROUND */
+.content-panel {
+    padding: 1em;
+    background-color: rgb(247, 247, 247);
+    border-radius: 6px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
+    border : 1px solid rgb(230, 230, 230);
+}
+
+/* CONTENT ASSOCIATED WITH TABS */
+.tab-content {
+	margin-left: -150px;
+	padding-left: 150px;
+	margin-right: -200px;
+	padding-right: 200px;
+	/*height: 800px;*/
+	z-index: 60;
+	margin-top: -50px;
+}
+
+.edition-box-div {
+	margin-left: 25px;
+	margin-right: 10px;
+}
+
+.black-hr {
+	border-top: 1px solid #00000015;
+	margin: 20px 40px;
+}
+
+#map-div {
+	padding: 0 20px;
+}
+
+  /************************************************************/
+ /*************************** TABS ***************************/
+/************************************************************/
+/* TABS */
+#tab-container {
+	margin: auto;
+	width: 90%;
+	padding: 0 0 50px 0;
+}
+
+.nav-item {
+	/*width: 20%;*/
+	text-align: center;
+}
+
+.tab-title {
+	font-family: 'Abel', sans-serif;
+	font-size: 18px;
+	color: #333 !important;
+	border-style: none !important;
+	transition: 0.5s;
+}
+
+/*.tab-title:hover {
+	text-shadow: white 0 0 30px;
+	/*font-weight: bold;*./
+}*/
+
+.tab-pane {
+	margin-top: 0;
+}
+
+/* DESABLING BOOTSTRAP STYLING */
+.nav-tabs {
+	border: none !important;
+}
+.nav-tabs > li > a:hover {
+	background-color: rgba(255, 255, 255, 0) !important;
+}
+.nav-tabs > li.active > a {
+	background-color: rgba(255, 255, 255, 0) !important;
+}
+/*.nav-tabs > li.active {
+	background-color: rgba(255, 255, 255, 0) !important;
+}*/
+.nav-tabs > li > a {
+	line-height: 2.6;
+}
+
+/* RIGHT SIDEBAR */
+.right-sidebar{
+	z-index:50;
+	position:fixed;
+	top:50px;
+	right:0;	
+	transition:.4s;
+	width: 70px !important;
+	color:#333;
+}
+
+span.tab-color:hover {
+	margin-left: -240px;
+}
+
+.tab-div {
+	display: inline-block;
+	font-family: 'Abel', sans-serif;
+	font-size: 22px;
+	color:#333;
+}
+
+.sidebar-tab {
+	height:70px;
+	font-size: 14px;
+	letter-spacing:.025em;
+	line-height:1.5;
+	cursor: pointer;
+	list-style-type: none;
+}
+
+.sidebar-tab a {
+	display:block;
+	position:relative;
+	width:70px;
+	line-height:70px;
+	text-align:center;
+}
+
+.tab-color{
+	position:absolute;
+	width:350px;
+	left:0;top:-5px;bottom:0;
+	transition: .4s;
+	border-bottom-left-radius: 10px;
+	border-top-left-radius: 3px;
+	box-shadow: -1px 5px 5px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-icon {
+	top: 10px;
+	width:70px;
+}
+
+.tab-label {
+	position: absolute;
+	top: -40px;
+	left: 0;
+	width:95%;
+	font-weight: bold;
+	border-radius: 10px 10px 0 0;
+	box-shadow: 5px -5px 5px rgba(0, 0, 0, 0.15);
+
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+li.active span.tab-text {
+	padding: 0 5px;
+	border-bottom: 7px solid #f19069;
+}
+
+span.tab-text {
+	transition-duration: 0.4s;
+}
+
+  /***********************************************************/
+ /******************** APP. CRIT. PANNEL ********************/
+/***********************************************************/
+#crit-app-panel{
+	margin-left: -70px;
+	margin-top: -3em;
+}
+
+#side-crit-app, #side-comment {
+    width: 250px;
+    overflow: auto;
+}
+
+.metadata {
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+h3 > span.glyphicon {
+	margin-right: 10px;
+	color: #d05c0f !important;
+}
+
+div.sidebar-title {
+	z-index: 49;
+	position: -webkit-sticky;
+	position: sticky;
+	top: -20px;
+	padding-top: 10px;
+	margin-top: -20px;
+	margin-bottom: 15px;
+	border-bottom: 1px solid rgb(200, 200, 200);
+	background-color: rgb(247, 247, 247);
+}
+
+#cate {
+	margin-left: 40px;
+	color: rgba(0,0,0,0.5);
+	display: block;
+}
+
+#sigla {
+  margin-left: 5px;
+  margin-top: 10px;
+  color: rgba(0,0,0,0.7);
+  margin-bottom: 10px;
+}
+
+.siglum {
+  font-size: 13px;
+}
+
+hr {
+	margin: 10px 0;
+}
+
+  /************************************************************/
+ /*********************** TABLE PANNEL ***********************/
+/************************************************************/
+
+#edition-title {
+	text-align: left;
+	margin-left: 25px;
+	margin-top: -15px;
+}
+
+#table {
+	font-family: 'Lato', sans-serif;
+	text-align: right;
+	margin: 0 3em;
+	table-layout: fixed;
+    overflow: auto;
+    resize: vertical;
+    height: 700px;
+    /*z-index: 10;*/
+}
+
+#table-panel {
+	/*z-index: 240;*/
+	margin-left: -90px;
+}
+
+/* in case there is only the table without critical apparatus*/
+#table-container {
+	/*z-index: 240;*/
+}
+
+  /************************************************************/
+ /*********************** TABLE ITSELF ***********************/
+/************************************************************/
+
+#tables {
+    display: grid;
+    grid-gap: 10px;
+}
+
+.div-table {
+	width: 20px; /*set the width to be too small, it will be expanded by the cell width => prevent the table to be too wide*/
+    /*display: table;*/
+}
+
+td {
+	color: #373737 !important;
+	padding-right: 5px;
+	width: 50px;
+}
+
+.isfirst {
+	width: 85px;
+}
+
+.table-header {
+	text-align: center;
+	cursor: pointer;
+	/*display: block;*/
+	/*position: fixed;*/
+}
+
+  /***********************************************************/
+ /********************* CELL APPEARANCE *********************/
+/***********************************************************/
+
+td.entry {
+	border : 1px solid #d6d6d6;
+}
+
+/* ARGUMENT CELLS */
+td.arg {
+	background-color: rgb(222, 222, 222);
+	font-weight: bold;
+	border : 1px solid #c7c7c7;
+}
+
+/* EMPTY CELLS IN THE ARGUMENTS */
+td.no-border {
+	border: 3px solid #8c8c8c;
+	background-color: #8c8c8c;
+}
+
+/* LINE AFTER THE DECIMAL CELL */
+td.isdec {
+	border-right: 2px solid #d05c0f;
+}
+
+/* LINE BETWEEN COLUMNS */
+td.entry.islast {
+	border-right: 3px solid #282828;
+}
+td.arg.islast {
+	border-right: 3px solid #282828;
+}
+td.arg.isfirst.index0 {
+	border-left: 2px solid #282828;
+}
+td.arg.index1 {
+	border-bottom: 2px solid #282828;
+}
+
+/* ALTERNATING ROW COLOR */
+td.entry.even0 {
+	background-color: rgb(228, 228, 228);
+}
+td.arg.even0 {
+	background-color: rgb(210, 210, 210);
+}
+  /**********************************************************/
+ /********************* SELECTED CELLS *********************/
+/**********************************************************/
+
+/* SELECTED CELL */
+.selected-cell {
+	box-shadow: 0 0 0 3px #007fe0 inset !important;
+}
+
+/* SELECTED TABLE HEADER */
+.selected-header {
+	font-weight: bold;
+	color: #d05c0f !important;
+	background-color: #ffd7bd;
+}
+
+/* SELECTED CRITICAL APP. WHEN CELL SELECTED */
+.selected-crit-app {
+    position: relative;
+    display: inline-block;
+    background-color: rgba(255, 180, 131, 0.37);
+	mix-blend-mode: multiply;
+    transform: scale(1.7) rotate(-1deg) skew(-10deg);
+}
+.selected-crit-app > * {
+    display: inherit;
+    transform: scale(0.6) rotate(1deg) skew(10deg);
+    z-index: 20;
+}
+
+/* SELECTED LINE */
+td.selected-line.even0 {
+	background-color: #FFE7D4 !important;
+}
+td.selected-line.odd0 {
+	background-color: #ffeee0 !important;
+}
+
+/* SELECTED CRITICAL APP. WHEN LINE SELECTED */
+td.selected-line-header {
+	border-radius: 1px;
+    box-shadow: 0 0 0 4px #f57e2f inset !important;
+}
+
+h4.selected-line {
+    position: relative;
+    display: inline-block;
+    border-radius: 1px;
+    box-shadow: 0 0 0 3px rgba(245, 126, 47, 0.8) !important;
+    transform: scale(1.5) rotate(-1deg) skew(-10deg);
+	mix-blend-mode: multiply;
+    /*transition: 0.5s;*/
+}
+h4.selected-line > * {
+    display: inherit;
+    transform: scale(0.7) rotate(1deg) skew(10deg);
+    z-index: 10;
+    /*transition: 0.5s;*/
+}
+
+/* SELECTED SUPER CELL */
+td.selected-supercell {
+	border-top: 3px solid #007fe0 !important;
+	border-bottom: 3px solid #007fe0 !important;
+}
+td.selected-supercell.isfirst {
+	border-left: 3px solid #007fe0 !important;
+}
+td.selected-supercell.islast {
+	/* no styling because there will always be a cell-comment border marker*/
+}
+  /***********************************************************/
+ /********************** SPECIAL CELLS **********************/
+/***********************************************************/
+
+.unfocus {
+	display: none;
+}
+
+
+/* ARGUMENT NAMES */
+.argument-names {
+	color: white;
+	text-align: left !important;
+	padding-left: 20px;
+	width: 150px;
+}
+
+td.entry.islast.commentary_present, td.arg.islast.commentary_present {
+	border-right: 8px solid #ff9112 !important;
+}
+
+/* CRITICAL APPARATUS */
+.crit-ap {
+	position: relative;
+	-moz-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.1);
+	box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.1);
+}

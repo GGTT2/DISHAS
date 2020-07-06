@@ -1,0 +1,187 @@
+services:
+#    _defaults:
+#        autowire: true
+#        autoconfigure: true
+#        public: false
+#    # makes classes in src/AppBundle available to be used as services
+#    # this creates a service per class whose id is the fully-qualified class name
+#    TAMAS\AstroBundle\:
+#        resource: '../../src/TAMAS/AstroBundle/*'
+#    TAMAS\Astro\Command\:
+#        resource: ../Command
+
+    _defaults:
+        autowire: true      
+        # Automatically injects dependencies in your services.
+        autoconfigure: true 
+        # Automatically registers your services as commands, event subscribers, etc.
+        public: false       
+        # Allows optimizing the container by removing unused services; this also means
+        # fetching services directly from the container via $container->get() won't work.
+        # The best practice is to be explicit about your dependencies anyway.
+#    tamas_astro.example:
+#        class: TAMAS\AstroBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    #to be deleted ?
+    tamas_astro.graphList:
+        class: TAMAS\AstroBundle\Graph\TAMASGraph
+        #arguments: ["@doctrine.orm.entity_manager"]
+
+    tamas_astro.objectProperties:
+        class: TAMAS\AstroBundle\Twig\GlobalVariableService\ObjectProperties
+        arguments: ["@doctrine.orm.entity_manager", "@router"]
+    
+    tamas_astro.citationStyle:
+        class: TAMAS\AstroBundle\Twig\GlobalVariableService\CitationStyle
+
+    tamas_astro.astronomicalObjects:
+        class: TAMAS\AstroBundle\Twig\GlobalVariableService\AstronomicalObjects
+        arguments: ["@doctrine.orm.entity_manager"]
+        
+    tamas_astro.typeOfNumber:
+        class: TAMAS\AstroBundle\Twig\GlobalVariableService\TypeOfNumber
+
+    tamas_astro.forceDelete:
+        class: TAMAS\AstroBundle\DISHASToolbox\ForceDelete
+        arguments: ["@doctrine.orm.entity_manager"]
+    
+    tamas_astro.dishasTableInterface:
+        class: TAMAS\AstroBundle\DishasTableInterface\DishasTableInterface
+        arguments: ["@doctrine.orm.entity_manager"]
+        public: true
+            
+    #   this service is used to be able to add new attributes to the "->add" form functionality         
+    tamas_astro.form_type_extention:
+        class: TAMAS\AstroBundle\Form\Extension\FormTypeExtension
+        tags:
+            - {name: form.type_extension, alias: form, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType}
+
+    tamas_astro.convertor:
+        class: TAMAS\AstroBundle\DISHASToolbox\Conversion\NumberConvertor
+        arguments: ["@doctrine.orm.entity_manager"]
+        public: true
+    
+    tamas_astro.sanitizer:
+        class: TAMAS\AstroBundle\DISHASToolbox\Conversion\StringSanitizer
+
+    tamas_astro.nocache_listener:
+        class: TAMAS\AstroBundle\EventListener\NoCacheListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.response }
+   #Sonata services. Not in use anymore
+
+    tamas_astro.admin.library:
+        class: TAMAS\AstroBundle\Admin\LibraryAdmin
+        arguments: [~, TAMAS\AstroBundle\Entity\Library, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Library, group: Primary Source }
+        public: true
+        
+    tamas_astro.admin.place:
+        class: TAMAS\AstroBundle\Admin\PlaceAdmin
+        arguments: [~, TAMAS\AstroBundle\Entity\Place, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Place, group: Primary Source }
+        public: true
+            
+    tamas_astro.admin.primary_source:
+        class: TAMAS\AstroBundle\Admin\PrimarySourceAdmin
+        arguments: [~, TAMAS\AstroBundle\Entity\PrimarySource, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Primary Source (manuscript/early printed), group: Primary Source  }
+        public: true
+   
+    tamas_astro.admin.secondary_source:
+        class: TAMAS\AstroBundle\Admin\SecondarySourceAdmin
+        arguments: [~, TAMAS\AstroBundle\Entity\SecondarySource, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Secondary Source, group: Secondary Source }
+        public: true
+        
+    tamas_astro.admin.edited_text:
+        class: TAMAS\AstroBundle\Admin\EditedTextAdmin
+        arguments: [~, TAMAS\AstroBundle\Entity\EditedText, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Edited Text (table/diagramm/text), group: Text  }
+        public: true
+   
+    tamas_astro.admin.historian:
+        class: TAMAS\AstroBundle\Admin\HistorianAdmin
+        arguments: [~, TAMAS\AstroBundle\Entity\Historian, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Historian, group: Secondary Source }
+        public: true
+        
+    tamas_astro.admin.originalText:
+        class: TAMAS\AstroBundle\Admin\OriginalTextAdmin
+        arguments: [~, TAMAS\AstroBundle\Entity\OriginalText, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Original Text (table/diagramm/text), group: Text }
+        public: true
+    
+    tamas_astro.admin.historicalActor:
+        class: TAMAS\AstroBundle\Admin\HistoricalActorAdmin
+        arguments: [~, TAMAS\AstroBundle\Entity\HistoricalActor, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Historical Actor, group: Primary Source }
+        public: true
+        
+    tamas_astro.admin.work:
+        class: TAMAS\AstroBundle\Admin\WorkAdmin
+        arguments: [~, TAMAS\AstroBundle\Entity\Work, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Work, group: Primary Source }
+        public: true
+        
+    tamas_astro.admin.journal:
+        class: TAMAS\AstroBundle\Admin\JournalAdmin
+        arguments: [~, TAMAS\AstroBundle\Entity\Journal, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Journal, group: Secondary Source }
+        public: true
+        calls:
+            - [ setTemplate, [edit, TAMASAstroBundle:Admin:EditParameterSetAdmin.html.twig]]
+        
+    
+    tamas_astro.admin.parameterSet:
+        class: TAMAS\AstroBundle\Admin\ParameterSetAdmin
+        arguments: [null, TAMAS\AstroBundle\Entity\ParameterSet, "TAMASAstroBundle:CRUD"]      
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Parameter Set, group: Parameter }
+        public: true
+        calls:
+            - [ setTemplate, [edit,TAMASAstroBundle:Admin:EditParameterSetAdmin.html.twig ]]
+#            TAMASAstroBundle:Admin:EditParameterSetAdmin.html.twig
+    tamas_astro.admin.parameterValue:
+        class: TAMAS\AstroBundle\Admin\ParameterValueAdmin
+        arguments: [~, TAMAS\AstroBundle\Entity\ParameterValue, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Parameter Value, group: Parameter }
+        public: true
+    # tamas_astro.event.nestedObject:
+    #     class: TAMAS\AstroBundle\EventListener\NestedObjectListener
+    #     arguments: ["@doctrine"]
+    #     tags:
+    #         - { name: doctrine.event_listener, event: postUpdate }
+    tamas_astro.event.reindex:
+        class: TAMAS\AstroBundle\EventListener\ReindexNestedObjectListener
+        tags:
+            - { name: doctrine.event_listener, event: postUpdate }
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: preRemove }
+            - { name: doctrine.event_listener, event: postFlush }
+        bind: 
+            $projectDir: '%kernel.project_dir%'
+
+            #rajouter en cas d'événement : delete
+    #serializer_listener.terminus:
+    #    class: TAMAS\AstroBundle\Serializer\Listener\TerminusListener
+    #    tags:
+    #        - { name: jms_serializer.event_subscriber }
+    
+
+        
+#    tamas_astro.twigExtension:
+#        class: TAMAS\AstroBundle\Twig\AppExtension
+#        tags:
+#            - { name: twig.extension }

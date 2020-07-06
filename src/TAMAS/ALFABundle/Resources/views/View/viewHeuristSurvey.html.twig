@@ -1,0 +1,217 @@
+{% extends "TAMASALFABundle:Default:alfa_layout.html.twig" %}
+{% block main %}
+    <div class="row">
+        <h1 class="col-md-offset-1">The ALFA survey</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            {% include 'TAMASALFABundle:Default:disclaimer.html.twig' %}
+
+            <ul class="nav nav-tabs " role="tablist">
+                <li role="manuscripts" class="active">
+                    <a href="#manuscripts" aria-controls="manuscripts" role="tab" data-toggle="tab">
+                        Primary sources
+                    </a>
+                </li>
+                <li role="works">
+                    <a href="#works" aria-controls="works" role="tab" data-toggle="tab">
+                        Works
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="manuscripts">
+                    <h2>Manuscript / Early Printed</h2>
+
+                    {% include 'TAMASALFABundle:Default:info-source.html.twig' %}
+
+                    <table id="ms-table" class="table table-hover table-browser table-sortable">
+                        <thead class="thead-inverse">
+                        <tr>
+                            <th style="width: 20px">#</th>
+                            <th style="width: 40px">Id</th>
+                            <th>Shelfmark</th>
+                            <th style="width: 100px">Link</th>
+                            <th style="width: 45px">Dates</th>
+                            <th style="width: 110px">Place</th>
+                            <th style="width: 70px">Extent</th>
+                            <th>Work(s)</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+                    <div id="export-ms-table">
+                        <h4>Export the table</h4>
+                    </div>
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="works">
+                    <h2>Work</h2>
+
+                    {% include 'TAMASALFABundle:Default:info-source.html.twig' %}
+
+                    <table id="work-table" class="table table-hover table-browser table-sortable">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th style="width: 20px">#</th>
+                                <th style="width: 40px">Id</th>
+                                <th>Title</th>
+                                <th style="width: 90px">Type</th>
+                                <th style="width: 40px">Creation (min)</th>
+                                <th style="width: 40px">Creation (max)</th>
+                                <th style="width: 100px">Author</th>
+                                <th>In manuscript(s)</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+                    <div id="export-work-table">
+                        <h4>Export the table</h4>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+    <script>
+        //Reload the table when tab change
+        $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+            $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust().draw();
+        } );
+    </script>
+    <script src='{{asset('js/myInternalLink.js')}}'> </script>
+    <script src="{{asset('js/mirador-alfa/mapping.js')}}"></script>
+
+    <script>
+        $(document).ready(function(){
+            function formatSummary(records, fieldName){
+                // for each associated record
+                for (let i = records.length - 1; i >= 0; i--) {
+                    let cellContent = "<span class='noInfo'>No record associated</span>";
+
+                    let cellSummary = "";
+                    if (typeof records[i][fieldName] !== "undefined" && records[i][fieldName].length !== 0){
+                        for (let j = records[i][fieldName].length - 1; j >= 0; j--) {
+                            let val = records[i][fieldName][j];
+
+                            if (j === 0){
+                                cellContent = val;
+                            } else {
+                                cellSummary += val;
+                                cellSummary = j < records[i][fieldName].length ? cellSummary + "<br/>" : "";
+                            }
+                        }
+                        if (records[i][fieldName].length > 1){ // if there is multiple records to display, put it in a summary
+                            const summary = `<summary class="mainContent">
+                                                 ${records[i][fieldName].length-1} <span style="font-variant: small-caps">more record${records[i][fieldName].length > 2 ? "s" : ""} </span>
+                                                 <span style="font-size: 10px">▼</span>
+                                             </summary>`;
+                            cellContent = `${cellContent}<details>${summary}${cellSummary}</details>`;
+                        }
+                    }
+                    records[i][fieldName] = cellContent;
+                }
+                return records
+            }
+
+            let dataMs = formatSummary({{ manuscripts|json_encode|raw }}, "works");
+
+            //specification of the datatable
+            if ($.fn.dataTable.isDataTable( '#ms-table' ) ){
+                console.log("la table est déjà initialisée")}
+            let msTable = $('#ms-table').DataTable({
+                data: dataMs,
+                columns: [
+                    {data: "H-ID"},
+                    {data: "id"},
+                    {data: "shelfmark"},
+                    {data: "link"},
+                    {data: "time"},
+                    {data: "place"},
+                    {data: "extent"},
+                    {data: "works"},
+                ],
+                deferRender: true,
+                scrollY: 400,
+                scrollCollapse: true,
+                select: {
+                    style: "os"},
+                columnDefs: [
+                    {targets: [0,6],
+                        visible: false
+                    }],
+                dom: 'lBfrtip', // This code indicates that the button B goes after the "length" element (pick up the # of line per vue)
+                buttons: {
+                    buttons:[ //the first button is custom, and allow reloading the table after a search
+                        {
+                            text:'Reload',
+                            action: (e, dt, node, config) => {dt.search("").columns().search('').draw()},
+                            class: 'reload'
+                        },
+                        'colvis'
+                    ],
+                }
+            });
+
+            //Generate an additional group of button for the export and situate it at the export-ms-table div.
+            new $.fn.dataTable.Buttons( msTable, {
+                buttons: [
+                    'copy', 'csv', 'excel','pdf'
+                ]
+            } );
+            msTable.buttons( 1, null ).container().appendTo("#export-ms-table");
+
+            let dataWork = formatSummary({{ works|json_encode|raw }}, "ms");
+
+            let workTable = $('#work-table').DataTable({
+                data: dataWork,
+                columns: [
+                    {data: "H-ID"},
+                    {data: "id"},
+                    {data: "title"},
+                    {data: "type"},
+                    {data: "creation_min"},
+                    {data: "creation_max"},
+                    {data: "author"},
+                    {data: "ms"},
+                ],
+                deferRender: true,
+                scrollY: 500,
+                scrollCollapse: true,
+                select: {
+                    style: "os"},
+                columnDefs: [
+                    {targets: [0],
+                        visible: false
+                    }],
+                dom: 'lBfrtip',
+                buttons: {
+                    buttons:[{
+                        text:'Reload',
+                        action: function (e, dt, node, config){
+                            dt.search("").columns().search('').draw()},
+                        class: 'reload'}, 'colvis'
+                    ],
+                }
+            });
+
+            new $.fn.dataTable.Buttons( workTable, {
+                buttons: [
+                    'copy', 'csv', 'excel','pdf'
+                ]
+            } );
+
+            workTable.buttons( 1, null ).container().appendTo("#export-work-table");
+        });
+    </script>
+{% endblock %}

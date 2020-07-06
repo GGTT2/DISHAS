@@ -1,0 +1,13 @@
+{% if include == "html" %}
+    <div class="row" id="chartdiv"></div>
+{% elseif include == "js" %}
+    <script src="{{asset('js/amcharts4/themes/animated.js')}}"></script>
+    <script src="{{asset('js/DISHAS_charts/DishasBarChart.js')}}"></script>
+
+    <script defer{# type="module"#}>
+        /*import {DishasChart, DishasConfig} from "../../../../../../web/js/DISHAS_charts/DishasChart.js";*/
+        $(document).ready(function() {
+            chart = new DishasChart({{ data|json_encode|raw }}, new DishasConfig());
+        });
+    </script>
+{% endif %}

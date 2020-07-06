@@ -1,0 +1,15 @@
+{% if include == "html" %}
+    <div class="row" id="astro-pie"></div>
+{% elseif include == "js" %}
+    <script src="{{asset('js/DISHAS_charts/DishasPieChart.js')}}"></script>
+    <script defer{# type="module"#}>
+        /*import {DishasChart, DishasConfig} from "../../../../../../web/js/DISHAS_charts/DishasChart.js";*/
+
+        $(document).ready(function() {
+            let config = new DishasConfig("40em", false, "astro-pie");
+            config.isContainer = true;
+
+            chart = new DishasChart({{ data|json_encode|raw }}, config);
+        });
+    </script>
+{% endif %}

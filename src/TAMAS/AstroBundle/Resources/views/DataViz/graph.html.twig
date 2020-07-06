@@ -1,0 +1,29 @@
+{% if include == "html" %}
+{% if size|default() and size == "full" %}
+    <div id="view-graph" class="description-block" style="width: 49vw; height: 465px;"></div>
+{% else %}manuscript
+    <div id="view-graph" class="description-block" style="height: 450px;"></div>
+{% endif %}
+
+{% elseif include == "js" %}
+<script type="text/javascript" src="{{asset('js/myGraph.js')}}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+<script type="text/javascript" src="{{asset('js/myVis.js')}}"></script>
+<script>
+    var dependenceTree = {{tree|raw}};
+
+    var specificNodeId = null;
+
+    {% if specificNodeId|default() %}
+        specificNodeId = "{{specificNodeId}}";
+    {% endif %}
+
+    var htmlGraph = '#view-graph';
+
+    {% if htmlGraph|default() %}
+        htmlGraph = '{{htmlGraph}}';
+    {% endif %}
+
+    fillVis(dependenceTree, htmlGraph, specificNodeId);
+</script>
+{% endif %}

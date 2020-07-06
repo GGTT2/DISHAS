@@ -1,0 +1,359 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: en
+
+framework:
+    #esi:             ~
+    translator:      { fallbacks: ["%locale%"] }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    serializer:      { enabled: true }
+    templating:
+        engines: ['twig']
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id:  session.handler.native_file
+        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+    fragments:       ~
+    http_method_override: true
+    assets: ~
+    php_errors:
+        log: true
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    globals:
+        object_info: '@tamas_astro.objectProperties'
+        citation_style: '@tamas_astro.citationStyle'
+        name_to_base: '@tamas_astro.typeOfNumber'
+        astronomical_objects: '@tamas_astro.astronomicalObjects'
+    form_themes:
+        - 'bootstrap_3_layout.html.twig'
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   pdo_mysql
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.root_dir%/../var/data/data.sqlite"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #path:     "%database_path%"
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host: "%mailer_host%"
+    port: 25
+#    username: "%mailer_user%"
+#    password: "%mailer_password%"
+#    encryption: tls
+    spool:     { type: memory }
+
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: TAMAS\AstroBundle\Entity\Users
+    from_email:
+        address: "%mailer_user%"
+        sender_name: "%mailer_user%"
+
+#This extension gives access to the "dateTime", "blamable"... annotation
+stof_doctrine_extensions:
+    orm:
+        default:
+            sluggable: true
+            timestampable: true
+            blameable: true
+
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        # enable the SonataAdminBundle block
+        sonata.admin.block.admin_list:
+            contexts: [admin]
+sonata_admin:
+    title:      DISHAS
+    title_logo: img/dishas_prop1RVB_petit.png
+    templates:
+        layout: TAMASAstroBundle:Admin:standardLayoutAdmin.html.twig
+
+vich_uploader:
+    db_driver: orm
+    
+    mappings:
+    # Add mappings here
+    # For example
+    #   mapping_name:
+    #       uri_prefix: /mapping_path
+    #       upload_destination: '%kernel.project_dir%/web/...'
+    #       namer:
+    #           service: vich_uploader.namer_property
+    ## The next line allow to customize the storage name of the file.
+    ## If the entity contains a method getStorageName (it must return a string),
+    ## to use this method for file naming use:
+    #           options: { property : 'storageName" }
+    #       delete_on_remove: true
+    
+        python_scripts:
+            uri_prefix: /pythonscripts
+            upload_destination: '%kernel.project_dir%/web/pythonScript'
+            namer:
+                service: vich_uploader.namer_property
+                options: { property : 'fullName'}
+            delete_on_remove: true
+            delete_on_update: true
+            inject_on_load: true
+        
+        pdf_file:
+            uri_prefix: /pdf
+            upload_destination: '%kernel.project_dir%/web/pdf'
+            namer:
+                service: vich_uploader.namer_property
+                options: { property : 'fullName'}
+            delete_on_remove: true
+            delete_on_update: true
+            inject_on_load: true
+        
+        image_file:
+            uri_prefix: /imagefile
+            upload_destination: '%kernel.project_dir%/web/image'
+            namer:
+                service: vich_uploader.namer_property
+                options: { property : 'fullName'}
+            delete_on_remove: true
+            delete_on_update: true
+            inject_on_load: true
+        
+        xml_file:
+            uri_prefix: /xml
+            upload_destination: '%kernel.project_dir%/web/xml/manuscriptDescriptionTEI'
+            namer:
+                service: vich_uploader.namer_property
+                options: { property : 'fullName'}
+            delete_on_remove: true
+            delete_on_update: true
+            inject_on_load: true
+fos_elastica:
+    serializer:
+        serializer: jms_serializer
+    clients:
+        default:
+            host: '%elastic_host%'
+            port: '%elastic_port%'
+            username: '%elastic_username%'
+            password: '%elastic_password%'
+            #host: dishas
+            #port: 9200
+            #username: elastic
+            #password:  
+    index_templates: # https://www.elastic.co/guide/en/elasticsearch/reference/6.8/indices-templates.html
+        base_template: # this is a custom name for the index template
+            client: default
+            template: "*" # this is where you define which indices will use this template
+            types:
+                _doc: # this is where you define which types will use this (_doc stands for every type/documents)
+                    dynamic_templates: # https://www.elastic.co/guide/en/elasticsearch/reference/6.8/dynamic-templates.html
+                        dynamic_date_template: # this is a custom name for the dynamic field template
+                            match_pattern: regex
+                            match: created|updated|tpq_date|taq_date
+                            mapping:
+                                type: date
+                        dynamic_location_template:
+                            match: location
+                            mapping:
+                                type: geo_point
+    indexes:
+        table_content:
+            types:
+                table_content:
+                    indexable_callback: 'getPublic'
+                    serializer:
+                        groups:
+                            - originalTextMain
+                            - primarySourceMain
+                            - workMain
+                            - tableContentMain
+                            - editedTextMain
+                            - externalParameterSet
+                            - externalOriginalText
+                            - parameterSetMain
+                            - externalTableTypeTC
+                            - tableTypeMain
+                            - kibana
+                        serialize_null: true
+                    persistence:
+                        driver: orm
+                        model: TAMAS\AstroBundle\Entity\TableContent
+        work:
+            types:
+                work:
+                    serializer:
+                        groups:
+                            - workMain
+                            - externalOriginalTextWork
+                            - originalTextMain
+                            - primarySourceMain
+                            - editedTextLimited
+                            - kibana
+                        serialize_null: true
+                    persistence:
+                        driver: orm
+                        model: TAMAS\AstroBundle\Entity\Work
+        original_text:
+            types:
+                original_text:
+                    indexable_callback: 'getPublic'
+                    serializer:
+                        groups:
+                            - originalTextMain
+                            - primarySourceMain
+                            - workMain
+                            - externalEditedText
+                            - editedTextMain
+                            - externalTableContentET
+                            - tableContentMain
+                            - externalParameterSet
+                            - parameterSetMain
+                            - kibana
+                        serialize_null: true
+                    persistence:
+                        driver: orm
+                        model: TAMAS\AstroBundle\Entity\OriginalText
+        edited_text:
+            types:
+                edited_text:
+                    indexable_callback: 'getPublic'
+                    serializer:
+                        groups:
+                            - originalTextMain
+                            - externalOriginalText
+                            - primarySourceMain
+                            - workMain
+                            - editedTextMain
+                            - tableContentMain
+                            - externalTableContentET
+                            - externalParameterSet
+                            - parameterSetMain
+                            - externalTableTypeET
+                            - tableTypeMain
+                            - kibana
+                        serialize_null: true
+                    persistence:
+                        driver: orm
+                        model: TAMAS\AstroBundle\Entity\EditedText
+        formula_definition:
+            types:
+                formula_definition:
+                    serializer:
+                        groups:
+                            - formulaDefinitionMain
+                            - externalTableTypeFD
+                            - tableTypeMain
+                            - kibana
+                        serialize_null: true
+                    persistence:
+                        driver: orm
+                        model: TAMAS\AstroBundle\Entity\FormulaDefinition
+        parameter_set:
+            types:
+                parameter_set:
+                    properties:
+                        parameter_values: { type: nested }
+                    serializer:
+                        groups:
+                            - parameterSetMain
+                            - externalTableTypePS
+                            - tableTypeMain
+                            - externalTableContentPS
+                            - tableContentLimited
+                            - kibana
+                        serialize_null: true
+                    persistence:
+                        driver: orm
+                        model: TAMAS\AstroBundle\Entity\ParameterSet
+        primary_source:
+            types:
+                primary_source:
+                    serializer:
+                        groups:
+                            - primarySourceMain
+                            - workMain
+                            - externalOriginalTextPS
+                            - originalTextMain
+                            - editedTextLimited
+                            - kibana
+                        serialize_null: true
+                    persistence:
+                        driver: orm
+                        model: TAMAS\AstroBundle\Entity\PrimarySource
+
+        table_type:
+            types:
+                table_type:
+                    serializer:
+                        groups:
+                            - tableTypeMain
+                            - kibana
+                        serialize_null: true
+                    persistence:
+                        driver: orm
+                        model: TAMAS\AstroBundle\Entity\TableType
+
+
+fos_rest:
+    routing_loader:
+        default_format: json
+        include_format: false
+    body_converter:
+            enabled: true
+    body_listener: true
+    param_fetcher_listener: true
+    format_listener:
+            enabled: true
+            rules:
+                    - { path: '^/', priorities: ['html', 'json', 'xml'], fallback_format: 'json' }
+    view:
+            formats: {
+                    json : true,
+                    xml : true,
+                    rss : true
+                    }
+            view_response_listener: 'force'
+    serializer:
+            serialize_null: true
+    versioning: true
+
+lexik_jwt_authentication:
+    secret_key:       '%kernel.project_dir%/config/jwt/private.pem' # required for token creation
+    public_key:       '%kernel.project_dir%/config/jwt/public.pem'  # required for token verification
+    pass_phrase:      'bongremalgre' # required for token creation, usage of an environment variable is recommended
+    token_ttl:        3600

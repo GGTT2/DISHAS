@@ -1,0 +1,418 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\adminHome.html.twig#}
+
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+	Home — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+	<h1>Admin home</h1>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">Annuncement</h3>
+		</div>
+		<div id="search" class="panel-body">
+			{%if private_annuncement.textContent|default%}
+				<div class="container">
+					{{ private_annuncement.textContent|raw }}
+				</div>
+			{%else%}
+			<div class="row">
+				<div class="col-md-8 col-lg-9">
+					<h3>Dear user of DISHAS</h3>
+					<p>This version of the website is still a work in progress. Thank you for testing it and do not hesitate to give us feedback with the <a href='{{path('tamas_astro_adminContactUser')}}'>contact form</a>.</p>
+					<p>Also, <b>don't input actual research data</b>, the database may need futur adjustments which could lead to data loss.<p>
+					<p>Enjoy testing DISHAS !</p>
+					<p style='text-align:right'>Galla Topalian<br/>Digital Project Manager</p>
+				</div>
+			</div>
+			<div class="col-md-4 col-lg-3">
+				<img src="{{asset('img/construction-workers.jpg')}}" alt="Work in progress" height="200px"/>
+			</div>
+			{%endif%}
+		</div>
+	</div>
+
+
+
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+
+	<style type="text/css">
+
+		.panel-entity .list-group-item {
+			padding : 1.5em;
+			height: 5em;
+		}
+		.panel-entity .panel-body {
+			font-size: 2em;
+			padding: 1em;
+		}
+		.panel-entity .panel-icons {
+			font-size: 1.2em;
+			text-align: right;
+		}
+
+		.panel-group {
+			text-align: center;
+			/*col-md-6*/
+			/*col-lg-3*/
+		}
+
+		.panel-entity .panel-heading {
+			background-repeat: no-repeat;
+			background-size: cover;
+			background-position: center;
+			color: white;
+			text-shadow: black 2px 0 10px;
+		}
+
+		.panel-entity .panel-img {
+			height: 12em;
+			/*box-shadow: black 2px 0 10px;*/
+		}
+
+	</style>
+
+	<section id="plans">
+		<div class="container-fluid">
+			<div class="row">
+
+				<!-- MATERIAL OF WORK -->
+				<div class="panel-group col-md-6 col-lg-3">
+					<div class="panel panel-default panel-entity">
+						<div class="panel-heading" style="background-image: url({{asset('img/scriptoria.jpg')}})">
+							<img class="panel-img" src="{{asset('img/OriginalItem.png')}}"/>
+							<h2>Material of Work</h2>
+						</div>
+						<div class="panel-body text-center">
+							<div class="row">
+								{% if objects.work.userInterfaceColor|default %}
+									<i class="fas fa-play" style="color: {{objects.work.userInterfaceColor}}"></i>
+								{%endif%}
+								{{objects.work.objectUserInterfaceName|capitalize}}
+							</div>
+							<div class="row" style="font-size: 75%; padding: 0.5em;" id="work">
+								<div class="col-md-6">
+									<a href="{{path('tamas_astro_adminListWork')}}"><i class="fas fa-list-ul"></i> List</a>
+								</div>
+								<div class="col-md-6">
+									<a class="info" href=""><i class="fas fa-info-circle"></i> Info</a>
+								</div>
+							</div>
+						</div>
+						<ul class="list-group text-left">
+
+							<li class="list-group-item" id="historicalActor">
+								<div class="col-md-8">
+									{%if objects.historicalActor.userInterfaceColor|default%}
+										<i class="fas fa-play" style="color: {{objects.historicalActor.userInterfaceColor}}"></i>
+									{%endif%}
+									{{objects.historicalActor.objectUserInterfaceName|capitalize}}
+								</div>
+								<div class="panel-icons">
+									<a class="col-md-2" href="{{path('tamas_astro_adminListHistoricalActor')}}">
+										<i class="fas fa-list-ul"></i>
+									</a>
+									<a class="col-md-2 info" href="">
+										<i class="fas fa-info-circle"></i>
+									</a>
+								</div>
+							</li>
+							<li class="list-group-item" id="place">
+								<div class="col-md-8">
+									{%if objects.place.userInterfaceColor|default%}
+										<i class="fas fa-play" style="color: {{objects.place.userInterfaceColor}}"></i>
+									{%endif%}
+									{{objects.place.objectUserInterfaceName|capitalize}}
+								</div>
+								<div class="panel-icons">
+									<a class="col-md-2" href="{{path('tamas_astro_adminListPlace')}}">
+										<i class="fas fa-list-ul"></i>
+									</a>
+									<a class="col-md-2 info" href="">
+										<i class="fas fa-info-circle"></i>
+									</a>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- /MATERIAL OF WORK -->
+
+				<!-- MATERIAL OF ORIGINAL ITEM -->
+				<div class="panel-group col-md-6 col-lg-3">
+					<div class="panel panel-default panel-entity">
+						<div class="panel-heading" style="background-image: url({{asset('img/benares-cut.png')}})">
+							<img class="panel-img" src="{{asset('img/OriginalItem.png')}}"/>
+							<h2>Material of Original item</h2>
+						</div>
+						<div class="panel-body text-center">
+							<div class="row">
+								{% if objects.originalText.userInterfaceColor|default %}
+									<i class="fas fa-play" style="color: {{objects.originalText.userInterfaceColor}}"></i>
+								{%endif%}
+								{{objects.originalText.objectUserInterfaceName|capitalize}}
+							</div>
+							<div class="row" style="font-size: 75%; padding: 0.5em;" id="originalText">
+								<div class="col-md-6">
+									<a href="{{path('tamas_astro_adminListOriginalText')}}"><i class="fas fa-list-ul"></i> List</a>
+								</div>
+								<div class="col-md-6">
+									<a class="info" href=""><i class="fas fa-info-circle"></i> Info</a>
+								</div>
+							</div>
+						</div>
+						<ul class="list-group text-left">
+							<li class="list-group-item" id="primarySource">
+								<div class="col-md-8">
+									{%if objects.primarySource.userInterfaceColor|default%}
+										<i class="fas fa-play" style="color: {{objects.primarySource.userInterfaceColor}}"></i>
+									{%endif%}
+									{{objects.primarySource.objectUserInterfaceName|capitalize}}
+								</div>
+								<div class="panel-icons">
+									<a class="col-md-2" href="{{path('tamas_astro_adminListPrimarySource')}}">
+										<i class="fas fa-list-ul"></i>
+									</a>
+									<a class="col-md-2 info" href="">
+										<i class="fas fa-info-circle"></i>
+									</a>
+								</div>
+							</li>
+
+							<li class="list-group-item" id="library">
+								<div class="col-md-8">
+									{%if objects.library.userInterfaceColor|default%}
+										<i class="fas fa-play" style="color: {{objects.library.userInterfaceColor}}"></i>
+									{%endif%}
+									{{objects.library.objectUserInterfaceName|capitalize}}
+								</div>
+								<div class="panel-icons">
+									<a class="col-md-2" href="{{path('tamas_astro_adminListLibrary')}}">
+										<i class="fas fa-list-ul"></i>
+									</a>
+									<a class="col-md-2 info" href="">
+										<i class="fas fa-info-circle"></i>
+									</a>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- /MATERIAL OF ORIGINAL ITEM -->
+
+
+
+				<!-- MATERIAL OF EDITED TEXT -->
+				<div class="panel-group col-md-6 col-lg-3">
+					<div class="panel panel-default panel-entity">
+						<div class="panel-heading" style="background-image: url({{asset('img/astronomes-cut.jpg')}})">
+							<img class="panel-img" src="{{asset('img/EditedText.png')}}"/>
+							<h2>Material of Edited text</h2>
+						</div>
+						<div class="panel-body text-center">
+							<div class="row">
+								{% if objects.editedText.userInterfaceColor|default %}
+									<i class="fas fa-play" style="color: {{objects.editedText.userInterfaceColor}}"></i>
+								{%endif%}
+								{{objects.editedText.objectUserInterfaceName|capitalize}}
+							</div>
+							<div class="row" style="font-size: 75%; padding: 0.5em;" id="editedText">
+								<div class="col-md-6">
+									<a href="{{path('tamas_astro_adminListEditedText')}}"><i class="fas fa-list-ul"></i> List</a>
+								</div>
+								<div class="col-md-6">
+									<a class="info" href=""><i class="fas fa-info-circle"></i> Info</a>
+								</div>
+							</div>
+						</div>
+						<ul class="list-group text-left">
+							<li class="list-group-item" id="historian">
+								<div class="col-md-8">
+									{%if objects.historian.userInterfaceColor|default%}
+										<i class="fas fa-play" style="color: {{objects.historian.userInterfaceColor}}"></i>
+									{%endif%}
+									{{objects.historian.objectUserInterfaceName|capitalize}}
+								</div>
+								<div class="panel-icons">
+									<a class="col-md-2" href="{{path('tamas_astro_adminListHistorian')}}">
+										<i class="fas fa-list-ul"></i>
+									</a>
+									<a class="col-md-2 info" href="">
+										<i class="fas fa-info-circle"></i>
+									</a>
+								</div>
+							</li>
+
+							<li class="list-group-item" id="journal">
+								<div class="col-md-8">
+									{%if objects.journal.userInterfaceColor|default%}
+										<i class="fas fa-play" style="color: {{objects.journal.userInterfaceColor}}"></i>
+									{%endif%}
+									{{objects.journal.objectUserInterfaceName|capitalize}}
+								</div>
+								<div class="panel-icons">
+									<a class="col-md-2" href="{{path('tamas_astro_adminListJournal')}}">
+										<i class="fas fa-list-ul"></i>
+									</a>
+									<a class="col-md-2 info" href="">
+										<i class="fas fa-info-circle"></i>
+									</a>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- /MATERIAL OF EDITED TEXT -->
+
+
+				<!-- MATERIAL OF TABLE CONTENT -->
+				<div class="panel-group col-md-6 col-lg-3">
+					<div class="panel panel-default panel-entity">
+						<div class="panel-heading" style="background-image: url({{asset('img/latin-14481-f284.png')}})">
+							<img class="panel-img" src="{{asset('img/TableContent.png')}}"/>
+							<h2>Material of Table content</h2>
+						</div>
+						<div class="panel-body text-center">
+							<div class="row">
+								{% if objects.tableContent.userInterfaceColor|default %}
+									<i class="fas fa-play" style="color: {{objects.tableContent.userInterfaceColor}}"></i>
+								{%endif%}
+								{{objects.tableContent.objectUserInterfaceName|capitalize}}
+							</div>
+							<div class="row" style="font-size: 75%; padding: 0.5em;" id="tableContent">
+								<div class="col-md-6">
+									<a href="{{path('tamas_astro_adminListTableContent')}}"><i class="fas fa-list-ul"></i> List</a>
+								</div>
+								<div class="col-md-6">
+									<a class="info" href=""><i class="fas fa-info-circle"></i> Info</a>
+								</div>
+							</div>
+						</div>
+						<ul class="list-group text-left">
+
+							<li class="list-group-item" id="parameterSet">
+								<div class="col-md-8">
+									{%if objects.parameterSet.userInterfaceColor|default%}
+										<i class="fas fa-play" style="color: {{objects.parameterSet.userInterfaceColor}}"></i>
+									{%endif%}
+									{{objects.parameterSet.objectUserInterfaceName|capitalize}}
+								</div>
+								<div class="panel-icons">
+									<a class="col-md-2" href="{{path('tamas_astro_adminListParameterSet')}}">
+										<i class="fas fa-list-ul"></i>
+									</a>
+									<a class="col-md-2 info" href="">
+										<i class="fas fa-info-circle"></i>
+									</a>
+								</div>
+							</li>
+
+							<li class="list-group-item" id="mathematicalParameter">
+								<div class="col-md-8">
+									{%if objects.mathematicalParameter.userInterfaceColor|default%}
+										<i class="fas fa-play" style="color: {{objects.mathematicalParameter.userInterfaceColor}}"></i>
+									{%endif%}
+									{{objects.mathematicalParameter.objectUserInterfaceName|capitalize}}
+								</div>
+								<div class="panel-icons">
+									<a class="col-md-2" href="{{path('tamas_astro_adminListMathematicalParameter')}}">
+										<i class="fas fa-list-ul"></i>
+									</a>
+									<a class="col-md-2 info" href="">
+										<i class="fas fa-info-circle"></i>
+									</a>
+								</div>
+							</li>
+
+						</ul>
+					</div>
+				</div>
+				<!-- /MATERIAL OF TABLE CONTENT -->
+
+			</div>
+			<h1>Learn about astronomical tables</h1>
+		</div>
+	</section>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{parent()}}
+	<script type="text/javascript" media="screen" src="{#{{asset('js/handsontable-master/dist/handsontable.full.min.js')}}#}http://docs.handsontable.com/0.33.0/bower_components/handsontable/dist/handsontable.full.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var objects = [];
+			{%for o in object_info.properties%}
+			objects["{{o.objectEntityName}}"] = {'id': "{{o.id}}",
+				'userInterfaceColor': "{{o.userInterfaceColor}}",
+				'objectDatabaseName': "{{o.objectDatabaseName|raw|e('js')}}",
+				'objectEntityName': "{{o.objectEntityName|raw|e('js')}}",
+				'objectUserInterfaceName': "{{o.objectUserInterfaceName|raw|e('js')|capitalize}}",
+				'databaseAdminDefinition': "{{o.databaseAdminDefinition|raw|e('js')}}",
+				'longDefinition': "{{o.longDefinition|raw|e('js')}}",
+				'shortDefinition': "{{o.shortDefinition|raw|e('js')}}"};
+			{%endfor%}
+			$(".info").click(function (e) {
+				e.preventDefault();
+				var entity = $(this).parent().parent().attr('id');
+				$("#dialog").dialog();
+				$("#dialog").html("<b>" + objects[entity]['objectUserInterfaceName'] + ":</b> " + objects[entity]['shortDefinition']);
+			});
+			$("#add-tableContent").click(function(e){
+				e.preventDefault();
+				var linkAddEditedText = "{{path('tamas_astro_adminSelectEditedType')}}";
+				var linkListEditedText = "{{path('tamas_astro_adminListEditedText')}}";
+				var string = 'In order to add a table content, you need first to create an '+objects['editedText']['objectUserInterfaceName']+' containing the appropriate metadata of the table content. <br/> Click <b><a href="'+linkAddEditedText+'">here</a></b> to add a new '+objects['editedText']['objectUserInterfaceName']+' or <b><a href="'+linkListEditedText+'">here</a></b> to find and edit an existing '+objects['editedText']['objectUserInterfaceName']+'.';
+				$("#dialog").dialog();
+				$("#dialog").html(string);
+			});
+		});
+
+	</script>
+	<div id="dialog" title="Info">
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{parent()}}
+	<script type="text/javascript" media="screen" src="{#{{asset('js/handsontable-master/dist/handsontable.full.min.js')}}#}http://docs.handsontable.com/0.33.0/bower_components/handsontable/dist/handsontable.full.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var objects = [];
+			{%for o in object_info.properties%}
+			objects["{{o.objectEntityName}}"] = {'id': "{{o.id}}",
+				'userInterfaceColor': "{{o.userInterfaceColor}}",
+				'objectDatabaseName': "{{o.objectDatabaseName|raw|e('js')}}",
+				'objectEntityName': "{{o.objectEntityName|raw|e('js')}}",
+				'objectUserInterfaceName': "{{o.objectUserInterfaceName|raw|e('js')|capitalize}}",
+				'databaseAdminDefinition': "{{o.databaseAdminDefinition|raw|e('js')}}",
+				'longDefinition': "{{o.longDefinition|raw|e('js')}}",
+				'shortDefinition': "{{o.shortDefinition|raw|e('js')}}"};
+			{%endfor%}
+			$(".info").click(function () {
+				var entity = $(this).parent().parent().attr('id');
+				$("#dialog").dialog();
+				$("#dialog").html("<b>" + objects[entity]['objectUserInterfaceName'] + ":</b> " + objects[entity]['shortDefinition']);
+			});
+			$("#add-tableContent").click(function(e){
+				e.preventDefault();
+				var linkAddEditedText = "{{path('tamas_astro_adminSelectEditedType')}}";
+				var linkListEditedText = "{{path('tamas_astro_adminListEditedText')}}";
+				var string = 'In order to add a table content, you need first to create an '+objects['editedText']['objectUserInterfaceName']+' containing the appropriate metadata of the table content. <br/> Click <b><a href="'+linkAddEditedText+'">here</a></b> to add a new '+objects['editedText']['objectUserInterfaceName']+' or <b><a href="'+linkListEditedText+'">here</a></b> to find and edit an existing '+objects['editedText']['objectUserInterfaceName']+'.';
+				$("#dialog").dialog();
+				$("#dialog").html(string);
+			});
+		});
+
+	</script>
+	<div id="dialog" title="Info">
+	</div>
+
+{% endblock %}
+

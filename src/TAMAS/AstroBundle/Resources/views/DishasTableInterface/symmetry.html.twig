@@ -1,0 +1,38 @@
+<div class="modal fade" id="symmetry-fill" tabindex="-1" role="dialog">
+	<div class="modal-dialog  modal-xl" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Fill with symmetry</h4>
+			</div>
+			<div class="modal-body">
+
+				<div role="tabpanel" class="tab-pane" id="symmetry-prediction">
+					{% include 'TAMASAstroBundle:DishasTableInterface:symmetriesBase.html.twig' %}
+				</div>
+
+				<span class='print-main-info'> This symmetry module is a
+					predictive tools that addresses situations where an historical
+					source expresses symmetrical entries only implicitely. 
+					<br/>
+					For "template-symmetry" (where only part of the entries are tabulated while
+					the other are implicitly expressed by specific arguments layouts
+					and dedicated reading conventions for the table.) click on <a data-toggle="modal" data-target="#dialog-hard-symmetry">Document > Template symmetries </a> </span>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					{% if readonly is not defined or not readonly%}
+					<button type="button" class="btn btn-primary" id="fill-symmetry-done"
+						data-dismiss="modal">Fill Table</button>
+					{% endif %}
+				</div>
+			</div>
+			<!-- /.modal-body -->
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

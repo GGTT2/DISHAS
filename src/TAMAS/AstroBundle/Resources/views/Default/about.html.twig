@@ -1,0 +1,30 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\about.html.twig#}
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% block title %}
+    About — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    {#<link rel="stylesheet" href="{{ asset('css/homepage.css') }}">#}
+    <link rel="stylesheet" href="{{ asset('css/about-text.css') }}">
+
+    {% if public_about.textContent|default %}
+        <div class="about-text col-md-8 col-md-offset-2">
+            {{ public_about.textContent|raw }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $( document ).ready(function() {
+            let excerpts = $("blockquote");
+            $("<div class='horizontal-bar lightgrey'></div>").insertAfter( $("h1, h2, h3, h4") );
+            $("<div class='horizontal-bar extract-top lightgrey'></div>").insertBefore(excerpts);
+            $("<div class='horizontal-bar extract-bottom lightgrey'></div>").insertAfter(excerpts);
+            $(".about-text a").wrap( "<div style='text-align: center'></div>");
+        });
+    </script>
+{% endblock %}

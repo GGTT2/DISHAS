@@ -1,0 +1,15 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\AdminSelect\adminSelectTableType.html.twig#}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+    Select a table type — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    {% include "TAMASAstroBundle:SelectObject:selectTableType.html.twig" with {'includeType':'html'} %}
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+   {% include "TAMASAstroBundle:SelectObject:selectTableType.html.twig" with {'includeType':'js'} %}
+{% endblock %}

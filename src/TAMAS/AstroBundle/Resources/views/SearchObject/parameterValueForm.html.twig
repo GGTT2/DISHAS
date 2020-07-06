@@ -1,0 +1,150 @@
+{# Form for parameter value search: views/SearchObject/adminSimpleSearchParameterSet.html.twig#}
+{% if include == "html" %}
+    <style>
+        #id {
+            width: 7% !important;
+        }
+    </style>
+    <h2>Advanced parameter search</h2>
+
+    <form>
+        {% form_theme form 'bootstrap_3_TAMAS.html.twig' %}
+        {{form_start(form)}}
+        <div class="row">
+            <div class="col-md-6">
+                {{form_row(form.parameterName)}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                {{form_row(form.typeOfNumber)}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                {{form_row(form.valueSmartNumber)}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                {{form_row(form.valueMinSmartNumber)}}
+            </div>
+            <div class="col-md-3">
+                {{form_row(form.valueMaxSmartNumber)}}
+            </div>
+
+            {{form_rest(form)}}
+            {{form_end(form)}}
+        </div>
+        <a id='search-button' role="button" class="btn btn-default">Search</a>
+
+        <div id='visualize-data' class="citation-block">
+            <table class="table table-hover table-browser table-sortable" id ="results" style="min-width: 100%"></table>
+        </div>
+    </form>
+{% elseif include == "js" %}
+    <script type="text/javascript" src="{{asset('js/DISHAS_table/conversion.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/DISHAS_table/smartNumberFillField.js')}}"></script>
+    <script>
+        const admin = {% if admin|default %} true {% else %} false {% endif %};
+        const paramPath = admin ? "tamas_astro_adminViewParameterSet" : "tamas_astro_viewParameterSet";
+        // Template defining how parameter sets results will be displayed in the DataTable
+        const fieldLists = {"parameter_set":[
+                {
+                    "name": "id",
+                    "title": "#",
+                    "source": "",
+                    "ifOnly": null,
+                    "properties": [],
+                    "displayInTable": true
+                },{
+                    "name": "kibana_name",
+                    "title": "Parameter set",
+                    "source": "",
+                    "ifOnly": "",
+                    "properties": {"path": paramPath, "id": "id"},
+                    "displayInTable": true
+                },{
+                    "name": "values",
+                    "title": "Value details (float)",
+                    "source": "parameter_values.default_title",
+                    "ifOnly": "",
+                    "properties": {"unknown": "null"},
+                    "displayInTable": true
+                }
+            ]};
+
+        $(document).ready(function () {
+            var snfs = [];
+            var names = ['', 'Max', 'Min'];
+            for (let index = 0; index < names.length; index++) {
+                snfs.push(new SmartNumberField('tamas_astrobundle_parametervalue_value' + names[index] + 'SmartNumber'));
+                snfs[index].bindSelect('tamas_astrobundle_parametervalue_typeOfNumber');
+                snfs[index].bindTarget('tamas_astrobundle_parametervalue_value' + names[index] + 'Float', 'float');
+                snfs[index].bindTarget('tamas_astrobundle_parametervalue_value' + names[index] + 'OriginalBase', undefined, true);
+            }
+
+            $('#{{form.vars.id}}_valueSmartNumber').on('input', function () {
+                if ($('#{{form.vars.id}}_valueMinSmartNumber').val() !== '' || $('#{{form.vars.id}}_valueMaxSmartNumber').val() !== '') {
+                    snfs[1].empty();
+                    snfs[2].empty();
+                }
+            });
+            $('#{{form.vars.id}}_valueMinSmartNumber, #{{form.vars.id}}_valueMaxSmartNumber').on('input', function () {
+                if ($('#{{form.vars.id}}_valueSmartNumber').val() !== '')
+                    snfs[0].empty();
+            });
+
+            $('#search-button').click(function() {
+                // destroy the current table if one is already existing
+                if ($.fn.DataTable.isDataTable('#results')){
+                    $('#results').DataTable().destroy();
+                }
+
+                for (let i = snfs.length - 1; i >= 0; i--) {
+                    snfs[i].fillTargets();
+                }
+
+                const parameterFormatId = $('#{{form.vars.id}}_parameterName').val();
+                const value = $('#{{form.vars.id}}_valueFloat').val();
+                const minValue = $('#{{form.vars.id}}_valueMinFloat').val();
+                const maxValue = $('#{{form.vars.id}}_valueMaxFloat').val();
+
+                let min, max;
+                if (value){
+                    min = 0.995 * value;
+                    max = 1.005 * value;
+                } else {
+                    min = minValue.length ? parseFloat(minValue) : "-3.4e38";
+                    max = maxValue.length ? parseFloat(maxValue) : "3.4e38";
+                }
+                const query = {
+                    "nested": {
+                        "path": "parameter_values",
+                        "query": {
+                            "bool": {
+                                "should" : [
+                                    {"range": {"parameter_values.values.float.arg1.from":{"gte": min,"lte": max}}},
+                                    {"range": {"parameter_values.values.float.arg1.to":{"gte": min,"lte": max}}},
+                                    {"range": {"parameter_values.values.float.arg2.from":{"gte": min,"lte": max}}},
+                                    {"range": {"parameter_values.values.float.arg2.to":{"gte": min,"lte": max}}},
+                                    {"range": {"parameter_values.values.float.value":{"gte": min,"lte": max}}}
+                                ],
+                                "minimum_should_match" : 1
+                            }
+                        }
+                    }
+                };
+
+                if (parameterFormatId){
+                    query.nested.query.bool["filter"] = {"term": {"parameter_values.parameter_format.id.keyword": parameterFormatId}};
+                }
+
+                const url = generateUrl(query, "parameter_set", generateSources(fieldLists["parameter_set"]));
+
+                generateTableLayout("parameter_set", "", "", false);
+                fillResultTable(url, "parameter_set");
+            });
+        });
+    </script>
+{% endif %}

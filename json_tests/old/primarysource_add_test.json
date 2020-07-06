@@ -1,0 +1,59 @@
+{
+    "primarysource": [{
+            "primType": "ms",
+            "shelfmark": "B36",
+	    "library": {
+		"isni": "0000000464306834"
+	    }
+        },
+ 	{
+            "primType": "ms",
+            "shelfmark": "Fatih 3418",
+	    "library": {
+		"isni": "0000000460368974"
+	    }
+        },
+ 	{
+            "primType": "ms",
+            "shelfmark": "Valide",
+	    "library": {
+		"isni": ""
+	    }
+        },
+ 	{
+            "primType": "",
+            "shelfmark": "Autre",
+	    "library": {
+		"isni": "0000000460368974"
+	    }
+        },
+ 	{
+            "primType": "ep",
+            "shelfmark": "Test",
+	    "primTitle": "Tabule astronomice illustrissimi Alfonsii ",
+	    "primEditor": "Machin",
+            "date": "1500",
+	    "library": {
+		"isni": "0000000460368974"
+	    }
+        },
+ 	{
+            "primType": "ep",
+            "shelfmark": "Test",
+	    "primTitle": "",
+	    "primEditor": "",
+            "date": "hreg",
+	    "library": {
+		"isni": ""
+	    }
+        },
+ 	{
+            "primType": "ep",
+            "shelfmark": "Test",
+            "date": "1800",
+	    "library": {
+		"isni": ""
+	    }
+        }]
+}
+

@@ -1,0 +1,78 @@
+{#Symfony\app\Resources\views\includes\stylesheets.html.twig#}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}" />
+	<link rel="stylesheet" href="{{ asset('css/bootstrap-treeview.css')}}" />
+	<link rel="stylesheet" href="{{ asset('css/tamas.css')}}" />
+	<link rel="stylesheet" href="{{asset('css/dashboard.css')}}">
+	<link rel="stylesheet" href="{{ asset('css/tamasColorScheme.css')}}" />
+	<link rel="stylesheet" href="{{ asset('css/pagination.css')}}" />
+	<link rel="stylesheet" type="text/css" href="{{asset('js/DataTables/datatables.min.css')}}" />
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/vis.min.css')}}" />
+	<link rel="stylesheet" type="text/css" href="{{asset('js/handsontable-master/dist/handsontable.full.min.css')}}" />
+	<link rel="stylesheet" type="text/css" href="{{asset('js/bootstrap-switch/css/bootstrap-switch.min.css')}}"/>
+
+	<style>
+		/* GLOBAL VARIABLES */
+		:root {
+		{% for entity in object_info.properties %}
+			{% if entity.userInterfaceColor and entity.userInterfaceColor != "NULL"  %}
+			--{{ entity.objectEntityName }}: {{ entity.userInterfaceColor }};
+			{% endif %}
+		{% endfor %}
+		{% for astrobject in astronomical_objects.astronomicalObject %}
+			--{{ astrobject.name }}: {{ astrobject.color }};
+		{% endfor %}
+			--dishas: #3762ce;
+			--team: #339c37;
+			--resources: #0ccea8;
+			--astro-nav: #7b5fdd;
+			--hist-nav: #f7d80f;
+		}
+		/* ENTITY LABELS AND COLORS */
+		{% for entity in object_info.properties %}
+			{% if entity.userInterfaceColor and entity.userInterfaceColor != "NULL"  %}
+			.{{ entity.objectEntityName }} {background-color: var(--{{ entity.objectEntityName }}) !important;}
+
+			{% if entity.objectEntityName in ["parameterSet","formulaDefinition","work","originalText","primarySource","editedText","tableContent"] %}
+			.label-{{ entity.objectEntityName }}::before {
+				content: "{{ entity.objectUserInterfaceName }}";
+			}
+			.label-{{ entity.objectEntityName }}-plural::before {
+				content: "{{ entity.objectUserInterfaceName|plural() }}";
+			}
+			.label-{{ entity.objectEntityName }}-deter::before {
+				content: "{{ entity.objectUserInterfaceName|determinant() }}";
+			}
+			.label-{{ entity.objectEntityName }}-ucfirst::before {
+				content: "{{ entity.objectUserInterfaceName|ucfirst() }}";
+			}
+			.label-{{ entity.objectEntityName }}-plural-ucfirst::before {
+				content: "{{ entity.objectUserInterfaceName|plural()|ucfirst() }}";
+			}
+			.label-{{ entity.objectEntityName }}-deter-ucfirst::before {
+				content: "{{ entity.objectUserInterfaceName|determinant()|ucfirst() }}";
+			}
+			{% endif %}
+
+			{% endif %}
+		{% endfor %}
+
+		/* ASTRONOMICAL OBJECT COLORS */
+		{% for astrobject in astronomical_objects.astronomicalObject %}
+			.{{ astrobject.name }} { background-color: var(--{{ astrobject.name }}) !important;}
+		{% endfor %}
+
+		.TE-rec {background-color: var(--editedText) !important;}
+		.PS-rec {background-color: var(--primarySource) !important;}
+		.W-rec {background-color: var(--work) !important;}
+		.OI-rec {background-color: var(--originalText) !important;}
+		.AP-rec {background-color: var(--parameterSet) !important;}
+		.TM-rec {background-color: var(--formulaDefinition) !important;}
+
+		.contact, .team, .partners {background-color: var(--team);}
+		.resources, .glossary, .bibliography, .downloads, .api {background-color: var(--resources);}
+		.dishas, .browse, .navigation, .about {background-color: var(--dishas);}
+		.hist-nav {background-color: var(--hist-nav);}
+		.TT-rec, .astro-nav {background-color: var(--astro-nav);}
+	</style>
+{% endblock %}

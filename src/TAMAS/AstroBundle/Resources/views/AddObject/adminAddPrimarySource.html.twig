@@ -1,0 +1,77 @@
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+	{{ action|capitalize }} {{ object_info.properties.primarySource.objectUserInterfaceName }} — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+<div id="my_form" class="row">
+	<div class="col-md-10 well">
+		{% form_theme form 'bootstrap_3_TAMAS.html.twig' %}
+		{{form_start(form, {'attr': {'class': 'form'}})}}
+		{{form_errors(form)}}
+		<div id="" class="row">
+			<div class="col-md-11">
+				<div class="row">
+					<div class="col-md-6">
+						{{form_row(form.primType)}}
+					</div>
+					<div class="col-md-6">
+						{{form_row(form.shelfmark)}}
+					</div>
+				</div>
+
+				{{form_row(form.library)}}
+				{# <a href="{{path('tamas_astro_adminAddLibrary')}}"
+				target="_blank"#} {# class="btn btn-success add-entity"><span#} {#
+				class="glyphicon glyphicon-plus"></span></a> <a href="#"#} {#
+				class="btn btn-success refresh-entity" id="refresh-library"><span#}
+				{# class="glyphicon glyphicon-refresh"></span></a>#}
+
+				{{form_row(form.primTitle)}}
+				{{ form_row(form.primTitleOriginalChar) }}
+
+				{{form_row(form.primEditor)}}
+				{{form_row(form.date)}}
+				{{form_row(form.digitalIdentifier)}}
+
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2">
+		{%include 'TAMASAstroBundle:AddObject:adminPannel.html.twig'%}
+	</div>
+	{% endblock %}
+
+	{% block javascripts %}
+	{{parent()}}
+	<script>
+
+	$(document).ready(function(){
+
+		
+  
+
+    function disableFields(typeOfSource) {
+        if (typeOfSource === "ms") {
+            $("#{{form.vars.name}}_primEditor").attr("disabled", "disabled").val('');
+            $("#{{form.vars.name}}_primTitle").attr("disabled", "disabled").val('');
+            $("#{{form.vars.name}}_primTitleOriginalChar").attr("disabled", "disabled").val('');
+            $("#{{form.vars.name}}_date").attr("disabled", "disabled").val('');
+        } else {
+            $("#{{form.vars.name}}_primEditor").removeAttr("disabled");
+            $("#{{form.vars.name}}_primTitle").removeAttr("disabled");
+            $("#{{form.vars.name}}_primTitleOriginalChar").removeAttr("disabled");
+            $("#{{form.vars.name}}_date").removeAttr("disabled");
+        }
+    }
+    
+    disableFields($("#{{form.vars.name}}_primType").val());
+    $("#{{form.vars.name}}_primType").change(
+									function() {
+										disableFields($(this).val());
+									});
+
+						});
+	</script>
+	{% endblock %}

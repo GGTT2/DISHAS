@@ -1,0 +1,89 @@
+<div class="modal fade" id="dialog-fill" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">{#Parameter Estimation#}Prediction</h4>
+			</div>
+			<div class="modal-body">
+				<div role="tabpanel" class="tab-pane active" id="model-prediction">
+					<div class="row">
+						<div class="col-md-offset-10" id="model-description-wip"></div>
+					</div>
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2 alert alert-info">
+							<span class="glyphicon glyphicon-info-sign"></span>
+							This tool requires the arguments of the table to be filled beforehand
+						</div>
+					</div>
+					<div class="row">
+						<div id="parameter" class="col-md-10 col-md-offset-1">
+							<h4>Fill with parameter</h4>
+
+							{{ form_row(form.formulaDefinition) }}
+
+							<div id="parameter-setup">
+								<div id="latex-formula"></div>
+								<label id="model-description" class="control-label" for="parameter-list"></label>
+								<br/>
+								<div id="model-definition">
+{# 								<a id='read-more' target='_blank' href="" style="margin-left: -250px; margin-right: 150px">Read more</a>
+ #}								</div>
+ 								<hr/>
+
+								<label class="control-label" for="parameter-list">
+									Parameters Values:
+								</label>
+								<div class='row'>
+
+									<div class="col-md-12">
+										<table class="table">
+											<thead>
+												<tr>
+													<th scope="col" class="col-md-2">Name</th>
+													<th scope="col">Value</th>
+													<th scope="col" class="col-md-3">Type of number</th>
+													<th scope="col" class="col-md-1">Locked</th>
+												</tr>
+											</thead>
+											<tbody id="parameter-list"></tbody>
+										</table>
+									</div>
+								</div>
+								<hr />
+
+								<div class="row" style="text-align: center">
+									<div class="col-md-6">
+										<button class="btn btn-primary btn-lg" type="button"
+											id="fill-lsq">Use statistical estimation</button>
+										<p class="print-main-info" style="padding-top: 10px">For large tables (and 2-arguments tables) the statistical estimation can be refined when applied twice</p>
+										<p id="statistical-info"></p>
+									</div>
+									<div class="col-md-6">
+										<button class="btn btn-primary btn-lg" type="button"
+											data-toggle="modal" data-target="#dialog-parameter">
+											Use historical parameter</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					{% if readonly is not defined or not readonly%}
+					<button type="button" class="btn btn-primary" id="fill-model-done"
+						data-dismiss="modal">Fill Table</button>
+					{% endif %}
+				</div>
+			</div>
+			<!-- /.modal-body -->
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

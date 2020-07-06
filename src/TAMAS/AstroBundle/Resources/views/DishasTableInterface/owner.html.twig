@@ -1,0 +1,30 @@
+<div class="modal fade" id="dialog-owner"{# tabindex="-1" #} role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Owner</h4>
+            </div>
+            <div class="modal-body">
+              <table class=" table table-striped">
+                <tr>
+                    <td><span class="glyphicon glyphicon-user"></span></td>
+                    <td>{{tableContent.createdBy}}</td>
+                </tr>
+                <tr>
+                    <td><span class="glyphicon glyphicon-pencil"></span></td>
+                    <td>{{tableContent.created|date('d/m/Y')}}</td>
+                </tr>
+                <tr>
+                    <td><span class="glyphicon glyphicon-repeat"></span></td>
+                    <td>{{tableContent.updated|date('d/m/Y')}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    

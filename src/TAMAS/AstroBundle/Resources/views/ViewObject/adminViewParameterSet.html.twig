@@ -1,0 +1,195 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\adminParameterView.html.twig#}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+	View {{ object_info.properties.parameterSet.objectUserInterfaceName }} n°{{ parameterSet.id }} — {{ parent() }}
+{% endblock %}
+{% block tamasastro_body %}
+	{% for type, flashes in app.session.flashbag.all %}
+		{%for flash in flashes%}
+			<div class="flash-notice alert alert-{{type}} fade in">
+				{{ flash }}
+			</div>
+		{% endfor %}
+	{% endfor %}
+	<!-- Heading Row -->
+	<div class="row">
+		<div class="col-md-6 citation-block">
+			<h1>
+				{{parameterSet.tableType.tableTypeName|raw|capitalize}}
+				<br/>
+				<small> {{ object_info.properties.parameterSet.objectUserInterfaceName|capitalize }} n° {{parameterSet.id}}</small>
+			</h1>
+			<div class="hasTable">
+				{% for parameter in parameterSet.parameterValues|sortbyfield('parameterFormat') %}
+					{# use twig extention sort by field #}
+					<table class="table table-hover table-condensed">
+						<thead>
+							<td colspan="2" align="center">
+								<p><b>{{ parameter.parameterFormat.parameterName|capitalize }}</b></p>
+							</td>
+						</thead>
+						<tbody>
+							<tr>
+								<td colspan="2" align="center" class="numbers">
+									{% if parameter.valueOriginalBase|default and parameter.valueOriginalBase != ''%}
+										Value: {{parameter.valueOriginalBase}}<br/>
+										- <i>(decimal) : {{parameter.valueFloat}}</i>
+									{% else %}
+										Value: -
+									{% endif %}
+								</td>
+							</tr>
+							{% if (parameter.range1InitialOriginalBase|default and parameter.range1InitialOriginalBase != '') or ( parameter.range1FinalOriginalBase|default and parameter.range1FinalOriginalBase !="")%}
+								<tr>
+									<td align="center" class="col-md-6 numbers">
+										{% if parameter.range1InitialOriginalBase|default %}
+											Low bound: {{parameter.range1InitialOriginalBase}}<br/>
+											- <i>(decimal) : {{parameter.range1InitialFloat}}</i>
+										{% else %}
+											-
+										{% endif %}
+									</td>
+									<td align="center" class="col-md-6 numbers">
+										{% if parameter.range1FinalOriginalBase|default%}
+											High bound: {{parameter.range1FinalOriginalBase}}<br/>
+											- <i>(decimal) : {{parameter.range1FinalFloat}}</i>
+										{% else %}
+											-
+										{% endif %}
+									</td>
+								</tr>
+							{% endif %}
+							{% if (parameter.range2InitialOriginalBase|default and parameter.range2InitialOriginalBase != '') or ( parameter.range2FinalOriginalBase|default and parameter.range2FinalOriginalBase !="")%}
+								<tr>
+									<td align="center" class="col-md-6 numbers">
+										{% if parameter.range2InitialOriginalBase|default %}
+											Low bound: {{parameter.range2InitialOriginalBase}}<br/>
+											- <i>(decimal) : {{parameter.range2InitialFloat}}</i>
+										{% else %}
+											-
+										{% endif %}
+									</td>
+									<td align="center" class="col-md-6 numbers">
+										{% if parameter.range2FinalOriginalBase|default%}
+											High bound: {{parameter.range2FinalOriginalBase}}<br/>
+											- <i>(decimal) : {{parameter.range2FinalFloat}}</i>
+										{% else %}
+											-
+										{% endif %}
+									</td>
+								</tr>
+							{% endif %}
+							{% if (parameter.range3InitialOriginalBase|default and parameter.range3InitialOriginalBase != '') or ( parameter.range3FinalOriginalBase|default and parameter.range3FinalOriginalBase !="")%}
+								<tr>
+									<td align="center" class="col-md-6 numbers">
+										{% if parameter.range3InitialOriginalBase|default %}
+											Low bound: {{parameter.range3InitialOriginalBase}}<br/>
+											- <i>(decimal) : {{parameter.range3InitialFloat}}</i>
+										{% else %}
+											-
+										{% endif %}
+									</td>
+									<td align="center" class="col-md-6 numbers">
+										{% if parameter.range3FinalOriginalBase|default %}
+											High bound: {{parameter.range3FinalOriginalBase}}<br/>
+											- <i>(decimal) : {{parameter.range3FinalFloat}}</i>
+										{% else %}
+											-
+										{% endif %}
+									</td>
+								</tr>
+							{%endif%}
+						</tbody>
+					</table>
+				{% endfor %}
+			</div>
+		</div>
+		<!-- /.col-md-4 -->
+		<div class="col-md-4"></div>
+
+		<!-- /.col-md-8 -->
+		<div class="col-md-2 ">
+			{{render(controller("TAMASAstroBundle:AdminView:adminPanel", {'object': parameterSet}))}}
+		</div>
+	</div>
+	<div id="related-edition" class="citation-block">
+		<h3>Related objects</h3>
+		<div class="row">
+			<label for="related-item">Class by</label>
+			<select class="form-control" id="related-item">
+				<option value="edition">{{ object_info.properties.editedText.objectUserInterfaceName|ucfirst }}</option>
+				<option value="original-text">{{ object_info.properties.originalText.objectUserInterfaceName|ucfirst }}</option>
+			</select>
+			<div class="row">
+				<div id="edition">
+					{% if editedTexts.listObjects.data|default() %}
+						{% set editedTextSpec = spec|merge({'tableId': 'editedText-list'})  %}
+						{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : editedTextSpec, 'include': 'html', 'listObjects': editedTexts.listObjects} %}
+					{% else %}
+					<br/>
+					<div class="flash-notice alert alert-warning"><span class="glyphicon glyphicon-info-sign"></span> No corresponding record in the database</div>
+					{% endif %}
+				</div>
+			</div>
+			<div class="row">
+				<div id="original" class="hidden">
+					{% if originalTexts.listObjects.data|default() %}
+						{% set originalTextSpec = spec|merge({'tableId': 'originalText-list'})  %}
+						{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : originalTextSpec, 'include': 'html', 'listObjects': originalTexts.listObjects} %}
+					{% else %}
+					<br/>
+					<div class="flash-notice alert alert-warning">
+						<span class="glyphicon glyphicon-info-sign"></span>
+						No corresponding record in the database
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<hr>
+{% endblock %}
+
+{% block javascripts %}
+	{{parent()}}
+	<script>
+
+		{% if editedTexts.listObjects.data|default() %}
+		{% set editedTextSpec = spec|merge({'tableId': '#editedText-list'})  %}
+		{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : editedTextSpec, 'include': 'js', 'listObjects': editedTexts.listObjects} %}
+		{% endif %}
+
+		{% if originalTexts.listObjects.data|default() %}
+		{% set originalTextSpec = spec|merge({'tableId': '#originalText-list'})  %}
+		{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : originalTextSpec, 'include': 'js', 'listObjects': originalTexts.listObjects} %}
+		{% endif %}
+		function switchDataTable(){
+				if ($('#related-item').val() === "edition") {
+					$("#edition").removeClass("hidden");
+					$("#original").addClass("hidden");
+					$.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust().draw();
+
+				} else {
+					$("#edition").addClass("hidden");
+					$("#original").removeClass("hidden");
+					$.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust().draw();
+
+				}
+			}
+		$(document).ready(function () {
+			$('#by-originalText').DataTable();
+			
+			switchDataTable();
+
+			$('#related-item').change(function () {
+				switchDataTable();
+			});
+		});
+	</script>
+
+
+
+{% endblock %}
+{# empty Twig template #}

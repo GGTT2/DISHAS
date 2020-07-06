@@ -1,0 +1,704 @@
+<script src="{{asset('js/czMore/js/jquery.czMore-1.5.3.2.js')}}"></script>
+
+<script>
+	/**
+	 * Will contain the SmartNumberFields for the suggestion symmetries (i.e. the NON template symmetries)
+	 * @type {Object}
+	 */
+	suggest_snf = {}
+
+	/**
+	 * Will be filled with the last validated state of template symmetry form
+	 * @type {Object}
+	 */
+	currentSymmetryRow = {};
+
+	/**
+	 * Will be used as a backup of the previous validated state of the template symmetry form
+	 * @type {Object}
+	 */
+	oldSymmetryRow = {};
+
+	/**
+	 * Will be filled with the real time state of template symmetry form
+	 * @type {Object}
+	 */
+	symmetryRow = {}
+
+	/**
+	 * Parse a string to retrieve the corresponding integer (or NaN if the string does not correspond to an integer)
+	 * @param  {String} val  
+	 * @return {Number}
+	 */
+	function myParseInt(val) {
+	    if($.isNumeric(val)) {
+	        var res = Number(val);
+	        if(Number.isInteger(res)) {
+	            return res;
+	        }
+	        return NaN;
+	    }
+	    else
+	        return NaN;
+	}
+
+	/**
+	 * Parse a string to retrieve the corresponding float (or NaN if the string does not correspond to an float)
+	 * @param  {String} val  
+	 * @return {Number}
+	 */
+	function myParseFloat(val) {
+	    if($.isNumeric(val)) {
+	        return Number(val);
+	    }
+	    else
+	        return NaN;
+	}
+
+	/**
+	 * Return jQuery elements associated to the symmetry row of index nb
+	 * @param  {[type]} nb [description]
+	 * @return {[type]}    [description]
+	 */
+	function getNbElements(nb) {
+		if(nb === 0)
+			return;
+		var element = $('[data-id="symmetry_' + nb + '_row"]')[0];
+		var direction_element = $('[data-id="id_' + nb + '_direction"]')[0];
+		var source_element_start = $('[data-id="id_' + nb + '_source_start"]')[0];
+		var source_element_end = $('[data-id="id_' + nb + '_source_end"]')[0];
+		var symmetry_element = $('[data-id="id_' + nb + '_symmetry"]')[0];
+		var symmetry_parameter_element = $('[data-id="id_' + nb + '_symmetry_parameter"]')[0];
+		var symmetry_label_parameter_element = $('[data-id="id_' + nb + '_symmetry_label_parameter"]')[0];
+		var symmetry_displacement_element = $('[data-id="id_' + nb + '_symmetry_displacement"]')[0];
+		var target_element_start = $('[data-id="id_' + nb + '_target_start"]')[0];
+		var target_element_end = $('[data-id="id_' + nb + '_target_end"]')[0];
+		return {
+			general: element,
+			direction: direction_element,
+			source_start: source_element_start,
+			source_end: source_element_end,
+			type: symmetry_element,
+			label_parameter: symmetry_label_parameter_element,
+			parameter: symmetry_parameter_element,
+			displacement: symmetry_displacement_element,
+			target_start: target_element_start,
+			target_end: target_element_end
+		};
+	}
+
+	/**
+	 * Return the values of the symmetry row of index nb
+	 * @param  {number} nb [description]
+	 * @return {[type]}    [description]
+	 */
+	function getNbElementValues(nb) {
+		if (nb === 0)
+			return;
+		var element = $('[data-id="symmetry_' + nb + '_row"]')[0];
+		var direction_element = $('[data-id="id_' + nb + '_direction"]')[0];
+		var source_element_start = $('[data-id="id_' + nb + '_source_start"]')[0];
+		var source_element_end = $('[data-id="id_' + nb + '_source_end"]')[0];
+		var symmetry_element = $('[data-id="id_' + nb + '_symmetry"]')[0];
+		var symmetry_parameter_element = $('[data-id="id_' + nb + '_symmetry_parameter"]')[0];
+		var symmetry_label_parameter_element = $('[data-id="id_' + nb + '_symmetry_label_parameter"]')[0];
+		var symmetry_displacement_element = $('[data-id="id_' + nb + '_symmetry_displacement"]')[0];
+		var target_element_start = $('[data-id="id_' + nb + '_target_start"]')[0];
+		var target_element_end = $('[data-id="id_' + nb + '_target_end"]')[0];
+		return {
+			direction: $(direction_element).val(),
+			source_start: $(source_element_start).val(),
+			source_end: $(source_element_end).val(),
+			type: $(symmetry_element).val(),
+			label_parameter: $(symmetry_label_parameter_element).val(),
+			parameter: $(symmetry_parameter_element).val(),
+			displacement: $(symmetry_displacement_element).val(),
+			target_start: $(target_element_start).val(),
+			target_end: $(target_element_end).val()
+		};
+	}
+
+	/**
+	 * Deep copy of a symmetry row state (useful if the user cancel and we must backup and restore the form state)
+	 * @param  {[type]} sr [description]
+	 * @return {[type]}    [description]
+	 */
+	function deepCopySymmetryRow(sr) {
+		var res = JSON.parse(JSON.stringify(sr));
+		for(var nb in sr) {
+			for(var key in sr[nb].elements) {
+				res[nb].elements[key] = sr[nb].elements[key];
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * Get the direction (argument) along which to perform the symmetry,
+	 * for the nb th symmetry row.
+	 * Useful for 2-arg tables
+	 * @param  {[type]} nb [description]
+	 * @return {[type]}    [description]
+	 */
+	function getDirection(nb) {
+		return $(getNbElements(nb).direction).val();
+	}
+	/**
+	 * Get the type (mirror, periodic) of the nb th symmetry
+	 * @param  {[type]} nb [description]
+	 * @return {String}    [description]
+	 */
+	function getType(nb) {
+		return $(getNbElements(nb).type).val().split('-')[0].trim();
+	}
+	/**
+	 * Get the sign of the nb th symmetry (symmetric or antisymmetric // + or -)
+	 * @param  {[type]} nb [description]
+	 * @return {Number}    [description]
+	 */
+	function getSign(nb) {
+		var rightPart = $(getNbElements(nb).type).val().split('-')[1].trim();
+		if(rightPart === "symmetric" || rightPart === "positive")
+			return 1;
+		else
+			return -1;
+	}
+	/**
+	 * Get the source arguments (values) for the symmetry of index nb
+	 * @param  {[type]} nb [description]
+	 * @return {[type]}    [description]
+	 */
+	function getSource(nb) {
+		if(suggest_snf[nb] === undefined || suggest_snf[nb].source_start.smartNumber === undefined || suggest_snf[nb].source_end.smartNumber === undefined)
+			return false;
+		var nums = [
+			suggest_snf[nb].source_start.smartNumber.computeDecimal(),
+			suggest_snf[nb].source_end.smartNumber.computeDecimal()
+		]
+		var left = myParseFloat(nums[0]);
+		var right = myParseFloat(nums[1]);
+		if(isNaN(left) || isNaN(right))
+			return false;
+		return [Number(left), Number(right)];
+	}
+	/**
+	 * Get the target arguments (values) for the symmetry of index nb
+	 * @param  {[type]} nb [description]
+	 * @return {[type]}    [description]
+	 */
+	function getTarget(nb) {
+		if(suggest_snf[nb] === undefined || suggest_snf[nb].target_start.smartNumber === undefined || suggest_snf[nb].target_end.smartNumber === undefined)
+			return false;
+		var nums = [
+			suggest_snf[nb].target_start.smartNumber.computeDecimal(),
+			suggest_snf[nb].target_end.smartNumber.computeDecimal()
+		]
+		var left = myParseFloat(nums[0]);
+		var right = myParseFloat(nums[1]);
+		if(isNaN(left) || isNaN(right))
+			return false;
+		return [Number(left), Number(right)];
+	}
+	/**
+	 * Get the parameter of the symmetry of index nb
+	 * @param  {[type]} nb [description]
+	 * @return {[type]}    [description]
+	 */
+	function getSymmetryParameter(nb) {
+		var text = suggest_snf[nb]['symmetry_parameter'].smartNumber.computeDecimal();
+		var num = myParseFloat(text);
+		if(isNaN(num))
+			return false;
+		return Number(num);
+	}
+	/**
+	 * Get the symmetry displacement parameter (the 2p in Benno's code) for the symmetry of index nb
+	 * @param  {[type]} nb [description]
+	 * @return {[type]}    [description]
+	 */
+	function getSymmetryDisplacement(nb) {
+		var text = $(getNbElements(nb).displacement).val();
+		var num = myParseFloat(text);
+		if(isNaN(num))
+			return false;
+		return Number(num);
+	}
+	/**
+	 * DUPLICATE OF  getDirection
+	 * @param  {[type]} nb [description]
+	 * @return {[type]}    [description]
+	 */
+	function getSymmetryDirection(nb) {
+		return $('[data-id="id_' + nb + '_direction"]').val();
+	}
+	/**
+	 * Compute a proposition for target arguments in symmetry of index nb, based on the symmetry type, parameters and source arguments.
+	 * @param  {[type]} nb    [description]
+	 * @param  {[type]} range  Range of source values
+	 * @return {[type]}       [description]
+	 */
+	function getSymmetryTargetProposal(nb, range) {
+		var symmetryParameters = nbToSymmetry(nb);
+		if(!symmetryParameters)
+			return false;
+		var symmetry = AstronomicalSymmetry(symmetryParameters[0][0], symmetryParameters[0][1], symmetryParameters[0][2], symmetryParameters[0][3]);
+		var target0 = symmetry.imputeNewLink(range[0])[1][0];
+		var target1 = symmetry.imputeNewLink(range[1])[1][0];
+		if(target1 < target0) {
+			var targetmax = target0;
+			target0 = target1;
+			target1 = targetmax;
+		}
+		var arg = getSymmetryDirection(nb);
+		var min_arg = table.zones[0].zones[arg].zones[0].getSmartNumber().computeDecimal();
+		var max_arg = table.zones[0].zones[arg].zones[table.zones[0].zones[arg].zones.length - 1].getSmartNumber().computeDecimal();
+		if(target0 < min_arg)
+			target0 = min_arg;
+		if(target1 > max_arg)
+			target1 = max_arg;
+		return [target0, target1];
+	}
+
+	/* ======================================================================
+	 * This block of functions concerns solely the suggestion symmetries (i;e. the NON template ones).
+	 * It could be factorized with the code in addSymmetry (concerning template symmetries)
+	 * ======================================================================
+	 */
+
+	/**
+	 * Action to perform when the source argument values for the suggestion symmetry changes
+	 * @return {[type]} [description]
+	 */
+	function onSuggestedSourceChange() {
+		var nb = 'suggest';
+		var range = getSource(nb);
+		var index = Number(getDirection(nb)) - 1;
+		if(!range) {
+			return;
+		}
+		var arg = getSymmetryDirection(nb);
+		var min_arg = table.zones[0].zones[arg].zones[0].getSmartNumber().computeDecimal();
+		var max_arg = table.zones[0].zones[arg].zones[table.zones[0].zones[arg].zones.length - 1].getSmartNumber().computeDecimal();
+		if(range[0] < min_arg) {
+			range[0] = min_arg;
+			suggest_snf[nb]['source_start'].fill(new SmartNumber(min_arg));
+		}
+		if(range[1] > max_arg) {
+			range[1] = max_arg;
+			suggest_snf[nb]['source_end'].fill(new SmartNumber(max_arg));
+		}
+		if(getType(nb) === "mirror") {
+			suggest_snf[nb]['symmetry_parameter'].fill(new SmartNumber(range[1]));
+		}
+		else {
+			var typical_delta = (range[1] - range[0]) / (table.zones[0].findArgumentRange(range[0], range[1], index).length - 1);
+			if(isNaN(typical_delta))
+				typical_delta = 1;
+			suggest_snf[nb]['symmetry_parameter'].fill(new SmartNumber(range[1] - range[0] + typical_delta));
+		}
+		var targets = getSymmetryTargetProposal(nb, range);
+		if(targets) {
+			suggest_snf[nb]['target_start'].fill(new SmartNumber(targets[0]));
+			suggest_snf[nb]['target_end'].fill(new SmartNumber(targets[1]));
+		}
+	}
+	onSuggestedSourceChange();
+
+	/**
+	 * Action to perform when the type of the suggestion symmetry changes
+	 * @return {[type]} [description]
+	 */
+	function onSuggestedTypeChange() {
+		var nb = 'suggest';
+		if(getType(nb) === "mirror") {
+			$(getNbElements(nb).label_parameter).text('Sym. point');
+		}
+		else {
+			$(getNbElements(nb).label_parameter).text('Period');
+		}
+		onSuggestedSourceChange();
+	}
+	onSuggestedTypeChange();
+
+	$(getNbElements('suggest').type).change(function(e) {
+		onSuggestedTypeChange();
+	});
+
+	$(getNbElements('suggest').direction).change(function(e) {
+		onSuggestedSourceChange();
+	});
+
+	// Initialization of the SmartNumberFields for the suggestion symmetries
+	suggest_snf['suggest'] = {};
+	suggest_snf['suggest']['source_start'] = new SmartNumberField($('[data-id="id_suggest_source_start"]'), undefined, undefined, "decimal");
+	suggest_snf['suggest']['source_end'] = new SmartNumberField($('[data-id="id_suggest_source_end"]'), undefined, undefined, "decimal");
+	suggest_snf['suggest']['target_start'] = new SmartNumberField($('[data-id="id_suggest_target_start"]'), undefined, undefined, "decimal");
+	suggest_snf['suggest']['target_end'] = new SmartNumberField($('[data-id="id_suggest_target_end"]'), undefined, undefined, "decimal");
+	suggest_snf['suggest']['symmetry_parameter'] = new SmartNumberField($('[data-id="id_suggest_symmetry_parameter"]'), undefined, undefined, "decimal");
+	
+	/*
+	 * =====================================================================
+	 * =====================================================================
+	 */
+	function updateSymmetryBase(nb) {
+		var index = Number(getDirection(nb)) - 1;
+		for(var key in suggest_snf[nb]) {
+			suggest_snf[nb][key].changeBase(nameToBase[table.selectedMetaZone.spec.args[index].type]);
+		}
+	}
+
+	/**
+	 * Action te be performed when a template symmetry row is added
+	 * @param {number} nb [description]
+	 */
+	function addSymmetry(nb) {
+		if (nb === 0)
+			return;
+
+		if(current_arg_n === 1)
+			$('[data-id="id_' + nb + '_direction"]').hide();
+		else
+			$('[data-id="id_' + nb + '_direction"]').show();
+
+		symmetryRow[nb] = {
+			elements: getNbElements(nb),
+			element_values: getNbElementValues(nb)
+		};
+
+		/**
+		 * Action to perform when the source argument values of the nb th symmetry is chagned
+		 * @param  {[type]} nb [description]
+		 * @return {[type]}    [description]
+		 */
+		function onSourceChange(nb) {
+			var range = getSource(nb);
+			var index = Number(getDirection(nb)) - 1;
+			if(!range) {
+				// TODO -> put box in red
+				symmetryRow[nb].source = undefined;
+				return;
+			}
+			var arg = getSymmetryDirection(nb);
+			var min_arg = table.zones[0].zones[arg].zones[0].getSmartNumber().computeDecimal();
+			var max_arg = table.zones[0].zones[arg].zones[table.zones[0].zones[arg].zones.length - 1].getSmartNumber().computeDecimal();
+			if(range[0] < min_arg) {
+				range[0] = min_arg;
+				suggest_snf[nb]['source_start'].fill(new SmartNumber(min_arg));
+			}
+			if(range[1] > max_arg) {
+				range[1] = max_arg;
+				suggest_snf[nb]['source_end'].fill(new SmartNumber(max_arg));
+			}
+			symmetryRow[nb].source = range;
+			// TODO -> remove red
+
+			if(getType(nb) === "mirror") {
+				suggest_snf[nb]['symmetry_parameter'].fill(new SmartNumber(range[1]));
+			}
+			else {
+				var typical_delta = (range[1] - range[0]) / (table.zones[0].findArgumentRange(range[0], range[1], index).length - 1);
+				if(isNaN(typical_delta))
+					typical_delta = 1;
+				suggest_snf[nb]['symmetry_parameter'].fill(new SmartNumber(range[1] - range[0] + typical_delta));
+
+			}
+			// TODO -> propose coherent target value
+			var targets = getSymmetryTargetProposal(nb, range);
+			if(targets) {
+				suggest_snf[nb]['target_start'].fill(new SmartNumber(targets[0]));
+				suggest_snf[nb]['target_end'].fill(new SmartNumber(targets[1]));
+			}
+		}
+		onSourceChange(nb);
+
+		/** 
+		 * Action to perform when the type of the nb th template symmetry is changed
+		 * @param  {[type]} nb [description]
+		 * @return {[type]}    [description]
+		 */
+		function onTypeChange(nb) {
+			symmetryRow[nb].type = getType(nb);
+			symmetryRow[nb].sign = getSign(nb);
+			if(getType(nb) === "mirror") {
+				$(symmetryRow[nb].elements.label_parameter).text('Sym. point');
+			}
+			else {
+				$(symmetryRow[nb].elements.label_parameter).text('Period');
+			}
+			onSourceChange(nb);
+		}
+		onTypeChange(nb);
+
+		$(symmetryRow[nb].elements.type).change(function(e) {
+			onTypeChange(nb);
+		});
+
+		var index = Number(getDirection(nb)) - 1;
+
+		/**
+		 * Definition and bindings of the SmartNumberFields corresponding to the row we are creating
+		 */
+		suggest_snf[nb] = {}
+		suggest_snf[nb]["source_start"] = new SmartNumberField($('[data-id="id_' + nb + '_source_start"]'), undefined, undefined, table.selectedMetaZone.spec.args[index].type);
+		suggest_snf[nb]["source_end"] = new SmartNumberField($('[data-id="id_' + nb + '_source_end"]'), undefined, undefined, table.selectedMetaZone.spec.args[index].type);
+		suggest_snf[nb]["target_start"] = new SmartNumberField($('[data-id="id_' + nb + '_target_start"]'), undefined, undefined, table.selectedMetaZone.spec.args[index].type);
+		suggest_snf[nb]["target_end"] = new SmartNumberField($('[data-id="id_' + nb + '_target_end"]'), undefined, undefined, table.selectedMetaZone.spec.args[index].type);
+		suggest_snf[nb]['symmetry_parameter'] = new SmartNumberField($('[data-id="id_' + nb + '_symmetry_parameter"]'), undefined, undefined, table.selectedMetaZone.spec.args[index].type);
+
+		suggest_snf[nb]['source_start'].onUpdate(function() {
+			onSourceChange(nb);
+		});
+		suggest_snf[nb]['source_end'].onUpdate(function() {
+			onSourceChange(nb);
+		});
+
+		$(symmetryRow[nb].elements.direction).change(function(e) {
+			onSourceChange(nb);
+		});
+
+		$('select[data-id="id_' + nb + '_direction"]').change(function(e) {
+			updateSymmetryBase(nb);
+		});
+		updateSymmetryBase(nb);
+	}
+	
+	/**
+	 * Function to be called when deleting a template symmetry row
+	 * @param  {[type]} dataId [description]
+	 * @return {[type]}        [description]
+	 */
+	function removeSymmetry(dataId) {
+		var nb = dataId.split('_')[1];
+		delete symmetryRow[nb];
+	}
+
+	/**
+	 * Initialize the czMore library, and bind the action when adding or delting a template symmetry row
+	 * @type {[type]}
+	 */
+	$("#cz-symmetry").czMore({
+		onAdd: addSymmetry,
+		onDelete: removeSymmetry
+	});
+
+	/**
+	 * Remove all rows from the template symmetry interface
+	 * @return {[type]} [description]
+	 */
+	function emptySymmetryForm() {
+		$('div.recordset').children('[class!="row"]').click();
+	}
+
+	/**
+	 * TODO precise the format
+	 * Fill the form with a list of parameters for symmetries
+	 * @param  {Array} tableSymmetries  List of symmetries
+	 * @return {undefined}
+	 */
+	function tableSymmetriesToForm(tableSymmetries) {
+		var rows = {};
+		for(var i=0; i<tableSymmetries.length; i++) {
+			var sign_str = "";
+			if(tableSymmetries[i].sign > 0 && tableSymmetries[i].type === "mirror")
+				sign_str = "symmetric";
+			else if(tableSymmetries[i].sign < 0 && tableSymmetries[i].type === "mirror")
+				sign_str = "antisymmetric";
+			else if(tableSymmetries[i].sign > 0 && tableSymmetries[i].type === "periodic")
+				sign_str = "positive";
+			if(tableSymmetries[i].sign < 0 && tableSymmetries[i].type === "periodic")
+				sign_str = "negative";
+			var source_str = String(tableSymmetries[i].source[0]) + '-' + tableSymmetries[i].source[1];
+			var target_str = "";
+			if(tableSymmetries[i].target) {
+				target_str = String(tableSymmetries[i].target[0]) + '-' + tableSymmetries[i].target[1];
+			}
+			rows[i] = {
+				element_values: {
+					displacement: tableSymmetries[i].displacement,
+					label_parameter: tableSymmetries[i].label_parameter,
+					parameter: tableSymmetries[i].parameter,
+					source: source_str,
+					target: target_str,
+					type: tableSymmetries[i].type + '-' + sign_str,
+					direction: tableSymmetries[i].direction
+				}
+			}
+		}
+		symmetryToForm(rows);
+		currentSymmetryRow = formToSymmetry();
+	}
+
+	/**
+	 * Fill the symmetry form with symmetry rows
+	 * @param  {Object} symmetry  Dictionary of symmetry rows (same format as currentSymmetryRow)
+	 * @return {undefined}
+	 */
+	function symmetryToForm(symmetry) {
+		emptySymmetryForm();
+		for(var nb in symmetry) {
+    		$('#btnPlus').click();
+    	}
+		for(var nb in symmetry) {
+			symmetry[nb].elements = getNbElements(nb);
+		}
+		var counter = 0;
+    	for(var nb in symmetry) {
+    		var index = Number(symmetry[nb].element_values.direction) - 1;
+    		counter += 1;
+    		var currentBase = nameToBase[table.selectedMetaZone.spec.args[index].type];
+    		for(var key in symmetry[nb].element_values) {
+    			if(key === "general") {
+    				continue;
+    			}
+    			else if(key === "source") {
+    				sources = symmetry[nb].element_values[key].split('-');
+    				if(!isNaN(Number(sources[0]))) {
+    					suggest_snf[counter]["source_start"].fill(new SmartNumber(Number(sources[0])));
+    					suggest_snf[counter]["source_end"].fill(new SmartNumber(Number(sources[1])));
+    				}
+    				else {
+    					suggest_snf[counter]["source_start"].fill(new SmartNumber(NView.fromString(sources[0], currentBase)));
+    					suggest_snf[counter]["source_end"].fill(new SmartNumber(NView.fromString(sources[1], currentBase)));
+    				}
+    			}
+    			else if(key === "target") {
+    				targets = symmetry[nb].element_values[key].split('-');
+    				if(!isNaN(Number(targets[0]))) {
+    					suggest_snf[counter]["target_start"].fill(new SmartNumber(Number(targets[0])));
+	    				suggest_snf[counter]["target_end"].fill(new SmartNumber(Number(targets[1])));
+    				}
+    				else {
+	    				suggest_snf[counter]["target_start"].fill(new SmartNumber(NView.fromString(targets[0], currentBase)));
+	    				suggest_snf[counter]["target_end"].fill(new SmartNumber(NView.fromString(targets[1], currentBase)));
+    				}
+    			}
+    			else if(key === "parameter") {
+    				var value = symmetry[nb].element_values[key];
+    				if(!isNaN(Number(value))) {
+    					suggest_snf[counter]["symmetry_parameter"].fill(new SmartNumber(Number(value)));
+    				}
+    				else {
+    					suggest_snf[counter]["symmetry_parameter"].fill(new SmartNumber(NView.fromString(value, nameToBase[table.selectedMetaZone.spec.args[index].type])));
+    				}
+    			}
+    			else if(key === "source_start" || key === "source_end" || key === "target_start" || key === "target_end") {
+    				suggest_snf[counter][key].fill(new SmartNumber(NView.fromString(symmetry[nb].element_values[key], nameToBase[table.selectedMetaZone.spec.args[index].type])));
+    			}
+    			else {
+    				$(symmetryRow[counter].elements[key]).val(symmetry[nb].element_values[key]).change();
+    			}
+    		}
+    	}
+	}
+
+	/**
+	 * Return the parameters corresponding to the nbth symmetry entry
+	 * @param  {Number}  nb      
+	 * @param  {Boolean} verbose 
+	 * @return {Array}           parameters for building a Symmetry object
+	 */
+	function nbToSymmetry(nb, verbose) {
+		var index = Number(getDirection(nb)) - 1;
+		var source = getSource(nb);
+		if(!source) {
+			if(verbose) {
+				alert('Source arguments are incorrectly defined');
+			}
+			return false;
+		}
+		if(table.zones[0].findArgument(source[0], index) == undefined || table.zones[0].findArgument(source[1], index) == undefined) {
+			if(verbose) {
+				alert('Specified source arguments were not found in table');
+			}
+			return false;
+		}
+		var parameter = getSymmetryParameter(nb)
+		if(!parameter && parameter !== 0) {
+			if(verbose) {
+				alert('Symetry parameter is incorrectly defined');
+			}
+			return false;
+		}
+		var displacement = getSymmetryDisplacement(nb);
+		if(!displacement && displacement !== 0) {
+			if(verbose) {
+				alert('Symetry displacement is incorrectly defined');
+			}
+			return false;
+		}
+		var target = getTarget(nb);
+		if(!target && (getNbElementValues(nb).target_start !== "" && getNbElementValues(nb).target_end !== "")) {
+			if(verbose) {
+				alert('Target is incorrectly defined');
+			}
+			return false;
+		}
+		if((table.zones[0].findArgument(target[0], index) == undefined || table.zones[0].findArgument(target[1], index) == undefined) && (getNbElementValues(nb).target_start !== "" && getNbElementValues(nb).target_end !== "")) {
+			if(verbose) {
+				alert('Specified target arguments were not found in table');
+			}
+			return false;
+		}
+		var direction = Number(getDirection(nb));
+		//var symmetry = AstronomicalSymmetry(getType(nb), parameter, getSign(nb), displacement);
+		return [[getType(nb), parameter, getSign(nb), displacement], source, target, direction];
+	}
+
+	/**
+	 * Return the list of symmetry rows in the symmetry form
+	 * @return {Object} Dictionary of symmetry rows
+	 */
+	function formToSymmetry() {
+		for(var nb in symmetryRow) {
+			symmetryRow[nb].element_values = getNbElementValues(nb);
+		}
+		return deepCopySymmetryRow(symmetryRow);
+	}
+
+	// when closing the template symmetry form, restore the current state
+	$('#dialog-hard-symmetry').on('hidden.bs.modal', function () {
+		symmetryToForm(currentSymmetryRow);
+	});
+
+	$('#symmetry-done').click(function() {
+		potentialCurrentSymmetryRow = formToSymmetry();
+		// apply symmetries
+		var symmetries = {}
+		for(var nb in potentialCurrentSymmetryRow) {
+			var symmetry = nbToSymmetry(nb, true);
+			if(!symmetry) {
+				return ;
+			}
+			symmetries[nb] = symmetry;
+		}
+		oldSymmetryRow = deepCopySymmetryRow(currentSymmetryRow);
+		currentSymmetryRow = potentialCurrentSymmetryRow;
+		hots[0].zones[0].clearAllSymmetries();
+		for(var nb in currentSymmetryRow) {
+			table.selectedMetaZone.addSymmetry(symmetries[nb][0][0], symmetries[nb][0][1], symmetries[nb][0][2], symmetries[nb][0][3], symmetries[nb][1], symmetries[nb][2], symmetries[nb][3],true);
+		}
+		table.render();
+		$('#dialog-hard-symmetry').modal('hide');
+	});
+
+	$('#dialog-hard-symmetry').on('shown.bs.modal', function () {
+	});
+	
+	// Fill the table with the specified symmetry
+	// This is NOT a template symmetry
+	$('#fill-symmetry-done').click(function() {
+		// retrieve the symmetry parameters
+		var symmetryParameters = nbToSymmetry('suggest');
+		// Create an astronomical symmetry (as defined in web/js/DISHAS_table/model.js) based on the values input by the user
+		var symmetry = AstronomicalSymmetry(symmetryParameters[0][0], symmetryParameters[0][1], symmetryParameters[0][2], symmetryParameters[0][3]);
+		// Fill the table an render it
+		activateSpinning();
+		setTimeout(function() {
+			table.zones[0].applySymmetry(symmetry, symmetryParameters[1], symmetryParameters[2], symmetryParameters[3] - 1);
+			table.render();
+			deactivateSpinning();
+		}, 50);
+	});
+		
+
+</script>

@@ -1,0 +1,145 @@
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% block title %}
+
+	Select table type -
+	{{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+<div class="row">
+	
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<div class="heading">
+			<h1 class="page-title">DISHAS Table Interface (DTI)</h1>
+			<div class="horizontal-bar lightgrey"></div>
+		</div>	
+	</div>
+	<div class="col-md-2 col-md-offset-2">
+		<img src="/DISHAS_icons/firefox-2.svg" height="160">
+	</div>
+</div>
+
+
+<div class="row">
+	<div class='col-md-offset-2 col-md-12'>
+		<h2>Would you rather:</h2>
+		<button type="button" class="btn btn-primary btn-lg"
+				id="chose-tableType">Start from scratch</button>
+		or
+		<button type="button" class="btn btn-primary btn-lg"
+				id="chose-tableContent">Open table(s) from DISHAS</button>
+	</div>
+	
+</div>
+
+
+{{form_start(form, {'attr': {'class': 'form'}})}}
+<div id="select-tableType" style="display: none">
+	<div class="row" style="margin-top: 20px;">
+		<div class="col-md-offset-2 col-md-8 description-block">
+			<div class="row">
+				<div class="col-md-7">
+			{{ form_row(form.objectName) }}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-7">
+				{{ form_row(form.tableTypes) }}
+				</div>
+			</div>
+			{% include 'TAMASAstroBundle:SelectObject:selectCalendar.html.twig' with {'includeType': 'html'} %}
+		</div>
+	</div>
+</div>
+
+
+<div id="select-tableContent" style="display: none">
+	{% set spec = {'editDelete': false, 'adminInfo': false} %}
+	{% set action = "list" %}
+	<br/>
+	<div class="alert alert-info" role="alert"><p> <span class='glyphicon glyphicon-info-sign'></span>
+	Click on <b>one</b> or <b>multiple tables</b> to compare (ctr+click), then scroll down and click on "select" to access DTI. </p> </div>
+	{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : spec, 'include': 'html'} %}
+	{{ form_row(form.tableContents) }}
+</div>
+
+<br/>
+<div id="select" style="display: none; text-align:center;" class="clear-submit" >
+	{{ form_rest(form) }}
+</div>
+
+		{{ form_end(form) }}
+{% endblock %}
+
+
+{% block javascripts %}
+	{{parent()}}
+	{% set includeType = 'js' %}
+	{% include "TAMASAstroBundle:SelectObject:selectTableType.html.twig"%}
+	{% set spec = {'editDelete': false, 'adminInfo': false} %}
+
+	<script>
+		{% set spec = {'editDelete': false, 'adminInfo': false} %}
+
+		{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec':spec, 'include':'js' } %}
+	</script>
+
+	{% include 'TAMASAstroBundle:SelectObject:selectCalendar.html.twig' with {'includeType': 'js'} %}
+
+	<script>
+		var thatDataTable = $('#tableContent').DataTable();
+
+		//management of the selection - from scratch or open document
+		$("#chose-tableType").click(function(){
+			$("#select").delay(400).show();
+			$("#select-tableContent").hide();
+			$("#select-tableType").show({
+				duration: 400,
+			})
+			thatDataTable.rows().deselect();
+			reloadDataTable(thatDataTable);
+		})
+
+		$("#chose-tableContent").click(function(){
+			$("#select").delay(400).show();
+			$("#select-tableType").hide();
+			$("#{{form.vars.id}}_tableTypes").val(null);
+			$("#select-tableContent").show({
+				duration: 400,
+				complete: function(){$.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust().draw();}
+			});
+		})
+
+		//Management of the dataTable filtering
+		var tableContentId = [];
+
+		function selectTableContent(tableContent){
+			tableContentId = [];
+			tableContent.rows({selected:true}).data().each(function(e){
+				tableContentId.push(e.id)});
+		}
+
+		function filterByTableType(tableType){
+			thatDataTable
+					.columns(1)
+					.search( tableType)
+					.draw();
+		}
+
+		thatDataTable.on( 'select', function ( e, dt, type, indexes ) {
+			if ( type === 'row' ) {
+				var tableType = thatDataTable.rows( indexes ).data().pluck( 'tableType' );
+				filterByTableType(tableType[0]);
+			}
+			selectTableContent(dt);
+		} );
+
+		//Management of the form filling
+		$("form").submit(function(){
+			$("#{{form.vars.id}}_tableContents").val(JSON.stringify(tableContentId));
+		});
+	</script>
+{% endblock %}

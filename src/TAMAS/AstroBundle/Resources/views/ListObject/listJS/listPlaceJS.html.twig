@@ -1,0 +1,93 @@
+
+<script>
+    function generateLink(route, title){
+        return "<a ref='"+id+"'>"+title+"</a>";
+    }
+    function generateButton(routeEdit, routeDelete, object){
+        var user = object.createdBy.id;
+        var userName = object.createdBy.username;
+        return '<a href="' + routeEdit +
+                '" class="btn btn-warning btn-sm edit-reference" ' +
+                'user="' + user + '" userName="' + userName + '">' +
+                '<span class="glyphicon glyphicon-edit"></span> Edit</a>' +
+                '<a href="'+ routeDelete +
+                '" class="btn btn-danger btn-sm delete-reference" ' +
+                'user="'+ user +' " userName="' + userName + '">' +
+                '<span class="glyphicon glyphicon-remove-circle"></span>'
+    }
+
+    var places = JSON.parse('{{places|escape("js")}}'); //Get data from twig varable
+    //Filling the data of the table
+    var data = [];
+    for (var i in places) {
+        var thatPlace = places[i];
+        var id = thatPlace.id;
+        var name = thatPlace.placeName;
+        var latitude = thatPlace.placeLat;
+        var longitude = thatPlace.placeLong;
+        var created = thatPlace.created;
+        var updated = thatPlace.updated;
+        var button = '';
+        var routeEdit = "{{path('tamas_astro_adminEditPlace', {'id':"+ thatPlace.id+"})}}";
+        var routeDelete = "{{path('tamas_astro_adminDeleteObject', {'entity': 'Place', 'id': "+thatPlace.id+"})}}";
+        var button = generateButton(routeEdit, routeDelete, thatPlace)
+    }
+
+    //fill the data
+    data.push({
+        "id": '#ms-'+thatMs.id,
+        "name":name,
+        "latitude": latitude,
+        "longitude": longitude,
+        "created": created,
+        "updated": updated,
+        "button": button});
+    }
+
+    //specification of the datatable
+    if($.fn.dataTable.isDataTable( '#ms-table' ) ){
+        console.log("la table est déjà initialisée")}
+    table = $('.table-browser').DataTable({
+        data: data,
+        columns: [
+            {data: "id"},
+            {data: "name"},
+            {data: "latitude"},
+            {data: "longitude"},
+            {data: "created"},
+            {data: "updated"},
+            {data: "button"}
+        ],
+        deferRender: true,
+        scrollY: 400,
+        scrollCollapse: true,
+//    scroller: true, //scroller only works if all the row have the same height
+        select: {
+            style: "os"},
+        columnDefs: [
+            {targets: [0],
+                visible: false
+            }],
+        dom: 'lBfrtip', //This code indicates that the button B goes after the "length" element (pick up the # of line per vue)
+        buttons: {
+            buttons:[ //the first button is custom, and allow reloading the table after a search
+                {text:'Reload',
+                    action: function (e, dt, node, config){
+                        dt.search("").columns().search('').draw()},
+                    class: 'reload'},
+                'colvis'
+            ],
+        }
+
+    });
+
+
+    //Generate an additional group of button for the export and situate it at the export-ms-table div.
+    new $.fn.dataTable.Buttons( msTable, {
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf'
+        ]
+    } );
+    msTable.buttons( 1, null ).container().appendTo("#export-table");
+
+</script>

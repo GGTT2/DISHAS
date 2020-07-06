@@ -1,0 +1,235 @@
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+	{{ action|capitalize }} {{ object_info.properties.mathematicalParameter.objectUserInterfaceName }} — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+	<div style="text-align: right; color: red">
+		<h4>
+			<a href="{{ asset('pdf/DISHAS_admin_shift_displacement.pdf') }}" target="_blank">
+				<span class="glyphicon glyphicon-info-sign"></span> Get documentation
+			</a>
+		</h4>
+	</div>
+	{% form_theme form 'bootstrap_3_TAMAS.html.twig' 'jquery.collection.html.twig' %}
+	{{ form_start(form) }}
+	<div class="row">
+		<div class="col-md-10">
+			<div class="well">
+				<div class="row">
+					<div class="col-md-2">
+						{{ form_row(form.argNumber) }}
+					</div>
+
+				</div>
+				<div class="row">
+					<div class="col-md-10">
+						{{ form_row(form.typeOfParameter) }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-2">
+						<h4 class="align-form">Argument 1</h4>
+					</div>
+					<div class="col-md-8">
+						<div class="row shift">
+							<div class="col-md-12">
+								{{ form_row(form.argument1Shift) }}
+							</div>
+						</div>
+						<div class="row displacement">
+							<div class="col-md-7">
+								{{ form_row(form.argument1DisplacementSmartNumber) }}
+							</div>
+							<div class="col-md-5">
+								{{ form_row(form.typeOfNumberArgument1) }}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div id="argument2" class="row">
+					<hr>
+					<div class="col-md-2">
+						<h4 class="align-form">Argument 2</h4>
+					</div>
+					<div class="col-md-8">
+						<div class="row shift">
+							<div class="col-md-12">
+								{{ form_row(form.argument2Shift) }}
+							</div>
+						</div>
+						<div class="row displacement">
+							<div class="col-md-7">
+								{{ form_row(form.argument2DisplacementSmartNumber) }}
+							</div>
+							<div class="col-md-5">
+								{{ form_row(form.typeOfNumberArgument2) }}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<hr>
+					<div class="col-md-2">
+						<h4 class="align-form">Entry</h4>
+					</div>
+					<div class="col-md-8">
+						<div class="row shift">
+							<div class="col-md-12">
+								{{ form_row(form.entryShift) }}
+							</div>
+						</div>
+						<div class="row" id="shift-2-args">
+							<div class="col-md-12">
+								<div class="alert alert-warning" role="alert">
+									<b>Warning</b>: we apply first Entryshift1 to the whole table entries and only after  Entryshift2 to the result obtained with Entryshift1, please take this into account when specifying the value of Entry Shift1 and Entry Shift2
+								</div>
+								{{ form_row(form.entryShift2) }}
+							</div>
+						</div>
+						<div class="row displacement">
+							<div class="col-md-7">
+								{{ form_row(form.entryDisplacementSmartNumber) }}
+							</div>
+							<div class="col-md-5">
+								{{ form_row(form.typeOfNumberEntry) }}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div hidden="hidden">
+					{{ form_row(form.argument1DisplacementOriginalBase) }}
+					{{ form_row(form.argument2DisplacementOriginalBase) }}
+					{{ form_row(form.entryDisplacementOriginalBase) }}
+					{{ form_row(form.argument1DisplacementFloat) }}
+					{{ form_row(form.argument2DisplacementFloat) }}
+					{{ form_row(form.entryDisplacementFloat) }}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-2">
+			{%include 'TAMASAstroBundle:AddObject:adminPannel.html.twig'%}
+		</div>
+	</div>
+{% endblock%}
+
+{% block javascripts %}
+	{{parent() }}
+	{% include 'includes/typeOfNumberInitialization.html.twig' %}
+	<script type="text/javascript"
+			src="{{asset('js/DISHAS_table/conversion.js') }}"></script>
+	<script type="text/javascript"
+			src="{{asset('js/DISHAS_table/smartNumberFillField.js') }}"></script>
+	<script type="text/javascript" src="{{asset('js/addDisabled.js') }}"></script>
+
+	<script>
+
+		$(document).ready(function () {
+			var narg = $("#tamas_astrobundle_mathematicalparameter_argNumber").val();
+			var parameterType=$('input[type=radio]:checked').val();
+			displayFields();
+
+			$('input[type=radio]').change(function () {
+				parameterType =$('input[type=radio]:checked').val();
+				displayFields();
+			})
+			$('#{{ form.vars.id}}_argNumber').change(function(){
+				narg = $(this).val();
+				displayFields();
+			})
+
+			function displayFields(){//vérifier que les SmartNumberFields sont bien vidés
+				switch (parameterType) {
+					case '0' :
+						removeHidden(".shift");
+						addHidden(".displacement");
+						$('.displacement-value').val('');
+						break;
+					case '1':
+						removeHidden(".displacement");
+						addHidden(".shift");
+						$(".shift-value").val('');
+						break;
+					case '2':
+						removeHidden(".displacement");
+						removeHidden(".shift");
+						break;
+
+				}
+				switch(narg){
+					case '1':
+						addHidden('#argument2');
+						$('.arg-2').val('');
+						break;
+					case '2':
+						removeHidden('#argument2');
+						break;
+				}
+				//specificCase for the field that needs to be 2args AND Shift.
+				if((parameterType == 0 ||parameterType == 2) && narg == 2){
+					removeHidden($("#shift-2-args"));
+					$('#shift-2-args').val('');
+				}else{
+					addHidden($("#shift-2-args"))};
+
+			}
+
+
+
+
+			smartNumberFields = {};
+			smartNumberFields['argument1Displacement'] = new SmartNumberField('{{ form.argument1DisplacementSmartNumber.vars.id }}');
+			smartNumberFields['argument2Displacement'] = new SmartNumberField('{{ form.argument2DisplacementSmartNumber.vars.id }}');
+			smartNumberFields['entryDisplacement'] = new SmartNumberField('{{ form.entryDisplacementSmartNumber.vars.id }}');
+
+			smartNumberFields['argument1Displacement'].bindSelect('{{ form.typeOfNumberArgument1.vars.id }}');
+			smartNumberFields['argument2Displacement'].bindSelect('{{ form.typeOfNumberArgument2.vars.id }}');
+			smartNumberFields['entryDisplacement'].bindSelect('{{ form.typeOfNumberEntry.vars.id }}');
+
+			smartNumberFields['argument1Displacement'].bindTarget('{{ form.argument1DisplacementFloat.vars.id }}', 'float');
+			smartNumberFields['argument1Displacement'].bindTarget('{{ form.argument1DisplacementOriginalBase.vars.id }}', undefined, true);
+
+			smartNumberFields['argument2Displacement'].bindTarget('{{ form.argument2DisplacementFloat.vars.id }}', 'float');
+			smartNumberFields['argument2Displacement'].bindTarget('{{ form.argument2DisplacementOriginalBase.vars.id }}', undefined, true);
+
+			smartNumberFields['entryDisplacement'].bindTarget('{{ form.entryDisplacementFloat.vars.id }}', 'float');
+			smartNumberFields['entryDisplacement'].bindTarget('{{ form.entryDisplacementOriginalBase.vars.id }}', undefined, true);
+
+
+			$('form').submit(function (e) {
+
+				if(smartNumberFields['entryDisplacement'].error || smartNumberFields['argument1Displacement'].error || smartNumberFields['argument2Displacement'].error) {
+					e.preventDefault();
+					return;
+				}
+				smartNumberFields['entryDisplacement'].fillTargets();
+				smartNumberFields['argument1Displacement'].fillTargets();
+				smartNumberFields['argument2Displacement'].fillTargets();
+				if (parameterType === '0') {
+					$('#{{ form.entryDisplacementFloat.vars.id }}').val("");
+					$('#{{ form.entryDisplacementOriginalBase.vars.id }}').val("");
+					$('#{{ form.argument1DisplacementFloat.vars.id }}').val("");
+					$('#{{ form.argument1DisplacementOriginalBase.vars.id }}').val("");
+					$('#{{ form.argument2DisplacementFloat.vars.id }}').val("");
+					$('#{{ form.argument2DisplacementOriginalBase.vars.id }}').val("");
+				}
+
+			});
+			function jsUcfirst(string) {
+				return string.charAt(0).toUpperCase() + string.slice(1);
+			}
+			var url = new URL(window.location.href);
+			for(var key of ['entry', 'argument1', 'argument2']) {
+				if(url.searchParams.get(key + "Ton")) {
+					$('#{{ form.vars.id}}_typeOfNumber' + jsUcfirst(key)).val(url.searchParams.get("entryTon"));
+				}
+			}
+		});
+	</script>
+
+{% endblock %}

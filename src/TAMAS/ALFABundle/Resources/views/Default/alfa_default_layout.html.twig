@@ -1,0 +1,70 @@
+{% extends "TAMASALFABundle:Default:alfa_layout.html.twig" %}
+
+{% block main %}
+	<div class="row">
+		<div class="col-sm-2 sidenav">
+			<img class="img-fluid" src="{{ asset('logo/logo_ALFA-big.png') }}"
+				 alt="ALFA"/> <br/> <br/> <br/>
+			<div class="text-left">
+				<p>ALFA is an ERC funded project for 60 month</p>
+				<p>(Consolidator grant 2016 agreement n° 723085)</p>
+				<p>Matthieu Husson (PI) (CNRS, Observatoire de Paris)</p>
+			</div>
+			<table class="table">
+				<tr>
+					<td>
+						<img class="img-fluid" src="{{ asset('img/logo-erc.png') }}" alt="ERC logo"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<img class="img-fluid" src="{{ asset('img/logo-europeanCommission.png') }}" alt="European commission logo"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<img class="img-fluid" src="{{ asset('img/logo-cnrs.png') }}" alt="CNRS logo"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<img class="img-fluid" src="{{ asset('img/logo-psl.png') }}" alt="PSL logo"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<img class="img-fluid" src="{{ asset('img/logo-syrte.png') }}" alt="SyRTE logo"/>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="col-sm-8 col-md-8 text-left main-content">
+			{% include 'TAMASALFABundle:Default:about.html.twig' %}
+			<hr>
+			<div class="row">
+				<div class="col-md-12 col-sm-12">
+					{% block content %}
+					{% endblock %}
+				</div>
+			</div>
+
+		</div>
+		<div class="col-sm-2 col-md-2 sidenav">
+			<div class="well">
+				<a href="https://alfa.hypotheses.org/">
+					<span class="glyphicon glyphicon-globe"></span>
+					Hypothese research blog
+				</a>
+			</div>
+			<div class="well">
+				<a href="https://dishas.obspm.fr/">
+					<span class="glyphicon glyphicon-globe"></span>
+					DISHAS website
+				</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+{% endblock %}

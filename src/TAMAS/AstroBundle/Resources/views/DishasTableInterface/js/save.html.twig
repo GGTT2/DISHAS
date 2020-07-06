@@ -1,0 +1,268 @@
+<script>
+    /**
+     * This function copies the 4 JSON object representing the table (JSONDecimal, JSONOriginal, diffJSONOriginal, diffJSONDecimal) toward the corresponding hidden fields of the form
+     * @return {[type]} [description]
+     */
+    function tableToForm() {
+        updateJSON();
+
+        $('#{{form.vars.name}}_valueFloat').val(JSONDecimal);
+        $('#{{form.vars.name}}_valueFloat').change();
+        $('#{{form.vars.name}}_valueOriginal').val(JSONOriginal);
+        $('#{{form.vars.name}}_valueOriginal').change();
+
+        $('#{{form.vars.name}}_correctedValueFloat').val(JSONCorrectedDecimal);
+        $('#{{form.vars.name}}_correctedValueFloat').change();
+
+        $('#{{form.vars.name}}_differenceValueFloat').val(diffJSONDecimal);
+        $('#{{form.vars.name}}_differenceValueFloat').change();
+
+        $('#{{form.vars.name}}_differenceValueOriginal').val(diffJSONOriginal);
+        $('#{{form.vars.name}}_differenceValueOriginal').change();
+    }
+
+    function generateCorrectedValue(){
+        var JD = JSON.parse(JSONDecimal);
+        if(!isValidMathematicalParameters()){
+            alert("The mathematical parameters are not consistent with the table template.\nThe corrected values could not be calculated. \nPlease check the mathematical parameters before submitting the data.")
+            JSONCorrectedDecimal = JSON.parse(JSONDecimal); // reset to empty
+            return false;
+        }
+        for (var index in JD.entry) {
+            // Management of the entry shift
+            var nindex = index - table.mathematicalParameters.entryShift;
+            // Management of the entry displacement
+            if(Object.keys(JD.args).length === 1){ // if there is only 1 arg
+                JSONCorrectedDecimal.entry[index] = JD.entry[nindex >= 0 ? nindex : JD.entry.length + nindex] + table.mathematicalParameters.entryDisplacementFloat;
+            }
+            else {
+                entryShift2 = table.mathematicalParameters.entryShift2 || 0
+                //Check if entryShift2 exceed the size of the arguments.
+                for (var index2 in JD.entry[index]) {
+                    var nindex2 = index2 - entryShift2;
+                    JSONCorrectedDecimal.entry[index][index2] = JD.entry[nindex >= 0 ? nindex : JD.entry.length + nindex][nindex2 >= 0 ? nindex2 : JD.entry[index].length + nindex2] + table.mathematicalParameters.entryDisplacementFloat;
+                }
+            }
+        }
+        var arg_index = 0;
+        let argumentShift, argumentDisplacement;
+        for (var arg in JD.args) {
+            if (arg_index === 0) {
+                argumentShift = table.mathematicalParameters.argumentShift;
+                argumentDisplacement = table.mathematicalParameters.argumentDisplacementFloat;
+            }
+            else {
+                argumentShift = table.mathematicalParameters.argument2Shift || 0;
+                argumentDisplacement = table.mathematicalParameters.argument2DisplacementFloat || 0;
+            }
+            for (var index in JD.args[arg]) {
+                var nindex = index - argumentShift;
+                JSONCorrectedDecimal.args[arg][index] = JD.args[arg][nindex >= 0 ? nindex : JD.args[arg].length + nindex] + argumentDisplacement;
+            }
+            arg_index += 1;
+        }
+        JSONCorrectedDecimal = JSON.stringify(JSONCorrectedDecimal);
+        return true;
+
+    }
+
+    /**
+     * Update the 4 global variables containing the JSONs describing the table
+     */
+    function updateJSON() {
+        table.zones[0].mathematicalParameters = table.mathematicalParameters;
+
+        if (table === undefined) {
+            return;
+        }
+        // store a JSON representation of the table
+        JSONDecimal = table.zones[0].asDecimalJSON();
+        JSONOriginal = table.zones[0].asOriginalJSON();
+        if (table.zones[1] !== undefined) { //means that the table has a difference table.
+            diffJSONDecimal = table.zones[1].asDecimalJSON();
+            diffJSONOriginal = table.zones[1].asOriginalJSON();
+        } else {
+            diffJSONDecimal = '{}';
+            diffJSONOriginal = '{}';
+        }
+        // compute the corrected_value (JSON representation of the table ; correctedValue is a field of the tableContent in the database)
+        // the correction is based on the mathematical parameters : Float and displacement
+        JSONCorrectedDecimal = JSON.parse(JSONDecimal);
+        generateCorrectedValue();
+
+        // Uncheck the public attribute of the table
+        // (will be put to 1 later in case of a public submit)
+        $('#{{form.vars.name}}_public').val(0);
+    }
+
+    /**
+     * generate the POST data for the ajax save method
+     * @return {undefined} [description]
+     */
+    function generatePostData(isPublic=false){
+        $("#{{form.vars.id}}_comment").val(CKEDITOR.instances.{{form.vars.id}}_comment.getData());
+        $("#{{form.vars.id}}_public").val(+isPublic); //convert into 0 or 1, instead of "true" or "false" which can be read as as string and always == 1.
+        return $('form').serialize();
+    }
+    gen_post_data = generatePostData;
+
+    //By default, we don't auto save until a first manual "save" is performed
+    savedOnce = false;
+
+    /**
+     * Perform an ajax save of the table
+     * @param  {Boolean} verbose  if true, an alert message is displayed when save is completed, and a loading spiner is displayed while waiting
+     * @param  {Boolean} isPublic  whether the save is a draft or a submit (the submit event redirects to this ajaxSave function)
+     * @param  {Boolean} async   whether to perform the save synchronously (stop js until finished) or asynchronously
+     * @return {undefined}
+     */
+    function ajaxSave(verbose, isPublic=false, async=true) {
+        {% if (readonly is not defined or not readonly) and (public is not defined or not public) %}
+
+        ajaxSendForm('tamas_astro_adminAddTableContentAjax', verbose, isPublic, async, "save");
+        // After the first save, the table is saved every 60 seconds
+        if (!savedOnce) {
+            setInterval(ajaxSave, 60 * 1000);
+            savedOnce = true;
+        }
+        {% endif %}
+    }
+
+    /**
+     * This method generate a form with all the data from DTI and sends it in AJAX
+     * Depending on the context (save or download), the route of the controller is different
+     * Depending on the interface (public or private), the way the controller will behave is different.
+     *
+     * @param {string} route : the route to send the form (either to save or to download)
+     * @param {bool} verbose : whether we need verbose
+     * @param {bool} isPublic : whether this is a form submission to make the resource public on line
+     * @param {bool} async : whether we need asynchronous or synchronous call
+     * @param {string} context : ("save"|"download")
+     * @param {int} tableTypeId : the id of the the table type of the table content (compulsory if in the context of "public" interface)
+     */
+    function ajaxSendForm(route, verbose=null, isPublic=false, async=true, context, tableTypeId =null){
+        if (typeof smartNumberFields !== 'undefined') {
+            SmartNumberField.fillAllTargets(smartNumberFields) //Fill the hidden number fields if necessary. Used for localization parameters of mean motion
+        }
+        checkLocalizationParameters() //Removes the residual localization-parameters if required
+        if (table !== undefined)
+            tableToForm();
+        // generate the POST data
+        const postData = generatePostData(isPublic); //TEST : remplacer le post data par la fonction classique
+        if (verbose) {
+            activateSpinning();
+        }
+        // perform the ajax save
+        let errormsg;
+        if (context === "save"){
+            errormsg = "Could not save the table to the database. Check that the template is correct. If the error persists, please copy, paste, and save the table into a desktop application spreadsheet (such as Excel) and contact DISHAS team.";
+        } else if (context === "download"){ // THIS IS USED IN PARTICULAR IN THE PUBLIC INTERFACE
+            errormsg = "An error occurred. Check that the template is correct. If the error persists, please copy, paste, and save the table into a desktop application spreadsheet (such as Excel) and contact DISHAS team";
+        }
+
+        if (!idTable || public){
+            idTable = "0"; //This needs to be as stringified bool false to be passed in the URL
+        }
+        //According to the context (public or private DTI) we either send the id -> the database will generate the export
+        // or we send the table type (every table content need a table type, and we have this info in the public object)
+        let url;
+        if (tableTypeId){
+            url = Routing.generate(route, {'id': idTable, 'ttid':tableTypeId});
+        } else {
+            url = Routing.generate(route, {'id': idTable});
+        }
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: postData,
+            error: function () {
+                if (verbose) {
+                    deactivateSpinning();
+                }
+                alert(errormsg);
+            },
+            success: function (result) {
+                if (verbose) {
+                    deactivateSpinning();
+                }
+                try {
+                    if (typeof result === "string"){
+                        result = JSON.parse(result);
+                    }
+                    if (result) {
+                        let idResultTable = result;
+                        if (isPublic !== undefined && (isPublic === true)) {
+                            window.location.replace(Routing.generate('tamas_astro_adminHome'));
+                            return;
+                        }
+                        if (verbose !== undefined && verbose) {
+                            alert('Table saved as draft\nTo make the table public, use the "Publish online" option');
+                        }
+                    } else {
+                        alert(errormsg);
+                    }
+                } catch(e) {
+                    alert(errormsg);
+                }
+                if (context === "download"){ //This function is defined in "js/mainJS" and allows the generation of a downloadble file
+                    let filename = '{{tableContent.tableType.astronomicalObject.objectName~"_"~tableContent.tableType.tableTypeName}}'.replace(/:/g, '_').replace(/ /g, '_');
+                    downloadFile(encodeURIComponent(JSON.stringify(result)), filename, "json");
+                }
+            },
+            async: async
+        });
+    }
+
+    // Here we intercept the submit event ===> for table ready to be published.
+    // We check if the table meets all the conditions to be published publicly
+    // If not we display appropriate errors or warnings
+    // If yes, the table is published and the user is redirected to the admin interface
+    $('form').submit(function (e) {
+
+        e.preventDefault();
+        //return true; Uncheck for a quick saving test => the post is redirected to the main addTableContent controller.
+        if (createdOnce) {//TODO : createdOnce = table is created
+            if (table.zones[0].hasEmptyCells()) {
+                if (!confirm("Warning ! You left empty cells in the table. Do you wish to submit anyway ? (This will fill the remaining cells with the \'*\' symbol)")) {
+                    return;
+                }
+                table.fillStarsIfEmpty();
+            }
+            if (table.zones[0].hasUnvalidatedCells() || (table.zones.length > 1 && table.zones[1].hasNoneEmptyUnvalidatedCells())) {
+                if (!confirm("Warning ! You left unvalidated cells in the table. Do you wish to submit anyway ? (This will fill automaticaly validate these cells)")) {
+                    return;
+                }
+                table.validateAll();
+            }
+            if(table.model !== undefined && getMathematicalParameterSetId() === "" && (table.model.parameters['C0'].value !== 0 || (table.model.parameters['C1'] !== undefined && table.model.parameters['C1'].value !== 0))) {
+                alert("Error ! You did not link the table to any mathematical parameter set, while you specified non zero values for displacement in the model dialog box (C0 and C1)")
+                return;
+            }
+            //This function transforms the table and all the metadata to a specific form to be sent by post //TODO: vérifier si cette fonction n'existe pas d'elle-même ??
+            tableToForm(); //TODO : vérifier car ajax save semble faire un tableToForm également!!!
+            if(!isValidMathematicalParameters()){
+                $('#{{form.vars.name}}_public').val(0);
+                ajaxSave(true, false, false);
+                return;
+            }else{
+                $('#{{form.vars.name}}_public').val(1);
+                ajaxSave(true, true, false);
+            }
+            //return true;
+        } else {
+            alert('Template is empty. Click on tab "Document" then "Template"');
+        }
+        return true;
+    });
+
+    // prevent an accidental submit with the keyboard
+    $('#{{form.vars.name}}_submit').keypress(function (e) {
+        e.preventDefault();
+    });
+
+    // binds the save event on the save button
+    //This method is used for table that are not public
+    $('#save-button').click(function () {
+        ajaxSave(true);
+    });
+</script>

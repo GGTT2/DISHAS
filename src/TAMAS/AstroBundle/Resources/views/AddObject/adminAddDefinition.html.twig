@@ -1,0 +1,48 @@
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+    {{ action|capitalize }} definition — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+{% form_theme form 'bootstrap_3_TAMAS.html.twig' 'jquery.collection.html.twig' %}
+
+   <div class="row">
+        <div class="col-md-10">
+            <div class="well">
+                {{form_start(form)}}
+                <h1>Entity name: <span class="source-code">{{ definition.objectEntityName }}</span></h1>
+                <div class="row">
+                    <div class="col-md-3">
+                        {{form_row(form.objectUserInterfaceName)}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        {{form_row(form.shortDefinition)}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        {{form_row(form.longDefinition)}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{form_row(form.userInterfaceColor)}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+                {%include 'TAMASAstroBundle:AddObject:adminPannel.html.twig'%}
+                {{form_rest(form)}}
+                {{form_end(form)}}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}  
+    <script src="{{ asset('js/jquery.collection.js') }}"></script>
+{% endblock %}

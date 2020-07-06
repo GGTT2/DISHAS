@@ -1,0 +1,461 @@
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{asset('css/dishas-table-interface.css')}}" />
+{% endblock %}
+
+{% block title %}
+	Input your table — {{ parent() }}
+{% endblock %}
+
+{% block body %}
+	<body style="overflow: hidden;">
+	{# ================================================ output variable ================================================#}
+	{% set left_margin = "5px" %}
+	{% set top_margin = "5px" %}
+	{% set right_margin = "15px" %}
+	{% set bottom_margin = "5px" %}
+
+	{% set application_left = left_margin %}
+	{% set application_top = top_margin %}
+	{% set application_width = "calc(" ~ "100vw" ~ " - " ~ left_margin ~ " - " ~ right_margin ~ ")" %}
+	{% set application_height = "calc(" ~ "100vh" ~ " - " ~ top_margin ~ " - " ~ bottom_margin ~ ")" %}
+
+	{% set top_toolbar = "0vh" %}
+	{% set height_toolbar = "55px" %}
+
+	{% set top_middlezone_expression = top_toolbar ~ " + " ~ height_toolbar ~ " + " ~ "0.7vh" %}
+	{% set argument_title_expression = top_toolbar ~ " + " ~ height_toolbar ~ " + " ~ "1.0vh" %}
+	{% set top_middlezone = "calc(" ~ top_middlezone_expression ~ ")" %}
+	{% set argument_title = "calc(" ~ argument_title_expression ~ ")" %}
+	{% set width_middlezone = "80vw" %}
+	{% set height_middlezone = "70vh" %}
+
+	{% set top_rightmiddlezone = top_middlezone %}
+	{% set right_rightmiddlezone = width_middlezone %}
+	{% set width_rightmiddlezone = "calc(" ~ application_width ~ " - " ~ width_middlezone ~ ")" %}
+	{% set height_rightmiddlezone = height_middlezone %}
+
+	{% set top_bottomzone_expression = top_middlezone_expression ~ " + " ~ height_middlezone ~ " + " ~ "1vh" %}
+	{% set top_bottomzone = "calc(" ~ top_bottomzone_expression ~ ")" %}
+
+	{% set width_bottomzone = width_middlezone %}
+	{% set height_bottomzone_expression = application_height ~ " - " ~ top_bottomzone_expression ~ " - " ~ "1vh" %}
+	{% set height_bottomzone = "calc(" ~ height_bottomzone_expression ~ ")" %}
+
+	{% set top_rightbottomzone = top_bottomzone %}
+	{% set right_rightbottomzone = right_rightmiddlezone %}
+	{% set height_rightbottomzone = height_bottomzone %}
+	{% set width_rightbottomzone = width_rightmiddlezone %}
+
+	{% set nb_left_icons = 14 %}
+	{% set nb_left_separators = 7 %}
+	{% set left_space = nb_left_icons * 54 + nb_left_separators * 21 %}
+
+	{% set nb_right_icons = 2 %}
+	{% set nb_right_separators = 0 %}
+	{% set right_space = nb_right_icons * 54 + nb_right_separators * 21 %}
+
+	{% set left_nav_size = (left_space|trans)  ~ "px" %}
+	{% set right_nav_size = (right_space|trans)  ~ "px" %}
+	{% set start_right_nav = "calc(" ~ "20px" ~ " + " ~ "100vw" ~ " - " ~ left_margin ~ " - " ~ right_margin ~ " - " ~ left_nav_size ~ " - " ~ right_nav_size ~ ")" %}
+
+	{#======================================================== content ================================================== #}
+	{% form_theme form 'bootstrap_3_TAMAS.html.twig' %}
+	{{form_start(form)}}
+	{# grey square to be put in front when we need to lose the focus (for exemple during spin loader) #}
+	<div id="grey-bg" style="position: absolute; left: 0; top: 0; width: 100vw; height: 100vh;"></div>
+	<img id="loading" src="{{asset('img/loader.gif')}}" class="loading-spin" alt="loader"/>
+	<div id="background" style="position: absolute; left: 0; top: 0; width: 100vw; height: 100vh;"></div>
+	<div id="tabular-content-application" style="position: absolute; left: {{ application_left }}; top: {{ application_top }}; width: {{ application_width }}; height: {{ application_height }};">
+
+		{% include 'TAMASAstroBundle:DishasTableInterface:sideTip.html.twig' %}
+		{# ================== main toolbar ============= #}
+		{% include 'TAMASAstroBundle:DishasTableInterface:nav.html.twig'%}
+		{#========= end of the toolbar ==================== #}
+		<div id="three-zones">
+			<div id="table-top-left-corner"
+				 style="position: absolute; left: 0; top: {{ argument_title }}; border: none; z-index: 12; width: 150px; overflow: hidden; text-align: center;">
+			</div>
+			<div id="middle-zone" class="redimensionnable" style="position: absolute; left: 0; top: {{ top_middlezone }}; width:{{ width_middlezone }}; height: {{ height_middlezone }}; resize: both;overflow: hidden; border: none; background-color:white;">
+				<div id="hot-table" class="hot handsontable"
+					 style="height: 70vh; width: 79vw; overflow: hidden; left: 0;">
+				</div>
+			</div>
+
+			<table id="middle-right-zone" class="side-zone right-zone" style="position: absolute; left: {{ right_rightmiddlezone }}; top: {{ top_rightmiddlezone }}; width: {{ width_rightmiddlezone }}; height: {{ height_rightmiddlezone }};">
+				<tr>
+					<td>
+						<div style="width: 5px; overflow: hidden;">
+							<div id="right-info-slot--1" style="overflow: hidden;"></div>
+						</div>
+					</td>
+				</tr>
+			</table>
+
+			<table id="bottom-zone" class="side-zone bottom-zone" style="position: absolute; left: 0; top: {{ top_bottomzone }}; width:{{ width_bottomzone }}; height:{{ height_bottomzone }};">
+
+
+				<tr>
+					<td>
+						<div style="height: 5px; overflow: hidden;">
+							<div id="bottom-info-slot--1" style="overflow: hidden;"></div>
+						</div>
+					</td>
+				</tr>
+			</table>
+
+			<div id="bottom-right-zone" style="position: absolute; left: {{ right_rightbottomzone }}; top: {{ top_rightbottomzone }}; width: {{ width_rightbottomzone }}; height: {{ height_rightbottomzone }}; background-color:white;">
+				<ul class="nav nav-tabs">
+					<li class="active"><a id="tab-logs" data-toggle="tab" href="#logs"><b>Logs</b></a></li>
+					<li><a id="tab-commentary" data-toggle="tab" href="#commentary"><b>Cell Commentary</b></a></li>
+					{% if tableContent.editedText and tableContent.editedText.type == "b" %}
+						<li><a id="tab-critical" data-toggle="tab" href="#critical"><b>Critical Ap.</b></a></li>
+					{% endif %}
+				</ul>
+
+				<div class="tab-content">
+					<div id="logs" class="tab-pane in active">
+					<textarea spellcheck="false" id="textarea-logs"
+							  class="mytextarea numbers" readonly
+							  style="background-color: black; color: white;" value=""></textarea>
+					</div>
+					<div id="critical" class="tab-pane">
+					<textarea spellcheck="false" id="textarea-critical-apparatus"
+							  class="mytextarea" value=""></textarea>
+					</div>
+					<div id="commentary" class="tab-pane">
+					<textarea spellcheck="false" id="textarea-commentary"
+						{% if readonly is defined and readonly %} disabled="disabled"
+						{% endif %} class="mytextarea" value=""></textarea>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="{{asset('js/DISHAS_table/smartNumberFillField.js')}}"></script>
+
+	{# =========== include graph =============== #}
+	{% include 'TAMASAstroBundle:DishasTableInterface:graph.html.twig'%}
+
+
+	{# =============== include information table ==================== #}
+	{% include 'TAMASAstroBundle:DishasTableInterface:informationTable.html.twig'%}
+
+	{#======================= include models ====================#}
+	{% include 'TAMASAstroBundle:DishasTableInterface:models.html.twig' %}
+
+	{# progressbar used when performing long "for" loops #}
+	<div id="progress-dialog" title="Processing...">
+		<div id="progressbar0"></div>
+		<div id="progressbar1"></div>
+		<div id="progressbar2"></div>
+	</div>
+
+	{#======================= include template ====================#}
+	{% include 'TAMASAstroBundle:DishasTableInterface:template.html.twig' %}
+
+	{#======================= include comment ====================#}
+	{% include 'TAMASAstroBundle:DishasTableInterface:comment.html.twig' %}
+
+	{#======================= include info ====================#}
+	{% include 'TAMASAstroBundle:DishasTableInterface:information.html.twig' %}
+
+	{#======================= include parameters ====================#}
+	{% include 'TAMASAstroBundle:DishasTableInterface:parameters.html.twig' %}
+
+	{#======================= include export ====================#}
+	{% include 'TAMASAstroBundle:DishasTableInterface:export.html.twig' %}
+
+
+	{#======================= include ContentOwner ====================#}
+	{% include 'TAMASAstroBundle:DishasTableInterface:owner.html.twig' %}
+
+	{% include 'TAMASAstroBundle:DishasTableInterface:intro.html.twig' %}
+
+	{% include 'TAMASAstroBundle:DishasTableInterface:symmetry.html.twig' %}
+
+	{% include 'TAMASAstroBundle:DishasTableInterface:templateSymmetries.html.twig' %}
+
+	{% include 'TAMASAstroBundle:DishasTableInterface:difference.html.twig' %}
+
+	{% include 'TAMASAstroBundle:DishasTableInterface:buttonNav.html.twig' %}
+
+
+
+	{{form_end(form)}}
+
+	{%block confirm_statement %}
+
+	{{parent()}}
+	</body>
+{%endblock%}
+
+	{% block javascripts %}
+		{# On test ici les fonctions de conversion ecrites en javascript #}
+		{{ parent() }}
+		<script type="text/javascript" media="screen" src="{{asset('js/handsontable-master/dist/handsontable.full.js')}}"></script>
+		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+		<script type="text/javascript" src="{{asset('js/DISHAS_table/progressBar.js')}}"></script>
+		<script type="text/javascript" src="{{asset('js/DISHAS_table/conversion.js')}}"></script>
+		<script type="text/javascript" src="{{asset('js/DISHAS_table/Zone.js')}}"></script>
+		<script type="text/javascript" src="{{asset('js/DISHAS_table/MetaZone.js')}}"></script>
+		<script type="text/javascript" src="{{asset('js/DISHAS_table/MetaCell.js')}}"></script>
+		<script type="text/javascript" src="{{asset('js/DISHAS_table/SuperCell.js')}}"></script>
+		<script type="text/javascript" src="{{asset('js/DISHAS_table/Layout.js')}}"></script>
+		<script type="text/javascript" src="{{asset('js/DISHAS_table/area.js')}}"></script>
+		<script type="text/javascript" src="{{asset('js/DISHAS_table/Tools.js')}}"></script>
+		<script type="text/javascript" src="{{asset('js/DISHAS_table/model.js')}}"></script>
+		<script type="text/javascript" src="{{asset('js/DISHAS_table/TableInterface.js')}}"></script>
+		<script type="text/javascript" src="{{asset('js/DISHAS_table/InfoTableInterface.js')}}"></script>
+		<script type="text/javascript" src="{{asset('js/DISHAS_table/HTMLInfoTable.js')}}"></script>
+		<script type="text/javascript" src="{{asset('js/DISHAS_table/MainTableInterface.js')}}"></script>
+		<script type="text/javascript" src="{{asset('js/DISHAS_table/HotTable.js')}}"></script>
+		<script type="text/javascript" src="{{asset('js/DISHAS_table/DTITable.js')}}"></script>
+		<script type="text/javascript" src="{{asset('js/DISHAS_table/CreateTable.js')}}"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore.js" type="text/javascript"></script>
+
+		<script src="{{asset('js/ResizeSensor.js')}}"></script>
+		<script src="{{asset('js/ElementQueries.js')}}"></script>
+
+		<script>
+			/**
+			 * Similar to .format() in python
+			 * @example "nous sommes le {} {}".format([25, 'mars']);
+			 *
+			 * @param  {String} str    [description]
+			 * @param  {Array} params  [description]
+			 * @return {String}        [description]
+			 */
+			function stringFormat(str, params) {
+				var i = 0, args = params;
+				if(args === undefined)
+					args = [];
+				return str.replace(/{}/g, function () {
+					return typeof args[i] != 'undefined' ? args[i++] : '';
+				});
+			}
+
+			/**
+			 * Manage the different error codes
+			 * type: if "error" an alert is displayed, if "warning" a confirm box is used
+			 * text: text to be displayed. Can contains {} (will be replaced by parameters provided by the user)
+			 * selector: a CSS selector of the elements to put in red
+			 * @type {Object}
+			 */
+			var code_to_name = {
+				"error_test": {
+					"type": "error",
+					"text": "Test for the Error dialog box"
+				},
+				"warning_test": {
+					"type": "warning",
+					"text": "Test for the Warning box",
+					"confirm_text": "Are you sure ?"
+				},
+				"template_integer_places": {
+					"type": "error",
+					"text": '{}: # of integer places must be filled with an integer',
+					"selector": "#{{form.vars.name}}_{}NumberOfCell"
+				},
+				"template_fractional_places": {
+					"type": "error",
+					"text": '{}: # of fractional places must be filled with an integer',
+					"selector": "#{{form.vars.name}}_{}SignificantFractionalPlace"
+				},
+				"template_steps": {
+					"type": "error",
+					"text": '{}: # of steps must be filled with an integer',
+					"selector": "#{{form.vars.name}}_{}NumberOfSteps"
+				},
+				"template_name": {
+					"type": "error",
+					"text": '{}: Name cannot be empty',
+					"selector": "#{{form.vars.name}}_{}Name"
+				},
+				"cate_table_number": {
+					"type": "error",
+					"text": 'You must select at least 2 tables'
+				},
+				"cate_template": {
+					"type": "error",
+					"text": 'Template mismatch between {} and {}. {}: {}.'
+				},
+				"cate_differences": {
+					"type": "warning",
+					"text": "Warning ! {} and {}: One of the table posses a difference table, the other does not. Edition of the differences will be based solely on tables possessing a difference table"
+				},
+				"cate_confirm_active": {
+					"type": "warning",
+					"text": "Warning ! This will erase the current table. Continue ?"
+				},
+				"cate_confirm_inactive": {
+					"type": "warning",
+					"text": "Warning ! This will deactivate CATE automatic critical apparatus. Continue ?"
+				},
+				'cate_base_edition': {
+					"type": "error",
+					"text": "The table for the base edition must be selected in the list of tables"
+				},
+				"import_json_erase": {
+					"type": "warning",
+					"text": "Warning ! This will erase the current table. Continue ?"
+				},
+				"duplicate_erase": {
+					"type": "warning",
+					"text": "Warning ! This will erase the current table. Continue ?"
+				}
+			}
+
+			/**
+			 * This function process an error code along with its parameters, and display the corresponding dialog box
+			 * @param  {String} error           [description]
+			 * @param  {Array} params          [description]
+			 * @param  {Array} selector_params [description]
+			 * @return {undefined}                 [description]
+			 */
+			function processErrorCode(error, params, selector_params) {
+				return processErrorObject(code_to_name[error], params, selector_params);
+			}
+
+			function processErrorObject(errorObject, params, selector_params) {
+				if(errorObject.type === "error") {
+					if("selector" in errorObject) {
+						$(stringFormat(errorObject.selector, selector_params)).addClass("has-error-number");
+						$(stringFormat(errorObject.selector, selector_params)).on('change', function(){
+							$(this).removeClass("has-error-number");
+						});
+					}
+					return alert(stringFormat(errorObject.text, params));
+				}
+				else if(errorObject.type === "warning") {
+					return confirm(stringFormat(errorObject.text), params);
+				}
+			}
+
+			/**
+			 * Define some global variable
+			 */
+			//READONLY => "view" action
+			{% if readonly is not defined or not readonly%}
+			readonly = false;
+			{% else %}
+			readonly = true;
+			{% endif %}
+
+			//PUBLIC => we are in the front office DTI
+			{% if not (public|default()) %}
+			public = false;
+			{% else %}
+			public = true;
+			{% endif %}
+			/**
+			 * Disable tool memory (if a source cell is changed, the corresponding targets are altered) because it is too slow.
+			 * @type {Boolean}
+			 */
+			toolMemory = false;
+			table = undefined
+			gen_post_data = undefined;
+			createdOnce = false;
+			cancelled = true;
+
+			/**
+			 * This function resizes all the zones of the interface.
+			 * It takes as a parameter the percentage of the screen taken by the main zone
+			 * @param  {Number} percentx [description]
+			 * @param  {Number} percenty [description]
+			 * @return {[type]}          [description]
+			 */
+			function resizeAll(percentx, percenty) {
+				if (percentx !== undefined) {
+
+				}
+				if (percenty !== undefined) {
+
+				}
+
+				$('#middle-right-zone').css('left', $('#middle-zone').width() + 'px');
+				var width = $('#main-toolbar').width() - $('#middle-zone').width();
+				$('#middle-right-zone').css('width', width + 'px');
+
+				$('#hot-table').css('width', (Number($('#middle-zone').width()) - 10) + 'px');
+				$('#bottom-right-zone').css('left', $('#middle-right-zone').css('left'));
+				$('#bottom-right-zone').css('width', $('#middle-right-zone').width());
+				$('#bottom-zone').css('width', $('#middle-zone').width());
+
+				$('#middle-right-zone').css('height', $('#middle-zone').height() + 'px');
+
+				$('#hot-table').css('height', (Number($('#middle-zone').height()) - 0) + 'px');
+				var top = Number($('#middle-zone').css('top').slice(0, -2)) + $('#middle-zone').height() + 10;
+
+				$('#bottom-zone').css('top', top + "px");
+				$('#bottom-right-zone').css('top', top + "px");
+				var height = $('#tabular-content-application').height() - Number($('#bottom-zone').css('top').slice(0, -2)) - 5;
+
+				$('#bottom-zone').css('height', height + "px");
+				$('#bottom-right-zone').css('height', height + "px");
+				var panels_height = Number($(".nav > li > a").css("height").slice(0, -2));
+
+				$('#bottom-right-zone .tab-pane').each(function () {
+					$(this).css('height', (height - panels_height) + "px");
+				});
+
+				if (hots[0] !== undefined) {
+					for (var i = 0; i < hots[0].verticalInformationTables.length; i++) {
+						$('#right-info-slot-' + i).height($('#middle-zone').height() - 11);
+					}
+					for (var i = 0; i < hots[0].horizontalInformationTables.length; i++) {
+						$('#bottom-info-slot-' + i).width($('#middle-zone').width() - 25);
+					}
+				}
+
+				if (hots[0] !== undefined) {
+					hots[0].render();
+					hots[0].renderInfos();
+				}
+			}
+
+			$(document).ready(function () {
+
+				// Disable the Ctrl+S shortcut for saving the html page
+				// Does not entirely work (sometimes the ctlr+S box appears)
+				$(window).bind('keydown', function (event) {
+					if (event.ctrlKey || event.metaKey) {
+						switch (String.fromCharCode(event.which).toLowerCase()) {
+							case 's':
+								event.preventDefault();
+								ajaxSave(true);
+								break;
+						}
+					}
+				});
+
+				// disable the Enter (Return) key. It avoids to post the form by mistake
+				$(window).keydown(function (event) {
+					if (event.keyCode === 13) {
+						event.preventDefault();
+						return false;
+					}
+				});
+			});
+		</script>
+		{% include 'TAMASAstroBundle:DishasTableInterface/js:symmetry.html.twig' %}
+		{% include 'TAMASAstroBundle:DishasTableInterface/js:export.html.twig'%}
+		{% include 'TAMASAstroBundle:DishasTableInterface/js:main.html.twig'%}
+		{% include 'TAMASAstroBundle:DishasTableInterface/js:template.html.twig'%}
+		{% include 'TAMASAstroBundle:DishasTableInterface/js:save.html.twig'%}
+		{% include 'TAMASAstroBundle:DishasTableInterface/js:graph.html.twig'%}
+		{% include 'TAMASAstroBundle:DishasTableInterface/js:parameters.html.twig'%}
+		{% include 'TAMASAstroBundle:DishasTableInterface/js:comment.html.twig'%}
+		{% include 'TAMASAstroBundle:DishasTableInterface/js:informationTable.html.twig'%}
+		{% include 'TAMASAstroBundle:DishasTableInterface/js:models.html.twig'%}
+		{% include 'TAMASAstroBundle:DishasTableInterface/js:nav.html.twig'%}
+		{% include 'TAMASAstroBundle:DishasTableInterface/js:intro.html.twig' %}
+		{% include 'TAMASAstroBundle:DishasTableInterface/js:sideTip.html.twig' %}
+		{% include 'TAMASAstroBundle:DishasTableInterface/js:difference.html.twig' %}
+
+
+	{% endblock %}
+{% endblock %}

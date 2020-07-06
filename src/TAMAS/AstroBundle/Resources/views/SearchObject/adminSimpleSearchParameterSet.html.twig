@@ -1,0 +1,16 @@
+{# TAMAS\AstroBundle\Resources\views\Default\adminSearchParameterSet.html.twig #}
+
+{% extends app.request.get('admin') == true ? 'TAMASAstroBundle::layoutAdmin.html.twig' : 'TAMASAstroBundle::layout.html.twig' %}
+
+{% block title %}
+    Parameter value search — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    {% include 'TAMASAstroBundle:SearchObject:parameterValueForm.html.twig' with {'include':'html'} %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% include 'TAMASAstroBundle:SearchObject:parameterValueForm.html.twig' with {'include':'js'} %}
+{% endblock %}

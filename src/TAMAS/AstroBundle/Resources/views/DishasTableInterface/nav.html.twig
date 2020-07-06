@@ -1,0 +1,275 @@
+<nav id="main-toolbar" class="navbar navbar-default">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+					aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+			</button>
+			<!-- <a class="navbar-brand" href="#">DISHAS</a> -->
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse"
+			 id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle"
+					   data-toggle="dropdown" role="button" aria-haspopup="true"
+					   aria-expanded="false">File <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a class="internal-link" ref="import"
+									{% if noImport|default() %} disabled='disabled' {% endif %}>Import</a>
+						</li>
+						<li>
+							<a data-toggle="modal" data-target="#dialog-export">Download</a>
+						</li>
+						{% if not(public|default()) and not(readonly|default()) %}
+							<li>
+								<a id="save-button">Save as draft <span class="shortcut">(CTRL+S)</span>
+								</a>
+							</li>
+							<li>
+								<a onclick="$('form').submit();">Publish online</a>
+							</li>
+						{% endif %}
+						<li role="separator" class="divider"></li>
+						{% if readonly is not defined or not readonly %}
+							<li>
+								<a class="button-undo">Undo <span class="shortcut">(CTRL+Z)</span>
+								</a>
+							</li>
+							<li>
+								<a class="button-redo">Redo <span class="shortcut">(CTRL+SHIFT+Z)</span>
+								</a>
+							</li>
+						{% else %}
+							<li>
+								<a class=""
+								   href="{{path('tamas_astro_adminEditTableContent', {'id': tableContent.id})}}"
+								   user="{{tableContent.createdBy.id}}"
+								   userName="{{tableContent.createdBy.username}}">Edit table</a>
+							</li>
+						{% endif %}
+						<li role="separator" class="divider"></li>
+						{% if public|default() and public %}
+							{% set exit = 'tamas_astro_homepage' %}
+						{% else %}
+							{% set exit = 'tamas_astro_adminHome' %}
+						{% endif %}
+						<li>
+							<a href="{{ path(exit) }}">Exit</a>
+						</li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle"
+					   data-toggle="dropdown" role="button" aria-haspopup="true"
+					   aria-expanded="false">Document <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a class="internal-link" ref="template">Template</a>
+						</li>
+						<li>
+							<a id="button-symmetries" data-toggle="modal"
+							   data-target="#dialog-hard-symmetry">Template symmetries</a>
+						</li>
+						<li>
+							<a class="button-switch">Switch <span id="choice-switch-table"></span> table</a>
+						</li>
+						<li role="separator" class="divider"></li>
+						<li>
+							<a data-toggle="modal" data-target="#dialog-info">Information</a>
+						</li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle"
+					   data-toggle="dropdown" role="button" aria-haspopup="true"
+					   aria-expanded="false">Enrich data <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a data-toggle="modal" data-target="#dialog-comment">
+								General comment
+							</a>
+						</li>
+						<li>
+							<a class="button-commentary">
+								Cell comment
+								<span class="shortcut">(C)</span>
+							</a>
+						</li>
+						<li role="separator" class="divider"></li>
+						<li>
+							<a id="button-parameter" type="button"
+							   data-toggle="modal" data-target="#dialog-parameter">Historical
+								parameter</a>
+						</li>
+						<li>
+							<a id="button-parameter-2" type="button"
+							   data-toggle="modal" data-target="#dialog-parameter">Data
+								shift/displacement</a>
+						</li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle"
+					   data-toggle="dropdown" role="button" aria-haspopup="true"
+					   aria-expanded="false">Select <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a class="button-line">
+								Select line
+								<span class="shortcut">(Shift+A / D)</span>
+							</a>
+						</li>
+						<li>
+							<a class="button-column">
+								Select column
+								<span class="shortcut">(Shift+W / S)</span>
+							</a>
+						</li>
+						<li>
+							<a class="button-super">
+								Select super-cell
+								<span class="shortcut">(Shift+Space)</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">Select all</a>
+						</li>
+					</ul>
+				</li>
+				{% if readonly is not defined or not readonly %}
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle"
+						   data-toggle="dropdown" role="button" aria-haspopup="true"
+						   aria-expanded="false">Tools <span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a ref="cate"
+										{% if tableContent.editedText and tableContent.editedText.type == "b" %}
+									class="internal-link" {% else %}
+									class="internal-link btn disabled" disabled="disabled"
+										{% endif %}>CATE automatic critical apparatus &nbsp;<span class="led-cate"> &nbsp; &nbsp;</span>
+								</a>
+							</li>
+							<li role="separator" class="divider"></li>
+							<li>
+								<a class="button-forward">
+									Fill with forward interpolation
+									<span class="shortcut">(W,A,S,D)</span>
+								</a>
+							</li>
+							<li>
+								<a class="button-between">
+									Fill with In-between interpolation
+									<span class="shortcut">(B)</span>
+								</a>
+							</li>
+							<li role="separator" class="divider"></li>
+							<li>
+								<a id="button-fill-symmetry" data-toggle="modal"
+								   data-target="#symmetry-fill">Fill by symmetry</a>
+							</li>
+							<li>
+								<a id="button-fill-model" data-toggle="modal"
+								   data-target="#dialog-fill">Fill by model</a>
+							</li>
+							<li>
+								<a id="button-fill-diff">Fill difference table</a>
+							</li>
+
+							<li role="separator" class="divider"></li>
+							<li>
+								<a id="button-validate">
+									Validate
+									<span class="shortcut">(Space)</span>
+								</a>
+							</li>
+
+						</ul>
+					</li>
+				{% endif %}
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle"
+					   data-toggle="dropdown" role="button" aria-haspopup="true"
+					   aria-expanded="false">Data viz <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a id="button-differences" data-toggle="modal"
+							   data-target="#dialog-create-info">1st/nth differences</a>
+						</li>
+
+						<li>
+							<a id="button-comparisons" data-toggle="modal"
+							   data-target="#dialog-compare-table"
+									{% if not (tableContent.editedText and tableContent.editedText.type == "b") %}
+								disabled="disabled" {% endif %}>Comparison tables</a>
+						</li>
+						<li role="separator" class="divider"></li>
+						<li>
+							<a class="button-graph">Graph</a>
+						</li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-toggle"
+					   data-toggle="dropdown" role="button" aria-haspopup="true"
+					   aria-expanded="false">Window <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a onclick="$('#button-dialog-nav').dialog('open')">Button
+								navigation</a>
+						</li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-toggle"
+					   data-toggle="dropdown" role="button" aria-haspopup="true"
+					   aria-expanded="false">Help <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						{# <li>
+						<a id="button-tour">Tour of the interface</a>
+						</li> #}
+						<li>
+							<a id="button-tip">Tips</a>
+						</li>
+						<li role="separator" class="divider"></li>
+						<li>
+							<a target="_blank" rel="noopener noreferrer"
+							   href="/pdf/DISHAS_tablecontent_interface.pdf">Documentation</a>
+						</li>
+						<li>
+							<a target="_blank" rel="noopener noreferrer"
+							   href="/pdf/DISHAS_tablecontent_interface_shortcuts.pdf">Shortcuts</a>
+						</li>
+						<li>
+							<a target="_blank" rel="noopener noreferrer"
+							   href="/pdf/DISHAS_example_sine.pdf">Example</a>
+						</li>
+					</ul>
+				</li>
+				<li><span id="current-switch-table"></span> Table</li>
+			</ul>
+		</div>
+		<!-- /.navbar-collapse -->
+	</div>
+	<!-- /.container-fluid -->
+</nav>
+
+<div class="btn-group hidden" role="group" aria-label="...">
+	{{form_row(form.submit)}}
+</div>

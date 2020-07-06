@@ -1,0 +1,79 @@
+{#Symfony\app\Resources\views\includes\navbar.html.twig#}
+<nav class="navbar navbar-default nav-beige navbar-beige navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{{path('tamas_astro_homepage')}}">
+                <span class="logo-line"></span>
+            </a>
+        </div>
+
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li {%if app.request.attributes.get('_route') == 'tamas_astro_about' %} class="active"{%endif%}>
+                    <a href="{{path('tamas_astro_about')}}">
+                        {#<img class="nav-icon" src="{{asset('img/pictograms/about.png')}}" alt="About icon">#}
+                        About
+                    </a>
+                </li>
+                <li {%if app.request.attributes.get('_route') == 'tamas_astro_team' %} class="active"{%endif%}>
+                    <a href="{{path('tamas_astro_team')}}">
+                        {#<img class="nav-icon" src="{{asset('img/pictograms/about.png')}}" alt="About icon">#}
+                        Team
+                    </a>
+                </li>
+                <li {%if app.request.attributes.get('_route') == 'tamas_astro_resources' %} class="active"{%endif%}>
+                    <a href="{{path('tamas_astro_resources')}}">
+                        {#<img class="nav-icon" src="{{asset('img/pictograms/resources.png')}}" alt="Resource icon">#}
+                        Resources
+                    </a>
+                </li>
+
+                <li {%if app.request.attributes.get('_route') == 'tamas_astro_browse' %} class="active"{%endif%}>
+                    <a href="{{path('tamas_astro_browse')}}">
+                        {#<img class="nav-icon" src="{{asset('img/pictograms/resources.png')}}" alt="Resource icon">#}
+                        Browse
+                    </a>
+                </li>
+                <li {%if app.request.attributes.get('_route') == 'tamas_astro_search' %} class="active"{%endif%}>
+                    <a href="{{path('tamas_astro_search')}}" title="">
+                        {#<img class="nav-icon" src="{{asset('img/pictograms/??.png')}}" alt="Search icon">#}
+                        Search
+                    </a>
+                </li>
+
+                {#<li style="padding-left: 20px" {%if app.request.attributes.get('_route') == 'tamas_astro_historicalNavigation' %} class="active"{%endif%}>
+                    <a href="{{path('tamas_astro_historicalNavigation')}}">
+                        <img class="nav-icon" src="{{asset('img/pictograms/hist-nav.png')}}" alt="Historical navigation icon">
+                        #}{#Historical corpus#}{#
+                    </a>
+                </li>
+                <li {%if app.request.attributes.get('_route') == 'tamas_astro_astronomicalNavigation' %} class="active"{%endif%}>
+                    <a href="{{path('tamas_astro_astronomicalNavigation')}}">
+                        <img class="nav-icon" src="{{asset('img/pictograms/astro-nav.png')}}" alt="Astronomical navigation icon">
+                        #}{#Astronomical corpus#}{#
+                    </a>
+                </li>#}
+                {#{% set workPicto %}<img class="nav-icon" src="{{asset('img/pictograms/work.png')}}" alt="Work icon">{% endset %}
+                <li>{% include 'TAMASAstroBundle:Default:Templates/findAll.html.twig' with {'entity': 'work', 'clickableArea': workPicto} %}</li>#}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <li>
+                        <a href="{{ path('fos_user_security_logout') }}">
+                            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{path('tamas_astro_adminHome')}}">Admin space</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{{ path('fos_user_security_login') }}">
+                            {{ 'layout.login'|trans({}, 'FOSUserBundle') }}
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

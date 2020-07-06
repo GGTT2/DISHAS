@@ -1,0 +1,73 @@
+{% if include == "html" %}
+
+	{% if size|default() and size == "full" %}
+		<div id="gmap" style="width: 48vw; height: 400px;"></div>
+	{% else %}
+		<div id="gmap" style="width: 430px; height: 400px;"></div>
+	{% endif %}
+
+{% elseif include == "js" %}
+	<script type="text/javascript">
+
+		var iconList = ['/DISHAS_icons/target_blue.png',
+			'/DISHAS_icons/target_pink.png',
+			'/DISHAS_icons/target_avocado.png', '/DISHAS_icons/target_yellow.png', '/DISHAS_icons/target_black.png']
+		var loc = [];
+		{% set sources %}
+			{{placesToDisplay|json_encode|raw }}
+		{% endset %}
+		{#placesToDisplay|json_encode|replace({("'"):"\\'"})|raw#}
+		var sourcePlaces = {{sources}};
+
+		{% if noControl|default() and noControl == true %}
+		var generate_controls = false;
+		{% else %}
+		var generate_controls = true;
+		{% endif %}
+		var j = 0;
+		var listClass= "";
+
+		for(var key in sourcePlaces){
+			if(Object.keys(sourcePlaces).length >1){
+				var listClass= key+': ';
+			}
+			for (var i = 0; i<sourcePlaces[key].length; i++){
+				placeData = {};
+				var thatSource = sourcePlaces[key][i];
+				var title = truncate(thatSource.title, 30);
+				var listPlaceName = [];
+				thatSource.allPlaces.forEach(function(value, key, array){
+					listPlaceName.push(truncate(value.title, 30));
+				});
+				var placeList = listPlaceName.join(' | ');
+				var listObjectName = [];
+				var sources = thatSource.allObjects.forEach(function(value, key, array){
+					listObjectName.push(truncate(value.title, 30));
+				});
+				var sources = listObjectName.join(' | ');
+				if (title){
+					placeData.title = listClass+title}
+				placeData.icon = iconList[j];
+				placeData.lat = thatSource.lat;
+				placeData.lon = thatSource.long;
+				placeData.html = ["<h5>" + placeList + "</h5>", sources].join("");
+				loc.push(placeData);
+			}
+			j++;
+		}
+		if (loc.length > 1) {
+			var zoom = null;
+		} else {
+			var zoom = 5;
+		}
+		$(function () {
+			new Maplace({
+				locations: loc,
+				map_options: {
+					zoom: zoom
+				},
+				generate_controls:generate_controls
+			}).Load();
+		});
+	</script>
+{% endif %}

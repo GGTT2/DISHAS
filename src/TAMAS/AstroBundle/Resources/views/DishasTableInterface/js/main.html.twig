@@ -1,0 +1,339 @@
+<script type="text/javascript">
+//================================================================================== Interface tools ====================================================
+//functions for activating the wait animation
+function activateSpinning() {
+	$('#grey-bg').css('z-index', 100000);
+	$('#loading').css('z-index', 100000);
+}
+function deactivateSpinning() {
+	$('#grey-bg').css('z-index', -1);
+	$('#loading').css('z-index', -1);
+}
+
+//===================================================================================== Initilization ================================================================
+current_model = undefined;
+
+// intialize progress dialog box (the one used during long for loops)
+dialog = $("#progress-dialog").dialog({
+	autoOpen: false,
+	closeOnEscape: false,
+	resizable: false
+});
+
+// call resizeAll when the windows is resized by the user -> prevent graphic bugs
+window.onresize = function () {
+	resizeAll(0.8, 0.8);
+};
+new ResizeSensor($('#middle-zone'), resizeAll);
+resizeAll();
+
+// this global variable contains the JSON of the loaded table
+// (created in PhP by $tableContent->toJson())
+mainJSON = {{ tableContentJSON|raw }};
+
+// global variable containing the number of arguments in the table.
+// Will probably not be updated if the number of argument in the table change (check it). Probably useless.
+var nargs = Number('{{ tableContent.argNumber }}');
+var JSONDecimal = '{}';
+var JSONOriginal = '{}';
+var diffJSONDecimal = '{}';
+var diffJSONOriginal = '{}';
+var JSONCorrectedDecimal = '{}';
+
+specs = undefined;
+table = undefined;
+idTable = '{{ tableContent.id }}'; // Can be null string if comes from the public interface
+idEditedText = "";
+{% if tableContent.editedText %}
+	idEditedText = '{{ tableContent.editedText.id }}';
+{% endif %}
+idTableType = '{{ tableContent.tableType.id }}';
+idUser = "";
+nameUser = "";
+{% if app.user %}
+	idUser = "{{ app.user.id }}";
+	nameUser = "{{ app.user.username }}";
+{% endif %}
+{% if tableContent.createdBy %}
+	idUser = '{{ tableContent.createdBy.id }}'; //TODO : attention ici on redéfinit le user comme étant le créateur de la table; Or, 1) on peut visualiser des tables sans être owner / 2) On peut modifier la table en étant superAdmin
+	nameUser = '{{ tableContent.createdBy.username }}';
+{% endif %}
+
+/**
+ * Create the table for the first time.
+ * You do not need to call this function yourself.
+ * Just use the applySpecs function
+ * @param  {[type]} specs  The template of the table
+ * @return {[type]}       [description]
+ */
+function firstCreate(specs) {
+	table = createHotTable(specs, 'hot-table');
+	createdOnce = true; //TODO : modifier le nom de cette variable en created ?
+}
+
+/**
+ * Call this function when the template (specs) of the table changes
+ * to update the shape of the table with recreating it from scratch (it would be to costly in memory)
+ * This function can also be called to create the table the first time
+ * @param  {[type]} specs [description]
+ * @return {[type]}       [description]
+ */
+function applySpecs(specs) {
+	if (specs === undefined)
+		return;
+	specs.readonly = readonly;
+	if (!createdOnce) {
+		firstCreate(specs);
+	}
+	else {
+		respecHotTable(specs);
+	}
+	if (current_model !== undefined)
+		table.onNewModel(current_model);
+
+	// Computation to put the name of the argument at the right place
+	var width = 50 * (specs.args[0].ncells);
+	if (hots[0].col_width !== undefined)
+		width += (hots[0].col_width[0] - 50);
+	var nchar = Math.floor(width / 10);
+	$('#table-top-left-corner').width(width);
+	$('#table-top-left-corner').height(25);
+	if (specs.args.length === 2) {
+		var name1 = specs.args[0].name;
+		var name2 = specs.args[1].name;
+		var total = name1 + '   \\   ' + name2;
+		if (total.length > nchar) {
+			total = name1 + '\\' + name2;
+		}
+		if (total.length > nchar) {
+			total = name1.slice(0, Math.floor(nchar / 4)) + '...' + name1.slice(-(Math.floor(nchar / 4))) + '\\' + name2.slice(0, Math.floor(nchar / 4)) + '...' + name2.slice(-(Math.floor(nchar / 4)));
+		}
+		$('#table-top-left-corner').html('<div style="color: white;"><b>' + total + '</b></div>');
+	} else {
+		var name = specs.args[0].name;
+		if (name.length > nchar) {
+			name = name.slice(0, Math.floor(nchar / 2)) + '...' + name.slice(-Math.floor(nchar / 2));
+		}
+		$('#table-top-left-corner').html('<div style="color: white;"><b>' + name + '</b></div>');
+	}
+	// end of name computation
+
+	// update in case of 2 arg table -> no latex is possible
+	// TODO Remove when 2 args are managed
+	updateExportOptions();
+
+	/**
+	 * Check whether there is a difference table, and disable or enable the corresponding links //TODO : déplacer dans le js/template.html ?
+	 * @return {undefined} [description]
+	 */
+	function checkDifferenceButton() {
+		if (specs.entries.length > 1) {
+			$('.button-switch').removeAttr('disabled');
+			$('.button-switch').removeClass('btn disabled');
+		} else {
+			$('.button-switch').attr('disabled', "disabled");
+			$('.button-switch').addClass('btn disabled');
+		}
+	}
+	checkDifferenceButton();
+
+	// Below are the SmartNumberFields presents in the symmetry interface (the suggestion symmetry, non template)
+	// TODO bind the base of the SmartNumberFields to the choice of the argument in the case of a 2-arg table
+	// TODO put this preset in a function in symmetry.html.twig and call that function here
+	suggest_snf['suggest']['source_start'].changeBase(nameToBase[table.selectedMetaZone.spec.args[0].type]);
+	suggest_snf['suggest']['source_end'].changeBase(nameToBase[table.selectedMetaZone.spec.args[0].type]);
+	suggest_snf['suggest']['target_start'].changeBase(nameToBase[table.selectedMetaZone.spec.args[0].type]);
+	suggest_snf['suggest']['target_end'].changeBase(nameToBase[table.selectedMetaZone.spec.args[0].type]);
+	suggest_snf['suggest']['symmetry_parameter'].changeBase(nameToBase[table.selectedMetaZone.spec.args[0].type]);
+
+	suggest_snf['suggest']['source_start'].onUpdate(function() {
+		onSuggestedSourceChange();
+	});
+	suggest_snf['suggest']['source_end'].onUpdate(function() {
+		onSuggestedSourceChange();
+	});
+
+	current_arg_n = specs.args.length;
+
+	// hide the choice of argument if 1-arg table
+	if (current_arg_n === 1) {
+		$(getNbElements('suggest').direction).val(1);
+		$(getNbElements('suggest').direction).hide();
+		$('#direction-title-suggest').hide();
+		$('#direction-title-1').hide();
+	}
+	else {
+		$(getNbElements('suggest').direction).show();
+		$('#direction-title-suggest').show();
+		$('#direction-title-1').show();
+	}
+
+	$('select[data-id="id_suggest_direction"]').change(function(e){
+		updateSymmetryBase('suggest');
+	});
+	updateSymmetryBase('suggest');
+}
+//->
+
+/**
+ * Create a table from a imported JSON file
+ * @param  {String} input_selector  CSS selector of the input field where the JSON is updated
+ * @return {[type]}                [description]
+ */
+function importJSON(input_selector, onlyTemplate, criticalApparatus) {
+	// TODO replace default value with: 'tamas_astrobundle_tablecontent_import'
+	// TODO : ça ne fonctionne pas, par ex: pour la table 93. 
+	if (input_selector === undefined)
+		var input_selector = '#import-json'
+	var file = $(input_selector)[0].files[0];
+	var reader = new FileReader();
+	reader.onload = function() {
+		try {
+			var jsonObject = JSON.parse(reader.result);
+		} catch(err) {
+            console.log(err);
+			alert(`${err}\nSpecified file is not valid JSON`);
+			return ;
+		}
+		if (createdOnce && !processErrorCode('import_json_erase'))
+			return ;
+		activateSpinning();
+		setTimeout(function() {
+			loadJSON(jsonObject, onlyTemplate, criticalApparatus);
+			deactivateSpinning();
+		}, 50);
+	}
+	reader.readAsText(file);
+}
+
+/**
+ * The most important function of this file. Create a table from a JSON object.
+ * @param  {Object} json             [description]
+ * @param  {Boolean} onlyTemplate     If true, stop the creation of the table at its template definition (i.e. create an empty table)
+ * @param  {Boolean} criticalApparatus If true, also load the critical apparatus
+ * @return {undefined}                  [description]
+ */
+function loadJSON(json, onlyTemplate, criticalApparatus) {
+	removeCateAndApartus();
+
+	var specs = json.template;
+	if (typeof specs === "string") {
+		try {
+			specs = JSON.parse(specs);
+		} catch(err) {
+            console.log(err);
+			alert(`${err}\nCould not parse "template" field as a JSON object.
+				Please check that "template" field is present, and is a string`);
+			return ;
+		}
+	}
+	try {
+		// update custom template fields with specs
+		specToTemplate(specs);
+		// create the table
+		applySpecs(specs);
+	} catch(err) {
+        console.log(err);
+		alert(`${err}\nCould not create a table from the specified "template" field! The source table is probably empty!`);
+		return ;
+	}
+	if (onlyTemplate)
+		return ;
+	try {
+		table.zones[0].fromOriginalJSON(json.original);
+		tableSymmetriesToForm(table.zones[0].symmetries);
+	} catch(err) {
+        console.log(err);
+		alert(`${err}\nCould not fill the table with the "original" field !`);
+		return ;
+	}
+	if (specs.entries.length > 1) {
+		try {
+			table.zones[1].fromOriginalJSON(json.differenceOriginal);
+		} catch(err) {
+            console.log(err);
+			alert(`${err}\nCould not fill the difference table with the "differenceOriginal" field !`);
+			return ;
+		}
+	}
+
+    // Manipulating the content in : Enrich data => Historical parameter // Data shift/displacement
+    // MATHEMATICAL PARAMETER
+	if (json.mathematical_parameter_set !== "") {
+		try {
+            // set the "selected" property of the DOM element
+            // corresponding to the right mathematical parameter to be true
+			$('#tamas_astrobundle_tablecontent_mathematicalParameter option[data-id=' + json.mathematical_parameter_set + ']').prop('selected', true);
+		} catch(err) {
+            console.log(err);
+			alert(`${err}\nCould not link the table with the specified mathematical parameters`);
+		}
+	}
+
+    // ASTRONOMICAL PARAMETER SETS
+	if (idTableType !== json.table_type) {
+		alert('Table type mismatch ! Astronomical parameters could not be retrieved.');
+	}
+	else {
+		for (var i=0; i<json.astronomical_parameter_sets.length; i++) {
+			try {
+                // set the "selected" property of each DOM element
+                // corresponding to the right astronomical parameter sets to be true
+				var astroId = json.astronomical_parameter_sets[i];
+				$('#tamas_astrobundle_tablecontent_parameterSets option[value=' + astroId + ']').prop('selected', true);
+			}
+			catch (err) {
+                console.log(err);
+				alert(`${err}\nCould not link the table with the specified astronomical parameter set`);
+			}
+		}
+	}
+    // the critical apparatus is not to be shown
+    if (! criticalApparatus) {
+        // for EACH cell in the table
+        for (var metacell of table.zones[0].getAllMetaCells()) {
+            // make sure that the following properties are like so
+            // (not sure of the purpose of this because it seems to be the case without this loop)
+            metacell.props.critical_apparatus = "";
+            metacell.props.edition_value = {};
+        }
+        // render the table, i.e. update the graphic elements so that they reflect
+        // the changes made in the \:js:class:`MetaZone`\
+        table.render();
+    }
+
+    // if the critical apparatus is to be shown
+    // and it is indeed a critical edition
+	if (criticalApparatus && typeof table.zones[0].edition_tables !== "undefined") {
+	    // duplicate the metadata on this critical edition
+		var result = JSON.parse(JSON.stringify(table.zones[0].edition_tables));
+		// store the table contents metadata on which the current edition is based
+		var tables_as_objects = result.tables;
+		var tables = [];
+		for (var tableId in tables_as_objects) {
+		    // store the table content metadata in an array
+			tables.push(tables_as_objects[tableId]);
+		}
+		// replace the "tables" property to be the array of table content metadata (instead of an object)
+		result.tables = tables;
+		try {
+			for (var t=0; t<result.tables.length; t++) {
+				// store for each base edition, the content and metadata of the table content associated
+				// in its "json" property
+				result.tables[t].json = editions[result.tables[t].tableId].json;
+			}
+		} catch(e) {
+		    // this case happens if the user is loading a CATE-table with the wrong edited text
+            console.log(e);
+            alert(`${e}\nThis edition is not associated with the correct related edition according to the source document.
+			The import will succeed, but will not be linked to the right edition.
+			If you wish to link this table content to the source of the critical edition, get back to its edited text and select the right related edition.`)
+		}
+		// You could activate the CATE automation here with: turnCateOn(result);
+		// We do not want this behaviour (CATE is OFF by default when arriving on a loaded table)
+		cateState = JSON.parse(JSON.stringify(result));
+		cateState.activated = false;
+		cateStateToForm(cateState);
+	}
+}
+</script>

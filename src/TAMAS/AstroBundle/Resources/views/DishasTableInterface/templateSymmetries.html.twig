@@ -1,0 +1,45 @@
+<div class="modal fade" id="dialog-hard-symmetry" tabindex="-1"
+	role="dialog">
+	<div class="modal-dialog modal-xl" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">List of symmetries</h4>
+			</div>
+			<div class="modal-body">
+
+				{% include 'TAMASAstroBundle:DishasTableInterface:symmetriesBase.html.twig' with {'czSymmetry': true} %}
+			
+			<span class='print-main-info'>
+				Symmetries and periodicities are expressed in diverse
+				ways in the historical sources. In some cases symmetries are
+				expressed by the template: only part of the entries are tabulated
+				while the other are implicitly expressed by specific arguments
+				layouts and dedicated reading conventions for the table.
+				Start by filling <b>all</b> the <b>unfolded and corrected arguments</b>
+				of the symmetry.
+				<span class='tip'>Be careful: the arguments need to be
+				corrected according to the mathematical consistency of the symmetry
+				for calculation purpose. If the source shows blank argument or
+				mathematically inconsistent numbers, you will be able to modify it
+				later (after the symmetry calculation)</span>.
+				Once the symmetry is executed, it is possible to correct the
+				arguments according to the source.
+			</span>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				{% if readonly is not defined or not readonly%}
+				<button type="button" class="btn btn-primary" id="symmetry-done">Apply</button>
+				{% endif %}
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+

@@ -1,0 +1,17 @@
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% block title %}
+    Select table type — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+
+    {% set includeType = 'html' %}
+    {% include "TAMASAstroBundle:SelectObject:selectTableType.html.twig"%}
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+    {% set includeType = 'js' %}
+    {% include "TAMASAstroBundle:SelectObject:selectTableType.html.twig"%}
+{% endblock %}

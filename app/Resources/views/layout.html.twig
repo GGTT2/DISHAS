@@ -1,0 +1,36 @@
+{# app/Resources/views/layout.html.twig #}
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <link rel="stylesheet" href="{{ asset('css/public.css')}}" />
+    <body style="overflow-x: hidden;">
+        {#<div id="loading-mask">&nbsp;</div>#}
+        {% include '/includes/navbar.html.twig' %}
+        <div class="container-fluid">
+            <div class="row no-overlap-nav">
+                <div id="main-content">
+                    <div class="row">
+                        <div id="content" class="col-md-10 col-md-offset-1">
+                            {% include 'TAMASAstroBundle:Default:breadCrumb.html.twig' with {'include': 'html'} %}
+                            {% block mainContent %}
+
+
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                {% block footer %}
+                    {% include '/includes/footer.html.twig' %}
+                {% endblock %}
+            </div>
+        </div>
+        {% block javascripts %}
+            {{ parent() }}
+            {% include 'TAMASAstroBundle:Default:breadCrumb.html.twig' with {'include': 'js'} %}
+        {% endblock %}
+    </body>
+{% endblock %}

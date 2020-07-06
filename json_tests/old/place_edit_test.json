@@ -1,0 +1,29 @@
+{
+    "place": {
+        "19": {
+            "placeName": "testaaaaa",
+            "placeNameOriginalChar": "",
+            "placeLat": "12",
+            "placeLong": "10"
+        },
+	"20": {
+            "placeName": "blabla",
+            "placeNameOriginalChar": "",
+            "placeLat": "20",
+            "placeLong": "20"
+        },
+	"21": {
+            "placeName": "",
+            "placeNameOriginalChar": "",
+            "placeLat": "20",
+            "placeLong": "20"
+        },
+	"22": {
+            "placeName": "blabla",
+            "placeNameOriginalChar": "",
+            "placeLat": "2",
+            "placeLong": "2"
+        }
+    }
+}
+

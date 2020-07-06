@@ -1,0 +1,134 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\adminContactUser.html.twig#}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+	Documentation — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+	<link rel="stylesheet" href="{{ asset('css/glossary.css')}}">
+	<link rel="stylesheet" href="{{ asset('css/homepage.css')}}">
+	<link rel="stylesheet" href="{{ asset('css/public.css')}}">
+
+	<div>
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active">
+				<a href="#glossary" aria-controls="profile" role="tab" data-toggle="tab">Glossary</a>
+			</li>
+			<li role="presentation">
+				<a href="#documentation" aria-controls="documentation" role="tab" data-toggle="tab">Documentation</a>
+			</li>
+			<li role="presentation">
+				<a href="#model-documentation" aria-controls="documentation" role="tab" data-toggle="tab">Model definitions</a>
+			</li>
+		</ul>
+
+		{# =============================================== TAB CONTENT ==================================== #}
+		<div class="tab-content">
+			{# =============================================== TAB ONE ======================================= #}
+			<div role="tabpanel" class="tab-pane active" id="glossary">
+				<div class="citation-block">
+					{% include 'TAMASAstroBundle:Default:Glossary/alphabet.html.twig' with {'include':'html', 'admin':true} %}
+				</div>
+			</div>
+
+			<div role="tabpanel" class="tab-pane" id="documentation">
+				<h2>Documentation</h2>
+				{% if user_interface_text.private_admin_user_documentation|default %}
+					{{ user_interface_text.private_admin_user_documentation|raw }}
+				{% endif %}
+				{% if is_granted('ROLE_SUPER_ADMIN') %}
+					<a href="{{path('tamas_astro_adminAddPDFFile')}}" class="btn btn-primary btn-block">
+						<span class="glyphicon glyphicon-plus-sign"></span>
+						Add Documentation PDF
+					</a>
+					{% include 'TAMASAstroBundle:ListObject:listPDFFile.html.twig' with {'editDelete' : 'true', 'pdfFiles' : documentations} %}
+				{% else %}
+					{% include 'TAMASAstroBundle:ListObject:listPDFFile.html.twig' with {'editDelete' : 'false', 'pdfFiles' : documentations} %}
+				{% endif %}
+			</div>
+
+			<div role="tabpanel" class="tab-pane" id="model-documentation">
+				<h2>Formula definitions</h2>
+				<ul>
+					{% for model_documentation in model_documentations %}
+						{% set file_name = 'pdf/' ~ model_documentation.fileName %}
+						<li>
+							<a href="{{asset(file_name)}}">
+								<span class="glyphicon glyphicon-download-alt"></span>
+								{{ model_documentation.fileUserName|capitalize }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+				<div class="row">
+					<div class="col-md-12">
+						{% if is_granted('ROLE_SUPER_ADMIN') %}
+							<a href="{{path('tamas_astro_adminAddFormulaDefinition')}}"
+							   class="btn btn-primary btn-block">
+								<span class="glyphicon glyphicon-plus-sign"></span>
+								Add {{ object_info.properties.formulaDefinition.objectUserInterfaceName }}</a>
+							{% if formulaDefinitions.listObjects is defined and formulaDefinitions.listObjects is not empty %}
+								{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with
+									{'spec' : {'editDelete': true, 'adminInfo': false, 'tableId': 'formulaDefinition-list'}, 'include': 'html', 'listObjects': formulaDefinitions.listObjects}
+								%}
+							{% endif %}
+						{% else %}
+							{% if formulaDefinitions.listObjects is defined and formulaDefinitions.listObjects is not empty %}
+								{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with
+									{'spec' : {'editDelete': false, 'adminInfo': false, 'tableId': 'formulaDefinition-list'}, 'include': 'html', 'listObjects': formulaDefinitions.listObjects}
+								%}
+							{% endif %}
+						{%endif%}
+					</div>
+				</div>
+				<div id="definition-view"></div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% include 'TAMASAstroBundle:Default:Glossary/alphabet.html.twig' with {'include':'js'} %}
+	<script>
+		//let data;
+		{% if is_granted('ROLE_SUPER_ADMIN')%}
+			{% if formulaDefinitions.listObjects is defined and formulaDefinitions.listObjects is not empty %}
+				{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with
+					{'spec' : {'editDelete': true, 'adminInfo': false, 'tableId': '#formulaDefinition-list'}, 'include': 'js', 'listObjects': formulaDefinitions.listObjects}
+				%}
+			{% endif %}
+		{% else %}
+			{% if formulaDefinitions.listObjects is defined and formulaDefinitions.listObjects is not empty %}
+				{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with
+					{'spec' : {'editDelete': false, 'adminInfo': false, 'tableId': '#formulaDefinition-list'}, 'include': 'js', 'listObjects': formulaDefinitions.listObjects}
+				%}
+			{% endif %}
+		{% endif %}
+
+		let idTableType = undefined;
+
+		$(document).ready(function () {
+			idTableType = $("#{{form.tableType.vars.id}}").val();
+			loadFormulaDefinition(idTableType);
+
+			$("#{{form.tableType.vars.id}}").change(function() {
+				idTableType = $(this).val();
+				loadFormulaDefinition(idTableType);
+			});
+
+		});
+
+		function loadFormulaDefinition(idTableType) {
+			const route = Routing.generate('tamas_astro_adminViewFormulaDefinition',
+					{
+						'id' : 0,
+						'idTableType' : idTableType
+					});
+			$.post(route, function(result) {
+				$('#definition-view').html(result);
+			});
+		}
+	</script>
+{% endblock %}

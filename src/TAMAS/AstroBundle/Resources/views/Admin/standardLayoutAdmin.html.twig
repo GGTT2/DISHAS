@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{asset('js/ckeditor/ckeditor.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/hideOnClick.js')}}"></script>
+    <script>
+        switchHidden(".check-intSexa");
+    </script>
+
+{% endblock %}

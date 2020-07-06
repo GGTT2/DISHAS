@@ -1,0 +1,127 @@
+{# empty Twig template #}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+	{{ action|capitalize }} {{ object_info.properties.secondarySource.objectUserInterfaceName }} — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+	{% form_theme form 'bootstrap_3_TAMAS.html.twig' 'jquery.collection.html.twig' %}
+
+	<div class="row">
+		<div class="col-md-10">
+			<div class="well">
+				{{form_start(form)}}
+				<div class="row">
+					<div class="col-md-3">
+						{{form_row(form.secType)}}
+					</div>
+					<div class="col-md-3">
+						{{form_row(form.secIdentifier)}}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-9">
+						{{form_row(form.secTitle)}}
+					</div>
+
+					<div class="col-md-3" id="volume">
+						{{form_row(form.secVolume)}}
+					</div>
+				</div>
+				{%if form.secPageRange is defined%}
+					<div class="row">
+						<div id="page-range" class="col-md-3 hidden">
+							{{form_row(form.secPageRange)}}
+						</div>
+					</div>
+				{%endif%}
+				{{form_row(form.historians)}}
+				<div class="row">
+					<div class="col-md-9">
+						<div id="publisher">
+							{{form_row(form.secPublisher)}}
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div id="place">
+							{{form_row(form.secPubPlace)}}
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						{{form_row(form.secPubDate)}}
+					</div>
+				</div>
+				{{form_row(form.secOnlineIdentifier)}}
+				{%if form.journal is defined%}
+					<div id="journal" class="hidden">
+						{{form_row(form.journal)}}
+					</div>
+				{%endif%}
+				{%if form.collectiveBook is defined%}
+					<div id="collectiveBook" class="hidden">
+						{{form_row(form.collectiveBook)}}
+					</div>
+				{%endif%}
+				{{form_row(form.secOnlineIdentifier)}}
+
+			</div>
+		</div>
+		<div class="col-md-2">
+			{%include 'TAMASAstroBundle:AddObject:adminPannel.html.twig'%}
+		</div>
+	</div>
+{% endblock%}
+
+{% block javascripts %}
+	{{parent()}}
+	<script type="text/javascript" src="{{asset('js/addDisabled.js')}}"></script>
+	<script>
+		$(document).ready(function () {
+			//By default, the reloaders button don't have any option, excepted from the entity class name.
+			//We need to set up the collectivebook reload to the option "colloectiveBook".
+			reloaders['#refresh-tamas_astrobundle_secondarysource_collectiveBook'].changeParameters({'option':'collectiveBook'});
+
+			function changeSecondarySourceType() {
+				var pageRange = "#page-range";
+				var publisher = "#publisher";
+				var place = "#place";
+				var volume = "#volume";
+				var journal = "#journal";
+				var collectiveBook = "#collectiveBook";
+				console.log($('#{{form.vars.name}}_secType').val());
+				let field_to_show, field_to_hide;
+				if ($('#{{form.vars.name}}_secType').val() === "anthology") {
+					field_to_show = [publisher, place, volume];
+					field_to_hide = [pageRange, journal, collectiveBook];
+				}
+				if ($('#{{form.vars.name}}_secType').val() === "bookChapter") {
+					field_to_show = [publisher, place, collectiveBook, pageRange];
+					field_to_hide = [journal, volume, publisher, place];
+				}
+				if ($('#{{form.vars.name}}_secType').val() === "journalArticle") {
+					field_to_show = [pageRange, volume, journal];
+					field_to_hide = [publisher, place, collectiveBook];
+				}
+				if ($('#{{form.vars.name}}_secType').val() === "onlineArticle") {
+					field_to_show = [];
+					field_to_hide = [publisher, place, collectiveBook, pageRange, volume, journal];
+				}
+				for (let i = 0; i < field_to_show.length; i++) {
+					removeHidden(field_to_show[i]);
+				}
+				for (let i = 0; i < field_to_hide.length; i++) {
+					addHidden(field_to_hide[i]);
+					deleteContent(field_to_hide[i]);
+				}
+			}
+			changeSecondarySourceType();
+
+			$('#{{form.vars.name}}_secType').change(function() {
+				changeSecondarySourceType();
+			});
+		});
+	</script>
+{% endblock %}

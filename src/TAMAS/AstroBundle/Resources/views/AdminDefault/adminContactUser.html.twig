@@ -1,0 +1,26 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\adminContactUser.html.twig#}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+    Contact — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    <h2>Contact user</h2>
+
+    <div class="well">
+        {{form(form)}}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}  
+    <script>
+        $(document).ready(function () {
+            {% if id is defined and id is not null %}
+                var id = {{id}};
+                $("#form_contact").val(id);
+            {% endif %}
+        });
+    </script>
+{% endblock %}

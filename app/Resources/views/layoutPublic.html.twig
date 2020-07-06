@@ -1,0 +1,32 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <body class="dark-layout">
+        {% include '/includes/navbar.html.twig' %}
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="main">
+                    <div class="content">
+                        {% block mainContent %}
+
+                        {% endblock %}
+                    </div>
+                </div>  
+
+            </div>
+            <div class="row">
+                {% block confirm_statement %}
+                    {{ parent() }}
+                {% endblock %}
+            </div>
+        </div>
+        {% block javascripts %}
+            {{ parent() }}
+            <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtB4bsAYbvv7abxrDfTDenSHo5OtMWppM&language=en&libraries=places"></script>
+            
+            <script type="text/javascript" media="screen" src="http://docs.handsontable.com/0.33.0/bower_components/handsontable/dist/handsontable.full.js"></script>
+        {% endblock %}
+    </body>
+{% endblock %}
+{#</html>#}

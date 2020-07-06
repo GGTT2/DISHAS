@@ -1,0 +1,881 @@
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+    Page for testing tools - {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    <h2>In this page you can check if tools work properly</h2>
+
+{# <table style="width:100%">
+  <tr>
+    <th>Id</th>
+    <th>Catalog</th> 
+    <th>Date</th>
+    <th>Format</th>
+    <th>Shelfmark</th>
+  </tr>
+  
+  {% for manuscript in manuscripts %}
+    <tr>
+        <td>{{manuscript.id}}</td>
+        <td>{{manuscript.catalog}}</td>
+        <td>{{manuscript.date}}</td>
+        <td>{{manuscript.format}}</td>
+        <td>{{manuscript.shelmark}}</td>
+    </tr>
+  {% endfor %}
+
+</table>
+ #}
+
+{#     
+    <h3>Javascript Block</h3>
+    
+    <div class="row">
+        <div class="col-md-12" class="entity-table">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Script Import</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Importing <b>{{ conversionScript }}</b> . . .
+                        </div>
+                        <div class="col-md-6" id="conversionScript"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            Importing <b>{{ handsonScript }}</b> . . .
+                        </div>
+                        <div class="col-md-6" id="handsonScript"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                        
+    <div class="row" style='font-family: "Lucida console";'>
+        <div class="col-md-12" class="entity-table">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Conversion Tests</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>List of supported types of number</b>
+                        </div>
+                    </div>
+                    <div id="typeList">
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>Test of base_to_dec</b>
+                        </div>
+                    </div>
+                    <div id="baseToDecTest">
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>Test of dec_to_base</b>
+                        </div>
+                    </div>
+                    <div id="decToBaseTest">
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>Test of add_one</b>
+                        </div>
+                    </div>
+                    <div id="addOneTest">
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>Test of add</b>
+                        </div>
+                    </div>
+                    <div id="addTest">
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>Test of resize_number</b>
+                        </div>
+                    </div>
+                    <div id="resizeNumberTest">
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>Test of truncate</b>
+                        </div>
+                    </div>
+                    <div id="truncateTest">
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>Test of round</b>
+                        </div>
+                    </div>
+                    <div id="roundTest">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                
+    
+    <div class="row">
+        <div class="col-md-12" class="entity-table">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Ajax + Scripts Tests</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form(form) }}
+                        </div>
+                        <div class="col-md-6" id="ajaxResult">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                        
+                        <div class="row">
+        <div class="col-md-12" class="entity-table">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Ajax + Scripts Timing</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6" id="ajaxTime">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                        
+    <div class="row">
+        <div class="col-md-12" class="entity-table">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Sanitize Tests</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ sanitizedTest[0] }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ sanitizedTest[1] }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                        
+    <div class="row">
+        <div class="col-md-12" class="entity-table">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">HandsonTable test</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12" id="param-table-1D">
+                        </div>
+                        <div class="col-md-6" id="table-1D" style="height: 500px;overflow: hidden;">
+                        </div>
+                        <div class="col-md-6" id="table-1D-options">
+                             <button type="button" id="table-1D-generate2">Generate From 2 First</button>
+                             <button type="button" id="table-1D-validateAll">Validate Suggestions</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     #}
+    
+{% endblock %}
+{% block javascripts %}
+     On test ici les fonctions de conversion ecrites en javascript
+    {% include '/includes/javascripts.html.twig' %}
+    {% include 'includes/typeOfNumberInitialization.html.twig' %}
+    
+{#     <script type="text/javascript" media="screen" src="{{asset('js/handsontable-master/dist/handsontable.full.min.js')}}" onload="handsontableLoaded=true;" onerror="handsontableLoaded=false;"></script>
+    <script type ="text/javascript" src="{{asset( conversionScript )}}" onload="conversionLoaded=true;" onerror="conversionLoaded=false;"></script>
+    <script type ="text/javascript" src="{{asset( handsonScript )}}" onload="handsonLoaded=true;" onerror="handsonLoaded=false;"></script> #}
+    {#<script>
+        //test des imports
+        /*if(conversionLoaded) {
+            console.log("File {{asset( conversionScript )}} loaded successfully!");
+            $('#conversionScript').append("<b><font color=\"green\">Done !</font></b>");
+        }
+        else {
+            console.log("Can't load file {{asset( conversionScript )}}!");
+            $('#conversionScript').append("<b><font color=\"red\">Error !</font></b>");
+        }
+        if(handsonLoaded) {
+            console.log("File {{asset( handsonScript )}} loaded successfully!");
+            $('#handsonScript').append("<b><font color=\"green\">Done !</font></b>");
+        }
+        else {
+            console.log("Can't load file {{asset( handsonScript )}}!");
+            $('#handsonScript').append("<b><font color=\"red\">Error !</font></b>");
+        }
+        //affichage de la liste des formats de nombres supportes
+        for(var type in name_to_base) {
+            $('#typeList').append('<div class="row"><div class="col-md-6">'+type+'</div><div class="col-md-6">'+name_to_base[type][0]+' ; '+name_to_base[type][1]+'</div></div>');
+        }
+        
+        
+        //test ajax
+        
+
+        $("#form_submit").click(function (e) {
+            e.preventDefault();
+            var val = $("#form_Input").val();
+            //var selectNum = $("#form_Script").options[ $("#form_Script").selectedIndex ].value;
+            var selected = $("#form_Script :selected").attr("fullname");
+            $.getJSON(Routing.generate('tamas_astro_callAutoToolPython', {'scriptName':selected, 'option':val}), function(result) {
+                $("#ajaxResult").html(result);
+            });
+        });
+        
+        var numdone = 0;
+        var num = 10;
+        var t0 = performance.now();
+        
+        for(var i=0;i<num;i++) {
+            var val = i;
+            $.getJSON(Routing.generate('tamas_astro_callAutoToolPython', {'scriptName':'DISHAS_apenon_identity_2018-01-12.py', 'option':val}), function(result) {
+                numdone ++;
+                if(numdone === num) {
+                    var t1 = performance.now();
+                    $("#ajaxTime").html("Mean ajax request time : "+Math.floor((t1-t0)/num)+" milliseconds\n\
+                                        </br>Mean total time : "+Math.floor((t1-t0)/num)+" milliseconds + PythonAlgoTime");
+                }
+            });
+        }
+        
+        //test of the table
+        var example1D = {
+            args : [
+                {
+                    name : 'arg1',
+                    nsteps : 50,
+                    ncells : 5,
+                    decpos : 3,
+                    type : 'historical'
+                }
+            ],
+            entries : [
+                {
+                    name : 'entry',
+                    ncells : 4,
+                    decpos : 2,
+                    type : 'sexagesimal'
+                }
+            ],
+            infos : [],
+            padleft : true,
+            forwardInterpolate : true
+        };
+        
+        $('#param-table-1D').html(JSON.stringify(example1D));
+        createHandsonTable(example1D,'table-1D','table-1D-generate2','table-1D-validateAll');
+        
+        //tests pour add_one
+        add_one_tests = [
+            [new NumberView([2,4,9,11,29],[59,59,59,59],0.0,"historical",1),7,new NumberView([2,5,0,0,0],[0,0,0,59],0.0,"historical",1)],
+            [new NumberView([9,9,11,29],[59,59,59,59],0.0,"historical",1),6,new NumberView([1,0,0,0,0],[0,0,0,59],0.0,"historical",1)],
+            [new NumberView([9,9,11,2],[10,22,42,37],0.0,"historical",1),2,new NumberView([1,0,0,0,2],[10,22,42,37],0.0,"historical",1)],
+            [new NumberView([],[59,59,42,37],0.0,"historical",1),1,new NumberView([1],[0,0,42,37],0.0,"historical",1)],
+            [new NumberView([1,4,9,11,22],[],0.0,"historical",1),3,new NumberView([1,5,0,0,22],[],0.0,"historical",1)]
+        ];
+        
+        //tests pour add
+        add_tests = {
+            historical : [
+                [[[9,11,29],[17,39,45,7],0.0],[[9,12],[35,21],0.0],[[1,0,9,11],[53,0,45,7],0.0]],
+                [[[1,24],[0,0,0,0,0]],[[],[6,0,0,0,0]],[[1,24],[6,0,0,0,0]]]
+            ]
+        };
+        
+        resize_number_tests = {
+            historical : [
+                [[[3,10,23],[47,21,32],0.0],7,[[3,10,23],[47,21,32,0,0,0,0],0.0]],
+                [[[3,10,23],[47,21,32],0.5],7,[[3,10,23],[47,21,32,30,0,0,0],0.0]],
+                [[[3,10,23],[47,21,32,30,47,45],0.0],3,[[3,10,23],[47,21,32],0.0]]
+            ]
+        };
+        
+        //tests pour truncate
+        truncate_tests = {
+            historical : [
+                [[[2,4,9,11,29],[17,14,59,49]],2,[[2,4,9,11,29],[17,14]]]
+            ]
+        };
+        
+        //tests pour round
+        round_tests = {
+            historical : [
+                
+                [[[2,4,9,11,29],[59,59,59,49]],0.14,2,[[2,5,0,0,0],[0,0]]]
+            ],
+            integer_sexagesimal : [
+                [[[7,2,3,4,5,1,8],[15,23,7,8,45,19]],0.0,6,[[7,2,3,4,5,1,8],[15,23,7,8,45,19]]],
+                [[[7,2,3,4,5,1,8],[15,23,7,8,44,45,16,1]],0.784,6,[[7,2,3,4,5,1,8],[15,23,7,8,44,45]]]
+            ]
+        };
+        
+        //tests unitaires pour les fonctions de conversion des differents formats
+        base_to_dec_tests = [
+            [new SmartNumber([],[7,8,2,6,8,9,0],0.0,"sexagesimal",1),0.1188986215920782],
+            [new SmartNumber([2,45,6,23,9,17],[],0.0,"sexagesimal",1),2139779357.0],
+            [new SmartNumber([48,4,21,13],[1,54,0,8],0.0,"sexagesimal",1),10383673.031667285],
+            [new SmartNumber([],[7,8,2,6,8,9,0],0.0,"floating_sexagesimal",1),0.1188986215920782],
+            [new SmartNumber([2,45,6,23,9,17],[],0.0,"floating_sexagesimal",1),2139779357.0],
+            [new SmartNumber([48,4,21,13],[1,54,0,8],0.0,"floating_sexagesimal",1),10383673.031667285],
+            [new SmartNumber([2,4,8,11,23],[14,25,3,17,54],0.0,"historical",1),89633.24029304783],
+            [new SmartNumber([7,2,3,4,5,1,8],[15,23,7,8,45],0.0,"integer_and_sexagesimal",1),7234518.256421971],
+            [new SmartNumber([5,5,6,9,4,8,0,1],[19,78,45],0.0,"historical_decimal",1),55694801.197845],
+            [new SmartNumber([1,4,8,7,2],[17,59,32],0.0,"temporal",1),14872.749675925927]
+        ];
+        
+        function getNumberParts(x)
+        {
+            var float = new Float64Array(1),
+                bytes = new Uint8Array(float.buffer);
+            float[0] = x;
+            var sign = bytes[7] >> 7,
+                exponent = ((bytes[7] & 0x7f) << 4 | bytes[6] >> 4) - 0x3ff;
+            bytes[7] = 0x3f;
+            bytes[6] |= 0xf0;
+            return {
+                sign: sign,
+                exponent: exponent,
+                mantissa: float[0]
+            };
+        }
+        
+        function getSignificantError(x,y) {
+            var part1 = getNumberParts(x);
+            var part2 = getNumberParts(y);
+            var mantissa1 = part1.mantissa;
+            var mantissa2 = part2.mantissa;
+            if(part1.exponent !== part2.exponent)
+                mantissa2 *= 2^(part2.mantissa - part1.mantissa);
+            return Math.abs(mantissa1-mantissa2);
+        }
+        
+        function htmlPrintSmartNumber(n) {
+            return '&#91;'+n[0]+'&#93; &#59; &#91;'+n[1]+'&#93; r : '+n[2];
+        }
+        
+        function htmlPrintNumber(nleft, nright) {
+            return '&#91;'+nleft+'&#93; &#59; &#91;'+nright+'&#93;';
+        }
+        
+        var currentTests = add_one_tests;
+        
+        for(var index=0;index<currentTests.length;index++) {
+            var copy = JSON.parse(JSON.stringify(currentTests[index][0]));
+            var result = add_one(copy,currentTests[index][1]);
+            var expected = currentTests[index][2];
+            if(NVEquals(result, expected)) {
+                var printRes = '<font color="green"><b>OK</b></font>';
+            }
+            else {
+                var printRes = '<font color="red"><b>False!</b></font>';
+            }
+            $('#addOneTest').append('<div class="row"><div class="col-md-6">'+
+                    new SmartNumber(currentTests[index][0])+"&nbsp;&nbsp;"+currentTests[index][1]+
+                    "&nbsp;&nbsp; --> &nbsp;&nbsp;"+new SmartNumber(result)+'</div>'+
+                    '<div class="col-md-6">'+printRes+'</div>'+
+                    '</div>'
+                    );
+        }
+        
+        var currentTests = base_to_d <div class="row">
+        <div class="col-md-12" class="entity-table">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Script Import</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Importing <b>{{ conversionScript }}</b> . . .
+                        </div>
+                        <div class="col-md-6" id="conversionScript"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            Importing <b>{{ handsonScript }}</b> . . .
+                        </div>
+                        <div class="col-md-6" id="handsonScript"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                        
+    <div class="row" style='font-family: "Lucida console";'>
+        <div class="col-md-12" class="entity-table">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Conversion Tests</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>List of supported types of number</b>
+                        </div>
+                    </div>
+                    <div id="typeList">
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>Test of base_to_dec</b>
+                        </div>
+                    </div>
+                    <div id="baseToDecTest">
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>Test of dec_to_base</b>
+                        </div>
+                    </div>
+                    <div id="decToBaseTest">
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>Test of add_one</b>
+                        </div>
+                    </div>
+                    <div id="addOneTest">
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>Test of add</b>
+                        </div>
+                    </div>
+                    <div id="addTest">
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>Test of resize_number</b>
+                        </div>
+                    </div>
+                    <div id="resizeNumberTest">
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>Test of truncate</b>
+                        </div>
+                    </div>
+                    <div id="truncateTest">
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>Test of round</b>
+                        </div>
+                    </div>
+                    <div id="roundTest">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                
+    
+    <div class="row">
+        <div class="col-md-12" class="entity-table">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Ajax + Scripts Tests</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form(form) }}
+                        </div>
+                        <div class="col-md-6" id="ajaxResult">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                        
+                        <div class="row">
+        <div class="col-md-12" class="entity-table">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Ajax + Scripts Timing</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6" id="ajaxTime">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                        
+    <div class="row">
+        <div class="col-md-12" class="entity-table">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Sanitize Tests</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ sanitizedTest[0] }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ sanitizedTest[1] }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                        
+    <div class="row">
+        <div class="col-md-12" class="entity-table">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">HandsonTable test</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12" id="param-table-1D">
+                        </div>
+                        <div class="col-md-6" id="table-1D" style="height: 500px;overflow: hidden;">
+                        </div>
+                        <div class="col-md-6" id="table-1D-options">
+                             <button type="button" id="table-1D-generate2">Generate From 2 First</button>
+                             <button type="button" id="table-1D-validateAll">Validate Suggestions</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+{% endblock %}
+{% block javascripts %}
+    {# On test ici les fonctions de conversion ecrites en javascript #}
+ {#    {% include '/includes/javascripts.html.twig' %}
+    {% include 'includes/typeOfNumberInitialization.html.twig' %}
+    
+    <script type="text/javascript" media="screen" src="{{asset('js/handsontable-master/dist/handsontable.full.min.js')}}" onload="handsontableLoaded=true;" onerror="handsontableLoaded=false;"></script>
+    <script type ="text/javascript" src="{{asset( conversionScript )}}" onload="conversionLoaded=true;" onerror="conversionLoaded=false;"></script>
+    <script type ="text/javascript" src="{{asset( handsonScript )}}" onload="handsonLoaded=true;" onerror="handsonLoaded=false;"></script>
+    <script> #}
+       {#} //test des imports
+        /*if(conversionLoaded) {
+            console.log("File {{asset( conversionScript )}} loaded successfully!");
+            $('#conversionScript').append("<b><font color=\"green\">Done !</font></b>");
+        }
+        else {
+            console.log("Can't load file {{asset( conversionScript )}}!");
+            $('#conversionScript').append("<b><font color=\"red\">Error !</font></b>");
+        }
+        if(handsonLoaded) {
+            console.log("File {{asset( handsonScript )}} loaded successfully!");
+            $('#handsonScript').append("<b><font color=\"green\">Done !</font></b>");
+        }
+        else {
+            console.log("Can't load file {{asset( handsonScript )}}!");
+            $('#handsonScript').append("<b><font color=\"red\">Error !</font></b>");
+        }
+        //affichage de la liste des formats de nombres supportes
+        for(var type in name_to_base) {
+            $('#typeList').append('<div class="row"><div class="col-md-6">'+type+'</div><div class="col-md-6">'+name_to_base[type][0]+' ; '+name_to_base[type][1]+'</div></div>');
+        }
+        
+        
+        //test ajax
+        
+
+        $("#form_submit").click(function (e) {
+            e.preventDefault();
+            var val = $("#form_Input").val();
+            //var selectNum = $("#form_Script").options[ $("#form_Script").selectedIndex ].value;
+            var selected = $("#form_Script :selected").attr("fullname");
+            $.getJSON(Routing.generate('tamas_astro_callAutoToolPython', {'scriptName':selected, 'option':val}), function(result) {
+                $("#ajaxResult").html(result);
+            });
+        });
+        
+        var numdone = 0;
+        var num = 10;
+        var t0 = performance.now();
+        
+        for(var i=0;i<num;i++) {
+            var val = i;
+            $.getJSON(Routing.generate('tamas_astro_callAutoToolPython', {'scriptName':'DISHAS_apenon_identity_2018-01-12.py', 'option':val}), function(result) {
+                numdone ++;
+                if(numdone === num) {
+                    var t1 = performance.now();
+                    $("#ajaxTime").html("Mean ajax request time : "+Math.floor((t1-t0)/num)+" milliseconds\n\
+                                        </br>Mean total time : "+Math.floor((t1-t0)/num)+" milliseconds + PythonAlgoTime");
+                }
+            });
+        }
+        
+        //test of the table
+        var example1D = {
+            args : [
+                {
+                    name : 'arg1',
+                    nsteps : 50,
+                    ncells : 5,
+                    decpos : 3,
+                    type : 'historical'
+                }
+            ],
+            entries : [
+                {
+                    name : 'entry',
+                    ncells : 4,
+                    decpos : 2,
+                    type : 'sexagesimal'
+                }
+            ],
+            infos : [],
+            padleft : true,
+            forwardInterpolate : true
+        };
+        
+        $('#param-table-1D').html(JSON.stringify(example1D));
+        createHandsonTable(example1D,'table-1D','table-1D-generate2','table-1D-validateAll');
+        
+        //tests pour add_one
+        add_one_tests = [
+            [new NumberView([2,4,9,11,29],[59,59,59,59],0.0,"historical",1),7,new NumberView([2,5,0,0,0],[0,0,0,59],0.0,"historical",1)],
+            [new NumberView([9,9,11,29],[59,59,59,59],0.0,"historical",1),6,new NumberView([1,0,0,0,0],[0,0,0,59],0.0,"historical",1)],
+            [new NumberView([9,9,11,2],[10,22,42,37],0.0,"historical",1),2,new NumberView([1,0,0,0,2],[10,22,42,37],0.0,"historical",1)],
+            [new NumberView([],[59,59,42,37],0.0,"historical",1),1,new NumberView([1],[0,0,42,37],0.0,"historical",1)],
+            [new NumberView([1,4,9,11,22],[],0.0,"historical",1),3,new NumberView([1,5,0,0,22],[],0.0,"historical",1)]
+        ];
+        
+        //tests pour add
+        add_tests = {
+            historical : [
+                [[[9,11,29],[17,39,45,7],0.0],[[9,12],[35,21],0.0],[[1,0,9,11],[53,0,45,7],0.0]],
+                [[[1,24],[0,0,0,0,0]],[[],[6,0,0,0,0]],[[1,24],[6,0,0,0,0]]]
+            ]
+        };
+        
+        resize_number_tests = {
+            historical : [
+                [[[3,10,23],[47,21,32],0.0],7,[[3,10,23],[47,21,32,0,0,0,0],0.0]],
+                [[[3,10,23],[47,21,32],0.5],7,[[3,10,23],[47,21,32,30,0,0,0],0.0]],
+                [[[3,10,23],[47,21,32,30,47,45],0.0],3,[[3,10,23],[47,21,32],0.0]]
+            ]
+        };
+        
+        //tests pour truncate
+        truncate_tests = {
+            historical : [
+                [[[2,4,9,11,29],[17,14,59,49]],2,[[2,4,9,11,29],[17,14]]]
+            ]
+        };
+        
+        //tests pour round
+        round_tests = {
+            historical : [
+                
+                [[[2,4,9,11,29],[59,59,59,49]],0.14,2,[[2,5,0,0,0],[0,0]]]
+            ],
+            integer_sexagesimal : [
+                [[[7,2,3,4,5,1,8],[15,23,7,8,45,19]],0.0,6,[[7,2,3,4,5,1,8],[15,23,7,8,45,19]]],
+                [[[7,2,3,4,5,1,8],[15,23,7,8,44,45,16,1]],0.784,6,[[7,2,3,4,5,1,8],[15,23,7,8,44,45]]]
+            ]
+        };
+        
+        //tests unitaires pour les fonctions de conversion des differents formats
+        base_to_dec_tests = [
+            [new SmartNumber([],[7,8,2,6,8,9,0],0.0,"sexagesimal",1),0.1188986215920782],
+            [new SmartNumber([2,45,6,23,9,17],[],0.0,"sexagesimal",1),2139779357.0],
+            [new SmartNumber([48,4,21,13],[1,54,0,8],0.0,"sexagesimal",1),10383673.031667285],
+            [new SmartNumber([],[7,8,2,6,8,9,0],0.0,"floating_sexagesimal",1),0.1188986215920782],
+            [new SmartNumber([2,45,6,23,9,17],[],0.0,"floating_sexagesimal",1),2139779357.0],
+            [new SmartNumber([48,4,21,13],[1,54,0,8],0.0,"floating_sexagesimal",1),10383673.031667285],
+            [new SmartNumber([2,4,8,11,23],[14,25,3,17,54],0.0,"historical",1),89633.24029304783],
+            [new SmartNumber([7,2,3,4,5,1,8],[15,23,7,8,45],0.0,"integer_and_sexagesimal",1),7234518.256421971],
+            [new SmartNumber([5,5,6,9,4,8,0,1],[19,78,45],0.0,"historical_decimal",1),55694801.197845],
+            [new SmartNumber([1,4,8,7,2],[17,59,32],0.0,"temporal",1),14872.749675925927]
+        ];
+        
+        function getNumberParts(x)
+        {
+            var float = new Float64Array(1),
+                bytes = new Uint8Array(float.buffer);
+            float[0] = x;
+            var sign = bytes[7] >> 7,
+                exponent = ((bytes[7] & 0x7f) << 4 | bytes[6] >> 4) - 0x3ff;
+            bytes[7] = 0x3f;
+            bytes[6] |= 0xf0;
+            return {
+                sign: sign,
+                exponent: exponent,
+                mantissa: float[0]
+            };
+        }
+        
+        function getSignificantError(x,y) {
+            var part1 = getNumberParts(x);
+            var part2 = getNumberParts(y);
+            var mantissa1 = part1.mantissa;
+            var mantissa2 = part2.mantissa;
+            if(part1.exponent !== part2.exponent)
+                mantissa2 *= 2^(part2.mantissa - part1.mantissa);
+            return Math.abs(mantissa1-mantissa2);
+        }
+        
+        function htmlPrintSmartNumber(n) {
+            return '&#91;'+n[0]+'&#93; &#59; &#91;'+n[1]+'&#93; r : '+n[2];
+        }
+        
+        function htmlPrintNumber(nleft, nright) {
+            return '&#91;'+nleft+'&#93; &#59; &#91;'+nright+'&#93;';
+        }
+        
+        var currentTests = add_one_tests;
+        
+        for(var index=0;index<currentTests.length;index++) {
+            var copy = JSON.parse(JSON.stringify(currentTests[index][0]));
+            var result = add_one(copy,currentTests[index][1]);
+            var expected = currentTests[index][2];
+            if(NVEquals(result, expected)) {
+                var printRes = '<font color="green"><b>OK</b></font>';
+            }
+            else {
+                var printRes = '<font color="red"><b>False!</b></font>';
+            }
+            $('#addOneTest').append('<div class="row"><div class="col-md-6">'+
+                    new SmartNumber(currentTests[index][0])+"&nbsp;&nbsp;"+currentTests[index][1]+
+                    "&nbsp;&nbsp; --> &nbsp;&nbsp;"+new SmartNumber(result)+'</div>'+
+                    '<div class="col-md-6">'+printRes+'</div>'+
+                    '</div>'
+                    );
+        }
+        
+        var currentTests = base_to_dec_tests;
+        
+        for(var index=0;index<currentTests.length;index++) {
+            var result = currentTests[index][0].computeDecimal();
+            var expected = currentTests[index][1];
+            var precision = 1/(Math.pow(2,51)); //precision au dernier bit de mantisse
+            if(getSignificantError(result, expected) < precision) {
+                var printRes = '<font color="green"><b>OK</b></font>';
+            }
+            else {
+                var printRes = '<font color="red"><b>False!</b></font>';
+            }
+            $('#baseToDecTest').append('<div class="row"><div class="col-md-6">'+
+                    currentTests[index][0]+
+                    "&nbsp;&nbsp; --> &nbsp;&nbsp;"+result+'</div>'+
+                    '<div class="col-md-6">'+printRes+'</div>'+
+                    '</div>'
+                    );
+        }
+        
+        //resverse test
+        var currentTests = base_to_dec_tests;
+        
+        for(var index=0;index<currentTests.length;index++) {
+            var expected = currentTests[index][0];
+            var dec = currentTests[index][1];
+            var result = new SmartNumber(dec);
+            result.asBase(expected.initialbase, expected.value().nright.length+1).round(expected.value().nright.length);
+            
+            if(NVEquals(result.value(), expected.value())) {
+                var printRes = '<font color="green"><b>OK</b></font>';
+            }
+            else {
+                var printRes = '<font color="red"><b>False!</b></font>';
+            }
+            $('#decToBaseTest').append('<div class="row"><div class="col-md-6">'+
+                    dec+
+                    "&nbsp;&nbsp;"+","+"&nbsp;&nbsp;"+expected.value().nright.length+"&nbsp;&nbsp; --> &nbsp;&nbsp;"+result+'</div>'+
+                    '<div class="col-md-6">'+printRes+'</div>'+
+                    '</div>'
+                    );
+        }*/
+       {# ec_tests;
+        
+        for(var index=0;index<currentTests.length;index++) {
+            var result = currentTests[index][0].computeDecimal();
+            var expected = currentTests[index][1];
+            var precision = 1/(Math.pow(2,51)); //precision au dernier bit de mantisse
+            if(getSignificantError(result, expected) < precision) {
+                var printRes = '<font color="green"><b>OK</b></font>';
+            }
+            else {
+                var printRes = '<font color="red"><b>False!</b></font>';
+            }
+            $('#baseToDecTest').append('<div class="row"><div class="col-md-6">'+
+                    currentTests[index][0]+
+                    "&nbsp;&nbsp; --> &nbsp;&nbsp;"+result+'</div>'+
+                    '<div class="col-md-6">'+printRes+'</div>'+
+                    '</div>'
+                    );
+        }
+        
+        //resverse test
+        var currentTests = base_to_dec_tests;
+        
+        for(var index=0;index<currentTests.length;index++) {
+            var expected = currentTests[index][0];
+            var dec = currentTests[index][1];
+            var result = new SmartNumber(dec);
+            result.asBase(expected.initialbase, expected.value().nright.length+1).round(expected.value().nright.length);
+            
+            if(NVEquals(result.value(), expected.value())) {
+                var printRes = '<font color="green"><b>OK</b></font>';
+            }
+            else {
+                var printRes = '<font color="red"><b>False!</b></font>';
+            }
+            $('#decToBaseTest').append('<div class="row"><div class="col-md-6">'+
+                    dec+
+                    "&nbsp;&nbsp;"+","+"&nbsp;&nbsp;"+expected.value().nright.length+"&nbsp;&nbsp; --> &nbsp;&nbsp;"+result+'</div>'+
+                    '<div class="col-md-6">'+printRes+'</div>'+
+                    '</div>'
+                    );
+        }*/
+        #}
+
+    </script>
+    
+{% endblock %}

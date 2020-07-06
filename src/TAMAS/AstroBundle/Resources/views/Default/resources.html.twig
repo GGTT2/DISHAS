@@ -1,0 +1,85 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\resources.html.twig#}
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% set currentNode = "resources" %}
+
+{% block title %}
+    Resources — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    <link rel="stylesheet" href="{{ asset('css/static-pages.css')}}">
+    {% include 'TAMASAstroBundle:Default:Templates/pageHeader.html.twig' with {"title":"Resources", "tag":"h1"} %}
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="well">
+                <p>Notice: <br/>This list of resources is still a work in progress and will be shortly improved with related resources.</p>
+            </div>
+            <table class="table" style="font-size: 16px;">
+                <tbody>
+                <tr>
+                    <th colspan="2" style="border: none">Bibliography</th>
+                    <td colspan="3" style="border: none">
+                        <a href="{{ path("tamas_astro_bibliography") }}" target="_blank">Selected resources</a>
+                        <hr/>
+                        <a href="https://www.zotero.org/groups/927726/erc-alfa" target="_blank">ALFA bibliography on Zotero</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">Table Analysis Tools</th>
+                    <td colspan="3">
+                        <a href="{{ path("tamas_astro_setupDTI") }}" target="_blank">DISHAS Table Interface (DTI)</a>
+                        <hr/>
+                        <a href="http://dips.obspm.fr:8866/" target="_blank">DISHAS Interactive Parameter Squeezer (DIPS)</a><br>(very long first loading)
+                        <hr/>
+                        <a href="http://uc.hamsi.org.nz/cate/" target="_blank">Computer Assisted Table Editor (CATE)</a>
+                        <hr/>
+                        <a href="http://www.bennovandalen.de/Programs/programs.html">Benno van Dalen's programs for research in the history of ancient and medieval astronomy</a>
+                        <hr/>
+                        <a href="https://sharedocs.huma-num.fr/wl/?id=Ct6ULZQMM1PpLJwInaF1TgYdXo9cfQwS">Astromodels spreadsheet template, by Richard Kremer and Lars Gilsen</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">Documentation</th>
+                    <td colspan="3">
+                        <a href="{{ path("tamas_astro_glossary") }}" target="_blank">Glossary</a>
+                        <hr>
+                        <a href="{{ path("tamas_astro_api") }}" target="_blank">How to use the API</a>
+                        <hr>
+                        <a href="{{ path("tamas_astro_navigation") }}" target="_blank">Navigation in DISHAS platform</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">Presentations</th>
+                    <td colspan="3">
+                        <a href="https://bit.ly/3gUEBVs" target="_blank">DISHAS foundation and database</a>
+                        <hr>
+                        <a href="https://bit.ly/3er41Z7" target="_blank">Front office tour</a>
+                        <hr>
+                        <a href="https://bit.ly/2U8d2hT" target="_blank">DIPS presentation</a>
+                        <hr>
+                        <a href="https://bit.ly/3dxSDub" target="_blank">Designing the public interface</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">Videos</th>
+                    <td colspan="3">
+                        <a href="https://www.youtube.com/playlist?list=PLpXmYLf3Yxr7QcRYraAsljRYSXGbl1WxO" target="_blank">DTI tutorials</a>
+                        <hr>
+                        <a href="https://www.youtube.com/playlist?list=PLpXmYLf3Yxr5i4tWlgsx97R_jBX6x0Yor" target="_blank">DIPS</a>
+                        <hr>
+                        <a href="https://www.youtube.com/playlist?list=PLpXmYLf3Yxr7C8Gs3zdct_agy71kk2lOd" target="_blank">DISHAS platform</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">Miscellaneous</th>
+                    <td colspan="3">
+                        <a href="https://alfa.hypotheses.org/seminars" target="_blank">ALFA seminars</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

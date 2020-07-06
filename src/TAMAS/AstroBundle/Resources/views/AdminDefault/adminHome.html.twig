@@ -1,0 +1,434 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\adminHome.html.twig#}
+
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+    Admin home — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    <h4>Welcome {{ app.user.username }} to the administrative interface</h4>
+    <div class="row">
+        <div class="col-md-6 entity-table">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Main entities</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr id="originalText">
+                            <td class="col-md-6">
+                                {% if object_info.properties.originalText.userInterfaceColor|default %}
+                                    <span style="color: {{ object_info.properties.originalText.userInterfaceColor }}">▶ </span>
+                                {% endif %}
+                                {{ object_info.properties.originalText.objectUserInterfaceName|capitalize }}
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminAddOriginalText') }}">
+                                    <span class="glyphicon glyphicon-plus-sign"></span> Add
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminListOriginalText') }}">
+                                    <span class="glyphicon glyphicon-list"></span> List
+                                </a>
+                            </td>
+                            <td>
+                                <a class="info" href="#">
+                                    <span class="glyphicon glyphicon-info-sign"></span> Info
+                                </a>
+                            </td>
+                        </tr>
+                        <tr id="editedText">
+                            <td class="col-md-6">
+                                {% if object_info.properties.editedText.userInterfaceColor|default %}
+                                    <span style="color: {{ object_info.properties.editedText.userInterfaceColor }}">▶ </span>
+                                {% endif %}
+                                {{ object_info.properties.editedText.objectUserInterfaceName|capitalize }}
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminSelectEditedType') }}">
+                                    <span class="glyphicon glyphicon-plus-sign"></span> Add
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminListEditedText') }}">
+                                    <span class="glyphicon glyphicon-list"></span> List
+                                </a>
+                            </td>
+                            <td>
+                                <a class="info" href="#">
+                                    <span class="glyphicon glyphicon-info-sign"></span> Info
+                                </a>
+                            </td>
+                        </tr>
+                        <tr id="tableContent">
+                            <td class="col-md-6">
+                                {% if object_info.properties.tableContent.userInterfaceColor|default %}
+                                    <span style="color: {{ object_info.properties.tableContent.userInterfaceColor }}">▶ </span>
+                                {% endif %}
+                                {{ object_info.properties.tableContent.objectUserInterfaceName|capitalize }}
+                            </td>
+                            <td>
+                                <a href="#" id="add-tableContent">
+                                    <span class="glyphicon glyphicon-plus-sign"></span>
+                                    Add
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminListTableContent') }}">
+                                    <span class="glyphicon glyphicon-list"></span> List
+                                </a>
+                            </td>
+                            <td>
+                                <a class="info" href="#">
+                                    <span class="glyphicon glyphicon-info-sign"></span> Info
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Material
+                        of {{ object_info.properties.originalText.objectUserInterfaceName|capitalize }}</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr id="primarySource">
+                            <td class="col-md-6">
+                                {% if object_info.properties.primarySource.userInterfaceColor|default %}
+                                    <span style="color: {{ object_info.properties.primarySource.userInterfaceColor }}">▶ </span>
+                                {% endif %}
+                                {{ object_info.properties.primarySource.objectUserInterfaceName|capitalize }}
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminAddPrimarySource') }}">
+                                    <span class="glyphicon glyphicon-plus-sign"></span> Add
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminListPrimarySource') }}">
+                                    <span class="glyphicon glyphicon-list"></span> List
+                                </a>
+                            </td>
+                            <td>
+                                <a class="info" href="#">
+                                    <span class="glyphicon glyphicon-info-sign"></span> Info
+                                </a>
+                            </td>
+                        </tr>
+                        <tr id="work">
+                            <td class="col-md-6">
+                                {% if object_info.properties.work.userInterfaceColor|default %}
+                                    <span style="color: {{ object_info.properties.work.userInterfaceColor }}">▶ </span>
+                                {% endif %}
+                                {{ object_info.properties.work.objectUserInterfaceName|capitalize }}
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminAddWork') }}">
+                                    <span class="glyphicon glyphicon-plus-sign"></span> Add
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminListWork') }}">
+                                    <span class="glyphicon glyphicon-list"></span> List
+                                </a>
+                            </td>
+                            <td>
+                                <a class="info" href="#">
+                                    <span class="glyphicon glyphicon-info-sign"></span> Info
+                                </a>
+                            </td>
+                        </tr>
+                        <tr id="historicalActor">
+                            <td class="col-md-6">
+                                {% if object_info.properties.historicalActor.userInterfaceColor|default %}
+                                    <span style="color: {{ object_info.properties.historicalActor.userInterfaceColor }}">▶ </span>
+                                {% endif %}
+                                {{ object_info.properties.historicalActor.objectUserInterfaceName|capitalize }}
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminAddHistoricalActor') }}">
+                                    <span class="glyphicon glyphicon-plus-sign"></span> Add
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminListHistoricalActor') }}">
+                                    <span class="glyphicon glyphicon-list"></span> List
+                                </a>
+                            </td>
+                            <td>
+                                <a class="info" href="#">
+                                    <span class="glyphicon glyphicon-info-sign"></span> Info
+                                </a>
+                            </td>
+                        </tr>
+                        <tr id="place">
+                            <td class="col-md-6">
+                                {% if object_info.properties.place.userInterfaceColor|default %}
+                                    <span style="color: {{ object_info.properties.place.userInterfaceColor }}">▶ </span>
+                                {% endif %}
+                                {{ object_info.properties.place.objectUserInterfaceName|capitalize }}
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminAddPlace') }}">
+                                    <span class="glyphicon glyphicon-plus-sign"></span> Add
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminListPlace') }}">
+                                    <span class="glyphicon glyphicon-list"></span> List
+                                </a>
+                            </td>
+                            <td>
+                                <a class="info" href="#">
+                                    <span class="glyphicon glyphicon-info-sign"></span> Info
+                                </a>
+                            </td>
+                        </tr>
+                        <tr id="library">
+                            <td class="col-md-6">
+                                {% if object_info.properties.library.userInterfaceColor|default %}
+                                    <span style="color: {{ object_info.properties.library.userInterfaceColor }}">▶ </span>
+                                {% endif %}
+                                {{ object_info.properties.library.objectUserInterfaceName|capitalize }}
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminAddLibrary') }}">
+                                    <span class="glyphicon glyphicon-plus-sign"></span> Add
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminListLibrary') }}">
+                                    <span class="glyphicon glyphicon-list"></span> List
+                                </a>
+                            </td>
+                            <td>
+                                <a class="info" href="#">
+                                    <span class="glyphicon glyphicon-info-sign"></span> Info
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Material
+                        of {{ object_info.properties.editedText.objectUserInterfaceName|capitalize }}</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr id="historian">
+                            <td class="col-md-6">
+                                {% if object_info.properties.historian.userInterfaceColor|default %}
+                                    <span style="color: {{ object_info.properties.historian.userInterfaceColor }}">▶ </span>
+                                {% endif %}
+                                {{ object_info.properties.historian.objectUserInterfaceName|capitalize }}
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminAddHistorian') }}">
+                                    <span class="glyphicon glyphicon-plus-sign"></span> Add
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminListHistorian') }}">
+                                    <span class="glyphicon glyphicon-list"></span> List
+                                </a>
+                            </td>
+                            <td>
+                                <a class="info" href="#">
+                                    <span class="glyphicon glyphicon-info-sign"></span> Info
+                                </a>
+                            </td>
+
+                        </tr>
+                        <tr id="secondarySource">
+                            <td class="col-md-6">
+                                {% if object_info.properties.secondarySource.userInterfaceColor|default %}
+                                    <span style="color: {{ object_info.properties.secondarySource.userInterfaceColor }}">▶ </span>
+                                {% endif %}
+                                {{ object_info.properties.secondarySource.objectUserInterfaceName|capitalize }}
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminAddSecondarySource') }}">
+                                    <span class="glyphicon glyphicon-plus-sign"></span> Add
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminListSecondarySource') }}">
+                                    <span class="glyphicon glyphicon-list"></span> List
+                                </a>
+                            </td>
+                            <td>
+                                <a class="info" href="#">
+                                    <span class="glyphicon glyphicon-info-sign"></span> Info
+                                </a>
+                            </td>
+
+                        </tr>
+                        <tr id="journal">
+                            <td class="col-md-6">
+                                {% if object_info.properties.journal.userInterfaceColor|default %}
+                                    <span style="color: {{ object_info.properties.journal.userInterfaceColor }}">▶ </span>
+                                {% endif %}
+                                {{ object_info.properties.journal.objectUserInterfaceName|capitalize }}
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminAddJournal') }}">
+                                    <span class="glyphicon glyphicon-plus-sign"></span> Add
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminListJournal') }}">
+                                    <span class="glyphicon glyphicon-list"></span> List
+                                </a>
+                            </td>
+                            <td>
+                                <a class="info" href="#">
+                                    <span class="glyphicon glyphicon-info-sign"></span> Info
+                                </a>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Parameter
+                        of {{ object_info.properties.tableContent.objectUserInterfaceName|capitalize }}</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr id="parameterSet">
+                            <td class="col-md-6">
+                                {% if object_info.properties.parameterSet.userInterfaceColor|default %}
+                                    <span style="color: {{ object_info.properties.parameterSet.userInterfaceColor }}">▶ </span>
+                                {% endif %}
+                                {{ object_info.properties.parameterSet.objectUserInterfaceName|capitalize }}
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminSelectTableType', {'action':'add'}) }}">
+                                    <span class="glyphicon glyphicon-plus-sign"></span> Add
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminListParameterSet') }}">
+                                    <span class="glyphicon glyphicon-list"></span> List
+                                </a>
+                            </td>
+                            <td>
+                                <a class="info" href="#">
+                                    <span class="glyphicon glyphicon-info-sign"></span> Info
+                                </a>
+                            </td>
+                        </tr>
+                        <tr id="mathematicalParameter">
+                            <td class="col-md-6">
+                                {% if object_info.properties.mathematicalParameter.userInterfaceColor|default %}
+                                    <span style="color: {{ object_info.properties.mathematicalParameter.userInterfaceColor }}">▶ </span>
+                                {% endif %}
+                                {{ object_info.properties.mathematicalParameter.objectUserInterfaceName|capitalize }}
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminAddMathematicalParameter', {'action':'add'}) }}">
+                                    <span class="glyphicon glyphicon-plus-sign"></span> Add
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ path('tamas_astro_adminListMathematicalParameter') }}">
+                                    <span class="glyphicon glyphicon-list"></span> List
+                                </a>
+                            </td>
+                            <td>
+                                <a class="info" href="#">
+                                    <span class="glyphicon glyphicon-info-sign"></span> Info
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Personal Space</h3>
+                </div>
+                <div class="panel-body">
+                    <a href="{{ path('tamas_astro_adminSpace') }}">
+                        <span class="glyphicon glyphicon-user"></span> My workspace
+                    </a>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Announcement</h3>
+                </div>
+                <div id="announcement" class="panel-body">
+                    {% if private_announcement.textContent|default %}
+                        {{ private_announcement.textContent|raw }}
+                    {% else %}
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img style="width: 100%; margin-top: 25px" src="{{ asset('img/construction-workers.jpg') }}" alt="Work in progress"/>
+                            </div>
+                            <div class="col-md-8">
+                                <h3>Dear user of DISHAS</h3>
+                                <p>
+                                    This version of the website is still a work in progress. Thank you for testing it and
+                                    <b>do not hesitate to give us feedback</b> with the
+                                    <a href='{{ path('tamas_astro_adminContactUser') }}'>contact form</a>.
+                                </p>
+                                <p>Enjoy testing DISHAS !</p>
+                                <p style='text-align:right'>Galla Topalian<br/>Digital Project Manager</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" media="screen"
+            src="{#{{asset('js/handsontable-master/dist/handsontable.full.min.js')}}#}http://docs.handsontable.com/0.33.0/bower_components/handsontable/dist/handsontable.full.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let dialog = $("#dialog");
+            $(".info").click(function () {
+                const entity = $(this).parent().parent().attr('id');
+                dialog.dialog();
+                dialog.html("<b>" + objects[entity].objectUserInterfaceName.capitalize() + ":</b> " + objects[entity]['shortDefinition']);
+            });
+            $("#add-tableContent").click(function (e) {
+                e.preventDefault();
+                const linkAddEditedText = "{{ path('tamas_astro_adminSelectEditedType') }}";
+                const linkListEditedText = "{{ path('tamas_astro_adminListEditedText') }}";
+                dialog.dialog();
+                dialog.html(`In order to add a ${objects.tableContent.objectUserInterfaceName}, you need first to create a ${objects.editedText.objectUserInterfaceName}
+							 containing the appropriate metadata of the ${objects.tableContent.objectUserInterfaceName}.<br/>
+							 Click <b><a href="${linkAddEditedText}">here</a></b> to add a new ${objects.editedText.objectUserInterfaceName} or
+							 <b><a href="${linkListEditedText}">here</a></b> to find and edit an existing ${objects.editedText.objectUserInterfaceName}.`);
+            });
+        });
+    </script>
+    <div id="dialog" title="Info"></div>
+{% endblock %}
+

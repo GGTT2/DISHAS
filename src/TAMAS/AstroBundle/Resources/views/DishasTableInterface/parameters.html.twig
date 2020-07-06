@@ -1,0 +1,121 @@
+<div class="modal fade" id="dialog-parameter" {# tabindex="-1" #} role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				{# <button type="button" class="close" data-dismiss="modal"#}
+				{# aria-label="Close">#}
+				{# <span aria-hidden="true">&times;</span>#}
+				{# </button>#}
+				<h4 class="modal-title"> Historical parameters</h4>
+			</div>
+			<div class="modal-body">
+				<div id="parameters-data">
+
+					<div id="astronomical-parameter" class="panel panel-default">
+						<div class="panel-heading">
+							<h4>Astronomical Parameters</h4>
+						</div>
+						<div class="panel-body">
+							{{ form_row(form.parameterSets) }}
+
+							<div class="row">
+								<div class="col-sm-4 col-md-3">
+									<h4 style="padding-top: 20px">Search parameter sets</h4>
+								</div>
+								<div class="col-sm-1">
+									{% if public|default() and public == true %}
+										<a href="{{path("tamas_astro_simpleSearchParameterSet")}}" target="_blank" class="btn btn-success add-entity">
+											<span class="glyphicon glyphicon-search"></span>
+										</a>
+									{% else %}
+										<a href="{{path("tamas_astro_simpleSearchParameterSet", {'admin': true })}}" target="_blank" class="btn btn-success add-entity">
+											<span class="glyphicon glyphicon-search"></span>
+										</a>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<div id="mathematical-parameter"  class="panel panel-default">
+						<div class="panel-heading">
+							<h4>MathematicalParameters</h4>
+						</div>
+						<div class="panel-body">
+							{{form_row(form.mathematicalParameter)}}
+						</div>
+					</div>
+
+					{% if form.meanMotion|default %}
+						<div id="mean-motion-parameter" class="panel panel-default">
+							<div class="panel-heading"><h4>Localization parameters</h4></div>
+							<div class="panel-body">
+								<div id="place-parameter">
+									<h5>Place Localization</h5>
+									<table class="parameters-table">
+										<tbody>
+										<tr>
+											<th scope="row">Place</th>
+											<td>{{form_row(form.meanMotion.placeName)}}</td>
+											<td>{{form_row(form.meanMotion.placeNameTranslit)}}</td>
+											<td>{{form_row(form.meanMotion.placeNameOriginalChar)}}</td>
+										</tr>
+
+										<tr>
+											<th scope="row">Longitude</th>
+											<td>{{form_row(form.meanMotion.longSmartNumber)}}</td>
+											<td>{{form_row(form.meanMotion.longTypeOfNumber)}}</td>
+											<td></td>
+										</tr>
+
+										<tr>
+											<th scope="row">Base Meridian</th>
+											<td>{{form_row(form.meanMotion.meridian)}}</td>
+											<td>{{form_row(form.meanMotion.meridianTranslit)}}</td>
+											<td>{{form_row(form.meanMotion.meridianOriginalChar)}}</td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
+								<hr/>
+
+								<div id="time-parameter">
+									<h5>Time Localization</h5>
+									<div class="row">
+										<div class="col-md-8">
+											{{form_row(form.meanMotion.epoch)}}
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-md-8">
+											{{form_row(form.meanMotion.rootSmartNumber)}}
+										</div>
+										<div class="col-md-2">
+											{{form_row(form.meanMotion.rootTypeOfNumber)}}
+										</div>
+									</div>
+								</div>
+
+								<div style="display:none;">
+									{{form_row(form.meanMotion.longOrigBase)}}
+									{{form_row(form.meanMotion.longFloat)}}
+									{{form_row(form.meanMotion.rootOrigBase)}}
+									{{form_row(form.meanMotion.rootFloat)}}
+								</div>
+							</div>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="apply-parameter" type="button" class="btn btn-default" data-dismiss="modal">Apply</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+

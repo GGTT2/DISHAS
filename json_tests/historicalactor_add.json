@@ -1,0 +1,160 @@
+{
+    "historicalactor": [
+        {
+
+        },
+        {
+            "_comment":"unvalid test : empty data"
+        },
+        {
+            "_comment": "unvalidTest with viaf already in db",
+            "actorName": "test",
+            "actorNameOriginalChar": "",
+            "tpq": "10",
+            "taq": "10",
+            "place": "11",
+            "viafIdentifier": "316880574"
+        },
+        {   "_comment": "validTest with a place found by ID",    
+            "actorName": "Dinakaraplace",
+            "actorNameOriginalChar": "",
+            "tpq": "1730",
+            "taq": "1800",
+            "place": "5"
+        },
+	{
+            "_comment": "validTest with a place found by contents",
+            "actorName": "Dinakaraplacecontent",
+            "actorNameOriginalChar": "",
+            "tpq": "1730",
+            "taq": "1800",
+	    "place": {
+	        "placeName": "Varanasi, Uttar Pradesh, India",
+	        "placeNameOriginalChar": "",
+	        "placeLat": "25.3176452",
+	        "placeLong": "82.97391440000001"
+	    }
+        },
+        {
+            "_comment": "unvalidTest with a place that is wrong",
+            "actorName": "Dinakara",
+            "actorNameOriginalChar": "",
+            "tpq": "1730",
+            "taq": "1800",
+	    "place": {
+                "_comment": "this place name is not valid (blank): both the place and the parent historical actor must be rejected in order to allow an easy fix for the user.",    
+	        "placeName": "",
+	        "placeNameOriginalChar": "",
+	        "placeLat": "25.3176452",
+	        "placeLong": "82.97391440000001"
+	    }
+        },
+        {
+            "_comment": "unvalidTest with a place that is not in the database.",
+            "actorName": "Dinakara10",
+            "actorNameOriginalChar": "",
+            "tpq": "1730",
+            "taq": "1800",
+	    "place": "10000000000"
+        },
+        {
+            "_comment": "unvalidTest with a place id not well formatted",
+            "actorName": "Dinakara10",
+            "actorNameOriginalChar": "",
+            "tpq": "1730",
+            "taq": "1800",
+	    "place": "zbi"
+        },
+        {
+            "_comment": "unvalidTest with a tpq or taq id not well formatted",
+            "actorName": "Dinakara10",
+            "actorNameOriginalChar": "",
+            "tpq": "coucou",
+            "taq": "hello"
+        },
+	{
+            "_comment": "Unvalid test: actorName can't be null",
+            "actorName": "",
+            "actorNameOriginalChar": "",
+            "tpq": "1730",
+            "taq": "1800",
+	    "place": "5"
+        },
+        {
+            "_comment": "Unvalid test: actorName can't be null or missing",
+            "tpq": "1730",
+            "taq": "1800",
+	    "place": "5"
+        },
+	{   "_comment": "Unvalid test: tpq can't be biger than taq",
+            "actorName": "test",
+            "actorNameOriginalChar": "",
+            "tpq": "10",
+            "taq": "1",
+	    "place": "11"
+        },
+	{   "_comment": "Unvalid test: the data is empty -> validation by the entity",
+            "actorName": "",
+            "actorNameOriginalChar": "",
+            "tpq": "",
+            "taq": "",
+	    "place": ""
+        },
+	{   "_comment": "Valid test",
+            "actorName": "ValidActor",
+            "actorNameOriginalChar": "",
+            "tpq": "10",
+            "taq": "10",
+	    "place": "11"
+        },
+	{
+            "actorName": "ValidActorEditExistingViaf",
+            "actorNameOriginalChar": "",
+            "tpq": "10",
+            "taq": "10",
+	    "place": "11"
+        },
+	{
+            "actorName": "ValidActorEditExistingActor",
+            "actorNameOriginalChar": "",
+            "tpq": "10",
+            "taq": "10",
+	    "place": "11"
+        },
+	{
+            "actorName": "ValidActorEditExistingActorExplicitPlace",
+            "actorNameOriginalChar": "",
+            "tpq": "10",
+            "taq": "10",
+	    "place": "11"
+        },
+	{
+            "actorName": "ValidActorEditEmptyName",
+            "actorNameOriginalChar": "",
+            "tpq": "10",
+            "taq": "10",
+	    "place": "11"
+        },
+	{
+            "actorName": "ValidActorEditInvalidTPQTAQ",
+            "actorNameOriginalChar": "",
+            "tpq": "10",
+            "taq": "10",
+	    "place": "11"
+        },
+	{
+            "actorName": "ValidActorEditEmptyFields",
+            "actorNameOriginalChar": "",
+            "tpq": "10",
+            "taq": "10",
+	    "place": "11"
+        },
+	{
+            "actorName": "ValidActorEdit",
+            "actorNameOriginalChar": "",
+            "tpq": "10",
+            "taq": "10",
+	    "place": "11"
+        }]
+}
+

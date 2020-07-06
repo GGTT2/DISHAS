@@ -1,0 +1,94 @@
+{
+    "historicalactor": [{
+            "actorName": "test",
+            "actorNameOriginalChar": "t",
+            "tpq": "10",
+            "taq": "10",
+	    "place": "11"
+        },
+	{
+            "actorName": "testDeux",
+            "actorNameOriginalChar": "t",
+            "tpq": "10",
+            "taq": "10",
+	    "place": "11"
+        },
+	{
+            "actorName": "testTrois",
+            "actorNameOriginalChar": "t",
+            "tpq": "10",
+            "taq": "10",
+	    "place": "11"
+        },
+	{
+            "actorName": "testQuatre",
+            "actorNameOriginalChar": "t",
+            "tpq": "10",
+            "taq": "10",
+	    "place": "11"
+        },
+	{
+            "actorName": "testManqueTaq",
+            "actorNameOriginalChar": "t",
+            "tpq": "10",
+	    "place": "11"
+        },
+	{
+            "actorName": "",
+            "actorNameOriginalChar": "",
+            "tpq": "10",
+            "taq": "10",
+	    "place": "11"
+        },
+	{
+            "actorName": "Requiem",
+            "actorNameOriginalChar": "t",
+            "tpq": "20",
+            "taq": "10",
+	    "place": "11"
+        },
+	{
+            "actorName": "Robert",
+            "actorNameOriginalChar": "r",
+            "tpq": "8",
+            "taq": "10",
+	    "place": "-1"
+        },
+	{
+            "actorName": "Vincent",
+            "actorNameOriginalChar": "v",
+            "tpq": "10",
+            "taq": "10",
+	    "place": {
+		"placeName": "test",
+		"placeNameOriginalChar": "",
+		"placeLat": "10",
+		"placeLong": "10"
+	    }
+        },
+ 	{
+            "actorName": "blabla",
+            "actorNameOriginalChar": "b",
+            "tpq": "1",
+            "taq": "10",
+	    "place": {
+		"placeName": "blablaplace",
+		"placeNameOriginalChar": "",
+		"placeLat": "10",
+		"placeLong": "10"
+	    }
+        },
+	{
+            "actorName": "Pascal",
+            "actorNameOriginalChar": "p",
+            "tpq": "1",
+            "taq": "10",
+	    "place": {
+		"placeName": "",
+		"placeNameOriginalChar": "",
+		"placeLat": "10",
+		"placeLong": "10"
+	    }
+        }]
+}
+

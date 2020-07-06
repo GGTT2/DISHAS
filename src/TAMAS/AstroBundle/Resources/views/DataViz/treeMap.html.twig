@@ -1,0 +1,16 @@
+{% if include == "html" %}
+    <div class="row" id="chartdiv"></div>
+{% elseif include == "js" %}
+    <script src="{{asset('js/amcharts4/themes/animated.js')}}"></script>
+    <script src="{{asset('js/DISHAS_charts/DishasTreemap.js')}}"></script>
+    <script defer{# type="module"#}>
+        /*import {DishasChart, DishasConfig} from "../../../../../../web/js/DISHAS_charts/DishasChart.js";*/
+
+        $(document).ready(function() {
+            treemap = new DishasChart({{ data|json_encode|raw }}, new DishasTreemapConfig("{{ currentNode }}"));
+            if (treemap.noData === false){
+                treemap.charts[0].chart.zoomToObject({{ entity.id }});
+            }
+        });
+    </script>
+{% endif %}

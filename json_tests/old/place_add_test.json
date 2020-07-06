@@ -1,0 +1,51 @@
+{
+    "place": [{
+            "placeName": "test",
+            "placeNameOriginalChar": "",
+            "placeLat": "10",
+            "placeLong": "10"
+        },
+	{
+            "placeName": "testDeux",
+            "placeNameOriginalChar": "",
+            "placeLat": "10",
+            "placeLong": "10"
+        },
+	{
+            "placeName": "testTrois",
+            "placeNameOriginalChar": "",
+            "placeLat": "10",
+            "placeLong": "10"
+        },
+ 	{
+            "placeName": "blabla",
+            "placeNameOriginalChar": "",
+            "placeLat": "20",
+            "placeLong": "20"
+        },
+	{
+            "placeName": "blabla",
+            "placeNameOriginalChar": "",
+            "placeLat": "20",
+            "placeLong": "20"
+        },
+ 	{
+            "placeName": "",
+            "placeNameOriginalChar": "",
+            "placeLat": "20",
+            "placeLong": "20"
+        },
+ 	{
+            "placeName": "Endroit",
+            "placeNameOriginalChar": "",
+            "placeLat": "2",
+            "placeLong": "2"
+        },
+	{
+            "placeName": "Rome",
+            "placeNameOriginalChar": "",
+            "placeLat": "grgr",
+            "placeLong": "grgr"
+        }]
+}
+

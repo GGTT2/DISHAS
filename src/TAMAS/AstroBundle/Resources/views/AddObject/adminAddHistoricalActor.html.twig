@@ -1,0 +1,115 @@
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+	{{ action|capitalize }} {{ object_info.properties.historicalActor.objectUserInterfaceName }} — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+{% form_theme form 'bootstrap_3_TAMAS.html.twig' %}
+{{form_start(form, {'attr': {'class': 'form'}})}}
+{{form_errors(form)}}
+<div class="row">
+	<div class="col-md-10">
+		<div class="well">
+			{{form_row(form.actorName)}}
+			<div class="print-info">
+				<p>&emsp;The names of ancient astronomer is to be translated in
+					english. If applicable use the Dictionary of Scientific Biography
+					spelling and put the last name before the first name with a comma
+					separator.</p>
+			</div>
+			{{ form_row(form.actorNameOriginalChar) }}
+			<div id="findInViaf" title="Find historical actor in VIAF">
+				<div class="form-group">
+					<label for="historicalActorName">Name</label> <input type="text"
+						class="form-control" id="historicalActorName"
+						placeholder="Al Battānī">
+
+				</div>
+				<div class="form-group">
+					<label for="VIAFId">Viaf ID</label> <input type="text"
+						class="form-control" id="VIAFId" placeholder="97655156">
+				</div>
+				<a class="btn btn-success btn-circle" href="#" id="selectIdViaf"><span
+					class="glyphicon glyphicon-ok"></a>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					{{ form_row(form.tpq, {'form_errors_in_tooltip':true}) }}
+				</div>
+				<div class="col-md-3">
+					{{ form_row(form.taq) }}
+				</div>
+				<div class="col-md-6 print-info">
+					<p>
+						For a specific year, specify the value in both boxes. <br />For an
+						approximate timeframe, e.g. ca XIV century, specify
+						TPQ:&nbsp;"1300" and TAQ:&nbsp;"1399".
+					</p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8">
+					{{form_row(form.viafIdentifier)}}
+				</div>
+				<div class="col-md-4">
+					<a class="btn btn-default open-findInVIAF1" href="#"
+						id="open-findInVIAF"> Find ID in VIAF </a>
+				</div>
+			</div>
+
+			{{form_row(form.place)}}
+
+		</div>
+	</div>
+	<div class="col-md-2">
+		{%include 'TAMASAstroBundle:AddObject:adminPannel.html.twig'%}
+	</div>
+</div>
+{# autocompleteVIAF("{{path('tamas_astro_autocompleteVIAF')}}",
+"#historicalActorName", "#VIAFId");#}
+
+
+
+{%endblock%}
+{% block javascripts %}
+{{parent()}}
+<script type="text/javascript" src="{{asset('js/autocompleteFromController.js')}}"></script>
+<script>
+    $("#historicalActorName").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+    			dataType:"jsonp", 
+    			url:"https://viaf.org/viaf/AutoSuggest?", 
+    			data: {query: request.term},
+    			success: function(data){
+    				response(
+    					$.map(data.result, function(value, key){
+    						return {
+    							label: value.term,
+    							value: value.term,
+    							viafId:value.viafid
+    						};
+    					})
+    				)
+    			}		
+           })
+        },
+        minLength: 1,
+    }).on("autocompleteselect", function (e, ui) {
+        $("#VIAFId").val(ui.item.viafId);
+        $("#VIAFId").parent().addClass('has-success');
+    }).on("autocompletechange", function (e, ui) {
+        if (ui.item === null) {
+            $(viafId).parent().removeClass('has-success');
+        }
+    });
+    $("#historicalActorName").autocomplete("option", "appendTo", "#findInViaf");
+  
+	openViaf();
+	$("#add_original_text_primarySource_primEditor").on("click focus",
+			function() {
+				publisherInfo();
+			});
+</script>
+{% endblock %}

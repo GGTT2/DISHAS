@@ -1,0 +1,87 @@
+{#TAMAS\AstroBundle\Resources\views\PublicView\sideMetadata.html.twig#}
+{% if include == "html" %}
+    <table class="table">
+        <th colspan="5" style="border: none; padding: 0;">
+            <h1 style="padding-bottom: 1rem;">
+                {{ metadata.title|default|raw }}
+            </h1>
+
+            {% if metadata.subtitle|default %}
+                <h2 class="subtitle">
+                    {{ metadata.subtitle|default|raw }}
+                </h2>
+            {% endif %}
+        </th>
+        {% for key, data in metadata|default %}
+            {% if data.val|default %}
+                <tr>
+                    <th scope="row" colspan="2">{{ key|capitalize }}</th>
+                    <td class="dataCell" colspan="3">
+                        {% set i = 0 %}
+                        {% for value in data.val %}
+
+                            {# Define value that will appear as metadata #}
+                            {% set valueText %}
+                                {% if value is empty or ((value.html is defined) and (value.html is empty)) %}
+                                    <span class="noInfo">No information provided</span>
+                                {% elseif value.html is defined %}
+                                    <a class="urlTable" href="{{ path(value.path|default, {'id':value.id|default}) }}">
+                                        {{ value.html|default|raw }}
+                                    </a>
+                                {% else %}
+                                    {{ value|default|raw }}
+                                {% endif %}
+                            {% endset %}
+
+                            {% if (data.search.json is empty) and (data.info|default is empty) %}
+                                {% set colWidth = 12 %}
+                            {% else %}
+                                {% set colWidth = 9 %}
+                            {% endif %}
+
+                            <div class="row dataRow">
+                                <div class="col-md-{{ colWidth|raw }}">
+                                    {{ valueText|raw }}
+                                </div>
+                                {% if data.search.json is not empty %}
+                                    <div class="findMore col-md-2">
+                                        <form action="{{ path('tamas_astro_search') }}" method="post">
+                                            <button type="submit"
+                                                    name="query"
+                                                    value='{
+                                                "query":{{ data.search.json[i]|default }},
+                                                "title":"{{ data.search.title[i]|default }}",
+                                                "entity":"{{ metadata.entity }}"
+                                                }'
+                                                    title="{{ data.search.hover }}"
+                                                    data-value="{{ data.search.title[i]|default }}"
+                                                    class="btn-link send-query">
+                                                <span class="glyphicon glyphicon-search"></span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                {% elseif data.info|default is not empty %}
+                                    <div class="findMore col-md-2">
+                                        <button type="button" class="btn" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-trigger="focus" data-original-title=""
+                                                data-content="{{ data.info[i] }}" title="About this type of edition"
+                                                style="background-color: rgb(250,250,250); padding: 0;">
+                                            <img src="{{ asset('img/question.svg') }}" style="height: 16px; margin-left: 6px;" alt="Question mark">
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            {% if not loop.last %}
+                                <hr/>
+                            {% endif %}
+
+                            {% set i = i+1 %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+{% elseif include == "js" %}
+
+{% endif %}

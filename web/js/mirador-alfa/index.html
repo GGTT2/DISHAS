@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<link rel="stylesheet" type="text/css"
+		  href="build/mirador/css/mirador-combined.min.css">
+	<title>ALFA Mirador Viewer</title>
+	<style type="text/css">
+		#viewer {
+			width: 100%;
+			height: 100%;
+			position: fixed;
+		}
+	</style>
+</head>
+<body>
+<div id="viewer"></div>
+<script src="build/mirador/mirador.min.js"></script>
+<script src="mapping.js"></script>
+<script type="text/javascript">
+	var data = [];
+	var url = new URL(window.location);
+	var currentManifest = decodeURIComponent(url.searchParams.get('manifest'));
+
+	if (url.searchParams.get('manifest') === null || currentManifest === ""){
+		var id = decodeURIComponent(url.searchParams.get('id'));
+		currentManifest = mapping[id.toString()];
+	}
+
+	data.push({
+		collectionUri : decodeURIComponent("https://iiif.biblissima.fr/collection/alfa.json")
+	}, {
+		manifestURI : currentManifest
+	});
+
+	var windowObjects = [];
+
+	windowObjects.push({
+		loadedManifest : currentManifest
+	});
+	//       var result;
+	//       var regex_coll = new RegExp(/(\?|&)collection\=([^&]*)/);
+	//       var regex_mf = new RegExp(/(\?|&)manifest\=([^&]*)/);
+
+	//result = regex_coll.exec(location.search);
+	//        result = regex_coll.exec("?collection=https://iiif.biblissima.fr/collection/alfa.json");
+
+	//       console.log(result);
+	//       if (result !== null && result[2]) {
+	//         data.push({
+	//           collectionUri: decodeURIComponent(result[2])
+	//         });
+	//       }
+	// 	console.log(data);
+	//       var url = new URL(window.location);
+	//       var collection = url.searchParams.get('collection');
+	//      console.log(collection);
+	// data.push({
+	//           collectionUri: decodeURIComponent(collection)
+	//         });
+	//       data.collectionUri = decodeURIComponent(collection);
+
+	//       result = regex_mf.exec(location.search);
+	//       if (result !== null && result[2]) {
+	//         data.push({
+	//           manifestUri: decodeURIComponent(result[2])
+	//         });
+	//         windowObjects.push({
+	//           loadedManifest: decodeURIComponent(result[2])
+	//         });
+	//       }
+
+	function showMirador(data_, windowObjects_) {
+		var data = data_ || [];
+		var windowObjects = windowObjects_ || [];
+		myMiradorInstance = Mirador({
+			id : 'viewer',
+			layout : '1x1',
+			data : data,
+			windowObjects : windowObjects,
+			openManifestsPage : true,
+			// manifestsPanel: {
+			//   name: "Collection tree browser",
+			//   module: "CollectionTreeManifestsPanel"
+			// },
+			annotationEndpoint : {
+				name : 'SimpleAnnotationServer Endpoint',
+				module : 'SimpleASEndpoint',
+				options : {
+					url : "https://data-dev.biblissima.fr/simpleAnnotationStore/annotation"
+				}
+			},
+			sidePanelOptions : {
+				tocTabAvailable : true,
+				layersTabAvailable : false,
+				searchTabAvailable : true,
+				annotations : false
+			},
+			windowSettings : {
+				canvasControls : {
+					annotations : {
+						annotationState : "on"
+					}
+				}
+			}
+		});
+	}
+
+	$(function() {
+		showMirador(data, windowObjects)
+	});
+</script>
+</body>
+</html>

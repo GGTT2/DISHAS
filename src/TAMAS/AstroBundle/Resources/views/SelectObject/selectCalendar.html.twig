@@ -1,0 +1,63 @@
+{% if includeType == 'html' %}
+    <div class="row" id="calendar" style="display: none;">
+        <div class="col-md-3">
+            {{ form_row(form.calendar) }}
+        </div>
+        <div class="col-md-5">
+            {{ form_row(form.era) }}
+        </div>
+    </div>
+{% elseif includeType == "js"%}
+    <script>
+        tableTypeField = $("#{{form.vars.id}}_tableType").length > 0 ?  $("#{{form.vars.id}}_tableType") :  $("#{{form.vars.id}}_tableTypes");
+
+        function getCalendarValue(){
+            return $("#{{form.vars.name}}_calendar").val();
+        }
+        function getEraValue(){
+            return $("#{{form.vars.name}}_era").val();
+        }
+
+        function showCalendar(){
+            //first we check the correct field (with an "s" or without, depending on the form context).
+            if(tableTypeField.val() && tableTypeField.find(':selected').attr("multiple-content")== "true"){
+                $('#calendar').show()
+            }else{
+                $('#calendar').hide()
+            }
+        }
+        showCalendar();
+
+        tableTypeField.change(showCalendar);
+
+        //This function is used at the loading of the page when an Era is associated with an editedText (= while editing an EditedText)
+        function updateCalendar(){
+            let calendarValue = getCalendarValue()
+            let eraValue = getEraValue()
+            let eraCalendar = $("option:selected", "#{{form.vars.name}}_era").attr('calendar');
+            if ((!calendarValue && eraValue) || calendarValue !== eraCalendar){
+                //the calendar is selected according to the era
+                $("#{{form.vars.name}}_calendar").val(eraCalendar)
+            }
+            //the list of possible era are updated according to the calendar
+            updateEra();
+        }
+
+        updateCalendar();
+
+        // This function is called when the calendar is changed
+        function updateEra(){
+            let calendarValue = getCalendarValue()||0
+            //if the selected Era does not match anymore the Calendar, we select the first matchable era
+            if (calendarValue !== $("option:selected", "#{{form.vars.name}}_era").attr('calendar')){
+                $("#{{form.vars.name}}_era").val($("#{{form.vars.name}}_era > option[calendar="+calendarValue+"]").val());
+            }
+            $("#{{form.vars.name}}_era > option[calendar!="+calendarValue+"]").hide(); //the era options that don't match are hidden
+            $("#{{form.vars.name}}_era > option[calendar="+calendarValue+"]").show(); //the era options that match are displayed
+        }
+
+        $("#{{form.vars.id}}_calendar").change(function () {
+            updateEra();
+        })
+    </script>
+{% endif %}

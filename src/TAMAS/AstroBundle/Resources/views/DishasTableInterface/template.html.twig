@@ -1,0 +1,434 @@
+{% if tableContent.editedText and tableContent.editedText.type == "b" %}
+	{% set typeB = true %}
+{% else %}
+	{% set typeB = false %}
+{% endif %}
+
+<div class="modal fade" id="dialog-template" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Template</h4>
+			</div>
+			<div class="modal-body">
+				<!--============================= Tab list =============================-->
+				<ul class="nav nav-tabs" role="tablist">
+					{% if typeB %}
+						<li id="cate-tab" role="presentation" class="active">
+							<a href="#cate" aria-controls="cate" role="tab" data-toggle="tab" class="template-nav-tab">
+								Cate&nbsp;&nbsp;&nbsp;<span class="led-cate">&nbsp;&nbsp;</span>
+							</a>
+						</li>
+					{% endif %}
+					{%  if not (noTemplate|default() and noTemplate == true) %}
+						<li id="template-tab" role="presentation" {% if not typeB %} class="active" {% endif %}>
+							<a href="#template" aria-controls="template" role="tab" data-toggle="tab" class="template-nav-tab">
+								Custom template
+							</a>
+						</li>
+					{% endif %}
+					{%  if not (noImport|default() and noImport == true) %}
+						<li id="import-tab" role="presentation">
+							<a href="#import" aria-controls="import" role="tab" data-toggle="tab" class="template-nav-tab">Import</a>
+						</li>
+					{% endif %}
+					{% if not (noDuplicate|default() and noDuplicate == true) %}
+						<li id="duplicate-tab" role="presentation">
+							<a href="#duplicate" aria-controls="duplicate" role="tab" data-toggle="tab" class="template-nav-tab">Duplicate</a>
+						</li>
+					{% endif %}
+				</ul>
+
+				<div class="tab-content">
+				{#========================================================== Custom template ============================================================= #}
+					<div role="tabpanel" class="tab-pane {% if not typeB %}active{% endif %}" id="template">
+
+						<div class="form-group">
+							<div id="table-content-data">
+								<div class="row">
+									<div class="col-md-12">
+
+										<!--============================= General information =============================-->
+										<div id="general-info">
+											<div id="info-template" class="cate-is-on"></div>
+
+											<div id="main-table-info">
+												<div class="row">
+													<div class="col-md-12">
+													{%if form.meanMotion|default%}
+														{#afficher ici la liste des autres mean-motions comprises dans l'editedText#}
+														{%if tableContent.editedText|default and tableContent.editedText.tableContents is not empty %}
+															{% if tableContent.editedText.tableContents|length == 1 and tableContent.editedText.tableContents[0].id == tableContent.id  %}
+															{%else%}
+																List of recorded subtables from this mean motion
+																<ul>
+																	{%for subContent in tableContent.editedText.tableContents%}
+																		{%if tableContent.id != subContent.id %}
+																		<li>{{subContent.argument1NumberUnit.unit|default("undefined")|capitalize}}</li>
+																		{%endif%}
+
+																	{%endfor%}
+																</ul>
+																{%endif%}
+															{%endif%}
+														{%endif%}
+													</div>	
+												</div>
+												<div class="row">	
+													<div class="col-md-2 col-sm-6">
+														{{form_row(form.argNumber)}}
+													</div>
+												</div>
+										<!--============================= Argument 1 ====================================== -->
+
+										<div id="arg">
+											<div class="row">
+
+												<div class="col-md-12">
+													<div id="arg1">
+
+														<div class="row">
+															<div class="col-md-2">
+																<h4 class="align-form">Argument 1</h4>
+															</div>
+															<div class="col-md-8">
+																{{form_row(form.argument1Name)}}
+															</div>
+														</div>
+
+														<div class="row">
+
+															<div class="col-md-offset-2 col-md-4 col-sm-5">
+																{{form_row(form.argument1TypeOfNumber)}}
+															</div>
+															<div class="col-md-4 col-sm-5">
+																{{form_row(form.argument1NumberUnit)}}
+															</div>
+															<div class="col-md-2 col-sm-1">
+																{%if form.meanMotion|default%}
+																	{{form_row(form.meanMotion.completeTime)}}
+																	{%endif%}
+																</div>
+
+															</div>
+															{%if form.meanMotion|default%}
+																<div class="row" style="display: none" id="sub-time-unit">
+																	<div class="col-md-4 col-sm-5 col-md-offset-6">
+																		{{form_row(form.meanMotion.subTimeUnit)}}
+																	</div>
+																	<div class="col-md-2 col-sm-5" id="first-month" style="display:none">
+																		{{form_row(form.meanMotion.firstMonth)}}
+																	</div>
+																</div>
+																{%endif%}
+
+																<div class="row">
+																	<div class="col-md-offset-2 col-md-4 col-sm-5">
+																		{{form_row(form.argument1NumberOfCell)}}
+																	</div>
+																	<div class="col-md-4 col-sm-5">
+																		{{form_row(form.argument1SignificantFractionalPlace)}}
+																	</div>
+
+																	<div class="col-md-2 col-sm-5">
+																		{{form_row(form.argument1NumberOfSteps)}}
+																	</div>
+																</div>
+															</div>
+															<!--============================= Argument 2 ====================================== -->
+															<div id="arg2" class="hidden">
+
+																<div class="row">
+																	<div class="col-md-2">
+																		<h4 class="align-form">Argument 2</h4>
+																	</div>
+																	<div class="col-md-8">
+																		{{form_row(form.argument2Name)}}
+																	</div>
+																</div>
+
+																<div class="row">
+
+																	<div class="col-md-offset-2 col-md-4 col-sm-5">
+																		{{form_row(form.argument2TypeOfNumber)}}
+																	</div>
+																	<div class="col-md-4 col-sm-5">
+																		{{form_row(form.argument2NumberUnit)}}
+																	</div>
+
+																</div>
+																<div class="row">
+																	<div class="col-md-offset-2 col-md-4 col-sm-5">
+																		{{form_row(form.argument2NumberOfCell)}}
+																	</div>
+																	<div class="col-md-4 col-sm-5">
+																		{{form_row(form.argument2SignificantFractionalPlace)}}
+																	</div>
+
+																	<div class="col-md-2 col-sm-5">
+																		{{form_row(form.argument2NumberOfSteps)}}
+																	</div>
+																</div>
+															</div>
+															<!--============================= Argument 3 ====================================== -->
+															<div id="arg3" class="hidden">
+																<h4>Argument 3</h4>
+																{{form_row(form.argument3Name)}}
+																<div class="row">
+																	<div class="col-md-3 col-sm-5">
+																		{{form_row(form.argument3TypeOfNumber)}}
+																	</div>
+																	<div class="col-md-3 col-sm-5">
+																		{{form_row(form.argument3NumberUnit)}}
+																	</div>
+																	<div class="col-md-3 col-sm-5">
+																		{{form_row(form.argument3SignificantFractionalPlace)}}
+																	</div>
+																	<div class="col-md-3 col-sm-5">
+																		{{form_row(form.argument3NumberOfCell)}}
+																	</div>
+																	<div class="col-md-4 col-sm-5">
+																		{{form_row(form.argument3NumberOfSteps)}}
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<!--============================= Entry ======================================-->
+												<hr/>
+												<div id="entry">
+
+													<div class="row">
+														<div class="col-md-12">
+															<div class="row">
+																<div class="col-md-2 add-entity">
+																	<h4>Entry</h4>
+																</div>
+																<div class="col-md-4 col-sm-5">
+																	{{form_row(form.entryTypeOfNumber)}}
+																</div>
+																<div class="col-md-4 col-sm-5">
+																	{{form_row(form.entryNumberUnit)}}
+																</div>
+															</div>
+															<div class="row">
+																<div class=" col-md-offset-2 col-md-4 col-sm-5">
+																	{{form_row(form.entryNumberOfCell)}}
+																</div>
+																<div class="col-md-4 col-sm-5">
+																	{{form_row(form.entrySignificantFractionalPlace)}}
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div id="layout-spec">
+												<div id="difference-table">
+													<div class="row">
+														<div class="col-md-12">
+															<div class="row">
+																<div class="col-md-4 col-sm-4">
+																	<div class="">
+																		{{form_row(form.hasDifferenceTable)}}
+																	</div>
+																</div>
+															</div>
+															<div class="row">
+																<div class="col-md-4 col-sm-4">
+																	<div class="">
+																		{{form_row(form.hasSymetry)}}
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--  ==================================================== CATE ========================================================= -->
+					{% if typeB == true%}
+						<div role="tabpanel" class="tab-pane active" id="cate">
+							{% if tableContent.editedText.relatedEditions is empty %}
+								<div class="row">
+									<div class="col-md-12">
+										CATE is a powerful tool to generate a critical edition from comparing various source edition.
+										<br/>
+										The current edition is based on no source edition. In order to use CATE, please
+										<a href="{{path('tamas_astro_adminEditEditedText', {'id': tableContent.editedText.id} ) }}">click here</a>
+										to edit this edition and select its sources.
+									</div>
+								</div>
+							{% else %}
+								<div class="row">
+									<div class="col-md-2">
+										<input id='toggle-cate-switch' type="checkbox" class='toggle-cate'>
+									</div>
+								</div>
+								<div id="cate-strategies">
+									<div class="row">
+										<div class="col-md-10">
+											<div class="form-group">
+												<label class="control-label">Edition strategy</label>
+
+												<div id="edition-choice">
+													<div class="radio">
+														<label><input type="radio" name="optradio" value="by-majority">Majority rule</label>
+													</div>
+													<div class="radio">
+														<label><input type="radio" name="optradio" value="by-weight">Weighted majority rule</label>
+													</div>
+													<div class="radio">
+														<label>
+															<input type="radio" name="optradio" value="by-base" checked>
+															Base edition
+														</label>
+														<select id="base-edition">
+															{% for edition in tableContent.editedText.relatedEditions  %}
+																{% set break = false %}
+																{% for tableContent in edition.tableContents if not break %}
+																	{% if tableContent.valueOriginal %}
+																		<option value="{{ edition.id }}">{{ edition.editedTextTitle }}</option>
+																		{% set break = true %}
+																	{% endif %}
+																{% endfor %}
+															{% endfor %}
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<hr/>
+									<div class="row">
+										<div class="col-md-9">
+											<table class="table">
+												<thead>
+													<tr>
+														<th scope="col">Select</th>
+														<th scope="col" class='col-md-8'>Source edition</th>
+														<th scope="col" class='col-md-2'>Siglum</th>
+														<th scope="col">Weight</th>
+													</tr>
+												</thead>
+												<tbody>
+													{% for edition in tableContent.editedText.relatedEditions %}
+														{% set break = false %}
+														{% for tableContent in edition.tableContents if not break %}
+															{% if tableContent.valueOriginal %}
+																{% set break = true %}
+															{% endif %}
+														{% endfor %}
+														{% if break and edition.tableContents|length > 0 %}
+															<tr id="row-{{ edition.id }}">
+																<td>
+																	<div class="checkbox">
+																		<label><input type="checkbox" value="" class='edition-select' checked></label>
+																	</div>
+																</td>
+																<td>
+																	<label class="control-label">
+																		{% if edition.tableContents|length > 1 %}
+																		{############################# SPECIAL SETTINGS FOR MEAN MOTIONS ###########################}
+																			<select class='table-content-id'>
+																				{% for table in edition.tableContents %}
+
+																					<option value="{{ table.id }}" {% if not table.valueOriginal %} disabled {% endif %}> {# if one of the table_contents of mm is not valid, it is disabled#}
+																						{#we define a text for the unit or subunit, according to the need#}
+																						{% if table.meanMotion.subTimeUnit|default()%}
+																						{% set subUnit  = table.meanMotion.subTimeUnit %}
+																						{% else %}
+																						{% set subUnit  = table.argument1NumberUnit %}
+																						{% endif %}	
+																						{{ edition.editedTextTitle ~': '~table.argument1Name~' ('~subUnit ~')' }}
+																					</option>
+																				{% endfor %}
+																			</select>
+																		{% else %}
+																			<span class="table-content-id" value="{{ edition.tableContents[0].id }}">{{ edition.editedTextTitle }}</span>
+																		{% endif %}
+																	</label>
+																</td>
+																<td><input id='' class="edition-siglum form-control" type="text"></td>
+																<td><input id='' class="edition-weight form-control" type="number" name="quantity" step="0.1" min="0" max="1000000"></td>
+															</tr>
+															{% else %}
+																<tr>
+																	<td>
+																		<div class="checkbox">
+																			<label><input type="checkbox" value="" class='edition-select' disabled readonly></label>
+																		</div>
+																	</td>
+																	<td>
+																		<label class="control-label">
+																			<span class="table-content-id">{{ edition.editedTextTitle }}</span>
+																		</label>
+																	</td>
+																	<td colspan="2">This edition cannot be used because its table content is empty</td>
+																</tr>
+															{% endif %}
+														{% endfor %}
+													</tbody>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							{% endif %}
+							<span class="copywrite">
+								CATE (<i>Computer Assisted Tables Editor</i>) tool is based on
+								<a href="http://www.hamsi.org.nz/">HAMSI's</a> project
+								<a href="http://uc.hamsi.org.nz/cate/">CATE standalone edition tool</a>.
+							</span>
+						</div>
+					{% endif %}
+					{# ========================================= IMPORT ===================================== #}
+
+					<div role="tabpanel" class="tab-pane" id="import">
+						<div class="cate-is-on"></div>
+						{{ form_row(form.import) }}
+						<hr/>
+						<div class="print-info">
+							<span>
+								No JSON file? No problem!
+								<br/>
+								Click on Custom
+							</span>
+						</div>
+					</div>
+
+					{# ========================================== DUPLICATE ===================================== #}
+					<div role="tabpanel" class="tab-pane" id="duplicate">
+						<div class="cate-is-on"></div>
+
+						{{ form_row(form.sourceDuplicate) }}
+						<hr/>
+						{{ form_row(form.switchDuplicate) }}
+
+					</div>
+					{#===================================== END DUPLICATE =================================#}
+				</div>
+				{# </form>#}
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				{% if readonly is not defined or not readonly%}
+					<button type="button" class="btn btn-primary" id="fill-template-done">Apply</button>
+				{% endif %}
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

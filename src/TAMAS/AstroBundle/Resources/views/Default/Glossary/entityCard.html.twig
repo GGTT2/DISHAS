@@ -1,0 +1,16 @@
+<div id="def-{{ entity }}" class="def-card hidden">
+    <div class="row" style="text-align: left; padding: 25px 0">
+        <div class="col-md-3">
+            <div class="picto-background" title="See definition" style="margin: 0 30%; background-color: {{ object_info.properties[entity].userInterfaceColor }}">
+                <img class="picto-size"
+                     src="{{ asset('img/pictograms/'~ entity ~'.png')}}"
+                     alt="{{ object_info.properties[entity].objectUserInterfaceName|capitalize }} pictogram">
+            </div>
+        </div>
+        <div class="col-md-9">
+            <h2 class="lightgrey">{{ object_info.properties[entity].objectUserInterfaceName|capitalize }}</h2>
+            <div class="horizontal-bar lightgrey"></div>
+        </div>
+    </div>
+    <p class="lightgrey desc" style="text-align: justify">{{ object_info.properties[entity].longDefinition|raw }}</p>
+</div>

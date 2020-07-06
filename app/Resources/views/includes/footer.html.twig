@@ -1,0 +1,88 @@
+{#Symfony\app\Resources\views\includes\footer.html.twig#}
+{% block footer %}
+    <footer class="footer footer-beige nav-beige">
+        <div class="container hasTable">
+            <table id="logo">
+                <tr>
+                    <td class="vertical-align">
+                        <a href="https://www.univ-psl.fr/fr">
+                            <img src="{{ asset('img/logo-psl.png')}}" alt="logo of Paris Sciences et Lettres">
+                        </a>
+                    </td>
+                    <td class="vertical-align">
+                        <a href="https://erc.europa.eu/">
+                            <img src="{{ asset('img/logo-erc.png')}}" alt="logo of European Research Council">
+                        </a>
+                    </td>
+                    <td class="vertical-align">
+                        <a href="http://www.dim-humanites-numeriques.fr/">
+                            <img src="{{ asset('img/logo-dim.png')}}" alt="logo of DIM (text science)" style="max-width: 100%;">
+                        </a>
+                    </td>
+                    <td class="vertical-align">
+                        <a href="http://www.cnrs.fr/">
+                            <img src="{{ asset('img/logo-cnrs.png')}}" alt="logo of CNRS">
+                        </a>
+                    </td>
+                    <td class="vertical-align">
+                        <a href="https://syrte.obspm.fr/spip/">
+                            <img src="{{ asset('img/logo-syrte.png')}}" alt="logo of Syrte">
+                        </a>
+                    </td>
+                </tr>
+            </table>
+            <hr/>
+        </div>
+        <p style="padding-bottom: 20px;">
+            DISHAS is a project hosted at The Observatoire de Paris
+            <br/>
+            <a href={{ path('tamas_astro_rgpd') }}>Personal data and RGPD</a>
+        </p>
+    </footer>
+{% endblock %}
+
+{#{% block footer %}
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 hasTable">
+                    <table id="logo">
+                        <tr>
+                            <td align="center"><a href="https://www.univ-psl.fr/fr"><img src="{{ asset('img/logo-psl.png')}}" alt="logo of Paris Sciences et Lettres"></a></td>
+                            <td align="center"><a href="https://erc.europa.eu/"><img src="{{ asset('img/logo-erc.png')}}" alt="logo of European Research Council"></td>
+                            <td align="center"><a href="https://ec.europa.eu/commission/index_en"><img src="{{ asset('img/logo-europeanCommission.png')}}" alt="logo of European Commission"></td>
+                            <td align="center"><a href="http://www.cnrs.fr/"><img src="{{ asset('img/logo-cnrs.png')}}" alt="logo of CNRS"></a></td>
+                            <td align="center"><a href="https://syrte.obspm.fr/spip/"><img src="{{ asset('img/logo-syrte.png')}}" alt="logo of Syrte"></a></td>
+
+                        </tr>
+                    </table>
+                    #}{#<div class="row">
+                        <div class="col-md-2">
+                            <a href="https://www.univ-psl.fr/fr"><img src="{{ asset('img/logo-psl.png')}}" alt="logo of Paris Sciences et Lettres"></a>
+
+                        </div>
+                        <div class="col-md-2">
+                            <a href="https://erc.europa.eu/"><img src="{{ asset('img/logo-erc.png')}}" alt="logo of European Research Council"></a>
+
+                        </div>
+                        <div class="col-md-2">
+                            <a href="https://ec.europa.eu/commission/index_en"><img src="{{ asset('img/logo-europe.png')}}" alt="logo of Europe"></a>
+
+                        </div>
+                        <div class="col-md-2">
+                            <a href="http://www.cnrs.fr/"><img src="{{ asset('img/logo-cnrs.png')}}" alt="logo of CNRS"></a>
+
+                        </div>
+                        <div class="col-md-2">
+                            <a href="https://syrte.obspm.fr/spip/"><img src="{{ asset('img/logo-syrte.png')}}" alt="logo of Syrte"></a>
+
+                        </div>
+                    </div>#}{#
+
+                    <hr>
+                    <p>DISHAS is a project hosted at The Observatoire de Paris</p> <a href={{ path('tamas_astro_rgpd') }}>Personal data and RGPD</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}#}

@@ -1,0 +1,17 @@
+{#TAMAS\AstroBundle\Resources\views\PublicView\sideMetadata.html.twig#}
+{% if include == "html" %}
+    <div class="backgroundSidebar" id="side-edition">
+        <div class="row head-picto">
+            <div class="col-md-5"></div>
+            <div class="picto col-md-2" style="background-color: {{ object_info.properties.editedText.userInterfaceColor }}">
+                <img class="pictogram"
+                     src="{{asset('img/pictograms/'~object_info.properties.editedText.objectEntityName~'.png')}}"
+                     alt="Table edition pictogram">
+            </div>
+        </div>
+        <h2 style="padding: 10px;">Related {{ object_info.properties.editedText.objectUserInterfaceName|plural() }}</h2>
+        <table class="table">
+            <tbody id="related-editions"></tbody>
+        </table>
+    </div>
+{% endif %}

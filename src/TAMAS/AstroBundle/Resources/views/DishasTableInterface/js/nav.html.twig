@@ -1,0 +1,40 @@
+<script>
+// Button to automatically fill the difference table
+// Open the correct modal depending on the number of argument
+$('#button-fill-diff').click(function() {
+	if(table.selectedMetaZone.spec.args.length === 1)
+		$("#dialog-fill-diff-1arg").modal('show');
+	else
+		$("#dialog-fill-diff-2arg").modal('show');
+});
+
+// function to select a tab given the href value
+function selectTab(tabId){
+	$('#'+tabId).closest('.modal').modal('show');
+	$("a[href='#"+tabId+"']").tab('show');
+}
+	
+$(".internal-link").click(function(){
+	var that = $(this);
+	var tabId = that.attr('ref').trim();
+	selectTab(tabId);
+})
+
+// Dialog box for the floating tool bar (in the menu window -> button navigation)
+$('#button-dialog-nav').dialog({
+	width: "auto", 
+	autoOpen: false
+});
+
+
+
+
+function switchTable(){
+$('#choice-switch-table').html(table.zoneIndex === 0 ? 'difference' : 'main');
+$("#current-switch-table").html(table.zoneIndex === 0 ? 'Main' : 'Difference');
+}
+
+
+switchTable()
+
+</script>

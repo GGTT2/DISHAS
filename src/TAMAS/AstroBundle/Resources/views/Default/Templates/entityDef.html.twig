@@ -1,0 +1,19 @@
+<div id="def-{{ entity }}" class="def-slide presentation-slide w-slide">
+    <div class="row" style="text-align: left; padding-bottom: 25px">
+        <div class="col-md-2">
+            <div class="picto-background {{ entity }}" title="See definition" style="margin: 0 30%;">
+                <img class="picto-size"
+                     src="{{ asset('img/pictograms/'~ entity ~'.png')}}"
+                     alt="{{ object_info.properties[entity].objectUserInterfaceName|capitalize }} pictogram">
+            </div>
+        </div>
+        <div class="col-md-10">
+            <h2 class="{{ color }}">{{ object_info.properties[entity].objectUserInterfaceName|capitalize }}</h2>
+            <div class="horizontal-bar {{ color }}"></div>
+        </div>
+    </div>
+    <p class="{{ color }} desc">{{ object_info.properties[entity].shortDefinition|raw }}</p>
+    <div style="text-align: center;">
+        <a href="{{path('tamas_astro_glossary')}}" class="sub-button black">Go to glossary</a>
+    </div>
+</div>

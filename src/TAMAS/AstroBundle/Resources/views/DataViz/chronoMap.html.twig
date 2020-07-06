@@ -1,0 +1,42 @@
+{% if include == "html" %}
+    <div id="chartdiv"></div>
+{% elseif include == "js" %}
+    {# CHRONOLOGICAL MAP #}
+    <script src="https://www.amcharts.com/lib/4/plugins/bullets.js{#{{asset('js/amcharts4/plugins/bullets.js')}}#}"></script>
+    <script src="{{asset('js/amcharts4/maps.js')}}"></script>
+    <script src="{{asset('js/geodata/worldLow.js')}}"></script>
+    {#<script src="//www.amcharts.com/lib/4/plugins/bullets.js"></script>#}
+    <script src="{{asset('js/DISHAS_charts/DishasMapChart.js')}}"></script>
+    <script src="{{asset('js/DISHAS_charts/DishasHeatMap.js')}}"></script>
+    <script src="{{asset('js/DISHAS_charts/DishasScrollbar.js')}}"></script>#}
+
+    <script defer{# type="module"#}>
+        /*import {DishasChart, DishasMapConfig} from "../../../../../../web/js/DISHAS_charts/DishasChart.js";*/
+
+        $(document).ready(function() {
+            {% if currentNode == "OI-rec" %}
+                {% set entity = entity.primarySource ? "primarySource" : "originalText" %}
+
+                chronoMap = new DishasChart({{ data|json_encode|raw }}, new DishasMapConfig(
+                    {
+                        {% if data.isWork %}
+                            "work": "{{ object_info.properties.work.userInterfaceColor }}",
+                        {% endif %}
+                            "{{ entity }}": "{{ object_info.properties[entity].userInterfaceColor }}"
+                    },{{ data.lat|json_encode|raw }}, {{ data.long|json_encode|raw }}
+                ));
+
+            {% elseif currentNode == "AP-rec" %}
+
+                chronoMap = new DishasChart({{ data|json_encode|raw }}, new DishasMapConfig(
+                    {
+                        "originalText": "{{ object_info.properties.originalText.userInterfaceColor }}"
+                    }
+                ));
+
+            {% endif %}
+        });
+
+
+    </script>
+{% endif %}

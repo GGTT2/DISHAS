@@ -1,0 +1,66 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\adminListPrimarySource.html.twig#}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+	List of {{ objectEntityName|default ? object_info.properties[objectEntityName].objectUserInterfaceName|plural() : "entities" }} — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+	{% set spec = {'editDelete': true, 'adminInfo': false} %}
+	{% set action = "list" %}
+
+	<!-- Heading Row -->
+	<div class="row definition-block">
+		<div class="col-md-12 ">
+			{% include 'TAMASAstroBundle:ListObject:listDefinitionBox.html.twig'%}
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<br/>
+			<a
+			{% if object.objectEntityName != "tableContent"%}
+				href="{{path('tamas_astro_adminAdd'~object.objectEntityName[:1]|upper ~ object.objectEntityName[1:])}}"
+			{% else  %}
+				id="add-tableContent"
+			{% endif %}
+				class="btn btn-primary btn-block">
+				<span class="glyphicon glyphicon-plus-sign"></span>
+				Add {{object.objectUserInterfaceName|determinant()}}</a>
+			{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : spec, 'include': 'html'} %}
+		</div>
+	</div>
+	<hr>
+	<div id="dialog" title="Info"></div>
+{% endblock %}
+
+{% block javascripts %}
+	{{parent()}}
+	<script>
+		$("#add-tableContent").click(function(e){
+			let dialog = $("#dialog");
+			const linkAddEditedText = "{{path('tamas_astro_adminSelectEditedType')}}";
+			const linkListEditedText = "{{path('tamas_astro_adminListEditedText')}}";
+			dialog.dialog();
+			dialog.html(`In order to add a ${objects.tableContent.objectUserInterfaceName}, you need first to create a ${objects.editedText.objectUserInterfaceName}
+						 containing the appropriate metadata of the ${objects.tableContent.objectUserInterfaceName}.<br/>
+						 Click <b><a href="${linkAddEditedText}">here</a></b> to add a new ${objects.editedText.objectUserInterfaceName} or
+						 <b><a href="${linkListEditedText}">here</a></b> to find and edit an existing ${objects.editedText.objectUserInterfaceName}.`);
+		});
+	</script>
+
+	{% if visualization[0]|default() %}
+		{% include 'TAMASAstroBundle:DataViz:'~visualization[0]~'.html.twig' with {'include':'js'}%}
+	{% endif %}
+	{% if visualization[1]|default() %}
+		{% include 'TAMASAstroBundle:DataViz:'~visualization[1]~'.html.twig' with {'include':'js'}%}
+	{% endif %}
+
+	<script>
+		{% set spec = {'editDelete': true, 'adminInfo': false} %}
+
+		{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec':spec, 'include':'js' } %}
+	</script>
+{% endblock %}
+

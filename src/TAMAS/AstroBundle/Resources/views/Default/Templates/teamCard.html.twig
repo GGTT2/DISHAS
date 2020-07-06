@@ -1,0 +1,97 @@
+<div class="col-md-3 col-sm-6">
+    <div class="project-member">
+        {% if member.picture|default %}
+            {% if member.picture != null and member.picture.fileName != null %}
+                <img class="member-picture" src="{{ asset("image/" ~ member.picture.fileName) }}" alt="Photo of {{ member }}"/>
+            {% else %}
+                <img class="member-picture" src="{{ asset("img/team-member.jpg") }}" alt="No photo for this team member"/>
+            {% endif %}
+        {% else %}
+            <img class="member-picture" src="{{ asset("img/team-member.jpg") }}" alt="No photo for this team member"/>
+        {% endif %}
+
+        <div class="team-presentation">
+            <div class="member-info">
+                <h3 class="name" style="font-size: 28px;">{{ member.__toString() }}</h3>
+
+                {% if member.affiliation %}
+                    <div class="institution">{{ member.affiliation }}</div>
+                {% endif %}
+
+                {% if member.role %}
+                    <div class="role">
+                        {% for role in member.role %}
+                            {# definir classes pour tri ultérieur #}
+                            <div class="">{{ role }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if member.support %}
+                    {% if "ALFA" in member.support %}
+                        {% set project = "https://alfa.hypotheses.org/" %}
+                    {% elseif "HAMSI" in member.support %}
+                        {% set project = "http://www.hamsi.org.nz/p/about-hamsi.html" %}
+                    {% elseif "DIM" in member.support %}
+                        {% set project = "http://www.dim-humanites-numeriques.fr/" %}
+                    {% elseif "PAL" in member.support %}
+                        {% set project = "https://ptolemaeus.badw.de/start" %}
+                    {% elseif "SYRTE" in member.support %}
+                        {% set project = "https://syrte.obspm.fr/spip/" %}
+                    {% endif %}
+
+                    <div class="support-project badge badge-info">
+                        <a href="{{ project|default }}">{{ member.support }}</a>
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if member.presentation %}
+                <div class="desc">{{ member.presentation }}</div>
+            {% endif %}
+
+            {% if member.links is not empty %}
+                <div class="icons-wrapper">
+                    {% for url in member.links %}
+                        {% if "@" in url %}
+                            <a href="mailto:{{ url }}" class="w-inline-block">
+                                <img class="social-icon" src="{{ asset('img/icons/email.svg') }}"
+                                     alt="Go to linkedIn account"/>
+                            </a>
+                        {% elseif "wikipedia.org" in url %}
+                            <a href="{{ url }}" class="w-inline-block">
+                                <img class="social-icon" src="{{ asset('img/icons/wikipedia.svg') }}"
+                                     alt="Go to twitter account"/>
+                            </a>
+                        {% elseif "researchgate.net" in url %}
+                            <a href="{{ url }}" class="w-inline-block">
+                                <img class="social-icon" src="{{ asset('img/icons/researchgate.svg') }}"
+                                     alt="Go to research gate account"/>
+                            </a>
+                        {% elseif "linkedin.com" in url %}
+                            <a href="{{ url }}" class="w-inline-block">
+                                <img class="social-icon" src="{{ asset('img/icons/linkedin.svg') }}"
+                                     alt="Go to linkedIn account"/>
+                            </a>
+                        {% elseif "github.com" in url %}
+                            <a href="{{ url }}" class="w-inline-block">
+                                <img class="social-icon" src="{{ asset('img/icons/github.svg') }}"
+                                     alt="Go to linkedIn account"/>
+                            </a>
+                        {% elseif "twitter.com" in url %}
+                            <a href="{{ url }}" class="w-inline-block">
+                                <img class="social-icon" src="{{ asset('img/icons/twitter.svg') }}"
+                                     alt="Go to twitter account"/>
+                            </a>
+                        {% else %}
+                            <a href="{{ url }}" class="w-inline-block">
+                                <img class="social-icon" src="{{ asset('img/icons/globe.svg') }}"
+                                     alt="Go to the website"/>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

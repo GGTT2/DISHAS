@@ -1,0 +1,58 @@
+{#TAMAS\AstroBundle\Resources\views\PublicView\TableEditionView\astronomicalTab.html.twig#}
+{% if include == "html" %}
+    {% set paramTypes = [] %}
+    {% set paramTypes = parameterSets|length != 0 ? paramTypes|push("astronomical") : paramTypes %}
+    {% set paramTypes = mathematicalParameters|length != 0 ? paramTypes|push("mathematical") : paramTypes %}
+    {% set paramTypes = localParameters|length != 0 ? paramTypes|push("localisation") : paramTypes %}
+    {% set paramTypes = paramTypes|join(', ', ' and ') %}
+    {% set s = (parameterSets|length + mathematicalParameters|length + localParameters|length) > 1 ? "s" : "" %}
+
+    <div id="content-astr" role="tabpanel" class="tab-pane content-wrapper">
+        <h1 class="row">
+            <span class="col-md-1 col-md-offset-1 glyphicon glyphicon-star"></span>
+            <span class="col-md-10">Astronomical context</span>
+        </h1>
+        <hr class="black-hr">
+        <div class="row content-panel">
+            <h1 class="col-md-10 col-md-offset-1" style="font-weight: bold">{{ tableType }}</h1>
+
+            {% if parameterSets|length != 0 or mathematicalParameters|length != 0 or localParameters|length != 0 %}
+                <h2 class="col-md-10 col-md-offset-1">{{ paramTypes|capitalize }} parameter{{ s }} in the table content</h2>
+                {% include 'TAMASAstroBundle:PublicView:boxTemplate.html.twig' with {'divId':'parameter-box'} %}
+            {% endif %}
+            {% if formulaBoxes|length != 0 %}
+                {% set formula = formulaBoxes > 1 ? object_info.properties.formulaDefinition.objectUserInterfaceName|plural : object_info.properties.formulaDefinition.objectUserInterfaceName %}
+                <hr>
+                <h2 class="col-md-10 col-md-offset-1">{{ formula|capitalize }} that might match the table content</h2>
+                {% include 'TAMASAstroBundle:PublicView:boxTemplate.html.twig' with {'divId':'model-box'} %}
+            {% endif %}
+        </div>
+    </div>
+{% elseif include == "js" %}
+    <script{# type="module"#}>
+        /*import {DishasBox} from "../../../../../../../web/js/DISHAS_charts/DishasChart.js";*/
+        const boxDiv = $("#parameter-box");
+        const entities = new DishasEntity();
+
+        {% if parameterSets|length != 0 %}
+            {% for param in parameterSets %}
+                new DishasBox(boxDiv, entities.parameterSet, {{ param|json_encode|raw }});
+            {% endfor %}
+        {% endif %}
+        {% if mathematicalParameters|length != 0 %}
+            {% for param in mathematicalParameters %}
+                new DishasBox(boxDiv, entities.mathematicalParameter, {{ param|json_encode|raw }});
+            {% endfor %}
+        {% endif %}
+        {% if localParameters|length != 0 %}
+            {% for param in localParameters %}
+                new DishasBox(boxDiv, entities.localisationParameter, {{ param|json_encode|raw }});
+            {% endfor %}
+        {% endif %}
+        {% if formulaBoxes|length != 0 %}
+            {% for formula in formulaBoxes %}
+                new DishasBox($("#model-box"), entities.formulaDefinition, {{ formula|json_encode|raw }});
+            {% endfor %}
+        {% endif %}
+    </script>
+{% endif %}

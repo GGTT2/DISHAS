@@ -1,0 +1,169 @@
+{#TAMAS\AstroBundle\Resources\views\PublicView\sideMetadata.html.twig#}
+{% if include == "html" %}
+    {% set entityName = objectEntityName != "tableType" ? objectEntityName : astroObject["name"] %}
+
+    <div id="sidebar" isOpen="false">
+        <div id="outerSidebar">
+            <ul id="toolbar" class="toolbar nav {{ entityName }}">
+                <li class="toolbarItem">
+                    <span class="glyphicon glyphicon-align-justify" id="metadata"
+                          title="Show metadata"></span>
+                </li>
+                <li class="toolbarItem">
+                    <span class="glyphicon glyphicon-question-sign" id="definition"
+                          title="What do we mean by « {{ object_info.properties[objectEntityName].objectUserInterfaceName }} »"></span>
+                </li>
+                {% if metadata.edition|default %}
+                    <li class="toolbarItem">
+                        <span class="glyphicon glyphicon-bookmark" id="edition"
+                              title="Find all related {{ object_info.properties.editedText.objectUserInterfaceName|plural() }}" style="padding-top: 10px;"></span>
+                    </li>
+                {% endif %}
+                {% if metadata.comment|default %}
+                    <li class="toolbarItem">
+                        <span class="glyphicon glyphicon-comment" id="comment" title="Show comment" style="padding-top: 12px;"></span>
+                    </li>
+                {% endif %}
+                <li class="toolbarItem">
+                    <a id="exportJSON" class="{{ entityName }}" style="color: #333333;">
+                        <span class="glyphicon glyphicon-download-alt" title="Export metadata"></span>
+                    </a>
+                </li>
+            </ul>
+
+            <div id="sideBorder" class="{{ entityName }}">
+                <div id="sideEntity">
+                    {#<h1 id="entityName">{{ object_info.properties[objectEntityName].objectUserInterfaceName|upper }}</h1>#}
+                </div>
+            </div>
+        </div>
+
+        <div id="innerSidebar" class="{{ entityName }}">
+            <div class="contentSidebar">
+                {% include 'TAMASAstroBundle:PublicView:Sidebar/MetadataTab/metadataTab.html.twig' with {'include': 'html'} %}
+
+                {% include 'TAMASAstroBundle:PublicView:Sidebar/DefinitionTab/definitionTab.html.twig' with {'include': 'html'} %}
+
+                {% if metadata.edition|default %}
+                    {% include 'TAMASAstroBundle:PublicView:Sidebar/EditionTab/editionTab.html.twig' with {'include': 'html'} %}
+                {% endif %}
+
+                {% if metadata.comment|default %}
+                    <div class="backgroundSidebar" id="side-comment">
+                        <h2>Comment</h2>
+                        <hr/>
+                        <div style="padding: 1em;">
+                            {{ metadata.comment|raw }}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% elseif include == "js" %}
+    <script>
+        let nodePath = null;
+        {% if metadata.edition is defined %}
+            nodePath = {{ metadata.edition|json_encode|raw }};
+        {% endif %}
+
+        $(document).ready(function(){
+            /* OPEN AND CLOSING SIDEBAR */
+            let sidebar = $("#sidebar");
+
+            const switchSidebar = () => {
+                if (sidebar.attr("isOpen") === "false") {
+                    $("#sideBorder, #toolbar").removeClass("open-toolbar");
+                    $("#innerSidebar").removeClass("open-sidebar");
+                } else {
+                    $("#sideBorder, #toolbar").addClass("open-toolbar");
+                    $("#innerSidebar").addClass("open-sidebar");
+                }
+            };
+
+            $('.toolbarItem>span').click(function(){ // on click on a toolbar item
+                const id = $(this).attr('id');
+                if ($(this).hasClass("active")){
+                    $(this).removeClass("active");
+                    sidebar.attr("isOpen", "false");
+                    switchSidebar();
+                } else {
+                    $('.toolbarItem>span').removeClass("active");
+                    $(this).addClass("active");
+                    sidebar.attr("isOpen", "true");
+                    switchSidebar();
+                    $('.backgroundSidebar').hide();
+                    $(`#side-${id}`).show();
+                }
+            });
+
+            // close the sidebar
+            $(document).click((e) => {
+                let thatTarget = $(e.target);
+
+                // if the clicked target is not a child of sidebar AND sidebar is open
+                if (!thatTarget.closest('#sidebar').length && sidebar.attr('isOpen') === "true") {
+                    $(".toolbarItem>span.active").removeClass("open-item");
+                    sidebar.attr("isOpen", "false");
+                    switchSidebar();
+                }
+            });
+
+            // Open the sidebar when the page is ready
+            $('.toolbarItem>#metadata').click();
+
+            /* METADATA EXPORT */
+            {#`${dishas}${apiEndpoint}?index=${"{{ metadata.entity }}"}&id=${"{{ entity.id }}"}`#}
+
+            let exportButton = document.getElementById("exportJSON");
+            $.getJSON(generateUrl({"match": {"id": "{{ entity.id }}"}}, "{{ metadata.entity }}"), response => {
+                const results = retrieveResults(response)[0];
+                exportButton.setAttribute("href", `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(results))}`);
+                exportButton.setAttribute("download", "{{ metadata.entity }}{{ entity.id }}.json");
+
+                /* EDITION TAB FILL */
+                if (nodePath){
+                    let editionDiv = $("#related-editions");
+                    const links = selectNodeOfObject(nodePath, results);
+                    if (links.length !== 0) {
+                        for (let i = 0; i < links.length; i += 2) {
+                            editionDiv.append(`<tr>
+                            <td class="dataCell">
+                                <div class="row dataRow">
+                                    <div class="col-md-8">${links[i]}</div>
+                                    <div class="col-md-4">
+                                        <span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;
+                                        <a href="${generateRoute("tamas_astro_viewTableEdition", links[i+1])}">
+                                            See record
+                                        </a>
+                                    </div>
+                                </div>
+                            </td></tr>`);
+                        }
+                    } else {
+                        editionDiv.append("<tr><td><span class='noInfo' style='padding: 1em'>No edition directly related to this record</span></td></tr>")
+                    }
+                }
+            });
+        });
+
+        /* INNER SIDEBAR PIE CHART */
+        {% if metadata.visualization|default %}
+            am4core.ready(function() {
+                let chart = am4core.create("piechart", am4charts.PieChart);
+                chart.data = {{ metadata.visualization.data|raw }};
+
+                let pieSeries = chart.series.push(new am4charts.PieSeries());
+                pieSeries.dataFields.value = "value";
+                pieSeries.dataFields.category = "category";
+
+                if (isDefined(chart.data[0].color)){
+                    pieSeries.slices.template.propertyFields.fill = "color";
+                }
+
+                pieSeries.labels.template.disabled = true;
+            });
+        {% endif %}
+    </script>
+{% endif %}

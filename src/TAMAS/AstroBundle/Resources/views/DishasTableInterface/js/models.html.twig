@@ -1,0 +1,91 @@
+<script type="text/javascript">
+/**
+ * Function to fill in the model dialog box with the selected model information
+ * @param  {Object} selectedModel  formulaDefinition object as in the DB
+ * @return {undefined}
+ */
+function fillExplanation(selectedModel) {
+	var html = '';
+	if(typeof(selectedModel.latexFormula) !== 'undefined' && selectedModel.latexFormula !== null){
+		html = '<div>';
+		var latex = $("<div/>").html(processLatexFormula(selectedModel.latexFormula)).text();
+		html+='<span class="math-tex">'+latex+'</span>';
+
+		if(typeof(selectedModel.parameterExplanation) !=='undefined' && selectedModel.parameterExplanation !== null){
+			var button =  $("<div/>").html(selectedModel.parameterExplanation).text();
+			html += `&emsp;<button class="noClick btn btn-primary btn-formatInfo" data-toggle="tooltip" data-placement="bottom" 
+			title="`+button+`" >
+			? </button>`;
+		} 
+		html += '</div>';
+	}
+
+	$('#latex-formula').html(html);
+
+	var explanation = '';
+	
+	if(typeof(selectedModel.explanation) !=='undefined' && selectedModel.explanation !== null){
+		var routeDoc = public ? Routing.generate('tamas_astro_viewFormulaDefinition', {'id': selectedModel.id}) : Routing.generate('tamas_astro_adminViewFormulaDefinition', {'id': selectedModel.id, 'idTableType': '0'});
+
+		explanation = `<details><summary class="mainContent btn">Explanation <span style="font-size: 10px">▼</span></summary><p>${selectedModel.explanation}
+		<a id='read-more' target='_blank' href="${routeDoc}">Read more</a></p>
+</summary>`;
+	}
+	$('#model-definition').html(explanation);
+    {# var routeDoc = public ? Routing.generate('tamas_astro_viewFormulaDefinition', {'id': selectedModel.id}) : Routing.generate('tamas_astro_adminViewFormulaDefinition', {'id': selectedModel.id, 'idTableType': '0'});
+	$('#read-more').attr('href', routeDoc); #}
+
+	var estimatorInfo = '';
+	if(
+		(typeof(selectedModel.estimatorDefinition) !=='undefined' && selectedModel.estimatorDefinition !== null)||
+		(typeof(selectedModel.tip) !=='undefined' && selectedModel.tip !== null)){
+		estimatorInfo += `<div class='print-info' id='estimator-info'>
+		<details>
+			<summary class="mainContent btn">Method & tips <span style="font-size: 10px">▼</span></summary>
+				<p>`;
+		if(typeof(selectedModel.estimatorDefinition) !=='undefined' && selectedModel.estimatorDefinition !== null){
+			estimatorInfo += `<div>${selectedModel.estimatorDefinition}</div>`;
+		}
+		if(typeof(selectedModel.tip) !=='undefined' && selectedModel.tip !== null){
+			estimatorInfo += `<span class='tip'>${selectedModel.tip}</span>`;
+		}
+		estimatorInfo += '</p></details></div>';
+	}
+	$('#statistical-info').html(estimatorInfo);
+
+
+	MathJax.Hub.Typeset();
+}
+
+/**
+ * Function called when the user select an other model
+ * @param  {Number} formulaId  choice of the user
+ * @return {undefined}
+ */
+function selectFormula(formulaId) {
+	var models = {{models|raw}};
+	var selectedModel = models[formulaId];
+	if(selectedModel === undefined)
+		return ;
+	// Build a model object (class in web/js/DISHAS_table/model.js) from the selected formulaDefinition, and bind it to the table
+	current_model = loadModelJSON(selectedModel.formulaJson);
+	if(table !== undefined)
+		table.onNewModel(current_model);
+	// Fill the model dialog box with the correct information
+	fillExplanation(selectedModel);
+}
+
+// ->
+selectFormula($('#{{form.vars.id}}_formulaDefinition').val());
+
+$('#{{form.vars.id}}_formulaDefinition').change(function(){
+	selectFormula($(this).val());
+})
+
+// Fill the table with the current model and parameters
+$('#fill-model-done').click(function() {
+	table.fillTableFromModel();
+});
+
+
+</script>

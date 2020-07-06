@@ -1,0 +1,87 @@
+{#TAMAS\AstroBundle\Resources\views\PublicView\sideMetadata.html.twig#}
+{% if include == "html" %}
+    <table class="table">
+        <th colspan="5" style="border: none; padding: 0;">
+            <h1 style="padding-bottom: 1rem;">
+                {{ metadata.title|default|raw }}
+            </h1>
+        </th>
+        {% if metadata.subtitle|default %}
+            <tr style="border: none; padding: 0; margin: 0">
+                <td colspan="5">
+                    <div class="subtitle row">
+                        <h2 class="col-md-9">{{ metadata.subtitle.val|raw }}</h2>
+                        <div class="findMore col-md-2">
+                            <form action="{{ path('tamas_astro_search') }}" method="post">
+                                <button type="submit"
+                                        name="query"
+                                        value='{
+                                            "query":{{ metadata.subtitle.search.json|default }},
+                                            "title":"{{ metadata.subtitle.search.title|default }}",
+                                            "entity":"{{ metadata.entity }}"
+                                            }'
+                                        title="{{ metadata.subtitle.search.hover }}"
+                                        data-value="{{ metadata.subtitle.search.title|default }}"
+                                        class="btn-link send-query">
+                                    <span class="glyphicon glyphicon-search" style="margin-top: 30px"></span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% endif %}
+        {% for paramValue in metadata.value|default %}
+            {% for key, data in paramValue %}
+                {% if key == "th" %}
+                    <th scope="rowgroup" colspan="5">
+                        <div class="row dataRow">
+                            <div class="col-md-9">
+                                <h3 class="mainContent">{{ data.val|default|capitalize }}</h3>
+                            </div>
+                            {% if data.search.json is not empty %}
+                                <div class="findMore col-md-2">
+                                    <form action="{{ path('tamas_astro_search') }}" method="post">
+                                        <button type="submit"
+                                                name="query"
+                                                value='{
+                                                "query":{{ data.search.json|default }},
+                                                "title":"{{ data.search.title|default }}",
+                                                "entity":"{{ metadata.entity }}"
+                                                }'
+                                                title="{{ data.search.hover }}"
+                                                data-value="{{ data.search.title|default }}"
+                                                class="btn-link send-query">
+                                            <span class="glyphicon glyphicon-search" style="margin-top: 20px"></span>
+                                        </button>
+                                    </form>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </th>
+                {% else %}
+                    <tr>
+                        <th scope="row" colspan="2">{{ key|capitalize }}</th>
+                        <td class="dataCell" colspan="3">
+                            {# Define value that will appear as metadata #}
+                            {% set valueText %}
+                                {% if data.val is empty %}
+                                    <span class="noInfo">No information provided</span>
+                                {% else %}
+                                    {{ data.val|default|raw }}
+                                {% endif %}
+                            {% endset %}
+
+                            <div class="row dataRow">
+                                <div class="col-md-12">
+                                    {{ valueText|raw }}
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </table>
+{% elseif include == "js" %}
+{% endif %}

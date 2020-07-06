@@ -1,0 +1,22 @@
+
+code.descname {
+	color: brown;
+}
+
+summary>dt {
+	cursor:pointer;
+}
+
+dl.function {
+	background-color: #efe0e0;
+	border: 1px solid black;
+}
+
+dl.attribute {
+	background-color: #e0efe0;
+	border: 1px solid black;
+}
+
+dl.class {
+	border: 2px solid black;
+}

@@ -1,0 +1,27 @@
+{# empty Twig template #}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+    {{ action|capitalize }} {{ object_info.properties.journal.objectUserInterfaceName }} — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    {% form_theme form 'bootstrap_3_TAMAS.html.twig'
+'jquery.collection.html.twig' %}
+
+    <div class="row">
+        <div class="col-md-10">
+            <div class="well">
+                {{form_start(form)}}
+                {{form_row(form.journalTitle)}}
+            </div>
+        </div>
+        <div class="col-md-2">
+           {%include 'TAMASAstroBundle:AddObject:adminPannel.html.twig'%}
+        </div>
+    </div>
+{% endblock%}
+
+{% block javascripts %}
+    {{parent()}} 
+{% endblock %}

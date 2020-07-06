@@ -1,0 +1,11 @@
+--- Http.php	2019-01-29 10:38:03.000000000 +0100
++++ Http_new.php	2019-07-19 15:48:31.777064157 +0200
+@@ -104,7 +104,7 @@
+         $username = $connection->getUsername();
+         $password = $connection->getPassword();
+         if (!is_null($username) && !is_null($password)) {
+-            curl_setopt($conn, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
++            curl_setopt($conn, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+             curl_setopt($conn, CURLOPT_USERPWD, "$username:$password");
+         }
+ 

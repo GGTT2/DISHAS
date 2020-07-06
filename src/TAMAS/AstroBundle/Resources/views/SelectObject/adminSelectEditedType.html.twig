@@ -1,0 +1,119 @@
+{# empty Twig template #}
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\AdminSelect\adminSelectEditedType.html.twig#}
+
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+    Select an edition type — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    <h2>
+        <span style="color: {{ object_info.properties.editedText.userInterfaceColor }}">▶ </span>
+        Add {{ object_info.properties.editedText.objectUserInterfaceName|determinant }}
+    </h2>
+    <div class="well">
+        <h3> First, select a type of edition</h3>
+
+        <div id="type-A" class="description-block">
+            <h4>Type-A Edition <small>Numerically consistant table</small></h4>
+            <p>
+                The first stage involves the rendition of the
+                <b>individual table (taken from individual MSS of the same work)</b>
+                from its diplomatic transcription onto a more numerical consistent form, i.e., 
+                a numerical format free of any data integrity errors. 
+                The following is a list; albeit not an exhaustive one, of the different types of 
+                strategies employed in creating a numerically consistent table.
+                <ol>
+                    <li>
+                        All <u>logical and indicative refinements</u> are implemented, e.g.,
+                        providing numbers for each cell when the scribe indicates a repetition
+                        mark in lieu of repeatedly writing the same number or appropriating a
+                        number (or NaN) for an ambiguous character (or empty space) based on observation.
+                    </li>
+                    <li>
+                        <u>Numerical parsing</u> on a local and global scale to keep regularity, e.g.,
+                        correcting a number to maintain simple mathematical regularity. It should be
+                        noted here that this inspection is merely observational and not computational.
+                    </li>
+                    <li>
+                        Using <u>pattern recognition and visual inspection</u> to correct numbers for constancy,
+                        uniformity, and accuracy (in reproduction).
+                    </li>
+                    <li>
+                        Noting all numerical changes, e.g., instances where ambiguous, dubious, or inconsistent
+                        numbers are altered, alternatives or originals are duly noted as comments.
+                    </li>
+                </ol>
+                <b>Note:</b>
+                Any ancillary material (paratext, scribal error marks and corrections, change in handwriting, etc.)
+                is NOT included in this table: these remain features that are to be noted in the TEI version of the table.
+            </p>
+            <a class="btn btn-primary" role="button" href="{{path("tamas_astro_adminAddEditedText", {'type': 'a'})}}">Add Type-A Edition </a>
+        </div>
+
+        <div id="type-B" class="description-block">
+            <h4>Type-B Edition <small>Numerical Reproduced Table</small></h4>
+            <p>
+                The second stage involves employing the <b>different individual tables</b>
+                (belonging to the same work, but taken from different MSS) and forming an EDITION table.
+                This process can be defined based on a few different strategies:
+                <ol>
+                    <li>
+                        Any <u>eclectic, stemmatic, or copy-text method</u> (in general, any philological method)
+                        of comparing the different 'witness' tables (from Part A) and establishing a critical 'base'
+                        numerical table, with all variants duly noted in comments. These comments effectively make
+                        the apparatus criticus.
+                    </li>
+                    <li>
+                        Any <u>mathematical method</u> (from Part C) of establishing a critical 'base' numerical
+                        table and then employing tables (from Part A) to note the variants.
+                    </li>
+                    <li>
+                        Any <u>combination</u> of the two strategies above.
+                    </li>
+                    <li>
+                        Additionally, any <u>previously 'critically' edited table</u> (from a set of extant or
+                        non-existing manuscripts) belonging to the same table-type and work (as set in Part A)
+                        can also be stored in Part B here. In such cases, it is important to note any relation,
+                        if applicable, of this previous work to the different tables in Part A. Failing this, a
+                        common reference to the work and table-type becomes minimally necessary.
+                    </li>
+                </ol>
+                <b>Note:</b> Several different 'critical editions' (based on different editorial strategies) of the
+                same table may be stored in this stage; all of which, are identified with the correct relational structure
+                to the tables in parts A and C.
+            </p>
+            <a class="btn btn-primary" role="button" href="{{path("tamas_astro_adminAddEditedText", {'type': 'b'})}}">Add Type-B Edition </a>
+        </div>
+        <div id="type-C" class="description-block">
+            <h4>Type-C Edition <small>Numerically Recomputed Table(s)</small></h4>
+            <p>
+                The third stage involves the recomputed tables — corresponding to each individual table in Part A — that are stored relationally in the SQL database. These tables are generated based on the following possible strategies:
+                <ol>
+                    <li>
+                        A <u>modern mathematical recomputation</u> of the table based on
+                        (a) choice of appropriate parameter,
+                        (b) mathematical equations governing the underlying function tabulated,
+                        (c) selection of a suitable generative or iterative algorithm.
+                    </li>
+                    <li>
+                        A <u>historically congruous</u> mathematical algorithm based on editorial decisions.
+                        These tables are generated by a modern scholar based on his or her own understanding
+                        of the mathematical apparatus presumably intended to have been used by the original
+                        author in his time. These tables form a collection of our modern efforts to reconstruct
+                        numerical tables within its historical context.
+                    </li>
+                    <li>
+                        Any <u>other derivatives or combinations</u> of mathematical procedures,
+                        algorithms, iterative techniques, rounding schemes, etc. used to generate
+                        the numerical entries of the table form separate mathematical tables that
+                        are also stored in this part.
+                    </li>
+                </ol>
+            </p>
+            <a class="btn btn-primary"  role="button" href="{{path("tamas_astro_adminAddEditedText", {'type': 'c'})}}">Add Type-C Edition </a>
+        </div>
+    </div>
+
+{%endblock%}

@@ -1,0 +1,37 @@
+{
+    "primarysource": {
+	"30": {
+            "primType": "ms",
+            "shelfmark": "B36",
+	    "library": "1"
+        },
+	"31": {
+            "primType": "ms",
+            "shelfmark": "ValidMSEdited",
+	    "library": {
+		"isni": "0000000460368974"
+	    }
+        },
+	"32": {
+            "primType": "ep",
+            "shelfmark": "000061853",
+	    "primTitle": "Tabule astronomice illustrissimi Alfonsii regis Castelle",
+	    "primEditor": "E. Ratdolt",
+            "date": "1483",
+	    "library": "6"
+        },
+	"33": {
+            "primType": "ep",
+            "shelfmark": "ValidEPEdited",
+	    "primTitle": "Tabule astronomice illustrissimi Alfonsii TEST VALIDE",
+	    "primEditor": "MachinValide",
+            "date": "1500",
+	    "library": "5"
+        },
+	"34": {
+            "primType": "",
+            "shelfmark": "",
+	    "library": "6"
+        }
+    }
+}

@@ -1,0 +1,43 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\adminListPrimarySource.html.twig#}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+    List of Manuscript — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+
+    <!-- Heading Row -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="definition-block">
+                <div class="row">
+                    <div class="col-md-5">
+                        {% include 'TAMASAstroBundle:ListObject:listDefinitionBox.html.twig'%}
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-2"> <!-- à modifier-->
+                        <div class="image">
+                           {# <img src="{{asset('img/scriptoria.jpg')}}" alt="astronomers looking at the moon" title="
+                                 Scriptorium (copists working room) of the Escurial monastry in the XIIIe century" data-toggle="tooltip" data-placement="right"/>#}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {{xmlContent|raw}}
+        </div>
+    </div>
+    <hr>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+{% endblock %}
+

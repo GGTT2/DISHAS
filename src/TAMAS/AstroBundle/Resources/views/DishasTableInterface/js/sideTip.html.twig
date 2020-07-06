@@ -1,0 +1,79 @@
+<script type="text/javascript">
+
+//List of tips
+tipContent = {
+	'symmetry': {
+		'title': 'Symmetries',
+		'content': `
+			Symmetries and periodicities are expressed in diverse ways in the historical sources. 
+			In some cases symmetries are expressed by the template: only part of the entries are tabulated 
+			while the other are implicitly expressed by specific arguments layouts and dedicated reading conventions for the table. 
+			In other cases symmetries are implicitly expressed and each entry is tabulated regardless of its mathematical relation with other values.
+			Various combination of these two extreme situations are attested.
+            The symmetries modules of DISHAS allow to address these situations.
+            <ul>
+                <li>
+                    If your historical sources have <b>template symmetries</b>
+                    you will be able to input only those entries present in the historical sources while the other entries will be generated from the specified rules.
+                    <ol>
+                        <li>Start by filling <b>all</b> the <b>unfolded and corrected arguments</b> of the symmetry.
+                        <span class='tip'>Be careful: the arguments need to be corrected according to the mathematical consistancy of the symmetry for calculation prupose.
+                        If the source shows blank argument or mathematically inconsistent numbers, you will be able to modify it later (after the symmetry calculation)</span></li>
+                        <li>Click on <a data-toggle="modal" data-target="#dialog-hard-symmetry">Document > Template symmetries </a> to open the symmetry dialog box.</li>
+                        <li>Once the symmetry is executed, it is possible to correct the arguments according to the source.</li>
+                    </ol>
+                </li>
+                <li>
+                    Symmetry module is also available as a predictive tools in order to address situations
+                    where an historical source expresses symmetrical entries only implicitly.
+                    Click on <a data-toggle="modal" data-target="#symmetry-fill">Tools > Fill by symmetry </a>
+                    to open the dialog box and click on tab "symmetry".
+                </li>
+            </ul>`
+	},
+}
+
+//TODO : donner un argument à open nav pour qu'il s'ouvre à la définition souhaitée. Pour le moment, le seul momoent où on l'ouvre, c'est pour les symmetry tip
+function openNav() {
+	displayTip(tipContent);
+    document.getElementById("tablecontent-sidetip").style.width = "400px";
+}
+
+function closeNav() {
+    document.getElementById("tablecontent-sidetip").style.width = "0px";
+}
+
+//Open the tips from a button.
+$('#button-tip').click(function(){
+	if($('#tablecontent-sidetip').width() === 0)
+		openNav();
+	else
+		closeNav();
+});
+
+//Little cross and button close
+$('.close-tip').click(function(){
+	closeNav();
+})
+
+
+function displayTip(tip) {
+	var option = '';
+	for(var key in tip){
+		option+="<option value='"+key+"'>"+tip[key].title+"</option>";
+	}
+
+	$('#tip-title-select').html(option);
+// 	$('#tip-title').html(tip.title);
+// 	$('#tip-content').html(tip.content);
+	showTip($('#tip-title-select').val());
+}
+
+$('#tip-title-select').on('change select', function(){
+	showTip($(this).val());
+});
+
+function showTip(title){
+	$('#tip-content').html(tipContent[title].content);
+}
+</script>

@@ -1,0 +1,41 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% block fos_user_content %}
+    {% include '/includes/navbar.html.twig' %}  
+    <h3>Login</h3>
+    {{ include('@FOSUser/Security/login_content.html.twig') }}
+
+    <p class="right"><a id="forgotten-pw">Forgotten password</a></p>
+    <div id="reset-pw" title='request a new password' hidden="hidden">
+        {{ include('@FOSUser/Resetting/request_content.html.twig')}}
+    </div>
+
+
+
+    {% block javascripts %}
+
+        {{parent()}}
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                dialog = $('#reset-pw').dialog({
+                    autoOpen: false,
+                    height: 200,
+                    modal: true
+                });
+
+                $('#forgotten-pw').on('click', function () {
+                    $("#reset-pw").removeAttr("hidden");
+                    dialog.dialog('open');
+                });
+            });
+        </script>
+
+    {% endblock %}
+
+{% endblock fos_user_content %}
+
+
+
+

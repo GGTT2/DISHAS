@@ -1,0 +1,118 @@
+/*
+ * Source : https://getbootstrap.com/examples/dashboard/#
+ * Base structure
+ */
+
+ /* Move down content because we have a fixed navbar that is 50px tall */
+ body {
+ 	padding-top: 50px;
+ }
+
+
+/*
+ * Global add-ons
+ */
+
+ .sub-header {
+ 	padding-bottom: 10px;
+ 	border-bottom: 1px solid #eee;
+ }
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+ .navbar-fixed-top {
+ 	border: 0;
+ }
+
+/*
+ * Sidebar
+ */
+
+ /* Hide for mobile, show later */
+ .sidebar {
+ 	display: none;
+ }
+@media (min-width: 768px) {
+	.sidebar {
+		position: fixed;
+		top: 51px;
+		margin-bottom: 200px;
+		left: 0;
+		z-index: 1000;
+		display: block;
+		padding: 20px;
+		overflow-x: hidden;
+		overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+		/*background-color: #f5f5f5;*/
+		border-right: 1px solid #eee;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#4c4c4c+0,595959+12,666666+25,474747+39,2c2c2c+50,111111+60,2b2b2b+76,1c1c1c+91,000000+100,131313+100 */
+		background:    #000000;
+/*      background:    -webkit-linear-gradient(#666666, #000000 50%, #666666);
+		background:    linear-gradient(#666666, #000000 50%, #666666);*/
+		border:        0px solid #556699;
+		box-shadow:    3px 3px #eeeeee;
+}
+}
+
+
+/* Sidebar navigation */
+.nav-sidebar {
+	margin-right: -21px; /* 20px padding + 1px border */
+	margin-bottom: 20px;
+	margin-left: -20px;
+}
+.nav-sidebar > li > a {
+	padding-right: 20px;
+	padding-left: 20px;
+	color: #C0C0C0;
+}
+.nav-sidebar > li > a:hover,
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+	color: white;
+	background-color:	#696969; 	/*#428bca;#C0C0C0*/
+}
+
+
+/*
+ * Main content
+ */
+
+ .main {
+ 	padding: 20px;
+ }
+ @media (min-width: 768px) {
+ 	.main {
+ 		padding-right: 40px;
+ 		padding-left: 40px;
+ 	}
+ }
+ .main .page-header {
+ 	margin-top: 0;
+ }
+
+
+/*
+ * Placeholder dashboard ideas
+ */
+
+ .placeholders {
+ 	margin-bottom: 30px;
+ 	text-align: center;
+ }
+ .placeholders h4 {
+ 	margin-bottom: 0;
+ }
+ .placeholder {
+ 	margin-bottom: 20px;
+ }
+ .placeholder img {
+ 	display: inline-block;
+ 	border-radius: 50%;
+ }

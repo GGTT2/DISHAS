@@ -1,0 +1,35 @@
+{#TAMAS\AstroBundle\Resources\views\PublicView\TableEditionView\editorialTab.html.twig#}
+{% if include == "html" %}
+    <div id="content-edit" role="tabpanel" class="tab-pane content-wrapper">
+        <h1 class="row">
+            <span class="col-md-1 col-md-offset-1 glyphicon glyphicon-bookmark"></span>
+            <span class="col-md-10">Editorial context</span>
+        </h1>
+
+        <hr class="black-hr">
+
+        <div class="row">
+            <div class="content-panel">
+                <div class="row">
+                    <div class="visualisation-title col-md-offset-1 col-md-10" style="margin-top: 15px">
+                        {{ object_info.properties.originalText.objectUserInterfaceName|capitalize|plural }} and {{ object_info.properties.editedText.objectUserInterfaceName|plural }} on which this edition is based
+                        <button type="button" class="btn moreInfo-btn" data-container="body"
+                                data-toggle="popover" data-placement="bottom"
+                                data-html="true" data-trigger="focus"
+                                data-content="{{ graphDefinition|raw|default }}">
+                            <span class="glyphicon glyphicon-question-sign moreInfo"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    {% include 'TAMASAstroBundle:DataViz:DishasGraph.html.twig' with {'include':'html'}%}
+                    {% include 'TAMASAstroBundle:PublicView:boxTemplate.html.twig' with {'divId':'graph-box'} %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% elseif include == "js" %}
+    {% include 'TAMASAstroBundle:DataViz:DishasGraph.html.twig' with {'include':'js'} %}
+{% endif %}

@@ -1,0 +1,55 @@
+{#TAMAS\AstroBundle\Resources\views\PublicView\TableEditionView\historicalTab.html.twig#}
+{% if include == "html" %}
+    <div id="content-hist" role="tabpanel" class="tab-pane content-wrapper">
+        <h1 class="row">
+            <span class="col-md-1 col-md-offset-1 glyphicon glyphicon-book"></span>
+            <span class="col-md-10">Historical context</span>
+        </h1>
+        <hr class="black-hr">
+        <div class="row">
+            <div class="content-panel">
+                <div class="row">
+                    <div class="visualisation-title col-md-offset-1 col-md-10" style="margin-top: 15px">
+                        Creation sites of the historical sources used in this edition
+                        <button type="button" class="btn moreInfo-btn" data-container="body"
+                                data-toggle="popover" data-placement="bottom"
+                                data-html="true" data-trigger="focus"
+                                data-content="{{ chronoMapDefinition|raw|default }}">
+                            <span class="glyphicon glyphicon-question-sign moreInfo"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <h4 class="noInfo" style="text-align: center;">
+                        As visualizations are based only on database records, the displayed information might be incomplete
+                    </h4>
+                </div>
+                <div id="map-div"></div>
+                {% include 'TAMASAstroBundle:PublicView:boxTemplate.html.twig' with {'divId':'map-box'} %}
+            </div>
+        </div>
+    </div>
+{% elseif include == "js" %}
+    {# CHRONOLOGICAL MAP #}
+    <script src="{{asset('js/amcharts4/maps.js')}}"></script>
+    <script src="{{asset('js/geodata/worldLow.js')}}"></script>
+    {#<script src="{{asset('js/amcharts4/plugins/bullets.js')}}"></script>#}
+    <script src="{{asset('js/DISHAS_charts/DishasMapChart.js')}}"></script>
+    <script src="{{asset('js/DISHAS_charts/DishasHeatMap.js')}}"></script>
+    <script src="{{asset('js/DISHAS_charts/DishasScrollbar.js')}}"></script>
+
+    <script defer{# type="module"#}>
+        /*import {DishasChart, DishasMapConfig} from "../../../../../../../web/js/DISHAS_charts/DishasChart.js";*/
+        let config = new DishasMapConfig({
+            {% if chronoMapData.isPrimSource %}
+                "primarySource": "{{ object_info.properties.primarySource.userInterfaceColor }}",
+            {% endif %}
+            {% if chronoMapData.isWork %}
+                "work": "{{ object_info.properties.work.userInterfaceColor }}"
+            {% endif %}
+            });
+        config.elementId = {visualization: "map-div", chart: "", legend: "", box: "map-box", noData: "no-data"};
+
+        chronoMap = new DishasChart({{ chronoMapData|json_encode|raw }}, config);
+    </script>
+{% endif %}

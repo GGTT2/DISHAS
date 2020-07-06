@@ -1,0 +1,72 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\PublicView\viewTemplate.html.twig#}
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% block title %}
+    View {{ object_info.properties[objectEntityName].objectUserInterfaceName }} n°{{ entity.id }} — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    <!-- INFORMATIONS ABOUT THE RECORD -->
+    {% include 'TAMASAstroBundle:PublicView:Sidebar/sidebarTemplate.html.twig' with {'include': 'html'}%}
+
+    <div class="container">
+        <div class="row">
+            <h1 class="entity-title col-md-offset-1 col-md-10">
+                <b>{{ object_info.properties[objectEntityName].objectUserInterfaceName|capitalize }}</b> : {{ entity }}
+            </h1>
+        </div>
+        <hr>
+    </div>
+
+    {% include 'TAMASAstroBundle:PublicView:editButton.html.twig' %}
+
+    <!-- VISUALIZATION -->
+    <div id="main">
+        <div class="row">
+            <div id="data-viz-1" class="col-md-12 col-md-offset-0 col-sm-12 col-lg-10 col-lg-offset-1">
+
+                {% if currentNode != "TM-rec" %}
+                    <div class="row">
+                        <div class="visualisation-title col-md-offset-2 col-md-8">
+                            {{ visualizationTitle|raw }}
+                            <button type="button" class="btn moreInfo-btn" data-container="body"
+                                    style="margin-bottom: 0;"
+                                    data-toggle="popover" data-placement="bottom"
+                                    data-html="true" data-trigger="focus"
+                                    data-content="{{ visualizationDefinition|raw|default }}">
+                                <span class="glyphicon glyphicon-question-sign moreInfo"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h4 class="noInfo" style="text-align: center;">
+                            As visualizations are based only on database records, the displayed information might be incomplete
+                        </h4>
+                    </div>
+                {% endif %}
+
+                {% if visualization[0]|default() %}
+                    {% include 'TAMASAstroBundle:DataViz:'~visualization[0]~'.html.twig' with {'include':'html'} %}
+                {% endif %}
+                {% include 'TAMASAstroBundle:PublicView:boxTemplate.html.twig' with {'divId':'boxdiv'} %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{asset('js/amcharts4/core.js')}}"></script>
+    <script src="{{asset('js/amcharts4/charts.js')}}"></script>
+
+    <script src="{{asset('/js/DISHAS_charts/DishasChart.js')}}"></script>
+    <script src="{{asset('js/DISHAS_charts/DishasLegend.js')}}"></script>
+    <script src="{{asset('js/DISHAS_charts/DishasConfig.js')}}"></script>
+    <script src="{{asset('js/DISHAS_charts/DishasEntity.js')}}"></script>
+    <script src="{{asset('js/DISHAS_charts/DishasBox.js')}}"></script>
+    {#<script src="{{asset('js/DISHAS_charts/DISHAS_dataset/DishasDataset.js')}}"></script>#}
+
+    {% include 'TAMASAstroBundle:DataViz:'~visualization[0]~'.html.twig' with {'include':'js'} %}
+
+    {% include 'TAMASAstroBundle:PublicView:Sidebar/sidebarTemplate.html.twig' with {'include': 'js'}%}
+
+{% endblock %}

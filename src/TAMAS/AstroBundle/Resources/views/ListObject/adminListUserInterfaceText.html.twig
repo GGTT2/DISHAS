@@ -1,0 +1,60 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\adminListUserInterfaceText.html.twig#}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+    List of user interface text — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+
+    <!-- Heading Row -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="dataList hasTable">
+                {%if texts is defined and texts is not empty%}
+                    <table class="table table-hover table-browser" id="text-list">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Content</th>
+                                <th>Created</th>
+                                <th>Updated</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {%for text in texts %}
+                                <tr>
+                                    <th scope="row"> 
+                                        {{text.id}} 
+                                    </th>
+                                    <td>{% if text.textName|default %}{{text.textName|capitalize}}{% else %}Unknown text n° {{text.id}}{% endif %}</td>
+                                    <td>{% if text.textContent|default %}{{text.textContent|truncate(100)}}{% else %}-{% endif %}</td>
+                                    <td>{% if text.created|default %}{{text.created|date('d/m/Y')}}{% else %}-{% endif %}</td>
+                                    <td>{% if text.updated|default %}{{text.updated|date('d/m/Y')}}{% else %}-{% endif %}</td>
+                                    <td>
+                                        {% if text.id|default %}
+                                            <a href="{{path('tamas_astro_adminEditUserInterfaceText', {'id': text.id})}}" class="btn btn-warning btn-sm edit-text">
+                                                <span class="glyphicon glyphicon-edit"></span> Edit</a>
+                                        {%endif%}
+                                    </td>
+                                </tr>
+                            {%endfor%}
+                        </tbody>
+                        <br/>
+                    </table>
+                {%else%}
+                    <h4>No corresponding text was found in the database</h4>
+                {%endif%}
+            </div>
+        </div>
+    </div>
+    <hr>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+{% endblock %}

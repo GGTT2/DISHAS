@@ -1,0 +1,17 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\contact.html.twig#}
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% set currentNode = "contact" %}
+
+{% block title %}
+    Contact — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    {% include 'TAMASAstroBundle:Default:Templates/pageHeader.html.twig' with {"title":"Contact", "tag":"h1"} %}
+    <div class="documentation">
+        {% if public_contact.textContent|default %}
+            {{ public_contact.textContent|raw }}
+        {% endif %}
+    </div>
+{% endblock %}

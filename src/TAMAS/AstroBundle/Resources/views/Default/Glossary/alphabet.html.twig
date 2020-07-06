@@ -1,0 +1,106 @@
+{% if include == "html" %}
+    <div id="glossary-alpha" class="row">
+        {% include 'TAMASAstroBundle:Default:Templates/pageHeader.html.twig' with {"title":"All definitions", "tag":"h2"} %}
+        <table class="alphabet">
+            <tr>
+                <td id="A" class="glossary-letter">A</td>
+                <td id="B" class="glossary-letter">B</td>
+                <td id="C" class="glossary-letter">C</td>
+                <td id="D" class="glossary-letter">D</td>
+                <td id="E" class="glossary-letter">E</td>
+                <td id="F" class="glossary-letter">F</td>
+                <td id="G" class="glossary-letter">G</td>
+                <td id="H" class="glossary-letter">H</td>
+                <td id="I" class="glossary-letter">I</td>
+                <td id="J" class="glossary-letter">J</td>
+                <td id="K" class="glossary-letter">K</td>
+                <td id="L" class="glossary-letter">L</td>
+                <td id="M" class="glossary-letter">M</td>
+                <td id="N" class="glossary-letter">N</td>
+                <td id="O" class="glossary-letter">O</td>
+                <td id="P" class="glossary-letter">P</td>
+                <td id="Q" class="glossary-letter">Q</td>
+                <td id="R" class="glossary-letter">R</td>
+                <td id="S" class="glossary-letter">S</td>
+                <td id="T" class="glossary-letter">T</td>
+                <td id="U" class="glossary-letter">U</td>
+                <td id="V" class="glossary-letter">V</td>
+                <td id="W" class="glossary-letter">W</td>
+                <td id="X" class="glossary-letter">X</td>
+                <td id="Y" class="glossary-letter">Y</td>
+                <td id="Z" class="glossary-letter">Z</td>
+                <td id="all" class="glossary-letter">*</td>
+            </tr>
+        </table>
+        <section class="col-md-8 col-md-offset-2 def-entries">
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'astronomicalObject'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'calendar'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'era'} %} {# Calendar era #}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'daysTable'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/astroObjectEntry.html.twig' with {'objectId':10} %} {# Eclipse #}
+            {% include 'TAMASAstroBundle:Default:Glossary/astroObjectEntry.html.twig' with {'objectId':9} %} {# Eighth sphere #}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'epoch'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'formulaDefinition'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'historicalActor'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'historian'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'hoursTable'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'hoursUnit'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'journal'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/astroObjectEntry.html.twig' with {'objectId':6} %} {# Jupiter #}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'library'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'localisationParameter'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/astroObjectEntry.html.twig' with {'objectId':5} %} {# Mars #}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'mathematicalParameter'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'meanMotion'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/astroObjectEntry.html.twig' with {'objectId':2} %} {# Mercury #}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'monthsTable'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'monthsType'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/astroObjectEntry.html.twig' with {'objectId':4} %} {# Moon #}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'numberUnit'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'parameterSet'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'parameterValue'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'place'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'placeLongitude'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'primarySource'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'root'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/astroObjectEntry.html.twig' with {'objectId':7} %} {# Saturn #}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'secondarySource'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/astroObjectEntry.html.twig' with {'objectId':8} %} {# Spherical astronomical #}
+            {% include 'TAMASAstroBundle:Default:Glossary/astroObjectEntry.html.twig' with {'objectId':1} %} {# Sun #}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'tableContent'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'editedText'} %} {# Table edition #}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'tableType'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'originalText'} %} {# Table witness #}
+            {% include 'TAMASAstroBundle:Default:Glossary/astroObjectEntry.html.twig' with {'objectId':11} %} {# Trigonometrical #}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'typeOfEdition'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'typeOfNumber'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/astroObjectEntry.html.twig' with {'objectId':3} %} {# Venus #}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'work'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'years'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'extendedYears'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'collectedYears'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/glossaryEntry.html.twig' with {'entity':'singleYears'} %}
+        </section>
+    </div>
+{% elseif include == "js" %}
+    <script>
+        $(document).ready(function() {
+            const alpha = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","all"];
+            for (let i = 0; i < alpha.length; i++) {
+                const letter = alpha[i];
+                let defs = $(`.${letter}`);
+                if (defs.length === 0){
+                    $(`#${letter}`).addClass("disabled");
+                } else {
+                    $(`#${letter}`).addClass("active");
+                }
+            }
+
+            $('.glossary-letter').click(ev => {
+                $(".def-entry").addClass("hidden");
+                const letter = ev.target.id;
+                $(`.${letter}`).removeClass("hidden");
+            });
+        });
+    </script>
+{% endif %}

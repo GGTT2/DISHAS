@@ -1,0 +1,102 @@
+{#TAMAS\AstroBundle\Resources\views\PublicView\TableEditionView\viewTableEdition.html.twig#}
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% set nbTabs = 1 %}
+{% set editTab = false %}
+{% set astroTab = false %}
+{% set histTab = false %}
+{% set commTab = false %}
+{% if (graphData|length != 0) and (graphData.chart[0].data|length != 0) %}
+    {% set editTab = true %}
+    {% set nbTabs = nbTabs + 1 %}
+{% endif %}
+{% if parameterSets|length != 0 or mathematicalParameters|length != 0 or localParameters|length != 0 or formulaBoxes|length != 0 %}
+    {% set astroTab = true %}
+    {% set nbTabs = nbTabs + 1 %}
+{% endif %}
+{% if (chronoMapData|length != 0) and (chronoMapData.chart[0].data|length != 0) %}
+    {% set histTab = true %}
+    {% set nbTabs = nbTabs + 1 %}
+{% endif %}
+{% if (comments.edit) or (comments.astro|length != 0) %}
+    {% set commTab = true %}
+    {% set nbTabs = nbTabs + 1 %}
+{% endif %}
+
+{% block title %}
+    View {{ object_info.properties.editedText.objectUserInterfaceName }} n°{{ entity.id }} — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{asset('css/table-edition.css')}}"/>
+
+    <div class="row">
+        <h1 class="col-md-10 col-md-offset-1" style="padding-bottom: 20px;">
+            <b>{{ object_info.properties.editedText.objectUserInterfaceName|capitalize }}</b> : {{ entity }}
+        </h1>
+    </div>
+
+    {% include 'TAMASAstroBundle:PublicView:editButton.html.twig' %}
+
+    {% include 'TAMASAstroBundle:PublicView:Sidebar/sidebarTemplate.html.twig' with {'include': 'html'}%}
+
+    <section id="table-edition-view" class="wrapper editedText">
+        {% include 'TAMASAstroBundle:PublicView:TableEditionView/tabs.html.twig' with {'include': 'html'}%}
+
+        <div class="tab-content row">
+            {% include 'TAMASAstroBundle:PublicView:TableEditionView/tableTab.html.twig' with {'include': 'html'}%}
+
+            {% if commTab %}
+                {% include 'TAMASAstroBundle:PublicView:TableEditionView/commentTab.html.twig' with {'include': 'html'}%}
+            {% endif %}
+
+            {% if editTab %}
+                {% include 'TAMASAstroBundle:PublicView:TableEditionView/editorialTab.html.twig' with {'include': 'html'}%}
+            {% endif %}
+
+            {% if astroTab %}
+                {% include 'TAMASAstroBundle:PublicView:TableEditionView/astronomicalTab.html.twig' with {'include': 'html'}%}
+            {% endif %}
+
+            {% if histTab %}
+                {% include 'TAMASAstroBundle:PublicView:TableEditionView/historicalTab.html.twig' with {'include': 'html'}%}
+            {% endif %}
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    {% include 'TAMASAstroBundle:PublicView:TableEditionView/tableTab.html.twig' with {'include': 'js'}%}
+
+    {% include 'TAMASAstroBundle:PublicView:Sidebar/sidebarTemplate.html.twig' with {'include': 'js'}%}
+
+    <script src="{{asset('js/amcharts4/core.js')}}"></script>
+    <script src="{{asset('js/amcharts4/charts.js')}}"></script>
+
+    {# BOXES DISPLAY #}
+    <script src="{{asset('js/DISHAS_charts/DishasBox.js')}}"></script>
+    <script src="{{asset('js/DISHAS_charts/DishasEntity.js')}}"></script>
+
+    <script{# type="module"#} src="{{asset('js/DISHAS_charts/DishasChart.js')}}"></script>
+    <script src="{{asset('js/DISHAS_charts/DishasLegend.js')}}"></script>
+    <script src="{{asset('js/DISHAS_charts/DishasConfig.js')}}"></script>
+    <script src="{{asset('js/DISHAS_charts/DISHAS_dataset/DishasDataset.js')}}"></script>
+
+    {% if editTab %}
+        {% include 'TAMASAstroBundle:PublicView:TableEditionView/editorialTab.html.twig' with {'include': 'js'}%}
+    {% endif %}
+
+    {% if astroTab %}
+        {% include 'TAMASAstroBundle:PublicView:TableEditionView/astronomicalTab.html.twig' with {'include': 'js'}%}
+    {% endif %}
+
+    {% if histTab %}
+        {% include 'TAMASAstroBundle:PublicView:TableEditionView/historicalTab.html.twig' with {'include': 'js'}%}
+    {% endif %}
+
+{% endblock %}

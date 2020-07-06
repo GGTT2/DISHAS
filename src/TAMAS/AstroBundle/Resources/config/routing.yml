@@ -1,0 +1,582 @@
+# ==================== User Side ==============================================#
+tamas_astro_homepage:
+    path:     /
+    defaults: { _controller: TAMASAstroBundle:Default:index}
+    options:
+        expose: true
+
+tamas_astro_about:
+    path:     /about
+    defaults: { _controller: TAMASAstroBundle:Default:about}
+    options:
+        expose: true
+
+tamas_astro_team:
+    path:     /team
+    defaults: { _controller: TAMASAstroBundle:Default:team}
+    #defaults: { _controller: FrameworkBundle:Template:template, template:'TAMASAstroBundle:Default:team.html.twig'}
+    options:
+        expose: true
+
+tamas_astro_contact:
+    path:     /team/contact
+    defaults: { _controller: TAMASAstroBundle:Default:contact}
+    #defaults: { _controller: FrameworkBundle:Template:template, template:'TAMASAstroBundle:Default:contact.html.twig'}
+    options:
+        expose: true
+
+tamas_astro_partners: 
+    path:   /team/partners
+    defaults: { _controller: TAMASAstroBundle:Default:partners}
+    #defaults: { _controller: FrameworkBundle:Template:template, template:'TAMASAstroBundle:Default:partners.html.twig'}
+    options:
+        expose: true
+
+tamas_astro_resources:
+    path: /resources
+    defaults: { _controller: FrameworkBundle:Template:template, template:'TAMASAstroBundle:Default:resources.html.twig'}
+    options:
+        expose: true
+
+tamas_astro_bibliography:
+    path: /bibliography
+    defaults: { _controller: FrameworkBundle:Template:template, template:'TAMASAstroBundle:Default:bibliography.html.twig'}
+    options:
+        expose: true
+
+tamas_astro_glossary:
+    path: /glossary
+    defaults: { _controller: FrameworkBundle:Template:template, template:'TAMASAstroBundle:Default:Glossary/glossary.html.twig'}
+    options:
+        expose: true
+
+tamas_astro_browse:
+    path: /browse-corpus
+    defaults: { _controller: TAMASAstroBundle:PublicNavigation:browse}
+    options:
+        expose: true
+
+tamas_astro_navigation:
+    path: /navigation
+    defaults: { _controller: TAMASAstroBundle:PublicNavigation:navigation}
+    options:
+        expose: true
+
+tamas_astro_downloads:
+    path: /resources/downloads
+    defaults: { _controller: FrameworkBundle:Template:template, template:'TAMASAstroBundle:Default:Resources/downloads.html.twig'}
+    options:
+        expose: true
+
+tamas_astro_api:
+    path: /resources/api
+    defaults: { _controller: FrameworkBundle:Template:template, template:'TAMASAstroBundle:Default:Resources/API.html.twig'}
+    options:
+        expose: true
+
+tamas_astro_search:
+    path: /search
+    defaults: { _controller: TAMASAstroBundle:PublicSearch:search}
+    options:
+        expose: true
+
+tamas_astro_elastic:
+    path: /elastic-query
+    defaults: { _controller: TAMASAstroBundle:PublicSearch:elasticQuery}
+    options:
+        expose: true
+
+tamas_astro_setupDTI:
+    path: /setup-dti
+    defaults: { _controller:TAMASAstroBundle:Public:setupDTI}
+
+tamas_astro_rgpd:
+    path: /rgpd
+    defaults: { _controller:FrameworkBundle:Template:template, template:'TAMASAstroBundle:Default:rgpd.html.twig'}
+
+tamas_astro_publicTableContent:
+    path: /public-tableContent/{tableTypeId}/{comparedTableContent}/{era}
+    defaults: { _controller: TAMASAstroBundle:Public:publicTableContent, comparedTableContent:null, era:null} #the case of tableContent is unique: new object is always added from addEditedtext controller
+    options:
+        expose: true
+
+tamas_astro_facetTest:
+    path: /facet-test
+    defaults: { _controller:FrameworkBundle:Template:template, template:'TAMASAstroBundle:Test:testFacet.html.twig'}
+
+#===================================== PUBLIC INTERFACE ========================================#
+#________________________________ Historical navigation ___________________________________#
+tamas_astro_historicalNavigation:
+    path:     /historical-navigation
+    defaults: { _controller: TAMASAstroBundle:PublicNavigation:historicalNavigation}
+    options:
+        expose: true
+
+tamas_astro_viewOriginalText:
+    path:     /original-item/{id}
+    defaults: { _controller: TAMASAstroBundle:PublicView:viewOriginalText}
+    requirements: {id : \d+}
+    options:
+        expose: true
+
+tamas_astro_viewWork:
+    path: /work/{id}
+    defaults: {_controller: TAMASAstroBundle:PublicView:viewWork}
+    requirements: {id : \d+}
+    options:
+        expose: true
+
+tamas_astro_viewPrimarySource:
+    path: /primary-source/{id}
+    defaults: {_controller: TAMASAstroBundle:PublicView:viewPrimarySource}
+    requirements: {id : \d+}
+    options:
+        expose: true
+
+#________________________________ Astronomical navigation ___________________________________#
+tamas_astro_astronomicalNavigation:
+    path:     /astronomical-navigation
+    defaults: { _controller: TAMASAstroBundle:PublicNavigation:astronomicalNavigation}
+    options:
+        expose: true
+
+tamas_astro_multiAstronomicalNavigation:
+    path:     /multi-astronomical-navigation
+    defaults: { _controller: TAMASAstroBundle:PublicNavigation:multiTreemapAstronomicalNavigation}
+    options:
+        expose: true
+
+tamas_astro_astronomicalObject:
+    path:     /astronomical-navigation/{id}
+    defaults: { _controller: TAMASAstroBundle:PublicNavigation:astronomicalObject}
+    options:
+        expose: true
+
+tamas_astro_viewTableEdition:
+    path: /table-edition/{id}
+    defaults: {_controller: TAMASAstroBundle:PublicView:viewTableEdition} #corresponds to editedText
+    requirements: {id : \d+}
+    options:
+        expose: true
+
+tamas_astro_viewTableType:
+    path: /table-type/{id}
+    defaults: {_controller: TAMASAstroBundle:PublicView:viewTableType}
+    requirements: {id : \d+}
+    options:
+        expose: true
+
+tamas_astro_viewFormulaDefinition:
+    path: /formula-definition/{id}
+    defaults: {_controller: TAMASAstroBundle:PublicView:viewFormulaDefinition, id: null}
+    options:
+        expose: true
+
+tamas_astro_viewParameterSet:
+    path: /parameter-set/{id}
+    defaults: {_controller: TAMASAstroBundle:PublicView:viewParameterSet}
+    requirements: {id : \d+}
+    options:
+        expose: true
+
+#===================== Admin Side =============================================#
+
+#_____________________________ default pages __________________________________#
+tamas_astro_adminHome:
+    path:     /adm/home
+    defaults: { _controller: TAMASAstroBundle:AdminDefault:adminHome}
+    options:
+        expose: true
+    
+tamas_astro_adminDocumentation:
+    path:     /adm/documentation
+    defaults: { _controller: TAMASAstroBundle:AdminDefault:adminDocumentation}
+    
+tamas_astro_adminSpace:
+    path:     /adm/personnal-space
+    defaults: { _controller: TAMASAstroBundle:AdminDefault:adminSpace }
+
+tamas_astro_adminContactUser:
+    path: /adm/contact-form/{id}
+    defaults: {_controller: TAMASAstroBundle:AdminDefault:adminContactUser, id: null}
+    options: 
+        expose: true
+
+tamas_astro_adminListPDFFile:
+    path:     /adm/documentation
+    defaults: { _controller: TAMASAstroBundle:AdminDefault:adminDocumentation}
+
+tamas_astro_adminListFormulaDefinition:
+    path:     /adm/documentation
+    defaults: { _controller: TAMASAstroBundle:AdminDefault:adminDocumentation}
+
+#________________________________ view data ___________________________________#
+tamas_astro_adminViewOriginalText:
+    path:     /adm/view-originalText/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminView:adminViewOriginalText}
+    requirements: {id : \d+}
+    options:
+        expose: true
+    
+tamas_astro_adminViewParameterSet:
+    path: /adm/view-parameterSet/{id}
+    defaults: {_controller: TAMASAstroBundle:AdminView:adminViewParameterSet}
+    options:
+        expose: true
+
+tamas_astro_adminViewWork:
+    path: /adm/view-work/{id}
+    defaults: {_controller: TAMASAstroBundle:AdminView:adminViewWork}
+    options:
+        expose: true
+
+tamas_astro_adminViewPrimarySource:
+    path: /adm/view-primarySource/{id}
+    defaults: {_controller: TAMASAstroBundle:AdminView:adminViewPrimarySource}
+    options:
+        expose: true
+    
+tamas_astro_adminViewEditedText:
+    path: /adm/view-editedText/{id}
+    defaults: {_controller: TAMASAstroBundle:AdminView:adminViewEditedText}
+    options:
+        expose: true
+
+tamas_astro_adminViewTableContent:
+    path: /adm/view-tableContent/{id}
+    defaults: {_controller: TAMASAstroBundle:AdminView:adminViewTableContent}
+    options:
+        expose: true
+
+tamas_astro_adminViewFormulaDefinition:
+    path: /adm/view-formulaDefinition/{id}/{idTableType}
+    defaults: {_controller: TAMASAstroBundle:AdminView:adminViewFormulaDefinition, id: null, idTableType: null}
+    options:
+        expose: true
+#______________________________ select data ___________________________________#
+tamas_astro_adminSelectTableType:
+    path:     /adm/select-tableType/{action}
+    defaults: { _controller: TAMASAstroBundle:AdminSelect:adminSelectTableType, action: null }
+
+tamas_astro_selectTableType:
+    path: /select-tableType/{action}
+    defaults: { _controller:TAMASAstroBundle:AdminSelect:adminSelectTableType}
+
+tamas_astro_adminSelectEditedType:
+    path: /adm/select-editedType
+    defaults: {_controller: TAMASAstroBundle:AdminSelect:adminSelectEditedType}
+    
+#_________________________________ add data ___________________________________#
+tamas_astro_adminAddOriginalText:
+    path:     /adm/add-originalText/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddOriginalText, id: null }
+
+tamas_astro_adminAddParameterSet:
+    path:     /adm/add-parameterSet/{tableId}/{id}
+    defaults: {_controller: TAMASAstroBundle:AdminAdd:adminAddParameterSet, tableId:0, id: null}
+    options: 
+        expose: true
+    
+tamas_astro_adminAddSecondarySource:
+    path:   /adm/add-secondarySource/{id}/{collectiveBook}
+    defaults:  { _controller: TAMASAstroBundle:AdminAdd:adminAddSecondarySource, id: null, collectiveBook: null}
+
+tamas_astro_adminAddEditedText:
+    path: /adm/add-editedText/{type}/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddEditedText, type:0, id: null}
+    requirements:
+        type: '^(a|b|c){1}?$'
+
+tamas_astro_adminAddPlace:
+    path: /adm/add-place/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddPlace, id: null}
+
+tamas_astro_adminAddHistoricalActor:
+    path: /adm/add-historicalActor/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddHistoricalActor, id: null}
+
+tamas_astro_adminAddPrimarySource:
+    path: /adm/add-primarySource/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddPrimarySource, id: null}
+    
+tamas_astro_adminAddLibrary:
+    path: /adm/add-library/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddLibrary, id: null}
+
+tamas_astro_adminAddWork:
+    path: /adm/add-work/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddWork, id: null}
+    
+tamas_astro_adminAddHistorian:
+    path: /adm/add-historian/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddHistorian, id: null}
+
+tamas_astro_adminAddJournal:
+    path: /adm/add-journal/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddJournal, id: null}
+
+tamas_astro_adminAddTableContent:
+    path: /adm/add-tableContent/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddTableContent} #the case of tableContent is unique: new object is always added from addEditedtext controller
+    options:
+        expose: true
+    
+tamas_astro_adminAddTableContentAjax:
+    path: /adm/add-tableContentAjax/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddTableContentAjax, id: null }
+    options: 
+        expose: true
+
+tamas_astro_adminAddMathematicalParameter:
+    path: /adm/add-mathematicalParameter/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddMathematicalParameter, id: null}
+    
+tamas_astro_adminViewGraph:
+    path: /adm/view-graph
+    defaults: { _controller:TAMASAstroBundle:AdminAdd:adminViewGraphTest}
+
+tamas_astro_adminAddPythonScript:
+    path: /adm/add-pythonScript/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddPythonScript, id: null}
+
+tamas_astro_adminAddPDFFile:
+    path: /super-adm/add-pdfFile/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddPDFFile, id: null}
+
+tamas_astro_adminAddFormulaDefinition:
+    path: /super-adm/add-formulaDefinition/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddFormulaDefinition, id: null}
+
+tamas_astro_adminAddTeamMember:
+    path: /super-adm/add-teamMember/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddTeamMember, id: null}
+
+tamas_astro_adminAddDefinition:
+    path: /super-adm/add-definition/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddDefinition, id: null}
+
+#________________________________ edit data ___________________________________#
+tamas_astro_adminEditPlace:
+    path:    /adm/edit-place/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddPlace}
+
+tamas_astro_adminEditJournal:
+    path:    /adm/edit-journal/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddJournal}
+
+tamas_astro_adminEditHistorian:
+    path:    /adm/edit-historian/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddHistorian}
+
+tamas_astro_adminEditLibrary:
+    path:    /adm/edit-library/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddLibrary}
+
+tamas_astro_adminEditOriginalText:
+    path:    /adm/edit-originalText/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddOriginalText}
+
+tamas_astro_adminEditParameterSet:
+    path:    /adm/edit-parameterSet/{tableId}/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddParameterSet, tableId: 0}
+    options:
+        expose: true
+    
+tamas_astro_adminEditSecondarySource:
+    path:    /adm/edit-secondarySource/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddSecondarySource}
+
+tamas_astro_adminEditPrimarySource:
+    path:    /adm/edit-primarySource/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddPrimarySource}
+    
+tamas_astro_adminEditHistoricalActor:
+    path:    /adm/edit-historicalActor/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddHistoricalActor}
+
+tamas_astro_adminEditWork:
+    path:    /adm/edit-work/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddWork}
+    
+tamas_astro_adminEditEditedText:
+    path:    /adm/edit-editedText/{type}/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddEditedText, type: 0}
+
+tamas_astro_adminEditMathematicalParameter:
+    path:    /adm/edit-mathematicalParameter/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddMathematicalParameter}
+
+tamas_astro_adminEditTableContent:
+    path:    /adm/edit-tableContent/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddTableContent }
+
+tamas_astro_adminEditUserInterfaceText:
+    path: /super-adm/edit-userInterfaceText/{id}
+    defaults: {_controller: TAMASAstroBundle:AdminAdd:adminAddUserInterfaceText}
+
+tamas_astro_adminEditPDFFile:
+    path: /super-adm/edit-pdfFile/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddPDFFile}
+    
+tamas_astro_adminEditFormulaDefinition:
+    path: /super-adm/edit-formulaDefinition/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddFormulaDefinition}
+
+tamas_astro_adminEditTeamMember:
+    path: /super-adm/edit-teamMember/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddTeamMember}
+
+tamas_astro_adminEditDefinition:
+    path: /super-adm/edit-definition/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminAdd:adminAddDefinition}
+
+#______________________________ search data ___________________________________#
+tamas_astro_simpleSearchParameterSet:
+    path: /simple-search-parameter
+    defaults: { _controller: TAMASAstroBundle:AdminSearch:adminSimpleSearchParameterSet}
+    options:
+        expose: true
+
+#________________________________ list data ___________________________________#
+tamas_astro_adminListWork:
+    path: /adm/list-work
+    defaults: { _controller: TAMASAstroBundle:AdminList:adminListWork}
+    
+tamas_astro_adminListPrimarySource:
+    path: /adm/list-primarySource
+    defaults: { _controller: TAMASAstroBundle:AdminList:adminListPrimarySource}
+
+tamas_astro_adminListOriginalText:
+    path: /adm/list-originalText
+    defaults: { _controller: TAMASAstroBundle:AdminList:adminListOriginalText}
+
+tamas_astro_adminListEditedText:
+    path: /adm/list-editedText
+    defaults: { _controller: TAMASAstroBundle:AdminList:adminListEditedText}
+
+tamas_astro_adminListHistoricalActor:
+    path: /adm/list-historicalActor
+    defaults: { _controller: TAMASAstroBundle:AdminList:adminListHistoricalActor}
+
+tamas_astro_adminListPlace:
+    path: /adm/list-place
+    defaults: { _controller: TAMASAstroBundle:AdminList:adminListPlace}
+
+tamas_astro_adminListLibrary:
+    path: /adm/list-library
+    defaults: { _controller: TAMASAstroBundle:AdminList:adminListLibrary}
+
+tamas_astro_adminListHistorian:
+    path: /adm/list-historian
+    defaults: { _controller: TAMASAstroBundle:AdminList:adminListHistorian}
+
+tamas_astro_adminListSecondarySource:
+    path: /adm/list-secondarySource
+    defaults: { _controller: TAMASAstroBundle:AdminList:adminListSecondarySource}
+
+tamas_astro_adminListJournal:
+    path: /adm/list-journal
+    defaults: { _controller: TAMASAstroBundle:AdminList:adminListJournal}
+
+tamas_astro_adminListMathematicalParameter:
+    path: /adm/list-mathematicalParameter
+    defaults: { _controller: TAMASAstroBundle:AdminList:adminListMathematicalParameter}
+
+tamas_astro_adminListTableContent:
+    path: /adm/list-tableContent
+    defaults: { _controller: TAMASAstroBundle:AdminList:adminListTableContent}
+
+tamas_astro_adminListParameterSet:
+    path: /adm/list-parameterSet
+    defaults: { _controller: TAMASAstroBundle:AdminList:adminListParameterSet}
+
+adminListUserInterfaceText:
+     path: /super-adm/list-userInterfaceText
+     defaults: { _controller: TAMASAstroBundle:AdminList:adminListUserInterfaceText}
+
+tamas_astro_adminListTeamMember:
+    path: /super-adm/list-teamMember
+    defaults: { _controller: TAMASAstroBundle:AdminList:adminListTeamMember}
+
+#________________________________ delete data ___________________________________#
+tamas_astro_adminDeleteObject:
+    path: adm/delete/{entity}/{id}
+    defaults: { _controller: TAMASAstroBundle:AdminDelete:adminDeleteObject}
+    options:
+        expose: true
+
+#=============================== Assynchronous call ===========================#
+#Check if still in use
+tamas_astro_autocomplete:
+    path:   /autocomplete/{entityName}
+    defaults: {_controller: TAMASAstroBundle:Default:autocompleteEntities}
+    options: 
+        expose: true
+
+tamas_astro_autofill:
+    path: /autofill/{entityName}/{option}
+    defaults: {_controller: TAMASAstroBundle:Default:autofillEntities, option: null}
+    options:
+        expose: true 
+
+tamas_astro_loadTree:
+    path: /load-editionTree
+    defaults: { _controller: TAMASAstroBundle:Default:loadTree}
+    options: 
+        expose: true
+
+tamas_astro_getTableContentJson:
+    path: /get-tableContentJson/{id}
+    defaults: { _controller: TAMASAstroBundle:Default:getTableContentJson, id: null}
+    options: 
+        expose: true
+
+tamas_astro_fillTable:
+    path: /fillTable/{entityName}/{adminId}/{status}
+    defaults: {_controller: TAMASAstroBundle:AdminList:adminListForAdmin}
+    options: 
+        expose: true
+
+tamas_astro_callAutoToolPython:
+    path: /auto-python/{scriptName}/{option}
+    defaults: { _controller: TAMASAstroBundle:Python:ajaxAutoToolPython, option: null}
+    options:
+        expose: true
+
+#tamas_astro_callPython:
+#    path: /python/{scriptName}/{option}/{filename}
+#    defaults: { _controller: TAMASAstroBundle:Python:ajaxPython, option: null; filename: null}
+#    options:
+#        expose: true
+
+tamas_astro_export:
+    path: /python
+    defaults: { _controller: TAMASAstroBundle:Python:ajaxExport }
+    options:
+        expose: true
+
+tamas_astro_export_JSON:
+    path: /export-tableContent/{id}/{ttid}
+    defaults: { _controller: TAMASAstroBundle:Python:ajaxExportJSON, id: null, ttid: null }
+    options:
+        expose: true
+
+#================================== Test Page =================================#
+tamas_astro_test:
+    path: adm/test
+    defaults: { _controller: TAMASAstroBundle:Test:printTest }
+    options:
+        expose: true
+
+##================================ FOSRest Routes ==============================#
+api_add:
+    type: rest
+    resource: "@TAMASAstroBundle/Controller/APIAddController.php"
+    
+api_delete:
+    type: rest
+    resource: "@TAMASAstroBundle/Controller/APIDeleteController.php"
+    
+api_list:
+    type: rest
+    resource: "@TAMASAstroBundle/Controller/APIListController.php"

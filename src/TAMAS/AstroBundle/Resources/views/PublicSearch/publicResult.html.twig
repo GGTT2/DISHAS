@@ -1,0 +1,98 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\SearchObject\publicResult.html.twig#}
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% block title %}
+    Search — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    {% include 'TAMASAstroBundle:PublicSearch:searchBar.html.twig' with {'include':'html'} %}
+    <div class="row" id="parameter-search"></div>
+    <div class="row" id="result-title"></div>
+
+    {#DataTable of results#}
+    <div id="table-result">
+        <table class="table table-hover table-browser table-sortable" id ="results" style="min-width: 100%"></table>
+    </div>
+    <div id="entity-def">
+        {% include 'TAMASAstroBundle:PublicSearch:howToSearch.html.twig' %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% include 'TAMASAstroBundle:PublicSearch:searchBar.html.twig' with {'include':'js'} %}
+    <script>
+        let fieldLists = {{ fieldLists|json_encode|raw }};
+
+        let url = "";
+
+        {% if query|default %}
+            let filters = {{ query|raw }};
+        {% else %}
+            filters = "";
+        {% endif %}
+
+        {% if queryTitle|default %}
+            let queryTitle = "{{ queryTitle|raw }}";
+        {% else %}
+            queryTitle = "";
+        {% endif %}
+
+        {% if entity|default %}
+            let entity = "{{ entity }}";
+            generateTableLayout(entity, "", queryTitle);
+            if (typeof filters === "string"){
+                url = filters.startsWith(elasticServer) ? fillResultTable(filters, entity) : fillResultTable(generateUrl(filters, entity, generateSources(fieldLists[entity])), entity);
+            } else {
+                url = fillResultTable(generateUrl(filters, entity, generateSources(fieldLists[entity])), entity);
+            }
+
+        {% endif %}
+
+        const sendQuery = () => {
+            let searchInput = $("#search-term");
+            const term = searchInput.val();
+            const entity = $(".dropdown-select span:first-child").attr("entity");
+
+            if (! entity){
+                if (term.startsWith(elasticServer)){
+                    url = generateMatchTable(entity, term);
+                    searchInput.val("");
+                } else {
+                    $("#dLabel").css("background-color", "#ffc5cb")
+                        .css("color", "#b85458");
+                }
+            } else {
+                url = generateMatchTable(entity, term);
+                searchInput.val("");
+            }
+        };
+
+        // generate result table on click
+        $("#send-query").click(function () {
+            sendQuery();
+        });
+
+        // generate result table when pressing enter
+        document.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendQuery();
+            }
+        });
+
+        // To copy the current query
+        $(document).on('click', "#copy", function (event){
+            // prevent from reloading page
+            event.preventDefault();
+            // create a temporary input tag that can be filled with text, text that can be then copied in the clipboard
+            let $temp = $("<input>");
+            $(".search-sec").append($temp);
+
+            $temp.val(dishas + url.replace("&origin=intern","")).select();
+            document.execCommand("copy");
+            // delete the input tag
+            $temp.remove();
+        });
+    </script>
+{% endblock %}

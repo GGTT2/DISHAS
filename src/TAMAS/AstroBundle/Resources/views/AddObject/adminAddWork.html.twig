@@ -1,0 +1,62 @@
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+	{{ action|capitalize }} {{ object_info.properties.work.objectUserInterfaceName }} — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+{% form_theme form 'bootstrap_3_TAMAS.html.twig' %}
+{{form_start(form, {'attr': {'class': 'form'}})}}
+{{form_errors(form)}}
+<div class="row">
+	<div class="col-md-10">
+		<div class="well">
+			{{form_row(form.title)}}
+			{{form_row(form.titleOriginalChar)}}
+			{{form_row(form.incipit)}}
+			{{form_row(form.incipitOriginalChar)}}
+			<label>Timeframe of conception of the work</label>
+			<div class="row">
+				<div class="col-md-3">
+					{{form_row(form.tpq)}}
+				</div>
+				<div class="col-md-3">
+					{{form_row(form.taq)}}
+				</div>
+				<div class="col-md-6 print-info">
+					<p>
+						For a specific year, specify the value in both boxes. <br /> For
+						an approximate timeframe, e.g. ca XIV century, specify
+						TPQ:&nbsp;"1300" and TAQ:&nbsp;"1399".
+					</p>
+				</div>
+			</div>
+
+			{{ form_row(form.place)}}
+
+
+			{{form_row(form.historicalActors)}}
+
+
+
+			{{form_row(form.translator)}}
+		</div>
+	</div>
+	<div class="col-md-2">
+		{%include 'TAMASAstroBundle:AddObject:adminPannel.html.twig'%}
+	</div>
+</div>
+</div>
+{{ form_rest(form) }}
+{{ form_end(form)}}
+{% endblock %}
+
+
+{% block javascripts %}
+{{parent()}}
+<script>
+	$(document).ready(function() {
+
+	})
+</script>
+{% endblock %}

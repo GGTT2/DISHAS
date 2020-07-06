@@ -1,0 +1,59 @@
+{#Symfony\app\Resources\views\base.html.twig#}
+<!DOCTYPE html>
+
+<html lang="en">
+{% block head %}
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" type="image/x-icon" href="{{ asset('logo/favicon.png') }}" />
+		<title>
+			{% block title %}
+				DISHAS project — Astronomical table in database
+			{% endblock %}
+		</title>
+		{% block stylesheets %}
+			{% include '/includes/stylesheets.html.twig' %}
+		{% endblock %}
+	</head>
+{% endblock %}
+
+{% block body %}
+	{% block confirm_statement %}
+		<div id="edit-confirm" title="Edit this item?" class="hidden">
+			<p>
+				<span class="ui-icon ui-icon-alert" style="float: left; margin: 12px 12px 20px 0;"></span>
+				Note that previous versions of any item are not archived.
+				Are you sure?
+			</p>
+		</div>
+		<div id="no-access" title="Forbidden action" class="hidden">
+			<p>
+				<span class="ui-icon ui-icon-alert" style="float: left; margin: 12px 12px 20px 0;"></span>
+				Only original creators are permitted to edit or delete their content.
+				Please contact the creator of the item:
+				<span id="user-name"></span>
+			</p>
+		</div>
+		<div id="delete-confirm" title="Delete this item?" class="hidden">
+			<p>
+				<span class="ui-icon ui-icon-alert" style="float: left; margin: 12px 12px 20px 0;"></span>
+				This item will be permanently deleted.
+				This action is not recoverable. Are you sure?
+			</p>
+		</div>
+		<div id="cancel-confirm" title="Cancel changes?" class="hidden">
+			<p>
+				<span class="ui-icon ui-icon-alert" style="float: left; margin: 12px 12px 20px 0;"></span>
+				These changes will not be recorded. Are you sure?
+			</p>
+		</div>
+		{% include 'TAMASAstroBundle:Default:workInProgress.html.twig' %}
+	{% endblock %}
+
+	{% block javascripts %}
+		{% include '/includes/javascripts.html.twig' %}
+	{% endblock %}
+{% endblock %}
+</html>

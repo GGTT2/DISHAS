@@ -1,0 +1,26 @@
+{% extends "TAMASALFABundle:Default:alfa_default_layout.html.twig" %}
+
+{% block title %}
+	{{ parent() }}
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-6">
+			<a class="btn btn-primary btn-xxl" href="{{path('tamas_astro_alfa_survey')}}">
+				<span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;
+				ALFA Survey
+			</a>
+		</div>
+		<div class="col-md-6">
+			<a class="btn btn-primary btn-xxl" href="{{path('tamas_astro_alfa_msList')}}">
+				<span class="glyphicon glyphicon-book"></span>&nbsp;&nbsp;
+				Manuscripts edition
+			</a>
+		</div>
+	</div>
+{% endblock%}
+
+{% block javascripts %}
+	{{ parent() }}
+{% endblock %}

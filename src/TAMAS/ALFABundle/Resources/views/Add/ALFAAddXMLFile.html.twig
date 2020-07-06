@@ -1,0 +1,42 @@
+
+{% extends "TAMASAstroBundle:ALFA:alfa_layout.html.twig" %}
+
+{% block title %}
+    Add XML file - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="margin-content" >
+
+        {% form_theme form 'bootstrap_3_TAMAS.html.twig'
+'jquery.collection.html.twig' %}
+        <h3>Add xml file <small>{{xmlFile.fileName}}</small></h3>
+        <div class="row">
+            <div class="col-md-10">
+                <div class="well">
+                    {{ form_start(form) }}
+                    {{form_row(form.xmlFile)}}
+                    {{form_row(form.fileUserName)}}
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4>Admin board</h4>
+                    </div>
+                    <div class="panel-body">
+                        {{ form_rest(form) }}
+                        {{ form_end(form)}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock%}
+
+
+{% block javascripts %}
+    {{parent()}}  
+{% endblock %}
