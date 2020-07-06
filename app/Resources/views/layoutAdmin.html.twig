@@ -1,0 +1,89 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	<body class="dark-layout">
+	{# <div class="dark-layout">#}
+	{% include '/includes/navbarAdmin.html.twig' %}
+	<div class="container-fluid">
+		<div class="row">
+
+			{% block sideMenu %}
+				<div class="col-sm-3 col-md-1 sidebar" id="sidemenu" style="margin-top: -10px; margin-bottom: -200px; font-size: 15px">
+					<ul class="nav nav-sidebar">
+						<li {% if app.request.attributes.get('_route') == 'tamas_astro_adminAddOriginalText'%} class="active"{% endif %}>
+							<a href="{{path('tamas_astro_adminAddOriginalText')}}">
+								Add {{object_info.properties.originalText.objectUserInterfaceName}}
+							</a>
+						</li>
+						<li {% if app.request.attributes.get('_route') == 'tamas_astro_adminSelectEditedType'%} class="active"{% endif %}>
+							<a href="{{path('tamas_astro_adminSelectEditedType')}}">
+								Add {{object_info.properties.editedText.objectUserInterfaceName}}
+							</a>
+						</li>
+						<li {% if app.request.attributes.get('_route') == 'tamas_astro_adminSelectTableType'%} class="active"{% endif %} >
+							<a href="{{path('tamas_astro_adminSelectTableType', {'action': 'add'})}}">
+								Add {{object_info.properties.parameterSet.objectUserInterfaceName}}
+							</a>
+						</li>
+						<li {% if app.request.attributes.get('_route') == 'tamas_astro_adminListOriginalText'%} class="active"{% endif %}>
+							<a href="{{path('tamas_astro_adminListOriginalText')}}">
+								List {{object_info.properties.originalText.objectUserInterfaceName|plural}}
+							</a>
+						</li>
+						<li {% if app.request.attributes.get('_route') == 'tamas_astro_adminListWork'%} class="active"{% endif %}>
+							<a href="{{path('tamas_astro_adminListWork')}}">
+								List {{object_info.properties.work.objectUserInterfaceName|plural}}
+							</a>
+						</li>
+						<li {% if app.request.attributes.get('_route') == 'tamas_astro_adminListEditedText'%} class="active"{% endif %}>
+							<a href="{{path('tamas_astro_adminListEditedText')}}">
+								List {{object_info.properties.editedText.objectUserInterfaceName|plural}}
+							</a>
+						</li>
+						<li {% if app.request.attributes.get('_route') == 'tamas_astro_adminListPrimarySource'%} class="active"{% endif %}>
+							<a href="{{path('tamas_astro_adminListPrimarySource')}}">
+								List {{object_info.properties.primarySource.objectUserInterfaceName|plural}}
+							</a>
+						</li>
+						<li {% if app.request.attributes.get('_route') == 'tamas_astro_simpleSearchParameterSet'%} class="active"{% endif %}>
+							<a href="{{path('tamas_astro_simpleSearchParameterSet', {'admin': 'true'})}}">
+								Search {{object_info.properties.parameterSet.objectUserInterfaceName|plural}}
+							</a>
+						</li>
+					</ul>
+				</div>
+			{% endblock %}
+
+			<div class="col-sm-9 col-sm-offset-3 col-md-11 col-md-offset-1 main ">
+				<div class="content ">
+					{% block mainContent %}
+
+					{% endblock %}
+				</div>
+			</div>
+
+            </div>
+            <div class="row">
+                {%block confirm_statement %}
+                    {{parent()}}
+                {%endblock%}
+            </div>
+        </div>
+        {% block javascripts %}
+            {{ parent() }}
+            <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={api_key}&language=en&libraries=places"></script>
+            <script>
+            //Function to prevent the sending of a form by clicking on key "enter"
+            $(document).ready(function() {
+            	  $(window).keydown(function(event){
+            	    if (event.keyCode === 13) {
+            	      event.preventDefault();
+            	      return false;
+            	    }
+            	  });
+            	});
+            </script>
+        {% endblock %}
+    </body>
+{% endblock %}
+{#</html>#}
