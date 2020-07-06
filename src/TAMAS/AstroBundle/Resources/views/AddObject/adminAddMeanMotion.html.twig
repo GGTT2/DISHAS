@@ -1,0 +1,69 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\addEdition.html.twig#}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+	Add {{ object_info.properties.meanMotion.objectUserInterfaceName }} — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+<div id="my_form" class="row">
+	<div class="col-md-10 well">
+		{% form_theme form 'bootstrap_3_TAMAS.html.twig' %}
+		{{form_start(form, {'attr': {'class': 'form'}})}}
+		{{form_errors(form)}}
+		{{form_rest(form)}}
+
+<a id="test">test</a>
+	</div>
+</div>
+
+<div class="col-md-2 ">
+	{%include 'TAMASAstroBundle:AddObject:adminPannel.html.twig'%}
+
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+{{parent()}}
+
+
+
+<script type="text/javascript" src="{{asset('js/gMap.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/addField.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/addDisabled.js')}}"></script>
+<script type="text/javascript"
+	src="{{asset('js/autocompleteFromController.js')}}"></script>
+<script type="text/javascript"
+	src="{{asset('js/addContextualInfo.js')}}"></script>
+<script type="text/javascript"
+	src="{{asset('js/DISHAS_table/conversion.js')}}"></script>
+<script type="text/javascript"
+	src="{{asset('js/DISHAS_table/smartNumberFillField.js')}}"></script>
+
+
+<script>
+
+let longSMF = SmartNumberField.generateSMFBinds('{{form.longSmartNumber.vars.id}}','{{form.longFloat.vars.id}}','{{form.longOrigBase.vars.id}}', '{{form.longTypeOfNumber.vars.id}}');
+let rootSMF = SmartNumberField.generateSMFBinds('{{form.rootSmartNumber.vars.id}}','{{form.rootFloat.vars.id}}','{{form.rootOrigBase.vars.id}}', '{{form.rootTypeOfNumber.vars.id}}')
+let smartNumberFields = {...longSMF, ...rootSMF }
+
+
+
+$("#test").click(function(){
+	SmartNumberField.fillAllTargets(smartNumberFields)
+	
+})
+
+
+{#
+// smartNumberFields
+//smartNumberFields['{{ value.vars.name }}'] = {};
+//smartNumberFields['{{ value.vars.name }}'].value = new SmartNumberField('{{ value.valueSmartNumber.vars.id }}');
+smartNumberFields['{{ value.vars.name }}'].value.bindSelect('{{ value.typeOfNumber.vars.id }}');
+smartNumberFields['{{ value.vars.name }}'].value.bindTarget('{{ value.valueFloat.vars.id }}', 'float');
+smartNumberFields['{{ value.vars.name }}'].value.bindTarget('{{ value.valueOriginalBase.vars.id }}', undefined, true);
+
+#}	
+</script>
+{% endblock %}

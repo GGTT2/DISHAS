@@ -1,0 +1,21 @@
+{
+    "journal": [{
+            "journalTitle": "Coco"
+        },
+ 	{
+            "journalTitle": ""
+        },
+	{
+            "journalTitle": "ValidJournal"
+        },
+	{
+            "journalTitle": "ValidJournalEditExistingName"
+        },
+	{
+            "journalTitle": "ValidJournalEditEmptyName"
+        },
+	{
+            "journalTitle": "ValidJournalValidEdit"
+        }]
+}
+

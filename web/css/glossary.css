@@ -1,0 +1,75 @@
+.hidden {
+  display: none;
+}
+
+.def-card {
+  transition: 1s;
+}
+
+#definitions, #astro-definitions {
+  /*height: 500px;*/
+  /*overflow: scroll;*/
+}
+
+.def-entries {
+  padding: 25px 0;
+}
+
+.entity-picto:hover {
+  cursor: pointer;
+}
+
+.entity-circle {
+  transition: 0.2s;
+}
+
+.entity-picto:hover .entity-circle {
+  /*fill: #bebebe;*/
+  filter: drop-shadow(0 0 1rem #3c3c3c);
+}
+
+.alphabet {
+  text-align: center;
+}
+
+.glossary-letter {
+  margin: 0 0 10px;
+  font-size: 45px;
+  line-height: 55px;
+  color: #5a5a5a;
+  font-weight: 500;
+  font-family: Abel, sans-serif;
+  transition: 0.5s;
+}
+
+.glossary-letter.active{
+  color: #5a5a5a;
+  cursor: pointer;
+}
+
+.glossary-letter.active:hover {
+  background-color: #ebebeb;
+}
+
+.glossary-letter.disabled{
+  color: #c3c3c3;
+  cursor: not-allowed;
+}
+
+.find-all{
+  font-family: 'Abel', sans-serif;
+  font-size: 22px;
+  padding: 1em;
+}
+
+@media screen and (max-width: 991px) {
+
+}
+
+@media screen and (max-width: 767px) {
+
+}
+
+@media screen and (max-width: 479px) {
+
+}

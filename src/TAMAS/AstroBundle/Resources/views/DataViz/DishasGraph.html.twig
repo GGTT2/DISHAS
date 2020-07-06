@@ -1,0 +1,12 @@
+{% if include == "html" %}
+    <div id="graph"></div>
+{% elseif include == "js" %}
+    <script src="{{asset('js/amcharts4/plugins/forceDirected.js')}}"></script>
+    <script src="{{asset('js/DISHAS_charts/DishasGraph.js')}}"></script>
+    <script defer{# type="module"#}>
+        /*import {DishasChart, DishasConfig} from "../../../../../../web/js/DISHAS_charts/DishasChart.js";*/
+        $(document).ready(function() {
+            graph = new DishasChart({{ graphData|json_encode|raw }}, new DishasConfig("40em", false, "graph", "graph-box"));
+        });
+    </script>
+{% endif %}

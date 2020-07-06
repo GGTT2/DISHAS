@@ -1,0 +1,39 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\bibliography.html.twig#}
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% set currentNode = "bibliography" %}
+
+{% block title %}
+    Bibliography — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    <link rel="stylesheet" href="{{ asset('css/static-pages.css')}}">
+    {% include 'TAMASAstroBundle:Default:Templates/pageHeader.html.twig' with {"title":"Bibliography", "tag":"h1"} %}
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 well">
+            <p>This is an indicative and compact bibliography, further references will be easily found by visiting the <a href="{{ path("tamas_astro_partners") }}">websites</a> of DISHAS main partner projects</p>
+        </div>
+        <div class="col-md-10 col-md-offset-1 csl-bib-body">
+            <div class="csl-entry">Cullen, Christopher. “An Eighth Century Chinese Table Of Tangents.” <i>Chinese Science</i>, vol. 5, 1982, pp. 1–33, [<a href="https://www.jstor.org/stable/43290348">link</a>].</div>
+            <div class="csl-entry">Dold-Samplonius, Yvonne, et al., editors. <i>From China to Paris. 2000 Years Transmission of Mathematical Ideas</i>. Franz Steiner Verlag, 2002.</div>
+            <div class="csl-entry">Hogendijk, Jan P. “Al-Kwârizmī's Table of ‘Sine of the Hours' and the Underlying SIne Table.” <i>Historia Scientiarum</i>, n°42, 1991, pp. 1–12.</div>
+            <div class="csl-entry">Kennedy, E. S. “The Solar Equation in the Zīj of Yahyā B. Abī manṣūr..” <i>Festschrift für Willy Hartner</i>, edited by Walter G. Saltzer and Yasukatsu Maeyama, F. Steiner, 1977.</div>
+            <div class="csl-entry">King, David A. “On the Astronomical Tables of the Islamic Middle Ages.” <i>Colloqui Copernicana</i>, vol. III, 1975, [<a href="http://www.ub.edu/arab/suhayl/volums/volum2/paper%201.pdf">link</a>].</div>
+            <div class="csl-entry">Mielgo, H. “A Method of Analysis for Mean Motion Astronomical Tables.” <i>From Baghdad to Barcelona: studies in the Islamic exact sciences in honour of Juan Verne</i>, edited by Juan Vernet Ginés et al., 1996, pp. 159–81.</div>
+            <div class="csl-entry">Montelle, Clemency, and Plofker, Kim. <i>Sanskrit Astronomical Tables</i>. Springer International Publishing, 2019, 308 p., [<a href="https://link.springer.com/chapter/10.1007%2F978-3-319-97037-0_3">link</a>].</div>
+            <div class="csl-entry">Neugebauer, Otto. <i>A History of Ancient Mathematical Astronomy</i>. Springer, Berlin, Heidelberg, 1975, [<a href="https://doi.org/10.1007/978-3-642-61910-6">link</a>].</div>
+            <div class="csl-entry">North, J. D. “The Alfonsine Tables in England.” <i>Prismata, Naturwissenschaftsgeschichtliche Studien: Festschrift Für Willy Hartner</i>, edited by Y. Maeyama and W. G. Satzer, Steiner, 1977, pp. 269–301.</div>
+            <div class="csl-entry">Pedersen, Fritz S. <i>The Toledan Tables: A Review of the Manuscripts and the Textual Versions with an Edition</i>. C. A. Reitzels Forlag, 2002.</div>
+            <div class="csl-entry">Pedersen, Olaf. <i>A Survey of the Almagest, with Annotation and New Commentary by Alexander Jones</i>. Springer, 2010.</div>
+            <div class="csl-entry">van Brummelen, Glen. “A Survey of the Mathematical Tables in Ptolemy's Almagest.” <i>Ad Radices</i>, Steiner Verlag, 1994, pp. 155–70.</div>
+            <div class="csl-entry">van Brummelen, Glen. “The Computation of the Chord Table in Ptolemy's Almagest.” <i>Proceedings of the Canadian Society for the History and Philosophy of Mathematics, 7th Annual Meeting, Kingston (Ontario), May 1991</i>, vol. 4, 1991, pp. 285–95.</div>
+            <div class="csl-entry">van Dalen, Benno. “Al-Kwârizmī's Astronomical Tables Revisited: Analysis of the Equation of Time.” <i>From Baghdad to Barcelona. Studies on the Islamic Exact Sciences in Honour of Prof. Juan Vernet</i>, edited by Juan Vernet Ginés et al., Instituto “Millás Vallicrosa” de Historia de la Ciencia Arabe, 1996, p. 195–252.</div>
+            <div class="csl-entry">van Dalen, Benno. “Islamic and Chinese Astronomy under the Mongols: A Little-Known Case of Transmission.” <i>From China to Paris. 2000 Years Transmission of Mathematical Ideas</i>, edited by Yvonne Dold-Samplonius et al., vol. 25, Franz Steiner Verlag, 2002, pp. 327–56.</div>
+            <div class="csl-entry">Vernet Ginés, Juan, et al., editors. <i>From Baghdad to Barcelona. Studies on the Islamic Exact Sciences in Honour of Prof. Juan Vernet</i>. Instituto “Millás Vallicrosa” de Historia de la Ciencia Arabe, 1996.</div>
+            <div class="csl-entry">Yano, Michio. “Three Types of Hindu Sine Tables.” <i>The Indian Journal of History of Science</i>, vol. 12, n°2, 1977, pp. 83–89.</div>
+        </div>
+    </div>
+{% endblock %}
+

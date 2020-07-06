@@ -1,0 +1,253 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\index.html.twig#}
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Home — {{ parent() }}
+{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="{{ asset('css/public.css')}}" />
+<body style="overflow-x: hidden;">
+    {% include '/includes/navbar.html.twig' %}
+
+    <link rel="stylesheet" href="{{ asset('css/homepage.css')}}">
+    {# CAROUSEL HEADER #}
+    <div style="margin: 0 -500px 170px;">
+        <div data-animation="over" data-duration="500" data-infinite="1" data-delay="4000" data-autoplay="1" class="slider w-slider">
+            <div class="mask w-slider-mask">
+                <div class="slide w-slide" style="background-image: url({{ asset('img/banner.jpg')}});">
+                    <div class="w-container">
+                        <img src="{{ asset('img/DISHAS-XL-blanc.png')}}" width="670"
+                             sizes="(max-width: 767px) 96vw, 677px"
+                             style="filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.4))" alt="DISHAS logo" class="image-2"/>
+                    </div>
+                    <div class="w-container">
+                        <div class="horizontal-bar"></div>
+                        <div class="main-subheading">
+                            DISHAS is a research project in history of astral sciences: it aims at providing tools to edit and
+                            analyse historical sources from the post-hellenistic traditions on an Eurasian scale.
+                        </div>
+                    </div>
+                </div>
+                <div class="slide _2 w-slide" style="background-image: url({{ asset('img/banner2.jpg')}});">
+                    <div class="w-container">
+                        <h1 class="main-heading">Discover our</h1>
+                        <h1 class="main-heading bold">digital corpus</h1>
+                        <div class="horizontal-bar"></div>
+                        <div class="main-subheading">
+                            DISHAS platform is designed to accessible the historical sources of ancient astronomy
+                            as well as the productions of contemporary researchers.
+                        </div>
+                    </div>
+                </div>
+                <div class="slide _3 w-slide" style="background-image: url({{ asset('img/banner3.jpg')}});">
+                    <div class="w-container">
+                        <h1 class="main-heading">Learn about</h1>
+                        <h1 class="main-heading bold">astronomical resources</h1>
+                        <div class="horizontal-bar"></div>
+                        <div class="main-subheading">
+                            Discover astronomical tables and other study objects of geocentric astronomy.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slider-nav w-slider-nav">
+                <div class="w-slider-dot w-active" data-wf-ignore=""></div>
+                <div class="w-slider-dot" data-wf-ignore=""></div>
+                <div class="w-slider-dot" data-wf-ignore=""></div>
+            </div>
+        </div>
+
+        {# NAVIGATION #}
+        <div class="section beige">
+            <div class="w-container">
+                <div class="w-row">
+                    <div class="w-col w-col-4" style="text-align: center;">
+                        <div class="process-titles">Interested in ancient sources?</div>
+                        <div class="icon-wrapper">
+                            <img src="{{ asset('img/pictograms/hist-nav-white.png')}}" width="125" alt=""/>
+                        </div>
+                        <p class="process-desc">Discover the historical context in which the practice of astronomy emerged.</p>
+                        <a href="{{path('tamas_astro_historicalNavigation')}}" class="button black">Historical navigation</a>
+                    </div>
+                    <div class="w-col w-col-4" style="text-align: center;">
+                        <div class="process-titles">Got tables to transcribe and study?</div>
+                        <div class="icon-wrapper">
+                            <img src="{{ asset('img/pictograms/DTI-white.png') }}" width="125" alt=""/>
+                        </div>
+                        <p class="process-desc">Try the input interface to digitize tabular content and analyze it using mathematical models.</p>
+                        <a href="{{path('tamas_astro_setupDTI')}}" class="button black">Try DTI</a>
+                    </div>
+                    <div class="w-col w-col-4" style="text-align: center;">
+                        <div class="process-titles">Interested in tabular contents?</div>
+                        <div class="icon-wrapper">
+                            <img src="{{ asset('img/pictograms/astro-nav-white.png')}}" width="125" alt=""/>
+                        </div>
+                        <p class="process-desc">Browse through the table editions and discover ancient mathematical methods.</p>
+                        <a href="{{path('tamas_astro_astronomicalNavigation')}}" class="button black">Astronomical navigation</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# ABOUT #}
+        {#<div id="about-section" class="section image" style="background-image: url({{ asset('img/banner-parallax.jpg')}});">
+            <div class="w-container">
+                <h1>DISHAS provides tools to explore astronomical tables using modern algorithms modelled on ancient mathematical practices.</h1>
+                <div class="horizontal-bar beige"></div>
+                <br>
+                <a href="{{path('tamas_astro_about')}}" class="button beige" style="margin-top: 15px">Learn more</a>
+            </div>
+        </div>#}
+
+        {# SEARCH #}
+        {% include 'TAMASAstroBundle:PublicSearch:searchBar.html.twig' with {'include':'html'} %}
+
+        {# PROJECT #}
+        <div class="section beige">
+            <div class="w-container">
+                <div class="w-row">
+                    <div class="w-col w-col-3 w-col-small-6">
+                        <h2 style="color: white">PROJECT</h2>
+                        <div class="horizontal-bar"></div>
+                    </div>
+                    <div class="w-col w-col-9 w-col-small-6">
+                        <p>{{ public_about.textContent|truncate(500)|raw() }}</p>
+                        <a href="{{path('tamas_astro_about')}}" class="button black" style="margin-top: 15px">Read more</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# PARTNERS #}
+        <div class="section">
+            <div class="w-container">
+                <div class="w-row">
+                    <div class="w-col w-col-3 w-col-small-6">
+                        <h2>PARTNERS</h2>
+                        <div class="horizontal-bar lightgrey"></div>
+                    </div>
+                    <div class="w-col w-col-9 w-col-small-6">
+                        <div class="w-row">
+                            <div class="w-col w-col-12 w-col-small-12">
+                            {% include 'TAMASAstroBundle:Default:Templates/projectCard.html.twig' with {
+                                'acronym':'alfa',
+                                'desc':'ALFA is an ERC funded research project dedicated to the study of Alfonsine astronomy which flourished in Europe from the second half of 13th century to the middle of the 16th century.',
+                                'url':'https://alfa.hypotheses.org/'
+                            } %}
+                            {% include 'TAMASAstroBundle:Default:Templates/projectCard.html.twig' with {
+                                'acronym':'hamsi',
+                                'desc':'The History of Astronomical and Mathematical Sciences in India (HAMSI) working group is dedicated to fostering and disseminating research in the history of Indian exact sciences.',
+                                'url':'http://www.hamsi.org.nz/p/about-hamsi.html'
+                            } %}
+                            {% include 'TAMASAstroBundle:Default:Templates/projectCard.html.twig' with {
+                                'acronym':'pal',
+                                'desc':'The Project Ptolemaeus Arabus et Latinus (PAL) is dedicated to the edition and study of the Arabic and Latin versions of Ptolemy’s astronomical and astrological texts and related material.',
+                                'url':'https://ptolemaeus.badw.de/start'
+                            } %}
+                            </div>
+                        </div>
+                        <div class="w-row">
+                            <div class="w-col w-col-12 w-col-small-12">
+                            <a href="{{path('tamas_astro_partners')}}" class="button black" style="margin: 20px 0 -20px;">Read more</a>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+                <div class="w-row">
+                   
+                </div>
+            </div>
+        </div>
+
+        {# RESOURCES #}
+        <div class="section beige">
+            <div class="w-container">
+                <div class="w-row">
+                    <h2 style="color: white">TOOLS</h2>
+                    <div class="horizontal-bar"></div>
+                    <br>
+                </div>
+                <div class="w-row">
+                    <div class="w-col w-col-4" style="text-align: center;">
+                        <div class="icon-wrapper">
+                            <img src="{{ asset('img/pictograms/glossary-white.png')}}" width="125" alt=""/>
+                        </div>
+                        <p class="process-desc">Learn more about the concepts used in history of the astral sciences.</p>
+                        <a href="{{path('tamas_astro_glossary')}}" class="button black">Glossary</a>
+                    </div>
+                    {#<div class="w-col w-col-4" style="text-align: center;">
+                        <div class="icon-wrapper">
+                            <img src="{{ asset('img/pictograms/parameterEstimator-white.png')}}" width="125" alt=""/>
+                        </div>
+                        <p class="process-desc">Determine astronomical parameter value using our tools to analyse tables.</p>
+                        <a href="#}{#{{path('')}}#}{#" class="button black">Try DIPS</a>
+                    </div>#}
+                    <div class="w-col w-col-4" style="text-align: center;">
+                        <div class="icon-wrapper">
+                            <img src="{{ asset('img/pictograms/resources-white.png') }}" width="125" alt=""/>
+                        </div>
+                        <p class="process-desc">Discover the digital resources available to study history of astronomy.</p>
+                        <a href="{{path('tamas_astro_resources')}}" class="button black">Resources</a>
+                    </div>
+                    <div class="w-col w-col-4" style="text-align: center;">
+                        <div class="icon-wrapper">
+                            <img src="{{ asset('img/pictograms/bibliography-white.png')}}" width="125" alt=""/>
+                        </div>
+                        <p class="process-desc">Browse our bibliographic selection for an introduction to the different astronomical traditions.</p>
+                        <a href="{{path('tamas_astro_bibliography')}}" target="_blank" class="button black">Bibliography</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# DATABASE ENTITIES #}
+        {% include 'TAMASAstroBundle:Default:Templates/entityDefinitions.html.twig' with {'color':'grey'} %}
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            {% block footer %}
+                {% include '/includes/footer.html.twig' %}
+            {% endblock %}
+        </div>
+    </div>
+    {% block javascripts %}
+        {{ parent() }}
+        <script src="{{asset('js/slider.js')}}"></script>
+        {% include 'TAMASAstroBundle:PublicSearch:searchBar.html.twig' with {'include':'js'} %}
+
+        <script>
+            $("#send-query").click(function () {
+                const term = $("#search-term").val();
+                let entity = $(".dropdown-select span:first-child").attr("entity");
+
+                let query;
+                let title;
+                if (! entity){
+                    if (term.startsWith(elasticServer)){
+                        query = term;
+                        const regex = new RegExp(`${elasticServer}\/([a-z_]*)\/`);
+                        entity = term.match(regex)[1];
+                        title = "Results generated from URL query";
+                    } else {
+                        $("#dLabel").css("background-color", "#ffc5cb").css("color", "#b85458");
+                        return;
+                    }
+                } else {
+                    if (term === ""){
+                        query = "";
+                        title = "All records";
+                    } else {
+                        query = generateFilterFromTerm(term, entity);
+                        title = `All records that match « ${term} »`;
+                    }
+                }
+
+                post("{{ path('tamas_astro_search') }}", {query: JSON.stringify({query: query, title: title, entity: entity})});
+            });
+        </script>
+    {% endblock %}
+
+</body>
+{% endblock %}

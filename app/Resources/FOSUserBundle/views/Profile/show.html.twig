@@ -1,0 +1,11 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% block fos_user_content %}
+<h2>Your profile</h2>
+
+<div class="well">
+{% include "@FOSUser/Profile/show_content.html.twig" %}
+<a href="{{path('fos_user_profile_edit')}}" class='btn btn-primary'>Edit profile</a>
+
+</div>
+{% endblock fos_user_content %}

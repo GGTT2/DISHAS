@@ -1,0 +1,23 @@
+--- MappingBuilder.php	2019-06-25 14:21:26.000000000 +0200
++++ MappingBuilder_new.php	2019-07-19 09:30:23.579946492 +0200
+@@ -37,10 +37,19 @@
+         }
+         // 'warmers' => $indexConfig->getWarmers(),
+ 
++        // START OF THE DISHAS EDIT
++        /*
+         $settings = $indexConfig->getSettings();
+-        if (!empty($settings)) {
++        if(!empty($settings)) {
+             $mapping['settings'] = $settings;
+         }
++        */
++
++        $settings = $indexConfig->getSettings();
++        $settings["index.mapping.total_fields.limit"] = 10000;
++        
++        $mapping['settings'] = $settings;
++        // END OF THE DISHAS EDIT
+ 
+         return $mapping;
+     }

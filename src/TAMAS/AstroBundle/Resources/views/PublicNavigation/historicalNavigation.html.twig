@@ -1,0 +1,64 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\PublicData\historicalSources.html.twig#}
+
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% block title %}
+	Historical navigation — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+	{% include 'TAMASAstroBundle:PublicNavigation:navigationHeader.html.twig' with {'navigation':'Historical'} %}
+	<div>
+		<div style="padding: 50px 0;">
+			<div class="row">
+				{% if visualization[0]|default() %}
+					{% include 'TAMASAstroBundle:DataViz:'~visualization[0]~'.html.twig' with {'include':'html'} %}
+				{% endif %}
+				{% include 'TAMASAstroBundle:PublicView:boxTemplate.html.twig' with {'divId':'boxdiv'} %}
+			</div>
+		</div>
+	</div>
+
+	{% include 'TAMASAstroBundle:PublicNavigation:findMore.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+
+	<script src="{{asset('js/amcharts4/core.js')}}"></script>
+	<script src="{{asset('js/amcharts4/charts.js')}}"></script>
+
+
+	<script src="{{asset('js/DISHAS_charts/DishasChart.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DishasConfig.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DishasEntity.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DishasMapChart.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DishasBox.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DishasHeatMap.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DishasScrollbar.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DISHAS_dataset/DishasDataset.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DISHAS_dataset/DishasChronoMapDataset.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DISHAS_dataset/DishasBoxDataset.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DISHAS_dataset/DishasHeatmapDataset.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DISHAS_dataset/DishasLegendDataset.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DISHAS_dataset/DishasMapDataset.js')}}"></script>
+
+	<script src="{{asset('js/amcharts4/maps.js')}}"></script>
+	<script src="{{asset('js/geodata/worldLow.js')}}"></script>
+
+	<script>
+		let fieldLists = {{ templates|json_encode|raw }};
+
+		$.getJSON(generateUrl("", "original_text", generateSources(fieldLists.original_text)), function(PSresponse) {
+			$.getJSON(generateUrl("", "work", generateSources(fieldLists.work)), function(Wresponse) {
+				let data = new DishasChronoMapDataset();
+				data.generateDatasetFromResponse(Wresponse, PSresponse, fieldLists);
+				let config = new DishasMapConfig(
+						{"work": "{{ object_info.properties.work.userInterfaceColor }}",
+						 "primarySource": "{{ object_info.properties.primarySource.userInterfaceColor }}"});
+				chart = new DishasChart(data, config);
+			});
+		});
+	</script>
+{% endblock %}
+

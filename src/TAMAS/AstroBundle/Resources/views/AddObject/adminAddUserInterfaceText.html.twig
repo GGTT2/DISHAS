@@ -1,0 +1,27 @@
+{# empty Twig template #}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+    Edit user interface text — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    {% form_theme form 'bootstrap_3_TAMAS.html.twig'
+'jquery.collection.html.twig' %}
+<h3>Edit user interface text <small>{{userInterfaceText.textName}}</small></h3>
+    <div class="row">
+        <div class="col-md-10">
+            <div class="well">
+                {{form_start(form)}}
+                    {{form_row(form.textContent)}}
+            </div>
+        </div>
+        <div class="col-md-2">
+           {%include 'TAMASAstroBundle:AddObject:adminPannel.html.twig'%}
+        </div>
+    </div>
+{% endblock%}
+
+{% block javascripts %}
+    {{parent()}}  
+{% endblock %}

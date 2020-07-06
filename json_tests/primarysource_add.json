@@ -1,0 +1,116 @@
+{
+    "primarysource": [
+        {
+            "_comment": "wrong primType",    
+            "primType": "lkjlkj",
+            "shelfmark": "12",
+            "library": "1"    
+        },
+        {
+            "primType": "ms",
+            "shelfmark": "B36",
+	    "library": "1"
+        },
+	{
+            "primType": "ms",
+            "shelfmark": "ValidMS",
+	    "library": {
+		"isni": "0000000460368974"
+	    }
+        },
+        {   "_comment": "Unvalid ISNI : all this primarysource must be rejected",
+            "primType": "ms",
+            "shelfmark": "897521",
+	    "library": {
+		"isni": "MickeyMouse"
+	    }
+        },
+        {   "_comment": "Unvalid library : all this primarysource must be rejected",
+            "primType": "ms",
+            "shelfmark": "897521",
+	    "library": "56320155"
+        },
+        {
+            "_comment": "Unvalid : a ms can't have a title, a date or an editor",    
+            "primType": "ms",
+            "shelfmark": "ValidEPEdit",
+	    "primTitle": "Tabule astronomice illustrissimi Alfonsii regis Castelle",
+	    "primEditor": "E. Ratdolt",
+            "date": "1483",
+	    "library": "6"
+        },
+	{
+            "primType": "ep",
+            "shelfmark": "000061853",
+	    "primTitle": "Tabule astronomice illustrissimi Alfonsii regis Castelle",
+	    "primEditor": "E. Ratdolt",
+            "date": "1483",
+	    "library": "6"
+        },
+        {
+            "_comment": "valid: primTitle, primEditor and date are not taken into account for unique entity",    
+            "primType": "ep",
+            "shelfmark": "12",
+	    "primTitle": "Tabule astronomice illustrissimi Alfonsii regis Castelle",
+	    "primEditor": "E. Ratdolt",
+            "date": "1483",
+	    "library": "6"
+        },
+        {
+            "_comment": "unvalid:shelfmark and library must be unique",    
+            "primType": "ep",
+            "shelfmark": "12",
+	    "primTitle": "Taboulet au poulet",
+	    "primEditor": "E. Ratdolt",
+            "date": "1483",
+	    "library": "6"
+        },
+	{
+            "primType": "ep",
+            "shelfmark": "ValidEP",
+	    "primTitle": "Tabule astronomice illustrissimi Alfonsii",
+	    "primEditor": "Machin",
+            "date": "1500",
+	    "library": "5"
+        },
+	{
+            "primType": "",
+            "shelfmark": "",
+	    "library": "6"
+        },
+	{
+            "primType": "ms",
+            "shelfmark": "ValidMSEditExistingMS",
+	    "library": {
+		"isni": "0000000460368974"
+	    }
+        },
+	{
+            "primType": "ms",
+            "shelfmark": "ValidMSEditValid",
+	    "library": {
+		"isni": "0000000460368974"
+	    }
+        },
+	{
+            "primType": "ep",
+            "shelfmark": "ValidEPEditExistingEP",
+	    "primTitle": "Tabule astronomice illustrissimi Alfonsii regis Castelle",
+	    "primEditor": "E. Ratdolt",
+            "date": "1483",
+	    "library": "6"
+        },
+	{
+            "primType": "ep",
+            "shelfmark": "ValidEPEdit",
+	    "primTitle": "Tabule astronomice illustrissimi Alfonsii regis Castelle",
+	    "primEditor": "E. Ratdolt",
+            "date": "1483",
+	    "library": "6"
+        },
+	{
+            "primType": "ms",
+            "shelfmark": "ValidMSEditEmpty",
+	    "library": "1"
+        }]
+}

@@ -1,0 +1,5 @@
+{#TAMAS\AstroBundle\Resources\views\ViewObject\adminViewFormulaDefinition.html.twig#}
+{% for formulaDefinition in formulaDefinitions %}
+    {% include 'TAMASAstroBundle:ViewObject:adminViewFormulaDefinition.html.twig' with {'formulaDefinition' : formulaDefinition } %}
+    <hr/>
+{% endfor %}

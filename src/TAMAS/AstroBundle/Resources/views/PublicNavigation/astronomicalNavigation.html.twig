@@ -1,0 +1,68 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\PublicData\astronomicalNavigation.html.twig#}
+
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% block title %}
+	Astronomical navigation — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+	{# PAGE HEADER #}
+	{% include 'TAMASAstroBundle:PublicNavigation:navigationHeader.html.twig' with {'navigation':'Astronomical'} %}
+	<div>
+		<div>
+			<div class="row">
+				<h2>{{ object_info.properties.astronomicalObject.objectUserInterfaceName|capitalize }} usage</h2>
+				<div class="row" id="chartdiv" style="height: 400px"></div>
+				<div class="row">
+					<div id="astronomical-object-metadata" class="col-md-offset-2 col-md-8"></div>
+				</div>
+				{% include 'TAMASAstroBundle:PublicView:boxTemplate.html.twig' with {'divId':'boxdiv'} %}
+			</div>
+		</div>
+	</div>
+	{% include 'TAMASAstroBundle:PublicNavigation:findMore.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{asset('js/amcharts4/core.js')}}"></script>
+	<script src="{{asset('js/amcharts4/charts.js')}}"></script>
+	<script src="{{asset('js/amcharts4/themes/animated.js')}}"></script>
+
+	<script src="{{asset('js/DISHAS_charts/DishasChart.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DishasConfig.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DishasEntity.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DishasBox.js')}}"></script>
+
+	<script src="{{asset('js/DISHAS_charts/DISHAS_dataset/DishasDataset.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DISHAS_dataset/DishasTreemapDataset.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DishasTreemap.js')}}"></script>
+
+	<script>
+		/**
+		 * List of fields that will be retrieve from elasticsearch and will appear in the results ("_source" property)
+		 * @type {string[]}
+		 */
+		const sources = [
+			"table_type.id", "table_type.table_type_name",
+			"table_type.astronomical_object.id", "table_type.astronomical_object.object_name",
+		];
+
+		let astroObjects = {{ astroObjects|json_encode|raw }};
+		let boxData = {{ typeBoxes|json_encode|raw }};
+
+		$(document).ready(function () {
+			$.getJSON(generateUrl("", "edited_text", sources), response => {
+				const data = new DishasTreemapDataset(response, astroObjects);
+				data.addBoxDataset(boxData);
+				treemap = new DishasChart(data, new DishasTreemapConfig("{{ currentNode }}"));
+
+				{% if id is defined %} /* If it is an astronomical object page */
+					treemap.charts[0].chart.zoomToObject({{id}});
+				{% endif %}
+			});
+		});
+
+	</script>
+{% endblock %}

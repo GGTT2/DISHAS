@@ -1,0 +1,12 @@
+{% if editable %}
+    {% set entityName = object_info.properties[objectEntityName].objectEntityName|ucfirst %}
+    <div style="text-align: right">
+        <a class="btn btn-default"
+           title="Edit the record in the back office"
+           target="_blank"
+           href="{{ path('tamas_astro_adminEdit' ~ entityName, {id: entity.id}) }}">
+            <span class="glyphicon glyphicon-pencil"></span>
+            &nbsp;&nbsp;Edit
+        </a>
+    </div>
+{% endif %}

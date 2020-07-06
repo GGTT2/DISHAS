@@ -1,0 +1,191 @@
+{#Symfony\app\Resources\views\includes\javascripts.html.twig#}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+{#<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>#}
+<script type="text/javascript" src="{{asset('js/bootstrap/bootstrap.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/ie10-viewport-bug-workaround.js')}}"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/mainJavascript.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/noClick.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/shortTitle.js') }}"></script>
+<script type="text/javascript" src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+<script type="text/javascript" src="{{asset('js/DataTables/datatables.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/DataTablesPlugIn/accent-neutralise.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/myDatatable.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/maplace.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/editReference.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/escapeHTML.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/autoFillFromController.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/ckeditor/ckeditor.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/citeproc.js')}}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+<script type="text/javascript" src="{{asset('js/citationManager.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/addLinkJs.js')}}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML"></script>
+<script type="text/javascript" src="{{asset('js/bootstrap-switch/js/bootstrap-switch.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/myElasticSearch.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/pagination.js')}}"></script>
+
+{% set long_path = app.request.pathinfo %}
+
+<script>
+    var locale = "{{citation_style.locale|escape('js')}}";
+    var csl = "{{citation_style.csl|escape('js')}}" ;
+    var nameToBase = JSON.parse("{{name_to_base.typeOfNumber|escape('js')}}");
+
+    const elasticServer = "{{ path('tamas_astro_elastic') }}";
+    const dishas = "https://dishas.obspm.fr";
+    const imgPath = "{{ asset('img/'~'IMG') }}";
+
+    let objects = {};
+    {% for o in object_info.properties %}
+        objects["{{ o.objectEntityName }}"] = {
+            'id': "{{ o.id }}",
+            'userInterfaceColor': "{{ o.userInterfaceColor }}",
+            'objectDatabaseName': "{{ o.objectDatabaseName|raw|e('js') }}",
+            'objectEntityName': "{{ o.objectEntityName|raw|e('js') }}",
+            'objectUserInterfaceName': "{{ o.objectUserInterfaceName|raw|e('js') }}",
+            'databaseAdminDefinition': "{{ o.databaseAdminDefinition|raw|e('js') }}",
+            'longDefinition': "{{ o.longDefinition|raw|e('js') }}",
+            'shortDefinition': "{{ o.shortDefinition|raw|e('js') }}"
+        };
+    {% endfor %}
+
+    /**
+     * General function to truncate a string in javascript
+     */
+    function truncate(string, max, extra = null){
+        if (extra === null){
+            extra = '…';
+        }
+        if (string.length > max){
+            string = string.substring(0, max).trim() + extra;
+        }
+        return string;
+    }
+
+    function checkIfAllowed(creator, user, creatorName, action, parent) {
+        if (user === creator) {
+            let confirmAction = $("#" + action + "-confirm");
+            confirmAction.removeClass("hidden");
+            confirmAction
+                .data('link', parent)
+                .dialog('open');
+        } else {
+            let noAccess = $("#no-access");
+            noAccess.removeClass("hidden");
+            var route = Routing.generate('tamas_astro_adminContactUser', {'id': creator});
+            $("#user-name").html(`<a href="${route}">${creatorName}</a>`);
+            noAccess.dialog('open');
+        }
+    }
+    function editionAuthorization() {
+        let user;
+        $(document).on("click", ".edit-reference", function(e){ //It is possible to find these button even when they are generated after the render of the page.
+            e.preventDefault();
+            var creatorName = $(this).attr('userName');
+            {% if app.user.id|default %}
+                user = "{{app.user.id}}";
+            {% else %}
+                user = null;
+            {% endif %}
+            var creator = $(this).attr('user');
+            checkIfAllowed(creator, user, creatorName, 'edit', this);
+        });
+        //$(".delete-reference").click(function (e) {
+        $(document).on("click", ".delete-reference", function(e){ // It is possible to find these button even when they are generated after the render of the page.
+            e.preventDefault();
+            var creatorName = $(this).attr('userName');
+            {% if app.user.id|default %}
+                user = "{{app.user.id}}";
+            {% else %}
+                user = null;
+            {% endif %}
+            var creator = $(this).attr('user');
+            checkIfAllowed(creator, user, creatorName, 'delete', this);
+        });
+        $("#edit-confirm").dialog({
+            autoOpen: false,
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                "Edit this item": function () {
+                    $(this).dialog("close");
+                    var path = $(this).data('link').href; // Get the stored result
+                    $(location).attr('href', path);
+                },
+                Cancel: function () {
+                    $(this).dialog('close');
+                }
+            }
+        });
+        $("#no-access").dialog({
+            autoOpen: false,
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            close: function () {
+                $("#user-name").empty();
+            },
+            buttons: {
+                Cancel: function () {
+                    $(this).dialog('close');
+                }
+            }
+        });
+        $("#delete-confirm").dialog({
+            autoOpen: false,
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                "Delete this item": function () {
+                    $(this).dialog("close");
+                    var path = $(this).data('link').href; // Get the stored result
+                    $(location).attr('href', path);
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    }
+
+    editionAuthorization();
+
+    let tab = $('li a[role="tab"]');
+    tab.find('.error').remove();
+    tab.removeClass('error');
+    $(".tab-pane").each(function(){
+        if ($(this).find(".has-error").length >0){
+            var id = $(this).attr('id');
+            let errorTab = $('li a[role="tab"][href="#'+id+'"]');
+            errorTab.append('<span class="error glyphicon glyphicon-exclamation-sign"></span>');
+            errorTab.addClass('error');
+        }
+    });
+
+    $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+        $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust().draw();
+    } );
+
+    $(document).on('shown.bs.collapse shown.bs.modal', function(e) {
+        if($(this).find('textarea.ckeditor').length !== 0){
+            $(this).find('textarea.ckeditor').each(function() {
+                var that_id = $(this).attr('id');
+                if(CKEDITOR.instances[that_id] !== undefined) {
+                    var current_value = CKEDITOR.instances[that_id].getData();
+                    CKEDITOR.instances[that_id].setData(current_value);
+                }
+            })
+        }
+        if($(this).find('.math-tex').length !== 0){
+            MathJax.Hub.Typeset();
+        }
+    });
+</script>

@@ -1,0 +1,32 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4>Admin board</h4>
+    </div>
+    <div class="panel-body">
+        <div id="admin-info">
+            <table class=" table table-striped">
+                <tr>
+                    <td><span class="glyphicon glyphicon-user"></span></td>
+                    <td>{{object.createdBy}}</td>
+                </tr>
+                <tr>
+                    <td><span class="glyphicon glyphicon-pencil"></span></td>
+                    <td>{{object.created|date('d/m/Y')}}</td>
+                </tr>
+                <tr>
+                    <td><span class="glyphicon glyphicon-repeat"></span></td>
+                    <td>{{object.updated|date('d/m/Y')}}</td>
+                </tr>
+            </table>
+        </div>
+        {% if type|default %}
+            <a class="btn btn-success btn-lg edit-reference" href="{{path('tamas_astro_adminEdit'~entity, {'type':'null', 'id': object.id})}}" user="{{object.createdBy.id}}" userName="{{object.createdBy.username}}">Edit</a>
+        {% elseif tableId|default %}
+            <a class="btn btn-success btn-lg edit-reference" href="{{path('tamas_astro_adminEdit'~entity, {'tableId':'null', 'id': object.id})}}" user="{{object.createdBy.id}}" userName="{{object.createdBy.username}}">Edit</a>
+        {% else %}
+            <a class="btn btn-success btn-lg edit-reference" href="{{path('tamas_astro_adminEdit'~entity, {'id': object.id})}}" user="{{object.createdBy.id}}" userName="{{object.createdBy.username}}">Edit</a>
+        {% endif %}
+        <a class="btn btn-danger btn-lg delete-reference"  href="{{path('tamas_astro_adminDeleteObject', {'entity': entity, 'id': object.id})}}"  user="{{object.createdBy.id}}" userName="{{object.createdBy.username}}">Delete</a>
+    </div>
+</div>
+

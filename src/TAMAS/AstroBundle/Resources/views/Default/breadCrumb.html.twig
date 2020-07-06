@@ -1,0 +1,239 @@
+{#TAMAS\AstroBundle\Resources\views\PublicData\sideMetadata.html.twig#}
+{% if include == "html" %}
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+            <div class="row breadcrumb-icons"></div>
+        </div>
+    </div>
+
+{% elseif include == "js" %}
+    <script>
+        {% if currentNode|default %}
+        // set the dependence tree of the different pages of the front office
+        const navigation = {
+            "OI-rec" : "originalText",
+            "originalText" : "hist-nav",
+            "PS-rec" : "primarySource",
+            "primarySource" : "hist-nav",
+            "W-rec" : "work",
+            "work" : "hist-nav",
+            "TE-rec" : "editedText",
+            "editedText" : "astro-nav",
+            "AP-rec" : "parameterSet",
+            "parameterSet" : "astro-nav",
+            "TM-rec" : "formulaDefinition",
+            "formulaDefinition" : "astro-nav",
+            "TT-rec" : "tableType",
+            "tableType" : "astro-nav",
+            "contact" : "team",
+            "partners" : "team",
+            "team" : "about",
+            "api" : "resources",
+            "downloads" : "resources",
+            "glossary" : "resources",
+            "bibliography" : "resources",
+            "resources" : "dishas",
+            "navigation" : "browse",
+            "browse" : "dishas",
+            "about" : "dishas",
+            "astro-nav" : "browse",
+            "hist-nav" : "browse"
+        };
+
+        // set the properties of the pages level "record"
+        const record = {
+            "path": "",
+            "hover": "A record is a set of information in the database concerning the same item",
+            "title": "Record"
+        };
+
+        // set the properties of each page of the website map define in the navigation object
+        let properties = {};
+        for (let i = 0; i < Object.keys(navigation).length; i++) {
+            const node = Object.keys(navigation)[i];
+            if (node.endsWith("rec")){ // if the page is a "record"
+                properties[node] = record;
+            } else if (objects[node]){ // if the node is an entity of the database (pages level "list")
+                const objectName = objects[node].objectUserInterfaceName;
+                properties[node] = {
+                    "path": "tamas_astro_search",
+                    "hover": `See the list of all the ${objectName}s of the database`,
+                    "title": objectName,
+                    "type": "list"
+                }
+            }
+        }
+
+        // set the properties for the other pages
+        const otherProperties = {
+            "contact": {
+                "path": "tamas_astro_contact",
+                "hover": "Contact our team",
+                "title": "Contact"
+            },
+            "partners": {
+                "path": "tamas_astro_partners",
+                "hover": "Discover the projects associated with DISHAS",
+                "title": "Partners"
+            },
+            "team": {
+                "path": "tamas_astro_team",
+                "hover": "Discover the members of DISHAS's project",
+                "title": "Team"
+            },
+            "api": {
+                "path": "tamas_astro_api",
+                "hover": "Discover our search API",
+                "title": "API documentation"
+            },
+            "downloads": {
+                "path": "tamas_astro_downloads",
+                "hover": "Find all downloadable resources",
+                "title": "Downloads"
+            },
+            "glossary": {
+                "path": "tamas_astro_glossary",
+                "hover": "Find definitions of DISHAS platform objects",
+                "title": "Glossary"
+            },
+            "bibliography": {
+                "path": "tamas_astro_bibliography",
+                "hover": "DISHAS's bibliography",
+                "title": "Bibliography"
+            },
+            "resources": {
+                "path": "tamas_astro_resources",
+                "hover": "Go to the resource space",
+                "title": "Resources"
+            },
+            "about": {
+                "path": "tamas_astro_about",
+                "hover": "Learn more about the project",
+                "title": "About"
+            },
+            "astro-nav": {
+                "path": "tamas_astro_astronomicalNavigation",
+                "hover": "Go to the astronomical navigation",
+                "title": "Astronomical navigation"
+            },
+            "hist-nav": {
+                "path": "tamas_astro_historicalNavigation",
+                "hover": "Go to the historical navigation",
+                "title": "Historical navigation"
+            },
+            "browse": {
+                "path": "tamas_astro_browse",
+                "hover": "Browse our digital corpus",
+                "title": "Browse corpus"
+            },
+            "navigation": {
+                "path": "tamas_astro_navigation",
+                "hover": "Find more about navigation in DISHAS platform",
+                "title": "Platform navigation"
+            },
+            "dishas": {
+                "path": "tamas_astro_homepage",
+                "hover": "Go to the homepage",
+                "title": "DISHAS"
+            }
+        };
+
+        // add them to the properties object
+        for (key of Object.keys(otherProperties)){
+            properties[key] = otherProperties[key];
+        }
+
+        // define the node of the current page
+        let currentNode = "{{ currentNode|default }}";
+
+        // define an array to contain the dependence tree of the current page
+        let nodeTree = [];
+        nodeTree.push(currentNode);
+        let node = currentNode;
+
+        for (let nav of nodeTree){
+            if (navigation[nav]){
+                nodeTree.push(navigation[nav]);
+            }
+        }
+
+        if (!(nodeTree.length <= 1)){
+            // reverse the order of the array to put the greater parent first
+            nodeTree.reverse();
+
+            // create a breadcrumb for each node of the nodeTree object
+            for (let l = 0; l < nodeTree.length ; l++){
+                node = nodeTree[l];
+                // set the pictogram image of the current node
+                let picto;
+                if (node.endsWith("rec")){
+                    picto = imgPath.replace("IMG", "pictograms/record.png");
+                } else {
+                    picto = imgPath.replace("IMG", `pictograms/${node}.png`);
+                }
+
+                let route;
+                if (properties[node]["path"] !== ""){
+                    // generate a route for the current node
+                    route = Routing.generate(properties[node]["path"]);
+                }
+
+                {% if currentNode == "TT-rec" %}
+                    currentNode = "{{ astroObject["name"]|default }}";
+                    if (node === "tableType"){
+                        route = Routing.generate("tamas_astro_astronomicalNavigation");
+                    }
+                {% endif %}
+
+                if (l < nodeTree.length - 1){ // if it is not the last node, make it clickable and put a chevron afterwards
+                    if (properties[node].type){ // if it is a list => redirect to the search page to show all records
+                        $(".breadcrumb-icons").append(`<div class="col-md-1 picto-bundle">
+                                                       <form action="${route}" method="post">
+                                                           <button type="submit"
+                                                                   name="query"
+                                                                   value='{
+                                                                       "query": "",
+                                                                       "title": "All records",
+                                                                       "entity":"${camelToSnake(node)}"
+                                                                       }'
+                                                                   title="${properties[node]["hover"]}"
+                                                                   class="btn-link">
+                                                               <div class="picto-background ${currentNode}">
+                                                                   <img class="picto-size"
+                                                                        src="${picto}"
+                                                                        alt="${properties[node]["title"]} pictogram">
+                                                               </div>
+                                                           </button>
+                                                       </form>
+                                                   </div>
+                                                   <div class="col-md-1 chevron">
+                                                       <span class="glyphicon glyphicon-chevron-right"></span>
+                                                   </div>`);
+                    } else {
+                        $(".breadcrumb-icons").append(`<div class="col-md-1 picto-bundle">
+                                                           <a href="${route}" title="${properties[node]["hover"]}">
+                                                               <div class="picto-background ${currentNode}">
+                                                                   <img class="picto-size"
+                                                                        src="${picto}"
+                                                                        alt="${properties[node]["title"]} pictogram">
+                                                               </div>
+                                                           </a>
+                                                       </div>
+                                                       <div class="col-md-1 chevron">
+                                                           <span class="glyphicon glyphicon-chevron-right"></span>
+                                                       </div>`);
+                    }
+                } else {
+                    $(".breadcrumb-icons").append(`<div class="col-md-1 picto-bundle">
+                                                       <div class="picto-background ${currentNode}" title="${properties[node]["hover"]}">
+                                                           <img class="picto-size"
+                                                                src="${picto}"
+                                                                alt="${properties[node]["title"]} pictogram">
+                                                       </div>
+                                                   </div>`);
+                }
+            }
+        }
+        {% endif %}
+    </script>
+{% endif %}

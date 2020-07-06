@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="{{ asset('logo/favicon.png') }}" />
+        <title>An error occurred {{status_text}}</title>
+        {% block stylesheets %}
+            {% include '/includes/stylesheets.html.twig' %}
+        {% endblock %}
+    </head>
+    <body>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <h1>An error occurred</h1>
+                <h2>The server returned a "{{ status_code }} {{ status_text }}".</h2>
+                <div>
+                    <p>
+                        Something is broken. Please e-mail us at
+                        <a href="mailto:alfa.erc.project@gmail.com">alfa.erc.project@gmail.com</a>
+                        and let us know what you were doing when this error occurred.
+                        We will fix it as soon as possible. Sorry for any inconvenience caused.
+                    </p>
+
+                    <p>
+                        Note: some special characters can cause errors of this type when inserted in a form.
+                    </p>
+                </div>
+
+                <div style="text-align: center">
+                    <img alt="Workers trying to fix the bug" src="{{asset('img/error-workers.jpg')}}" style="width: 50%"/>
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>

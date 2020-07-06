@@ -1,0 +1,80 @@
+{
+    "secondarysource": [{
+            "secType": "anthology",
+	    "secTitle": "testaaaa",
+            "secPubDate": "2000",
+	    "historian": ["2", {"lastName": "testa", "firstName": "blabla"}]
+        },
+ 	{
+            "secType": "anthology",
+	    "secTitle": "testaaaa",
+            "secPubDate": "2000",
+	    "historian": ["6",{"lastName": "test", "firstName": "truc"}]
+        },
+ 	{
+            "secType": "anthology",
+	    "secTitle": "blablaaaaaaa",
+            "secPubDate": "2000"
+        },
+ 	{
+            "secType": "anthology",
+	    "secTitle": "Source",
+            "secPubDate": "grrgzeg",
+	    "historian": ["6",{"lastName": "test", "firstName": "truc"}]
+        },
+ 	{
+            "secType": "",
+	    "secTitle": "Source_1",
+            "secPubDate": "grrgzeg",
+	    "historian": ["6"]
+        },
+ 	{
+            "secType": "bookChapter",
+	    "secTitle": "testaaaa",
+            "secPubDate": "2000",
+	    "historian": ["6"],
+	    "collectiveBook": "1"
+        },
+ 	{
+            "secType": "bookChapter",
+	    "secTitle": "",
+            "secPubDate": "2000",
+	    "historian": ["6"],
+	    "collectiveBook": "1"
+        },
+ 	{
+            "secType": "bookChapter",
+	    "secTitle": "blabla",
+            "secPubDate": "2000",
+	    "historian": ["6"]
+        },
+ 	{
+            "secType": "monography",
+	    "secTitle": "blabla",
+            "secPubDate": "1995",
+	    "historian": ["6"]
+        },
+ 	{
+            "secType": "monography",
+	    "secTitle": "livre",
+            "secPubDate": "grgr",
+	    "historian": ["6"]
+        },
+ 	{
+            "secType": "monography",
+	    "secTitle": "livreDeux",
+            "secPubDate": "2000",
+	    "historian": ["6", "ihfhrgr"]
+        },
+ 	{
+            "secType": "monography",
+	    "secTitle": "livreTrois",
+            "secPubDate": "grgr"
+        },
+ 	{
+            "secType": "monography",
+	    "secTitle": "",
+            "secPubDate": "grgr",
+	    "historian": ["6"]
+        }]
+}

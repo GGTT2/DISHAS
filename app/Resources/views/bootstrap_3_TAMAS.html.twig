@@ -1,0 +1,114 @@
+{#C:\wamp64\www\Symfony\app\Resources\views\Form\boostrap_3_TAMAS.html.twig#}
+
+{% extends 'bootstrap_3_layout.html.twig' %}
+
+
+{% block form_label -%}
+	{{parent()}}
+	{% for attrname, attrvalue in attr %}
+		{% if attrname == 'data-help' %}
+			<button class="noClick btn btn-primary btn-formatInfo"
+					data-toggle="tooltip" data-placement="bottom"
+					title="{{ attrvalue|trans }}">?</button>
+		{% endif %}
+
+		{% if attrname == "inline-help" %}
+			<span class="help-block">{{attrvalue|trans}}</span>
+		{% endif %}
+	{% endfor %}
+
+	{% for attrname, attrvalue in label_attr %}
+		{% if attrname == 'data-help' %}
+			<button class="noClick btn btn-primary btn-formatInfo"
+					data-toggle="tooltip" data-placement="bottom"
+					title="{{ attrvalue|trans }}">?</button>
+		{% endif %}
+	{% endfor %}
+
+
+
+{% endblock form_label%}
+
+
+
+{% block form_errors -%}
+	{{ parent() }}
+	{% if block('form_help') is defined%}
+		{{- block('form_help') -}}
+	{%endif%}
+{%- endblock form_errors %}
+
+
+{% block checkbox_widget -%}
+	{% for attrname, attrvalue in label_attr %}
+		{% if attrname == 'data-help' %}
+			{# in the form type = "label_attr" => ["data-help" => "message"}#}
+			<button type="button"
+					class="noClick btn btn-primary btn-formatInfo float-right no-checkbox"
+					data-toggle="tooltip" data-placement="bottom"
+					title="{{ attrvalue|trans }}">?</button>
+		{% endif %}
+
+	{%endfor%}
+	{{parent()}}
+{% endblock checkbox_widget %}
+
+
+{% block form_row -%}
+	{% if 'size' in row_attr|keys %}
+		<div class="{{ row_attr.size}}">
+	{%endif%}
+	<div
+			class="form-group
+                 {% if (not compound or force_error|default(false)) and not valid%} 
+                     has-error 
+                     {%- endif %}
+                     {% for attrname, attrvalue in row_attr %}
+                         {%- if attrname == 'class' -%}
+                         {{attrvalue}}
+                         {%- endif -%}
+                     {%endfor%}               
+                     "
+	{% for attrname, attrvalue in row_attr %} {%if attrname != 'class'%}
+	{{- attrname -}}="{{- attrvalue -}}" {%endif%} {%endfor%}>
+
+	{# check if we need reload options #}
+	{% set reload = false %}
+	{% for attrname, attrvalue in attr %}
+		{% if attrname == 'reloader' and attrvalue is not null %}
+			{% set reload = attrvalue %}
+		{% endif %}
+	{% endfor %}
+
+
+
+	{% if reload|default() %}
+		<div class="row">
+			<div class="col-md-10">
+				{{- form_label(form) -}}
+				{{- form_widget(form) -}}
+				{{- form_errors(form) -}}
+			</div>
+			<a href="{{path('tamas_astro_adminAdd'~reload)}}"
+			   target="_blank" class="btn btn-success add-entity" id="add-{{ id }}"><span
+						class="glyphicon glyphicon-plus"></span></a> <a href="#"
+																		class="btn btn-success refresh-entity" id="refresh-{{ id }}"><span
+						class="glyphicon glyphicon-refresh"></span></a>
+			{# 				{{ dump() }}#}
+
+		</div>
+	{% else %}
+		{{- form_label(form) -}}
+		{{- form_widget(form) -}}
+		{{- form_errors(form) -}}
+	{% endif %}
+
+
+	</div>
+	{% if 'size' in row_attr|keys %}
+		</div>
+	{%endif%}
+
+
+
+{%- endblock form_row%}

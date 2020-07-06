@@ -1,0 +1,85 @@
+h2 {
+  padding-top: 30px;
+}
+h4 {
+  font-weight: 700;
+  font-size: 25px;
+  margin: 1.7rem 0 .7rem;
+}
+a {
+  font-family: Abel, sans-serif;
+  font-size: 110%;
+}
+.url {
+  font-family: monospace;
+  padding: 17px 20px;
+  background-color: #1C393C;
+  white-space: nowrap;
+  color: #829b9e;
+  font-size: 14px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  overflow: auto;
+}
+.center {
+  text-align: center;
+}
+.sub-arguments {
+  color: #d9edef;
+}
+.arguments {
+  color: white;
+  font-size: 15px;
+}
+.output {
+  font-family: monospace;
+  padding: 7px 15px;
+  background-color: #1C1C1C;
+  white-space: pre;
+  color: #86E8F4;
+  font-size: 15px;
+  line-height: 1.4em;
+  max-height: 300px;
+  overflow-y: scroll;
+  border-radius: 0 0 5px 5px;
+}
+.more {
+  color: #ebfdff;
+}
+.description {
+  /*font-family: Abel, sans-serif;*/
+  margin: 15px 0;
+  font-size: 16px;
+  line-height: 1.8;
+}
+.intro {
+  width: 80%;
+  margin: auto;
+  text-align: justify;
+}
+.docu {
+  width: 90%;
+  margin: auto;
+}
+.code {
+  font-family: monospace;
+  font-size: 14px;
+  margin: 0 5px;
+  background-color: #e6f1f3;
+  color: #1C393C;
+  border-radius: 5px;
+  border: #bfd2d5 solid 1px;
+  padding: 3px 5px;
+}
+.mapping {
+  font-family: monospace;
+  padding: 7px 15px;
+  background-color: #1C1C1C;
+  white-space: pre;
+  color: #86E8F4;
+  font-size: 15px;
+  line-height: 1.4em;
+  max-height: 300px;
+  overflow-y: scroll;
+  border-radius: 5px;
+}

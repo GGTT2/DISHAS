@@ -1,0 +1,26 @@
+
+{% extends "TAMASALFABundle:Default:alfa_layout.html.twig" %}
+
+{% block title %}
+    List manuscripts - {{ parent() }}
+{% endblock %}
+
+{% block main %}
+    <div class="margin-content" >
+        <ul>
+     {% for manuscript in ms %}
+         <li>
+             <a href="{{path('tamas_astro_alfa_manuscript_description', {'id': manuscript.id})}}">
+                 {{manuscript.id}}: {{manuscript.fileUserName}}
+             </a>
+         </li>
+     {% endfor %}
+        </ul>
+    </div>
+
+{% endblock%}
+
+
+{% block javascripts %}
+    {{parent()}}  
+{% endblock %}

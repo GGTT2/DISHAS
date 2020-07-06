@@ -1,0 +1,12 @@
+<div class="w-col w-col-4 w-col-small-6">
+    <div class="project-member">
+        <img src="{{ asset('img/logo-'~ acronym ~'.png')}}" alt="Logo of the {{ acronym|upper }} project" style="height: 110px"/>
+        <div class="desc" style="height: 200px;">{{ desc }}</div>
+        <div class="icons-wrapper">
+            <a href="{{ url }}" class="w-inline-block">
+                <img class="social-icon" src="{{ asset('img/icons/globe.svg')}}" alt="Go to the project website" style="height: 20px;"/>
+                <span class="position">Project website</span>
+            </a>
+        </div>
+    </div>
+</div>

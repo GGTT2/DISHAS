@@ -1,0 +1,38 @@
+#tamasalfa_homepage:
+#    path:     /
+#    defaults: { _controller: TAMASALFABundle:Default:index }
+    
+    
+#================================ ALFA pages ==============================#
+
+tamas_astro_alfa_home:
+    path: /alfa/home
+    defaults: { _controller: TAMASALFABundle:Default:index}
+
+tamas_astro_alfa_survey:
+    path: /alfa/survey
+    defaults: { _controller: TAMASALFABundle:HeuristAPI:viewSurvey}
+    
+#tamas_astro_alfa_about:
+    #path: /alfa/about
+    #"defaults: { _controller: TAMASALFABundle:Default:about}
+    
+tamas_astro_alfa_manuscript_description:
+    path: /alfa/view-manuscriptDescription/{id}
+    defaults: { _controller: TAMASALFABundle:LoadXML:transformXML }
+
+tamas_astro_alfa_manuscript:
+    path: /alfa/manuscript
+    defaults: {_controller:FrameworkBundle:Redirect:urlRedirect, path:'/js/mirador-alfa/index.html'}
+
+tamas_astro_alfa_test:
+    path: /alfa/view-test
+    defaults: { _controller: TAMASALFABundle:ALFAView:viewTest}
+
+tamas_astro_alfa_addXML:
+    path: /alfa/adm/add-XML/{id}
+    defaults: { _controller: TAMASALFABundle:ALFAAdd:ALFAAddXMLFile, id: null}
+    
+tamas_astro_alfa_msList:
+    path: /alfa/ms-list
+    defaults: { _controller: TAMASALFABundle:ALFAView:listMs}

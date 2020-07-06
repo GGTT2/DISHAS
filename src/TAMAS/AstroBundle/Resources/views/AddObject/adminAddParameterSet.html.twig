@@ -1,0 +1,190 @@
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+{% block title %}
+    {{ action|capitalize }} {{ object_info.properties.parameterSet.objectUserInterfaceName }} — {{ parent() }}
+{% endblock %}
+{% block tamasastro_body %}
+    <h4>
+        Fill parameter for table type: {{parameterSet.tableType}}
+    </h4>
+    <div style="text-align: right; color:red">
+        <h4>
+            <a href="{{asset('pdf/DISHAS_Glossary-astronomical-parameter_2018-05-25.pdf')}}" target="_blank">
+                <span class="glyphicon glyphicon-info-sign"></span> Get documentation
+            </a>
+        </h4>
+    </div>
+    <div class="row">
+        <div class="col-md-10">
+            {% form_theme form 'bootstrap_3_TAMAS.html.twig' %}
+            {{form_start(form)}}
+            {{form_errors(form)}}
+            <div class="well">
+                <ul class="nav nav-tabs " role="tablist">
+                    <li role="presentation" class="active"><a href="#parameter-values" aria-controls="parameter-values" role="tab" data-toggle="tab">Parameter values</a></li>
+                    <li role="presentation" class="hidden"><a href="#table-content" aria-controls="table-content" role="tab" data-toggle="tab">Table content</a></li>
+                </ul>
+                <div class="row">
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="parameter-values">
+                            <div class="col-md-10  col-md-offset-1">
+                                {% for value in form.parameterValues %}
+                                    <div class="parameter {{value.vars.value.parameterFormat.parameterName|replace({' ':''})}}">
+                                        <h4>{{ value.vars.value.parameterFormat.parameterName|capitalize}}</h4>  <i>({{value.vars.value.parameterFormat.parameterUnit.unit}})</i>
+                                        {{form_row(value.typeOfNumber)}}
+                                        <div class="parameter-decimal hidden">
+                                            <div class="row">
+                                                {{ form_row(value.valueFloat)}}
+                                            </div>
+                                            {% if (value.range1InitialFloat is defined) %}
+                                                <div class="row">
+                                                    {{ form_row(value.range1InitialFloat)}}
+                                                    {{ form_row(value.range1FinalFloat)}}
+                                                </div>
+                                            {% endif %}
+                                            {% if (value.range2InitialFloat is defined) %}
+                                                <div class="row">
+                                                    {{ form_row(value.range2InitialFloat)}}
+                                                    {{ form_row(value.range2FinalFloat)}}
+                                                </div>
+                                            {% endif %}
+                                            {% if (value.range3InitialFloat is defined) %}
+                                                <div class="row">
+                                                    {{ form_row(value.range3InitialFloat)}}
+                                                    {{ form_row(value.range3FinalFloat)}}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="parameter-intSexa hidden">
+                                            <div class="row">
+                                                {{ form_row(value.valueOriginalBase)}}
+                                            </div>
+
+                                            {% if (value.range1InitialFloat is defined) %}
+                                                <div class="row">
+                                                    {{ form_row(value.range1InitialOriginalBase)}}
+                                                    {{ form_row(value.range1FinalOriginalBase)}}
+                                                </div>
+                                            {% endif %}
+
+                                            {% if (value.range2InitialFloat is defined) %}
+                                                <div class="row">
+                                                    {{ form_row(value.range2InitialOriginalBase)}}
+                                                    {{ form_row(value.range2FinalOriginalBase)}}
+                                                </div>
+                                            {% endif %}
+
+                                            {% if (value.range3InitialFloat is defined) %}
+                                                <div class="row">
+                                                    {{ form_row(value.range3InitialOriginalBase)}}
+                                                    {{ form_row(value.range3FinalOriginalBase)}}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="parameter-smartNumber">
+                                            <div class="row">
+                                                {{ form_row(value.valueSmartNumber)}}
+                                            </div>
+
+                                            {% if (value.range1InitialFloat is defined) %}
+                                                <div class="row">
+                                                    {{ form_row(value.range1InitialSmartNumber)}}
+                                                    {{ form_row(value.range1FinalSmartNumber)}}
+                                                </div>
+                                            {% endif %}
+
+                                            {% if (value.range2InitialFloat is defined) %}
+                                                <div class="row">
+                                                    {{ form_row(value.range2InitialSmartNumber)}}
+                                                    {{ form_row(value.range2FinalSmartNumber)}}
+                                                </div>
+                                            {% endif %}
+
+                                            {% if (value.range3InitialFloat is defined) %}
+                                                <div class="row">
+                                                    {{ form_row(value.range3InitialSmartNumber)}}
+                                                    {{ form_row(value.range3FinalSmartNumber)}}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {%endfor%}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 ">
+            {%include 'TAMASAstroBundle:AddObject:adminPannel.html.twig'%}
+        </div>
+    </div>
+{%endblock%}
+{% block javascripts %}
+    {{parent()}}
+    <script type="text/javascript" src="{{asset('js/DISHAS_table/conversion.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/DISHAS_table/smartNumberFillField.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/hideOnClick.js')}}"></script>
+    <script>
+        $(document).ready(function () { //TODO : simplification of this code with class SmartNumberField static method.
+            smartNumberFields = {};
+            {% for value in form.parameterValues %}
+            smartNumberFields['{{ value.vars.name }}'] = {};
+            smartNumberFields['{{ value.vars.name }}'].value = new SmartNumberField('{{ value.valueSmartNumber.vars.id }}');
+            smartNumberFields['{{ value.vars.name }}'].value.bindSelect('{{ value.typeOfNumber.vars.id }}');
+            smartNumberFields['{{ value.vars.name }}'].value.bindTarget('{{ value.valueFloat.vars.id }}', 'float');
+            smartNumberFields['{{ value.vars.name }}'].value.bindTarget('{{ value.valueOriginalBase.vars.id }}', undefined, true);
+            {% if (value.range1InitialFloat is defined) %}
+            smartNumberFields['{{ value.vars.name }}'].range1Initial = new SmartNumberField('{{ value.range1InitialSmartNumber.vars.id }}');
+            smartNumberFields['{{ value.vars.name }}'].range1Initial.bindSelect('{{ value.typeOfNumber.vars.id }}');
+            smartNumberFields['{{ value.vars.name }}'].range1Initial.bindTarget('{{ value.range1InitialFloat.vars.id }}', 'float');
+            smartNumberFields['{{ value.vars.name }}'].range1Initial.bindTarget('{{ value.range1InitialOriginalBase.vars.id }}', undefined, true);
+            smartNumberFields['{{ value.vars.name }}'].range1Final = new SmartNumberField('{{ value.range1FinalSmartNumber.vars.id }}');
+            smartNumberFields['{{ value.vars.name }}'].range1Final.bindSelect('{{ value.typeOfNumber.vars.id }}');
+            smartNumberFields['{{ value.vars.name }}'].range1Final.bindTarget('{{ value.range1FinalFloat.vars.id }}', 'float');
+            smartNumberFields['{{ value.vars.name }}'].range1Final.bindTarget('{{ value.range1FinalOriginalBase.vars.id }}', undefined, true);
+            {% endif %}
+            {% if (value.range2InitialFloat is defined) %}
+            smartNumberFields['{{ value.vars.name }}'].range2Initial = new SmartNumberField('{{ value.range2InitialSmartNumber.vars.id }}');
+            smartNumberFields['{{ value.vars.name }}'].range2Initial.bindSelect('{{ value.typeOfNumber.vars.id }}');
+            smartNumberFields['{{ value.vars.name }}'].range2Initial.bindTarget('{{ value.range2InitialFloat.vars.id }}', 'float');
+            smartNumberFields['{{ value.vars.name }}'].range2Initial.bindTarget('{{ value.range2InitialOriginalBase.vars.id }}', undefined, true);
+            smartNumberFields['{{ value.vars.name }}'].range2Final = new SmartNumberField('{{ value.range2FinalSmartNumber.vars.id }}');
+            smartNumberFields['{{ value.vars.name }}'].range2Final.bindSelect('{{ value.typeOfNumber.vars.id }}');
+            smartNumberFields['{{ value.vars.name }}'].range2Final.bindTarget('{{ value.range2FinalFloat.vars.id }}', 'float');
+            smartNumberFields['{{ value.vars.name }}'].range2Final.bindTarget('{{ value.range2FinalOriginalBase.vars.id }}', undefined, true);
+
+            {% endif %}
+            {% if (value.range3InitialFloat is defined) %}
+            smartNumberFields['{{ value.vars.name }}'].range3Initial = new SmartNumberField('{{ value.range3InitialSmartNumber.vars.id }}');
+            smartNumberFields['{{ value.vars.name }}'].range3Initial.bindSelect('{{ value.typeOfNumber.vars.id }}');
+            smartNumberFields['{{ value.vars.name }}'].range3Initial.bindTarget('{{ value.range3InitialFloat.vars.id }}', 'float');
+            smartNumberFields['{{ value.vars.name }}'].range3Initial.bindTarget('{{ value.range3InitialOriginalBase.vars.id }}', undefined, true);
+            smartNumberFields['{{ value.vars.name }}'].range3Final = new SmartNumberField('{{ value.range3FinalSmartNumber.vars.id }}');
+            smartNumberFields['{{ value.vars.name }}'].range3Final.bindSelect('{{ value.typeOfNumber.vars.id }}');
+            smartNumberFields['{{ value.vars.name }}'].range3Final.bindTarget('{{ value.range3FinalFloat.vars.id }}', 'float');
+            smartNumberFields['{{ value.vars.name }}'].range3Final.bindTarget('{{ value.range3FinalOriginalBase.vars.id }}', undefined, true);
+            {% endif %}
+            {% endfor %}
+
+            $('form').submit(function(e) {
+                {% for value in form.parameterValues %}
+                smartNumberFields['{{ value.vars.name }}'].value.fillTargets();
+                {% if (value.range1InitialFloat is defined) %}
+                smartNumberFields['{{ value.vars.name }}'].range1Initial.fillTargets();
+                smartNumberFields['{{ value.vars.name }}'].range1Final.fillTargets();
+                {% endif %}
+                {% if (value.range2InitialFloat is defined) %}
+                smartNumberFields['{{ value.vars.name }}'].range2Initial.fillTargets();
+                smartNumberFields['{{ value.vars.name }}'].range2Final.fillTargets();
+                {% endif %}
+                {% if (value.range3InitialFloat is defined) %}
+                smartNumberFields['{{ value.vars.name }}'].range3Initial.fillTargets();
+                smartNumberFields['{{ value.vars.name }}'].range3Final.fillTargets();
+                {% endif %}
+                {% endfor %}
+                return true;
+            });
+        });
+    </script>
+{% endblock %}

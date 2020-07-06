@@ -1,0 +1,35 @@
+{
+    "place": {
+	"14": {
+            "placeName": "Varanasi, Uttar Pradesh, India",
+            "placeNameOriginalChar": "",
+            "placeLat": "25.3176452",
+            "placeLong": "82.97391440000001"
+        },
+	"15": {
+            "placeName": "",
+            "placeNameOriginalChar": "",
+            "placeLat": "10",
+            "placeLong": "10"
+        },
+	"16": {
+            "placeName": "InvalidLatLong",
+            "placeNameOriginalChar": "",
+            "placeLat": "ththt",
+            "placeLong": "ththt"
+        },
+	"17": {
+            "placeName": "ValidLatLongEmptyEdit",
+            "placeNameOriginalChar": "",
+            "placeLat": "",
+            "placeLong": ""
+        },
+	"18": {
+            "placeName": "EditionValid",
+            "placeNameOriginalChar": "",
+            "placeLat": "10",
+            "placeLong": "10"
+        }
+    }
+}
+

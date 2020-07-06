@@ -1,0 +1,136 @@
+/* ABOUT PAGE */
+.about-text {
+  text-align: justify;
+  font-size: 15px;
+  line-height: 25px;
+}
+
+.excerpt {
+  padding: 30px 50px;
+}
+
+.extract {
+  text-align: left;
+  font-family: 'Abel', sans-serif;
+  font-size: 25px;
+  padding: 25px 0 10px;
+  line-height: 30px;
+}
+
+.about-paragraph{
+  padding: 10px 0;
+}
+
+.about-button {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.documentation {
+  padding: 0 15% 3em;
+  text-align: justify;
+  line-height: 1.7;
+}
+
+/* BROWSE PAGE */
+.picto-wrapper {
+  height: 170px;
+  width: 170px;
+  border-radius: 100px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transition: 0.3s;
+  margin: 20px auto;
+}
+
+.picto-wrapper:hover {
+  box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.4);
+}
+
+.nav-picto {
+  margin-top: 22px;
+  margin-left: 10px;
+}
+
+.nav-desc {
+  width: 60%;
+  margin: auto;
+  font-size: 16px;
+  padding-top: 1em;
+}
+
+.learn-more {
+  padding: 1em;
+}
+
+.slider {
+  padding: 25px 0;
+  text-align: center;
+  font-size: 22px;
+}
+
+.slider > a {
+  color: #4d4d4d;
+}
+.slider > a:hover {
+  color: #181818;
+}
+
+.invisible {
+  display: none;
+}
+
+.paragraph {
+  text-align: justify;
+  margin: 15px 0;
+  padding: 0 5em;
+}
+
+td {
+  vertical-align: top;
+  padding: 15px 25px 15px 0;
+  /*text-align: justify;*/
+}
+
+.svg-navigation {
+}
+
+/* TEAM PAGE */
+.member-picture {
+  height: 285px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.support-project {
+  padding: 4px 7px 5px 7px;
+  margin: 4px 0;
+  transition: 0.2s;
+}
+
+.support-project > a {
+  text-decoration: none;
+  color: white;
+}
+
+.support-project:hover {
+  background-color: #0c0c0c;
+}
+
+.team-presentation {
+  height: 490px;
+  max-height: 490px;
+}
+
+.member-info {
+  height: 120px;
+  max-height: 120px;
+}
+
+.team-section {
+  padding: 50px 100px 40px 50px;
+}
+
+.support-project a {
+  font-family: Raleway, sans-serif;
+}

@@ -1,0 +1,11 @@
+--- env/lib/python3.6/site-packages/simpleodspy/sodsods_old.py	2019-03-25 11:40:42.806128500 +0100
++++ env/lib/python3.6/site-packages/simpleodspy/sodsods.py	2019-03-25 11:40:56.922166821 +0100
+@@ -379,7 +379,7 @@
+ 					tc = TableCell(valuetype = 'string', stylename = style_name)
+ 				
+ 				# set ods text
+-				tc.addElement(P(text = str(escape(c.text), 'utf-8')))
++				tc.addElement(P(text = str(escape(c.text))))
+ 				
+ 				tr.addElement(tc)
+ 

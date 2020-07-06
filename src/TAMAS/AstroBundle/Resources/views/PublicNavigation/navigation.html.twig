@@ -1,0 +1,370 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\about.html.twig#}
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% block title %}
+    Platform navigation — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    <link rel="stylesheet" href="{{ asset('css/slider.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/static-pages.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/svg-illustration.css')}}">
+
+    {% include 'TAMASAstroBundle:Default:Templates/pageHeader.html.twig' with {"title":"Navigation on DISHAS platform", "tag":"h1"} %}
+
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <p class="paragraph">
+                The DISHAS platform aims to furnish a portal of resources for research in the history of astronomy:
+                these include a portal of data, tools and table editions. In order to guide the exploration into this
+                vast corpus, different navigation paths have been set up throughout the platform.
+            </p>
+
+            <table>
+                <tbody>
+                <tr>
+                    <th>
+                        {% include 'TAMASAstroBundle:Default:Templates/pageHeader.html.twig' with {"title":"Back office", "tag":"h3"} %}
+                    </th>
+                    <th>
+                        {% include 'TAMASAstroBundle:Default:Templates/pageHeader.html.twig' with {"title":"Front office", "tag":"h3"} %}
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="table-desc">
+                            The back office is the part of the website reserved for the platform's contributors, i.e. the
+                            researchers creating the dataset of DISHAS from historical sources. It has been designed for data
+                            management, whether it be for adding, modifying or deleting data. To request access to the back office,
+                            please contact the
+                            <a href="{{ path("tamas_astro_team") }}">project's scientific committee</a>.
+                        </p>
+                    </td>
+                    <td>
+                        <p class="table-desc">
+                            The front office has been designed for all types of users. It serves as an introduction to the DISHAS
+                            project, and provides access to the resources produced within this framework. It offers a tailor-made
+                            consultation interface for the project's tools and numerical corpus. Several navigation paths have been
+                            designed through the website to fulfill the wishes of different users.
+                        </p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <p class="paragraph">
+                These paths are structured according to a hierarchical logic: the navigation pages offer a global
+                overview on the resources, and give access to record pages that provide more detailed information on a
+                specific data item in the database.
+            </p>
+
+            {% include 'TAMASAstroBundle:Default:Templates/pageHeader.html.twig' with {"title":"Historical navigation", "tag":"h2"} %}
+
+            <p class="paragraph">
+                Historical navigation is dedicated to the thorough description of the content of astronomical sources,
+                both material and intellectual. The diffusion of these documents and the identification of their
+                intellectual milieus thus shape exploration paths through interactive visualizations. The chronomap, in
+                particular, highlights interesting periods and geographical areas by identifying the he temporal and
+                geographical dispersion of the production of astronomical works and primary sources.
+            </p>
+            <p class="paragraph">
+                Three entities are emphasized in the historical navigation:
+                <b>{{ object_info.properties.work.objectUserInterfaceName|plural() }}</b>,
+                <b>{{ object_info.properties.primarySource.objectUserInterfaceName|plural() }}</b>
+                and
+                <b>{{ object_info.properties.originalText.objectUserInterfaceName|plural() }}</b>.
+            </p>
+        </div>
+    </div>
+
+    <div class="row" style="padding: 50px 0;">
+        <div class="col-md-5 svg-navigation">
+            {% include 'TAMASAstroBundle:Default:Illustrations/historicalDefinitions.html.twig' %}
+        </div>
+        <div class="col-md-7">
+            <table>
+                <tbody>
+                <tr>
+                    <th>
+                        <h3>{{ object_info.properties.work.objectUserInterfaceName|capitalize }}</h3>
+                    </th>
+                    <th>
+                        <h3>{{ object_info.properties.originalText.objectUserInterfaceName|capitalize }}</h3>
+                    </th>
+                    <th>
+                        <h3>{{ object_info.properties.primarySource.objectUserInterfaceName|capitalize }}</h3>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="table-desc">
+                            The pages dedicated to
+                            {{ object_info.properties.work.objectUserInterfaceName|plural() }}
+                            attempt to show their spread and diffusion within
+                            {{ object_info.properties.primarySource.objectUserInterfaceName|plural() }}: the contents of
+                            these different sources give indications of the composition of the
+                            {{ object_info.properties.work.objectUserInterfaceName }}
+                            in question and how
+                            {{ object_info.properties.work.objectUserInterfaceName|plural() }}
+                            were copied and compiled;
+                        </p>
+                    </td>
+                    <td>
+                        <p class="table-desc">
+                            The pages concerning
+                            {{ object_info.properties.originalText.objectUserInterfaceName|plural() }}
+                            describe the context in which the table was created and make it possible to trace the
+                            material and intellectual history of the source;
+                        </p>
+                    </td>
+                    <td>
+                        <p class="table-desc">
+                            The
+                            {{ object_info.properties.primarySource.objectUserInterfaceName }}
+                            pages illustrate the distribution of the tables within its pages, and reveal the eventual
+                            entanglement and reordering of the
+                            {{ object_info.properties.work.objectUserInterfaceName|plural() }}
+                            within the manuscript. These record pages are also intended to supplement the bibliographic
+                            records of curation libraries.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">{% include 'TAMASAstroBundle:Default:Templates/findAll.html.twig' with {'entity': 'work', 'clickableArea': 'default'} %}</td>
+                    <td style="text-align: center">{% include 'TAMASAstroBundle:Default:Templates/findAll.html.twig' with {'entity': 'originalText', 'clickableArea': 'default'} %}</td>
+                    <td style="text-align: center">{% include 'TAMASAstroBundle:Default:Templates/findAll.html.twig' with {'entity': 'primarySource', 'clickableArea': 'default'} %}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="about-button">
+        <a href="{{ path('tamas_astro_historicalNavigation') }}" class="btn btn-beige">Historical navigation</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            {% include 'TAMASAstroBundle:PublicNavigation:svgSlider.html.twig' with {'svgPaths':[
+                "HistoricalNavigation/hist-nav1",
+                "HistoricalNavigation/hist-nav2",
+                "HistoricalNavigation/hist-nav3",
+                "HistoricalNavigation/hist-nav4",
+                "HistoricalNavigation/hist-nav5",
+                "HistoricalNavigation/hist-nav6"
+            ]} %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            {% include 'TAMASAstroBundle:Default:Templates/pageHeader.html.twig' with {"title":"Astronomical navigation", "tag":"h2"} %}
+
+            <p class="paragraph">
+                Astronomical navigation is devoted to the mathematical and editorial aspects of the database: the
+                editions, table models and parameters are ordered according to the astronomical phenomenon or
+                mathematical algorithm they describe. This ordering allows the user to emphasize the way the tables were
+                used, i.e. as calculation instruments. The treemap visualization can also give indications as to the
+                {{ object_info.properties.astronomicalObject.objectUserInterfaceName|plural() }}
+                most studied by ancient astronomers as well as historians of astronomy.
+            </p>
+            <p class="paragraph">
+                Three entities are highlighted in astronomical navigation:
+                <b>{{ object_info.properties.editedText.objectUserInterfaceName|plural() }}</b>,
+                <b>{{ object_info.properties.parameterSet.objectUserInterfaceName|plural() }}</b> and
+                <b>{{ object_info.properties.formulaDefinition.objectUserInterfaceName|plural() }}</b>.
+            </p>
+        </div>
+    </div>
+
+    <div class="row" style="padding: 50px 0;">
+        <div class="col-md-7">
+            <table>
+                <tbody>
+                <tr>
+                    <th>
+                        <h3>{{ object_info.properties.parameterSet.objectUserInterfaceName|capitalize }}</h3>
+                    </th>
+                    <th>
+                        <h3>{{ object_info.properties.editedText.objectUserInterfaceName|capitalize }}</h3>
+                    </th>
+                    <th>
+                        <h3>{{ object_info.properties.formulaDefinition.objectUserInterfaceName|capitalize }}</h3>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="table-desc">
+                            The page dedicated to
+                            {{ object_info.properties.parameterSet.objectUserInterfaceName|plural() }}
+                            highlights the circulation of astronomical practices through their use in the edited tables
+                            of the digitized corpus;
+                        </p>
+                    </td>
+                    <td>
+                        <p class="table-desc">
+                            The
+                            {{ object_info.properties.editedText.objectUserInterfaceName }}
+                            page is the most complete of the whole interface. Indeed, the edited tables are a central
+                            element of the DISHAS project. The interface aims to facilitate their consultation so that
+                            they may become citable editions themselves. Different aspects of the tables are also
+                            described, such as its historical context of creation, their editorial environment and the
+                            different parameters used;
+                        </p>
+                    </td>
+                    <td>
+                        <p class="table-desc">
+                            The page concerning to the formulae definitions explains in detail the processes underlying
+                            the mathematical models of the computation tables presented in DISHAS.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">{% include 'TAMASAstroBundle:Default:Templates/findAll.html.twig' with {'entity': 'parameterSet', 'clickableArea': 'default'} %}</td>
+                    <td style="text-align: center">{% include 'TAMASAstroBundle:Default:Templates/findAll.html.twig' with {'entity': 'editedText', 'clickableArea': 'default'} %}</td>
+                    <td style="text-align: center">{% include 'TAMASAstroBundle:Default:Templates/findAll.html.twig' with {'entity': 'formulaDefinition', 'clickableArea': 'default'} %}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-5 svg-navigation">
+            {% include 'TAMASAstroBundle:Default:Illustrations/astronomicalDefinitions.html.twig' %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-5 svg-navigation">
+            {% include 'TAMASAstroBundle:Default:Illustrations/editorialDefinitions.html.twig' %}
+        </div>
+        <div class="col-md-7">
+            <table>
+                <tbody>
+                <tr>
+                    <th>
+                        <h3>{{ object_info.properties.tableContent.objectUserInterfaceName|capitalize }}</h3>
+                    </th>
+                    <th>
+                        <h3>Editorial practices</h3>
+                    </th>
+                    <th>
+                        <h3>Critical edition</h3>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="table-desc">
+                            The edited navigation offers an access to the historical material read and interpreted by
+                            the researchers that contribute to DISHAS.
+                            The {{ object_info.properties.tableContent.objectUserInterfaceName }} records are digitized
+                            representations of the historical table values, stripped from graphical aspects.
+                            They often come with general comments on the aspects of the table in the sources.
+                        </p>
+                    </td>
+                    <td>
+                        <p class="table-desc">
+                            In DISHAS, {{ object_info.properties.originalText.objectUserInterfaceName|plural }} can be
+                            edited more than once. Each researcher may have their own readings of the table, depending
+                            on their research question. Moreover, a single researcher may chose to edit a table with
+                            different editorial strategies (see "Type of edition" in the
+                            <a href="{{ path('tamas_astro_glossary') }}">glossary</a>).
+                        </p>
+                    </td>
+                    <td>
+                        <p class="table-desc">
+                            A critical edition is an edition of
+                            a {{ object_info.properties.work.objectUserInterfaceName }}'s table often based on various
+                            {{ object_info.properties.originalText.objectUserInterfaceName|plural }} taken from
+                            different {{ object_info.properties.primarySource.objectUserInterfaceName }}.
+                            Critical editions are research tools that can be designed for different non-mutually
+                            exclusive aims: to give an access to the table, to explore its variation in witnesses, to
+                            analyse its mathematical and astronomical structure etc.
+                            To manage critical editions, DISHAS implements CATE, the critical edition manager initially
+                            developed by the
+                            <a href="http://www.hamsi.org.nz/p/about-hamsi.html">HAMSI program</a>.
+                        </p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="about-button">
+        <a href="{{ path('tamas_astro_astronomicalNavigation') }}" class="btn btn-beige">Astronomical navigation</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            {% include 'TAMASAstroBundle:PublicNavigation:svgSlider.html.twig' with {'svgPaths':[
+                "AstronomicalNavigation/astro-nav1",
+                "AstronomicalNavigation/astro-nav2",
+                "AstronomicalNavigation/astro-nav3",
+                "AstronomicalNavigation/astro-nav4",
+                "AstronomicalNavigation/astro-nav5",
+                "AstronomicalNavigation/astro-nav6",
+                "AstronomicalNavigation/astro-nav7"
+            ]} %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            {% include 'TAMASAstroBundle:Default:Templates/pageHeader.html.twig' with {"title":"Navigation principles", "tag":"h2"} %}
+            <p class="paragraph">
+                The website has been designed to adapt to the needs and interests of a variety of users, comprised of
+                researchers in the history of astronomy as well as an interested non-expert audience. Because some users
+                may wish to browse through the corpus while others may seek specific resources, different ways have been
+                developed to access the data. To find a particular document, the search engine offers advanced ways of
+                searching the corpus. To browse more freely, the navigation pages invite you to explore topics of
+                interest using interactive visualizations. Several principles have guided the design of the interface:
+            </p>
+
+            <table>
+                <tr>
+                    <th>
+                        <h3>Accessibility</h3>
+                    </th>
+                    <th>
+                        <h3>Clarity</h3>
+                    </th>
+                    <th>
+                        <h3>Analysis</h3>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="table-desc">
+                            By weaving links between records, related data are made accessible from every node of the
+                            network. Thus, it is possible to reconstruct multiple contexts from which the data finds its
+                            meaning. Visualizations help to make visible the interactions between the data. Whether
+                            through the search page, the navigation pages or the API, the focus is always on the ease of
+                            access to the information.
+                        </p>
+                    </td>
+                    <td>
+                        <p class="table-desc">
+                            The concepts and objects of study in the history of astronomy are complex, and thus the
+                            approach to sources adopted by DISHAS needs to be made explicit. This is why an effort has
+                            been made to render the content of the platform as intelligible as possible. Several
+                            comprehension support tools have been deployed. In particular, the DISHAS platform offers
+                            numerous visualizations, documentation pages, and visual supports.
+                        </p>
+                    </td>
+                    <td>
+                        <p class="table-desc">
+                            Finally, the DISHAS platform seeks to promote and support the analysis of the digital corpus
+                            by providing tools to manipulate the data using software tools such as DTI and DIPS. Other
+                            devices, like graphical visualizations, allow the user to link contextual data in ways that
+                            may reveal unexpected correlations or irregularities in the sources.
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{asset('js/slider.js')}}"></script>
+{% endblock %}

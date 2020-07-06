@@ -1,0 +1,71 @@
+<div class="modal fade" id="dialog-info" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">General information on the document</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <table class=" table table-striped">
+                            {% if tableContent.createdBy|default() %}
+                                <thead>
+                                <tr>
+                                    <th class="col-xs-3"></th>
+                                    <th><b>Editorial information</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th scope="row"><span class="glyphicon glyphicon-user"></span></th>
+                                    <td>{{tableContent.createdBy}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><span class="glyphicon glyphicon-pencil"></span></th>
+                                    <td>{{tableContent.created|date('d/m/Y')}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><span class="glyphicon glyphicon-repeat"></span></th>
+                                    <td>{{tableContent.updated|date('d/m/Y')}}</td>
+                                </tr>
+                                </tbody>
+                            {% endif %}
+                            <thead>
+                            <tr>
+                                <th class="col-xs-3"></th>
+                                <th>Context</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if tableContent.tableType|default() %}
+                                <tr>
+                                    <th scope="row"> {{object_info.properties.tableType.objectUserInterfaceName|capitalize}} </span></th>
+                                    <td>{{ tableContent.tableType}}</td>
+                                </tr>
+                            {% endif %}
+                            {% if tableContent.editedText.id|default() %}
+                                <tr>
+                                    <th scope="row"> {{object_info.properties.editedText.objectUserInterfaceName|capitalize}} </span></th>
+                                    <td>{{ tableContent.editedText}}</td>
+                                </tr>
+                            {% endif %}
+                            {% if tableContent.editedText.public|default() %}
+                                <tr>
+                                    <th scope="row"> Read more </th>
+                                    <td>Click <a href="{{ path('tamas_astro_viewTableEdition', {'id':tableContent.editedText.id})}}" target="_blank">on this link</a> and get redirected to the general record.</td>
+                                </tr>
+                            {% endif %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

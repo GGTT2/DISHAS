@@ -1,0 +1,105 @@
+{#Symfony\app\Resources\views\includes\legendAstroObject.html.twig#}
+{% if include == "html" %}
+    <div class="legend-parent">
+        <section class="legend container">
+            <header>
+                <h3>Legend</h3>
+            </header>
+
+            <div class="legend-container">
+                <section class="box">
+                    <div class="border-1">
+                        <section class="color-legend Sun"></section>
+                    </div>
+                    <h4>Sun</h4>
+                </section>
+
+                <section class="box">
+                    <div class="border-2">
+                        <section class="color-legend Mercury"></section>
+                    </div>
+                    <h4>Merc.</h4>
+                </section>
+
+                <section class="box">
+                    <div class="border-3">
+                        <section class="color-legend Venus"></section>
+                    </div>
+                    <h4>Venus</h4>
+                </section>
+
+                <section class="box">
+                    <div class="border-4">
+                        <section class="color-legend Moon"></section>
+                    </div>
+                    <h4>Moon</h4>
+                </section>
+
+                <section class="box">
+                    <div class="border-5">
+                        <section class="color-legend Mars"></section>
+                    </div>
+                    <h4>Mars</h4>
+                </section>
+
+                <section class="box">
+                    <div class="border-6">
+                        <section class="color-legend Jupiter"></section>
+                    </div>
+                    <h4>Jupiter</h4>
+                </section>
+
+                <section class="box">
+                    <div class="border-7">
+                        <section class="color-legend Saturn"></section>
+                    </div>
+                    <h4>Saturn</h4>
+                </section>
+
+                <section class="box">
+                    <div class="border-8">
+                        <section class="color-legend SphericalAstronomical"></section>
+                    </div>
+                    <h4>Spher.</h4>
+                </section>
+
+                <section class="box">
+                    <div class="border-9">
+                        <section class="color-legend EighthSphere"></section>
+                    </div>
+                    <h4>8<sup>th</sup> sph.</h4>
+                </section>
+
+                <section class="box">
+                    <div class="border-10">
+                        <section class="color-legend Eclipse"></section>
+                    </div>
+                    <h4>Eclipse</h4>
+                </section>
+
+                <section class="box">
+                    <div class="border-11">
+                        <section class="color-legend Trigonometrical"></section>
+                    </div>
+                    <h4>Trigo.</h4>
+                </section>
+            </div>
+        </section>
+    </div>
+{% elseif include == "js" %}
+    {% include 'TAMASAstroBundle:PublicView:boxTemplate.html.twig' with {'include':'js'} %}
+    <script>
+        function clickableLegend(astroIds, boxesData){
+            for (var i = Object.keys(astroIds).length - 1; i >= 0; i--) {
+                // if the current record page displays an astronomical object, make it clickable
+                let astroId = Object.keys(astroIds)[i];
+                let legendItem = $(`.border-${astroId}`);
+                legendItem.addClass("border-fade");
+                legendItem.click(function () {
+                    var filter = `Items which subject is : ${boxesData[`tt${astroId}`].title}`;
+                    generateBoxes(astroIds[astroId], filter, boxesData);
+                })
+            }
+        }
+    </script>
+{% endif %}

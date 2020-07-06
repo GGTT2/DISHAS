@@ -1,0 +1,40 @@
+{% if includeType == 'html' %}
+    {% if action == 'search' %}
+        <h2>
+            <span style="color: {{ object_info.properties.parameterSet.userInterfaceColor }}">▶ </span>
+            Search {{ object_info.properties.parameterSet.objectUserInterfaceName|determinant }}
+        </h2>
+    {% endif %}
+    {% if action == 'add' %}
+        <h2>
+            <span style="color: {{ object_info.properties.parameterSet.userInterfaceColor }}">▶ </span>
+            Add {{ object_info.properties.parameterSet.objectUserInterfaceName|determinant }}
+        </h2>
+    {% endif %}
+    {% if action is null %}
+        <h2>
+            <span style="color: {{ object_info.properties.originalText.userInterfaceColor }}">▶ </span>
+            Add {{ object_info.properties.originalText.objectUserInterfaceName|determinant }}
+        </h2>
+    {% endif %}
+    <h3>First, select a type of table</h3>
+    <div class="well">
+        {{form(form)}}
+    </div>
+{% elseif includeType == "js"%}
+    <script>
+        $(document).ready(function () {
+            function switchTableType(astronomicalObject) {
+                var route = Routing.generate('tamas_astro_autofill', {'entityName': 'tableType', 'option': astronomicalObject});
+                myAutofill(route, "tamas_astrobundle_astronomicalobject_tableTypes");
+                $("#tamas_astrobundle_astronomicalobject_tableTypes").val(null);
+                $("#tamas_astrobundle_astronomicalobject_tableTypes").trigger("change");
+            }
+            switchTableType($("#tamas_astrobundle_astronomicalobject_objectName").val());
+            $("#tamas_astrobundle_astronomicalobject_objectName").on('change', function () {
+                var astronomicalObject = $(this).val();
+                switchTableType(astronomicalObject);
+            });
+        });
+    </script>
+{% endif %}

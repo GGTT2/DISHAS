@@ -1,0 +1,45 @@
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+	{{ action|capitalize }} {{ object_info.properties.place.objectUserInterfaceName }} — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+{% form_theme form 'bootstrap_3_TAMAS.html.twig' %}
+	{{form_start(form, {'attr': {'class': 'form'}})}}
+	{{form_errors(form)}}
+	<div class="row">
+		<div class="col-md-10">
+			<div class="well">
+				<div class="row">
+					<div class="col-md-8" id="original_text_place_data">
+						{{form_row(form.placeName)}}
+						{{form_row(form.placeNameOriginalChar)}}
+						<div class="row">
+							<div class="col-md-6">
+								{{ form_row(form.placeLat) }}
+							</div>
+							<div class="col-md-6">
+								{{ form_row(form.placeLong) }}
+							</div>
+						</div>
+						<a href="#" class="btn btn-default geognameTrigger" style="display: none;"> Go </a>
+					</div>
+					<div class="col-md-4">
+						<div class="map" style="width: 100%; height: 300px;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-2">
+			{% include 'TAMASAstroBundle:AddObject:adminPannel.html.twig' %}
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{parent()}}
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.min.js"></script>
+	<script type="text/javascript" src="{{asset('js/gMap.js')}}"></script>
+
+{% endblock %}

@@ -1,0 +1,2172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_enrich.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_enrich.rng" type="application/xml"
+	schematypens="http://purl.oclc.org/dsdl/schematron"  ?> 
+<?xml-model href="odd_manuscrits_ALFA.rng"?>
+<TEI> 
+<teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title xml:lang="la">MS Latin 7281</title>
+            <title type="collection">Latin</title>
+         </titleStmt>
+         <editionStmt>
+            <edition>Based on ENRICH manuscript description (TEI P5).</edition>
+            <respStmt>
+               <resp>Manuscript description</resp>
+               <name type="person">Laure Miolo</name>
+               <name type="person">Eglantine Charmetant</name>
+            </respStmt>
+            <respStmt>
+               <resp>Manuscript encoding</resp>
+               <name type="person">Eglantine Charmetant</name>
+            </respStmt>
+         </editionStmt>
+         <publicationStmt>
+            <distributor>ALFA</distributor>
+            <availability status="free">
+               <licence>Licence: CC BY (it allows others to distribute, remix, arrange, and adapt a
+                  work, even for commercial purposes, as long as the merit of the original creation
+                  is attributed by mentioning the name)
+                  <figure type="licence">
+                     <graphic url="/home/echarmetant/Images/cc-by_icon-svg.png"/>
+                  </figure> 
+               </licence>
+            </availability>
+         </publicationStmt>
+         <sourceDesc>
+            <msDesc xml:id="MS_BnF_Latin_7281" xml:lang="en">
+               <msIdentifier>
+                  <country>France</country>
+                  <settlement>Paris</settlement>
+                  <institution>Bibliothèque nationale de France</institution>
+                  <repository>Bibliothèque nationale de France Richelieu</repository>
+                  <collection/>
+                  <idno>Latin 7281</idno>
+               </msIdentifier>
+               <msContents>
+                   <msItem  xml:id="MS_BnF_Latin_7281_item1" n="001" resp="#copyist_01">
+                     <locus from="1r" to="15v" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Liber de aggregationibus scientie
+                        stellarum</title>
+                     <title type="original" xml:lang="la"><locus from="1r"/>Liber Alfragani
+                        Tiberiadis secundum translationem grecam credo.</title>
+                     <incipit><locus from="1r"/>Numerus mensium anni arabum et aliorum omnium est 12
+                        menses</incipit>
+                     <rubric><locus from="1r"/>Capitulum primum de annis arabum et aliorum omnium et
+                        nominibus mensium ipsorum et dierum eorum et diversitate earum
+                        adinvicem.</rubric>
+                     <explicit><locus from="15v"/>Jam ergo declaravimus de eclipsibus Solis et Lune
+                        quod sufficit intelligenti.</explicit>
+                     <author cert="high" ref="#auth_0001">Alfraganus</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item2" n="002" resp="#copyist_02">
+                     <locus from="17r" to="28v" target="#unit_prod_2"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Lectiones tabularum Toletanarum secundum
+                        Arzachelis, Canones Ca</title>
+                     <title type="original" xml:lang="la"><locus from="17r"/>Incipiunt Lectiones
+                        tabulraum Toletanarum secundum Arrachiel scilicet Hyspanus secundum rationem
+                        Caldeorum.</title>
+                     <incipit><locus from="17r"/>In domine Domini. Scito quod annus lunaris sit ex
+                        354 diebus</incipit>
+                     <explicit><locus from="28v"/>erit dies revolutionis priusquam dies radices ex
+                        hoc mense duobus diebus.</explicit>
+                     <author cert="high" ref="#auth_0002">Azarchel</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item3" n="003" resp="#copyist_01">
+                     <locus from="28v" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform">De apparitione Lune</title>
+                     <incipit><locus from="28v"/>De Lune apparitione competens est notare</incipit>
+                     <rubric><locus from="28v"/>De apparitione Lune</rubric>
+                     <explicit><locus from="28v"/>statum presentis regionis accipiantur. Amen.
+                        Explicit. Deo gratias.</explicit>
+                     <author cert="unknown">Anonymous</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item4" n="004" resp="#copyist_01">
+                     <locus from="30r" to="42r" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Canones and tabulas Toletanas, Canons
+                        Cb</title>
+                     <title type="original" xml:lang="la"><locus from="30r"/>Canones tabularum
+                        astronomie Azarchelis.</title>
+                     <incipit><locus from="30r"/>Quoniam cujusque actionis quantitas tempore
+                        quantitatem tempus metitur celestium motuum doctrinam</incipit>
+                     <explicit><locus from="42r"/>per quas horas inveniessignum oriens
+                           ascendens et ejus gradum sicut ostensum est in
+                        precedentibus. Expliciunt Canones tabularum Toletanarum.</explicit>
+                     <author cert="high" ref="#auth_0002">Azarchel</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item5" n="005" resp="#copyist_01">
+                     <locus from="42r" to="42v" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Excerpt of Canon Ca, Canon in latitudinibus
+                        5 planetarum secundum Ptolomeum et Albategni</title>
+                     <title type="original" xml:lang="la"><locus from="42r"/>De latitudinibus
+                        planetarum aliter quam prius dictum sit.</title>
+                     <incipit><locus from="42r"/>Cum volueris scire latitudinem planetarum et ejus
+                        partem</incipit>
+                     <explicit><locus from="42v"/>vix tamen aliter quam ut diximus inqueri poterit.
+                        Explicit Canon in latitudinibus 5 planetarum secundum Ptholomeum et
+                        Albategny.</explicit>
+                     <author cert="unknown">Anonymous</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item6" n="006" resp="#copyist_01">
+                     <locus from="43r" to="45v" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Excerpt from Canons for eclipses, De
+                        eclipsibus luminarium aliter quam prius dictum sit</title>
+                     <incipit><locus from="43r"/>In regionibus quibus accidit diversitas secundum
+                        aspectum</incipit>
+                     <explicit><locus from="45v"/>eclipsis Solis durare per horam unam vel dimidiam,
+                        cum constet dyametrum Solis esse magis quam duplum ad dyametrum
+                        terre.</explicit>
+                     <author cert="unknown">Anonymous</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item7" n="007" resp="#copyist_01">
+                     <locus from="46r" to="138r" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Expositio supra canones Arzachelis</title>
+                     <title type="original" xml:lang="la"><locus from="46r"/>Expositio Jo.de Silicia
+                        [sic] supra canones Arzachelis, facta Parisius anno Christi 1290
+                        perfecto.</title>
+                     <incipit><locus from="46r"/>Cum inter cetera philosophice documenta</incipit>
+                     <explicit><locus from="138r"/>sed BN et EG sunt equales cum utraque si
+                        assumatur NE.</explicit>
+                     <author cert="high" ref="#auth_0003">Johannes de Sicilia</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item8" n="008" resp="#copyist_01">
+                     <locus from="141r" to="144v" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Almanach planetarum</title>
+                     <title type="original" xml:lang="la"><locus from="141r"/>Guillelmus de Sancto
+                        Clodoaldo, anno Domini 1290 [sic].</title>
+                     <incipit><locus from="141r"/>Cum intentio mea sit componere almanac
+                        planetarum</incipit>
+                     <explicit><locus from="144v"/>dicit enim in humanis inventionibus nichil reor
+                        esse perfectum.</explicit>
+                     <author cert="high" ref="#auth_0004">Guillelmus de Sancto Cloadoaldo</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item9" n="009" resp="#copyist_01">
+                     <locus from="145r" to="148v" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Kalendarium regine</title>
+                     <title type="original"><locus from="145r"/>Kalendarium regine M. per G. de
+                        Sancto Clodoaldo.</title>
+                     <incipit><locus from="145r"/>Testante Vegeti libro suo De re militari antiquis
+                        temporibus</incipit>
+                     <explicit><locus from="148r"/>sicut dictum est de primo climate sic feci de
+                        aliis 6 climatibus.</explicit>
+                     <author cert="high" ref="#auth_0004">Guillelmus de Sancto Clodoaldo</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item10" n="010" resp="#copyist_01">
+                     <locus from="156r" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="supplied" xml:lang="en">Fragment of the end of an unidentified
+                        text.</title>
+                     <incipit/>
+                     <explicit><locus from="156r"/>et eam addes primo extremo si minor fuerit 2<hi
+                           rend="sup">o</hi>, vel substrahes si primum extremum majus
+                        fueri.</explicit>
+                     <author cert="unknown" ref="#">Anonymous</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item11" n="011" resp="#copyist_01">
+                     <locus from="156v" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Expositio intentionis regis Alfontii circa
+                        tabula ejus</title>
+                     <title type="original" xml:lang="la"><locus from="156v"/>Expositio intentionis
+                        regis Alfonsii circa tabula ejus.</title>
+                     <incipit><locus from="156v"/>Alfonsius Castelle, rex illustris, florens
+                        ingenio</incipit>
+                     <explicit><locus from="160r"/>qui pro tacenda veritate nec flecti prece, nec
+                        obliquari munere dignarentur. Completum est hoc opus anno et die
+                        supradictis. Amen.</explicit>
+                     <author cert="high" ref="#auth_0005">Johannes de Muris</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item12" n="012" resp="#copyist_01">
+                     <locus from="160v" to="162v" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Kalendarium anno Christi 1320</title>
+                     <title type="original" xml:lang="la"><locus from="160v"/>Kalendarium Gaufredi
+                        de Meldis anno Christi 1320.</title>
+                     <incipit><locus from="160v"/>Cunctis Solis et Lune scire desiderantibus vera
+                        loca</incipit>
+                     <explicit><locus from="162v"/>quo habito alia festa mobilia de facili possunt
+                        sciri.</explicit>
+                     <author cert="high" ref="#auth_0006">Gaufredus de Meldis</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item13" n="013" resp="#copyist_01">
+                     <locus from="165r" to="172r" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Theorica planetarum</title>
+                     <title type="original" xml:lang="la"><locus from="165r"/>Theorica planetarum a
+                        J. de Lineriis, anno Christi 1335<hi rend="sup">o</hi>.</title>
+                     <incipit><locus from="165r"/>Spera concentrica vel circulus concentricus
+                        dicitur</incipit>
+                     <explicit><locus from="172r"/>et ex duplici motu secundum partes oppositas in
+                        suo deferente ut decaratum est. Explicit Theorica planetarum magistri
+                        Johannis de Lineriis, anno Christi.</explicit>
+                     <author cert="high" ref="#auth_0007">Johannes de Lineriis</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item14" n="014" resp="#copyist_01">
+                     <locus from="172v" to="174v" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Tractatus super defectibus tabularum
+                        Alfontii</title>
+                     <title type="original" xml:lang="la"><locus from="172v"/>Expositio tabularum
+                        Alfonsii et motiva probantia falsitatem earum.</title>
+                     <incipit><locus from="172v"/>Bonum quidem mihi videtur omnibus nobis
+                        astrorum</incipit>
+                     <explicit><locus from="174v"/>zelo ut ab errorum devio retraham hanc scientiam
+                        inquirentes. Explicit. Factum anno Domini 1347, 20<hi rend="sup">a</hi> die
+                        aprilis, credo per Gaufredum de Meldis.</explicit>
+                     <author cert="unknown" ref="#">Anonymous</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item15" n="015" resp="#copyist_01">
+                     <locus from="175r" to="178r" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Canones tabularum Alfontii</title>
+                     <title type="original" xml:lang="la"><locus from="175r"/>Canones tabularum
+                        Alfonsii, regis Castelle, per Jo.de Lineriis.</title>
+                     <incipit><locus from="175r"/>Quia ad inveniendum loca planetarum</incipit>
+                     <explicit><locus from="178r"/>sit 3<hi rend="sup">a</hi> signa complete 2 per
+                           12<hi rend="sup">o</hi> ante vel retro dic eclipsim Lune possibilem in
+                        illo mense.</explicit>
+                     <author cert="high" ref="#auth_0007">Johannes de Lineriis</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item16" n="016" resp="#copyist_01">
+                     <locus from="178v" to="201v" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Canones tabularum astronomie</title>
+                     <title type="original" xml:lang="la"><locus from="178v"/>Secundus liber canonum
+                        m.Jo. de Lineriis, super tabulas primi mobilis.</title>
+                     <incipit><locus from="178v"/>Cujuslibet arcus propositi sinum rectum per
+                        tabulas invenire</incipit>
+                     <explicit><locus from="201v"/>quousque concordat cum vero ejus qui fuit in
+                        radice et habebis propositum.</explicit>
+                     <colophon><locus from="201v"/>Expliciunt Canones tabularum astronomie per
+                        magistrum Johannem de Lineriis, ordinati Parisius, completi anno Christi
+                           1320<hi rend="sup">mo</hi>, in civitate Cameraci scripti etc</colophon>
+                     <author cert="high" ref="#auth_0007">Johannes de Lineriis</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item17" n="017" resp="#copyist_01">
+                     <locus from="201v" to="205v" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Canones super tabulas magnas</title>
+                     <title type="original" xml:lang="la"><locus from="201v"/>Canones super tabulas
+                        magnas per Jo. De Lineriis compilatas [adding from the second copyist: ad
+                        meridianum Parisiensem] ex tabulis Alfonsii.</title>
+                     <incipit><locus from="201v"/>Multiplicis philosophie variis radiis illustrato
+                        domino Roberto de Florencia</incipit>
+                     <explicit><locus from="205v"/>et habebis verum tempus conjunctionis vel
+                        oppositionis, diebus equatis.</explicit>
+                     <author cert="high" ref="#auth_0007">Johannes de Lineriis</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item18" n="018" resp="#copyist_01">
+                     <locus from="206r" to="208r" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Canones eclipsium</title>
+                     <title type="original" xml:lang="la"><locus from="206r"/>Canones eclipsium Jo.
+                        De Janua.</title>
+                     <incipit><locus from="206r"/>Ad sciendum eclipsim Solis, primo quere</incipit>
+                     <explicit><locus from="208v"/>vide in Albategni et in canonibus magistri Jo. De
+                        Lineriis, quia magis prolixum est quam difficile et ideo de hoc ad presens
+                        supersedeo.  Expliciunt Canones eclipsium quos compilavit magister Jo. De
+                        Janua, extrahendo eos est partim a canonibus communibus, partim a minori
+                        Almagesti, partim a magistro Jo.de Cecilia in scripto suo super tabulas
+                        Toletanas, specialiter quantum ad puncat eclipsis minuta casus et dimidie
+                        more, anno Christi 1332 incompleto, 22<hi rend="sup">a</hi> die
+                        januarii.</explicit>
+                     <author cert="high" ref="#auth_0008">Johannes de Janua</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item19" n="019" resp="#copyist_01">
+                     <locus from="208r" to="208v" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Canone tabule ad sciendum motum Solis et
+                        Lune in una hora et semidiametros luminarium secundum tabulas
+                        Alfontii</title>
+                     <incipit><locus from="208r"/>Verum motum Solis et Lune in una hora et
+                        semidyametros Solis et Lune et umbre tempore conjunctionis et oppositionis
+                        per hanc tabulam invenire</incipit>
+                     <explicit><locus from="208v"/>nec est differentia in alio non video
+                        necessitatem repetendi. Explicit de eclipsibus.</explicit>
+                     <author cert="high" ref="#auth_0008">Johannes de Janua</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item20" n="020" resp="#copyist_01">
+                     <locus from="208v" to="210v" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Investigatio eclipsis Solis anno Christi
+                           1337<hi rend="sup">o</hi></title>
+                     <title type="original" xml:lang="la"><locus from="208v"/>Investigatio eclipsim
+                        Solis anno Christi 1337<hi rend="sup">o</hi> per Jo. de Janua.</title>
+                     <incipit><locus from="208v"/>Ad investigandum eclipsim Solis, oportet primo
+                           quere<locus from="208v"/></incipit>
+                     <explicit><locus from="210v"/>et idem tempus duplavi et provenit duratio
+                        eclipsis 2.3.54.16 [sic]. Explicit doctrina ad inveniendum eclipsim Solis
+                        anno Domini 1337, 2<hi rend="sup">a</hi> die martii, data a magistro Joh. De
+                        Saxonia Janua et per conseqeuns aliarum.</explicit>
+                     <author cert="high" ref="#auth_0008">Johannes de Janua</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item21" n="021" resp="#copyist_01">
+                     <locus from="210v" to="212v" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Canones tabularum Oxonie anno Christi 1348,
+                        ex tabulis Alfonsii factarum</title>
+                     <incipit><locus from="210v"/>Vera loca omnium planetarum in longitudine<locus
+                           from="210v"/></incipit>
+                     <explicit><locus from="212v"/>qui in casu parvus accidit nullus est ut dictum
+                        est. Explicit totum opus tabularum Oxonie que facte sunt super tabulas
+                        Alfonsii.</explicit>
+                     <author cert="unknown">Anonymous</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item22" n="022" resp="#copyist_01">
+                     <locus from="213r" to="222r" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Canones supra tabulas Alfontii</title>
+                     <title type="original" xml:lang="la"><locus from="213r"/>Canones Jo. de Saxonia
+                        supra tabulas Alfonsii, regis Castelle.</title>
+                     <incipit><locus from="213r"/>Tempus est mensura motus, ut vult Aristoteles 4<hi
+                           rend="sup">to</hi> Phisicorum</incipit>
+                     <explicit><locus from="222r"/>expliciunt Canones super tabulas magnas
+                        illustrissimi Castelle regis Alfoncii per Johannem de Counnout, alias de
+                        Saxonia, editi anno Domini 1327, magistri Jo. de Lineriis discipulum
+                        Parisius.</explicit>
+                     <author cert="high" ref="#auth_0009">Johannes de Saxonia</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item23" n="023" resp="#copyist_01">
+                     <locus from="222r" to="232r" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Exempla super tabulas primi mobilis et
+                        canones Johannis de Lineriis</title>
+                     <title type="original" xml:lang="la"><locus from="222r"/>Exempla Jo. de Saxonia
+                        super tabulas primi mobilis et canones Jo. de Lineriis.</title>
+                     <incipit><locus from="222r"/>Quia plures astrologorum diversos libros
+                        fecerunt</incipit>
+                     <explicit><locus from="232r"/>ascendens ut prius invenies hora tue
+                        considerationis ut supra in 36<hi rend="sup">a</hi> hujus dicitur, et sic
+                        finis.</explicit>
+                     <colophon><locus from="232r"/>Ego scriptor huius Jo.B complevi hunc canonem, et
+                        sic est finis operationum que fiunt circa tabulas conjonctionum et eclipsium
+                        luminarium.</colophon>
+                     <author cert="high" ref="#auth_0009">Johannes de Saxonia</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item24" n="024" resp="#copyist_01">
+                     <locus from="235r" to="252v" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Tractatus astronomicus</title>
+                     <incipit><locus from="235r"/>Centrum est cujus ab initio circumductio</incipit>
+                     <explicit><locus from="252v"/>secundum similitudinem ejus quod fecimus in hiis
+                        que precesserunt.</explicit>
+                     <author cert="high" ref="#auth_0010">Johannes de Troyes</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item25" n="025" resp="#copyist_01">
+                     <locus from="259r" to="273r" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Tractatus de commensurabilitate vel
+                        incommensurabilitate motuum celi</title>
+                     <title type="original" xml:lang="la"><locus from="259r"/>Tractatus de
+                        commensurabilitate motuum celi.</title>
+                     <incipit><locus from="259r"/>Zenonem et Crisippum majora egisse affirmat
+                        Seneca</incipit>
+                     <explicit><locus from="273r"/>et ipse prorsus nescio quid super hoc judex
+                        decrevit Apollo. Explicit hic Tractatus de commensuratione
+                        motuum.</explicit>
+                     <author cert="high" ref="#auth_0011">Nicolaus Oresmus</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item26" n="026" resp="#copyist_01">
+                     <locus from="274r" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="original" xml:lang="la"><locus from="274r"/>Modus componendi
+                        almanac.</title>
+                     <incipit><locus from="274r"/>In almanac componendo sic procede</incipit>
+                     <explicit><locus from="274r"/>et quando Sol mutat signum.</explicit>
+                     <author cert="unknown">Anonymous</author>
+                  </msItem>
+                  <msItem xml:id="MS_BnF_Latin_7281_item27" n="027" resp="#copyist_03">
+                     <locus from="277r" to="279v" target="#unit_prod_1"/>
+                     <textLang mainLang="la"/>
+                     <title type="uniform" xml:lang="la">Tabula</title>
+                     <title type="original" xml:lang="la"><locus from="277r"/>Tabula magistri Jacobi
+                        de Partibus.</title>
+                     <incipit><locus from="277r"/>Sequuntur sirupi ad omnes humores</incipit>
+                     <explicit><locus from="279v"/>Medicine ad idem: anthos / naturcii / amieos.
+                        Explicit Tabula magistri Jacobi de Partibus.</explicit>
+                     <author cert="high" ref="auth_0012">Jacobus de Partibus</author>
+                  </msItem> 
+               </msContents>
+              <physDesc>
+                  <objectDesc form="codex">
+                     <supportDesc material="chart">
+                        <support>
+                           <watermark>
+                            The watermarks located on
+                              the folio <locus from="16r" target="#unit_prod_1">16r</locus>, <locus
+                                 from="138v" target="#unit_prod_1">138v</locus>, <locus from="139r"
+                                 target="#unit_prod_1">139r</locus> (letter with "P" with fleuron),
+                              are closed to Briquet n°8593. 
+                           </watermark>
+                           <watermark>Others watermarks are situated on the folio <locus from="245r"
+                                 target="#unit_prod_1">245r</locus>, <locus from="246r"
+                                 target="#unit_prod_1">246r</locus>
+                              <locus from="248r" target="#unit_prod_1">248r</locus>, <locus
+                                 from="253r" target="#unit_prod_1">253r</locus>,
+                              <locus from="255r" target="#unit_prod_1">255r</locus>,
+                              <locus from="256r" target="#unit_prod_1">256r</locus>,
+                              <locus from="258r" target="#unit_prod_1">258r</locus>.
+                           </watermark>
+                        </support>
+                        <extent>283 leaves of paper, preceded by three unfoliated paper flyleaves at
+                           the beginning, and three at the end. 
+                           <dimensions type="written" unit="mm">
+                              <height>240</height>
+                              <width>170</width>
+                              <dim type="upper_margin" unit="mm">30</dim>
+                              <dim type="right_margin" unit="mm">35</dim>
+                              <dim type="left_margin" unit="mm">20</dim>
+                              <dim type="inferior_margin" unit="mm">45</dim>
+                           </dimensions>
+                        </extent>
+                        <foliation> Foliation written by <name type="person" ref="#orig_0001"
+                              >Jo.B</name> (mid-15th century). Misfoliation: the folio <locus
+                              from="164r" target="#unit_prod_1"/>164r has been repeted twice and the
+                           folio <locus from="205r"/>205r has been deleted.</foliation>
+                        <collation>
+                           <formula> 29 Quires: iii + 1<hi rend="sup">14</hi> (ff.1r-14v) + 1<hi
+                                 rend="sup">2</hi> (ff.15r-16v) + 1<hi rend="sup">12</hi> (ff.17r-28v)
+                              + a flyleaf mounted on paper tab (f.29r) + 1<hi rend="sup"
+                              >16</hi> (ff.30r-45v) ; a slip of paper mounted on paper tab ( f.32
+                              bis), paper tab located between ff. 35r and 36r; a slip of paper
+                              mounted on paper tab (f.33 bis), paper tab located between ff. 41r and
+                              42r; a slip of paper mounted on a paper tab (f.39 bis), paper tab
+                              located between ff. 42r and 43r + 1<hi rend="sup">12</hi> (ff.44r-57v)
+                              + 1<hi rend="sup">12</hi> (ff.58r-69v) + 1<hi rend="sup">12</hi> (ff.70r-81v)
+                              + a 16th-century ‘s leaf of paper folded in two inserted between the
+                              leaf 69r and 70r + 1<hi rend="sup">12</hi> (ff.82r-93v) + a slip of paper
+                              (f.82bis) mounted on a paper tab between ff.85v-86r a short slip of
+                              paper (f.85bis) has been mounted on the same tab between ff. 85r-86r +
+                              a slip of paper (f.89bis) mounted on a paper tab between (ff.92v-93r)
+                              + 1<hi rend="sup">12</hi> (ff.94r-105v) + 1<hi rend="sup"
+                              >12</hi> (ff.106r-117v) + 1<hi rend="sup">12</hi> (ff.118r-129v) + 1<hi
+                                 rend="sup">11</hi>(ff.130r-140v), a slip of paper (f.136bis)
+                              mounted on a paper tab between ff.140r-141r; + 1<hi rend="sup"
+                              >3</hi> (ff.141r-143v) + a paper tab inserted between (ff.143r-144r) +
+                                 1<hi rend="sup">6</hi> (ff.144r-149v) + 1<hi rend="sup"
+                              >6</hi> (ff.150r-155v) + 1<hi rend="sup">6</hi> (ff.156r-161v) + 1<hi
+                                 rend="sup">3</hi> (ff.162r-164v) + 1<hi rend="sup"
+                              >10</hi> (ff.165r-174v) + 1<hi rend="sup">10</hi> (ff.177r+ 186v) +
+                                 1<hi rend="sup">10</hi>(ff.189r-198v)+ 1<hi rend="sup"
+                              >12</hi> (ff.199r-210v) + f.205 had been removed + 1<hi rend="sup"
+                                 >12</hi> (211r-222v) + 1<hi rend="sup">2</hi> (ff.223r-224v) + 1<hi
+                                 rend="sup">10</hi> (ff.225r-234v) + a 16th-century bifolio inserted
+                              between (ff.234r-235r) and foliated 234bis-234ter + 1<hi rend="sup"
+                                 >12</hi> (ff.235r-246v) + 1<hi rend="sup">12</hi> (ff.247r-258v) +
+                                 1<hi rend="sup">12</hi> (ff.259r-270v) + 1<hi rend="sup"
+                              >12</hi> (ff.271r-282v). 
+                           </formula>
+                           <list xml:id="unit_prod" type="unit_prod">
+                              <item xml:id="unit_prod_1">
+                                 <locusGrp>
+                                    <locus from="1r" to="16v"/>
+                                    <locus from="30r" to="282v"/>
+                                 </locusGrp>
+                                 <list type="quires" xml:id="quire_unit_prod_1">
+                                    <item xml:id="qu1">
+                                       <locus from="1r" to="14v"/>
+                                    </item>
+                                    <item xml:id="qu2">
+                                       <locus from="15r" to="16v"/>
+                                    </item>
+                                    <item xml:id="qu4">
+                                       <locus from="30r" to="45v"/>
+                                    </item>
+                                    <item xml:id="qu5">
+                                       <locus from="46r" to="57v"/>
+                                    </item>
+                                    <item xml:id="qu6">
+                                       <locus from="58r" to="69v"/>
+                                    </item>
+                                    <item xml:id="qu7">
+                                       <locus from="70r" to="81v"/>
+                                    </item>
+                                    <item xml:id="qu8">
+                                       <locus from="82r" to="93v"/>
+                                    </item>
+                                    <item xml:id="qu9">
+                                       <locus from="94r" to="105v"/>
+                                    </item>
+                                    <item xml:id="qu10">
+                                       <locus from="106r" to="117v"/>
+                                    </item>
+                                    <item xml:id="qu11">
+                                       <locus from="118r" to="129v"/>
+                                    </item>
+                                    <item xml:id="qu12">
+                                       <locus from="130r" to="140v"/>
+                                    </item>
+                                    <item xml:id="qu13">
+                                       <locus from="141r" to="143v"/>
+                                    </item>
+                                    <item xml:id="qu14">
+                                       <locus from="144r" to="149v"/>
+                                    </item>
+                                    <item xml:id="qu15">
+                                       <locus from="150r" to="155v"/>
+                                    </item>
+                                    <item xml:id="qu16">
+                                       <locus from="156r" to="161v"/>
+                                    </item>
+                                    <item xml:id="qu17">
+                                       <locus from="162r" to="164v"/>
+                                    </item>
+                                    <item xml:id="qu18">
+                                       <locus from="165r" to="174v"/>
+                                    </item>
+                                    <item xml:id="qu19">
+                                       <locus from="175r" to="186v"/>
+                                    </item>
+                                    <item xml:id="qu20">
+                                       <locus from="187r" to="198v"/>
+                                    </item>
+                                    <item xml:id="qu21">
+                                       <locus from="199r" to="210v"/>
+                                    </item>
+                                    <item xml:id="qu22">
+                                       <locus from="211r" to="222v"/>
+                                    </item>
+                                    <item xml:id="qu23">
+                                       <locus from="223r" to="224v"/>
+                                    </item>
+                                    <item xml:id="qu24">
+                                       <locus from="225r" to="234v"/>
+                                    </item>
+                                    <item xml:id="qu26">
+                                       <locus from="235r" to="246v"/>
+                                    </item>
+                                    <item xml:id="qu27">
+                                       <locus from="247r" to="258v"/>
+                                    </item>
+                                    <item xml:id="qu28">
+                                       <locus from="259r" to="270v"/>
+                                    </item>
+                                    <item xml:id="qu29">
+                                       <locus from="271r" to="282v"/>
+                                    </item>
+                                 </list>
+                              </item>
+                              <item xml:id="unit_prod_2">
+                                 <locusGrp>
+                                    <locus from="17r" to="28v"/>
+                                 </locusGrp>
+                                 <list type="quires" xml:id="quires_unit_prod_2">
+                                    <item xml:id="qu3">
+                                       <locus from="17r" to="28v"/>
+                                    </item>
+                                 </list>
+                              </item>
+                              <item xml:id="unit_prod_3">
+                                 <locusGrp>
+                                    <locus from="234bis" to="234ter"/>
+                                 </locusGrp>
+                                 <list type="quires" xml:id="quires_unit_prod_3">
+                                    <item xml:id="qu25">
+                                       <locus from="234bis" to="234ter"/>
+                                    </item>
+                                 </list>
+                              </item>
+                           </list>
+                           <list xml:id="slip"> 
+                              <item xml:id="sl1">
+                                 <locus from="32bisr" target="#unit_prod_1"/>
+                                 <ref target="#annotator_01"/>
+                                 <dimensions type="slip" unit="mm">
+                                    <height>160</height>
+                                    <width>190</width>
+                                 </dimensions>
+                              </item>
+                              <item xml:id="sl2">
+                                 <locus from="33bisr" target="#unit_prod_1"/>
+                                 <ref target="#annotator_01"/>
+                                 <dimensions type="slip" unit="mm">
+                                    <height>150</height>
+                                    <width>140</width>
+                                 </dimensions>
+                              </item>
+                              <item xml:id="sl3">
+                                 <locus from="39bisr" target="#unit_prod_1"/>
+                                 <ref target="#annotator_01"/>
+                                 <dimensions type="slip" unit="mm">
+                                    <height>150</height>
+                                    <width>110</width>
+                                 </dimensions>
+                              </item>
+                              <item xml:id="sl4">
+                                 <locus from="69bisr" target="#unit_prod_1"/>
+                                 <ref target="#annotator_04"/>
+                                 <dimensions type="slip" unit="mm">
+                                    <height>200</height>
+                                    <width>260</width>
+                                 </dimensions>
+                              </item>
+                              <item xml:id="sl5">
+                                 <locus from="82bisr"/>
+                                 <ref target="#annotator_01"/>
+                                 <dimensions type="slip" unit="mm">
+                                    <height>120</height>
+                                    <width>60</width>
+                                 </dimensions>
+                              </item>
+                              <item xml:id="sl6">
+                                 <locus from="85bisr" target="#unit_prod_1"/>
+                                 <ref target="#annotator_01"/>
+                                 <dimensions type="slip" unit="mm">
+                                    <height>50</height>
+                                    <width>35</width>
+                                 </dimensions>
+                              </item>
+                              <item xml:id="sl7">
+                                 <locus from="89bisr" target="#unit_prod_1"/>
+                                 <ref target="#annotator_01"/>
+                                 <dimensions type="slip" unit="mm">
+                                    <height>120</height>
+                                    <width>115</width>
+                                 </dimensions>
+                              </item>
+                              <item xml:id="sl8">
+                                 <locus from="136bisr" target="#unit_prod_1"/>
+                                 <ref target="#annotator_01"/>
+                                 <dimensions type="slip" unit="mm">
+                                    <height>70</height>
+                                    <width>65</width>
+                                 </dimensions>
+                              </item>
+                           </list>
+                           <list xml:id="blank" type="blank">
+                              <item xml:id="bl1">
+                                 <locus from="16r" to="16v" target="#unit_prod_1"/>
+                              </item>
+                              <item xml:id="bl2">
+                                 <locus from="29r" to="29v" target="#unit_prod_1"/>
+                              </item>
+                              <item xml:id="bll3">
+                                 <locus from="45v" target="#unit_prod_1"/>
+                              </item>
+                              <item xml:id="bl4">
+                                 <locus from="138v" to="140r" target="#unit_prod_1"/>
+                              </item>
+                              <item xml:id="bl5">
+                                 <locus from="149r" to="149v" target="#unit_prod_1"/>
+                              </item>
+                              <item xml:id="bl6">
+                                 <locus from="150r" to="155v" target="#unit_prod_1"/>
+                              </item>
+                              <item xml:id="bl7">
+                                 <locus from="164r" to="164v" target="#unit_prod_1"/>
+                              </item>
+                              <item xml:id="bl8">
+                                 <locus from="223v" to="224v" target="#unit_prod_1"/>
+                              </item>
+                              <item xml:id="bl9">
+                                 <locus from="241v" to="246v" target="#unit_prod_1"/>
+                              </item>
+                              <item xml:id="bl10">
+                                 <locus from="253r" to="258v" target="#unit_prod_1"/>
+                              </item>
+                              <item xml:id="bl11">
+                                 <locus from="274v" to="276v" target="#unit_prod_1"/>
+                              </item>
+                              <item xml:id="bl12">
+                                 <locus from="280r" to="282r" target="#unit_prod_1"/>
+                              </item>
+                           </list>
+                           <signatures>
+                              <list type="signature" xml:id="signatures">
+                                 <item xml:id="si1">
+                                    <locus from="48r" to="51r" target="#unit_prod_1"/>
+                                    <ref target="#copyist_01"/>
+                                 </item>
+                                 <item xml:id="si2">
+                                    <locus from="58r" to="63r" target="#unit_prod_1"/>
+                                    <ref target="#copyist_01"/>
+                                 </item>
+                                 <item xml:id="si3">
+                                    <locus from="70r" to="75r" target="#unit_prod_1"/>
+                                    <ref target="#copyist_01"/>
+                                 </item>
+                                 <item xml:id="si4">
+                                    <locus from="83r" to="87r" target="#unit_prod_1"/>
+                                    <ref target="#copyist_01"/>
+                                 </item>
+                                 <item xml:id="si5">
+                                    <locus from="95r" to="99r" target="#unit_prod_1"/>
+                                    <ref target="#copyist_01"/>
+                                 </item>
+                                 <item xml:id="si6">
+                                    <locus from="105r" to="111r" target="#unit_prod_1"/>
+                                    <ref target="#copyist_01"/>
+                                 </item>
+                                 <item xml:id="si7">
+                                    <locus from="119r" to="123r" target="#unit_prod_1"/>
+                                    <ref target="#copyist_01"/>
+                                 </item>
+                                 <item xml:id="si8">
+                                    <locus from="131r" to="135r" target="#unit_prod_1"/>
+                                    <ref target="#copyist_01"/>
+                                 </item>
+                                 <item xml:id="si9">
+                                    <locus from="175r" to="180r" target="#unit_prod_1"/>
+                                    <ref target="#copyist_01"/>
+                                 </item>
+                                 <item xml:id="si10">
+                                    <locus from="187r" to="192r" target="#unit_prod_1"/>
+                                    <ref target="#copyist_01"/>
+                                 </item>
+                                 <item xml:id="si11">
+                                    <locus from="199r" to="204r" target="#unit_prod_1"/>
+                                    <ref target="#copyist_01"/>
+                                 </item>
+                                 <item xml:id="si12">
+                                    <locus from="212r" to="216r" target="#unit_prod_1"/>
+                                    <ref target="#copyist_01"/>
+                                 </item>
+                                 <item xml:id="si13">
+                                    <locus from="225r" to="228r" target="#unit_prod_1"/>
+                                    <ref target="#copyist_01"/>
+                                 </item>
+                                 <item xml:id="si14">
+                                    <locus from="259r" to="264r" target="#unit_prod_1"/>
+                                    <ref target="#copyist_01"/>
+                                 </item>
+                              </list>
+                           </signatures>
+                           <catchwords xml:id="ca1">
+                              <locus from="14v" target="#unit_prod_1"/>
+                           </catchwords>
+                           <catchwords xml:id="ca2">
+                              <locus from="57v" target="#unit_prod_1"/>
+                           </catchwords>
+                           <catchwords xml:id="ca3">
+                              <locus from="69v" target="#unit_prod_1"/>
+                           </catchwords>
+                           <catchwords xml:id="ca4">
+                              <locus from="81v" target="#unit_prod_1"/>
+                           </catchwords>
+                           <catchwords xml:id="ca5">
+                              <locus from="93v" target="#unit_prod_1"/>
+                           </catchwords>
+                           <catchwords xml:id="ca6">
+                              <locus from="105v" target="#unit_prod_1"/>
+                           </catchwords>
+                           <catchwords xml:id="ca7">
+                              <locus from="117v" target="#unit_prod_1"/>
+                           </catchwords>
+                           <catchwords xml:id="ca8">
+                              <locus from="129v" target="#unit_prod_1"/>
+                           </catchwords>
+                           <catchwords xml:id="ca9">
+                              <locus from="174v" target="#unit_prod_1"/>
+                           </catchwords>
+                           <catchwords xml:id="ca10">
+                              <locus from="186v" target="#unit_prod_1"/>
+                           </catchwords>
+                           <catchwords xml:id="ca11">
+                              <locus from="198v" target="#unit_prod_1"/>
+                           </catchwords>
+                           <catchwords xml:id="ca12">
+                              <locus from="210v" target="#unit_prod_1"/>
+                           </catchwords>
+                           <catchwords xml:id="ca13">
+                              <locus from="222v" target="#unit_prod_1"/>
+                           </catchwords>
+                           <catchwords xml:id="ca14">
+                              <locus from="270v" target="#unit_prod_1"/>
+                           </catchwords>
+                        </collation>
+                     </supportDesc> 
+                     <layoutDesc>
+                        <layout columns="1" writtenLines="40">Most pages have around 40 lines of
+                           writing. Alternating dry point and lead point for the ruling.</layout>
+                     </layoutDesc>
+                  </objectDesc> 
+                  <handDesc>
+                     <handNote xml:id="copyist_01" script="other" scope="major"
+                        scriptRef="#gothic_cursiva" scribe="jo.b" scribeRef="#orig_0001">
+                        <roleName role="copyist"/>
+                        <locus from="1r" to="273v" target="#unit_prod_1"/> First copyist: hand of the
+                        15th-century (around 1445-1460), belonging to the astronomer Jo. B, probably
+                        from Cambrai. </handNote>
+                     <handNote xml:id="copyist_02" script="other" scope="minor"
+                        scriptRef="#gothic_cursiva" scribe="anonymous">
+                        <roleName role="copyist"/>
+                        <locus from="17r" to="28v" target="#unit_prod_2"/> Second copyist:
+                        Mid-15th-century hand, probably contemporary to Jo. B’s hand, but which
+                        shows some slightly different features. </handNote>
+                     <handNote xml:id="copyist_03" script="other" scope="minor"
+                        scriptRef="#gothic_cursiva" scribe="anonymous">
+                        <roleName role="copyist"/>
+                        <locus from="274r" to="282v" target="#unit_prod_1"/> Third copyist: A later
+                        hand from the laster quarter of the fifteenth century. </handNote>
+                     <handNote xml:id="annotator_01" script="other" scope="minor"
+                        scriptRef="#gothic_cursiva" scribe="jo.b" scribeRef="#orig_0001">
+                        <roleName role="annotator"/>First annotator: Hand A (Jo.B's Hand) which
+                        frequently annotates his own copy with a more abreviated
+                        handwriting.</handNote>
+                     <handNote xml:id="annotator_02" scope="minor" script="other"
+                        scriptRef="#gothic_cursiva" scribe="anonymous">
+                        <roleName role="annotator"/>Second annotator: Hand B. Handwriting from the
+                        third quarter of the 15th-century. The features have some 
+                        Littera rotunda characteristics.Very abbreviated handwriting with
+                        stylized tildes.</handNote>
+                     <handNote xml:id="annotator_03" scope="minor" script="other"
+                        scriptRef="#gothic_cursiva" scribe="anonymous">
+                        <roleName role="annotator"/>
+                        <locus target="#unit_prod_3"/>Third annotator: Hand C. Handwriting from the
+                        very end of the 15th-century. Faded brown ink and use of a thin
+                        pen.</handNote>
+                     <handNote xml:id="annotator_04" scope="minor" script="other"
+                        scriptRef="#humanistic_semi_cursiva" scribe="anonymous">
+                        <roleName role="annotator"/>Fourth annotator: Hand D. Handwriting of the
+                        beginning of the 16th-century.</handNote>
+                  </handDesc>
+                  <scriptDesc>
+                  
+                     <scriptNote xml:id="gothic_cursiva">Gothic cursive script.</scriptNote>
+                     <scriptNote xml:id="humanistic_semi_cursiva">Humanistic
+                        semi-cursive.</scriptNote>
+                  </scriptDesc>
+                  <decoDesc>
+                     <decoNote type="main">
+                
+                        On the folio <locus from="1r" target="#unit_prod_1">1r</locus>, decoration is
+                        incomplete given the guide letter: e.g: Guide letter for the letter
+                        “N”.Embellishment of the “s” on the word “lectiones” and kind of grotesques
+                        including zoomorphic figures on the letter “I” of“Incipiunt” on the folio
+                           <locus from="17r" target="#unit_prod_2">17r</locus>. Also red rubric and
+                        red letter on the folio <locus from="17r" to="28v" target="#unit_prod_2">17r
+                           to 28v</locus>. </decoNote>
+                  </decoDesc>
+                  <bindingDesc>
+                     <binding notBefore="1600">
+                        <p>
+                           <material>Red Moroccan.</material>
+                           <dimensions type="binding" unit="mm">
+                              <height>320</height>
+                              <width>230</width>
+                           </dimensions>
+                        </p>
+                        <decoNote type="other">Binding of the Royal library (17th-century) with
+                           Royal arms.</decoNote>
+                        <decoNote type="other"> Normal spine with raised bands. Title on the spine:
+                           "Tractatus Astrologie".</decoNote>
+                     </binding>
+                  </bindingDesc>
+               </physDesc> 
+               <history>
+                  <origin>This volume was certainly composed by <persName type="person"
+                        ref="#orig_0001">Jo.B</persName>, given his monogram <locus from="85v"
+                        to="160r" target="#unit_prod_1"/>,perhaps from Cambrai and intervening
+                     several time in the texts. All suggests that this manuscript was carefully
+                     elaborated by an expert in the field of astronomy, who aimed to gather several
+                     astronomical texts retracing all the innovations ranging from the 13th century
+                     to the <origDate notAfter="1449">15th century</origDate>. </origin>
+                  <provenance>The manuscript includes <name type="person" ref="#orig_0002">Louis le
+                        Puiset</name>’s signature <locus from="282v" target="#unit_prod_1"/>preceded
+                     by four lines partially erased<locus from="282v" target="#unit_prod_1"/>. </provenance>
+                  <provenance>Given the late 15th-century features of Louis le Puiset’s handwriting,
+                     he may have owned the codex slightly before or after <name type="person"
+                        ref="#prov_0000">Jehan Avis</name>. Jehan purchased this manuscript in 1487
+                        <date when="1487">1487</date> for 20 sous parisis: <locus from="282v"
+                        target="#unit_prod_1"/><note type="annotation">Ce livre fut achetté par moy
+                        Jehan Avis, l’an 1487 imparfait, le 7eme de juillet, la somme de 20
+                        s.p.</note>We do not know from whom Jehan acquired this codex.</provenance>
+                  <provenance> Then, Jean Avis may have lent the manuscript to <name type="person"
+                        ref="#prov_0010">Simon de Phares</name>, during the latter’s stay in Paris
+                     between <date from="1491" to="1492">1491 and 1492</date> when he was a familier
+                     of the bishop <name type="person" ref="#prov_0002">Louis de Beaumont de la
+                        Forêt</name>. Simon de Phares attended the arts Faculty in Paris between
+                        <date from="1462" to="1465">1462 and 1465</date>. He was recorded as a
+                     physician in Parliament registers, but it is not certain that he held a grade
+                     in medicine (cf. J.-P. Boudet, 1999, II, 55-63). He began his astrologer career
+                     in <date when="1469">1469</date> at <name type="person" ref="#prov_0003">Jean
+                        II de Bourbon</name>’s Court. Acting as a professional astrologer especially
+                     at the Bourbon’s Court, he was finally condemned by the Faculty of theology the
+                        <date when="1494-02-19">February 19, 1494</date> and the Parliament of Paris
+                     the <date when="1494-03-26">March 26, 1494</date>, and his eleven astrological
+                     books were confiscated.</provenance>
+                  <provenance> Then the codex entered in the <placeName type="institution">
+                        Colbert's library</placeName> in the 17th century, (see Colbert’s shelfmark)
+                        <locus from="1r" target="#unit_prod_1"/>
+                     <note type="annotation">Cod.Colbert 1827"</note> and the note of Colbert’s
+                     librarian <locus from="1r" target="#unit_prod_1"/>
+                     <note type="annotation">Ista versio diversa a versione que edita est
+                        Noribergae, anno 1537 et Parisius, anno 1546, apud bibliotheco D. Arnaudi
+                        Pratoris Forcalcaris</note>. Both editions (Nuremberg, 1537 and Paris, 1546)
+                     refer to <name type="person" ref="#prov_0011">Johannes Hispalensis</name>’s
+                     translation of the "De scientia stellarum", whereas the version contained in
+                     this manuscript is <name type="person" ref="#prov_0009">Gerardus
+                        Cremonensis</name>’s translation.<name type="person" ref="#prov_0007"
+                        >Jean-Baptiste Colbert</name> developed his private library by purchasing
+                     printed books and manuscripts from institutions or individuals. In this
+                     enterprise, he was helped by his librarians, first <name type="person"
+                        ref="#prov_0004">Pierre de Carcavy</name> and then <name type="person"
+                        ref="#prov_0001">Etienne Baluze</name>. Since <date when="1666">1666</date>,
+                     Etienne Baluze acquired several important manuscript collections from different
+                     places for Colbert. The minister’s private library became one of the most
+                     important collection of manuscripts and books in France. It is perhaps during
+                     Etienne Baluze appointment that BnF, Latin 7281 was purchased amongst other
+                     manuscript. Since <date when="1683">1683</date>, Colbert’s library, located in
+                     rue Vivienne, was administered and increased by his first son <name
+                        type="person" ref="#prov_0008">Jean Baptiste</name>, then by his second son
+                        <name type="person" ref="#prov_0006">Jacques-Nicolas Colbert</name>. The
+                     library passed to their nephew <name type="person" ref="#prov_0005"
+                        >Charles-Eléonor Colbert</name>, comte de Seignelay, who auctions the
+                     library in <date when="1728">1728</date>. </provenance>
+                  <acquisition> In <date when="1790">1790</date>, the Royal library entered in the
+                     legal deposit and became the <placeName>National Library</placeName>.The other
+                     revolutionary confiscations continued to enrich this library.</acquisition>
+               </history>
+               <additional>
+                  <adminInfo> 
+                     <recordHist>
+                        <source>
+                           <name type="person">Laure Miolo</name>
+                           <name type="person">Eglantine Charmetant</name>
+                           <orgName>ALFA</orgName>
+                           <date when="2018-05-18"/>
+                        </source>
+                     </recordHist>
+                  </adminInfo>
+               </additional> 
+              <!-- <msPart> A UTILISER DANS LE CAS D'UN MANUSCRIT COMPOSITE
+                  <msIdentifier>
+                  </msIdentifier>
+                  <msContents></msContents>
+                  <physDesc></physDesc>
+                  <history></history>
+                  <additional></additional>
+               </msPart> -->
+            </msDesc>
+         </sourceDesc>
+      </fileDesc>
+      <encodingDesc>
+         <!-- normalement transcriptionDesc dans l'encodingDesc pour décrire l'ensemble des conventions de transcription utilisées.  -->
+         <projectDesc>
+            <!-- descriptiohn du projet : décrit en détail le but de l'encodage d'un fichier electronique, ainsi que toutes les informations pertinentes sur la manière dont il a été construit ou recueilli. -->
+            <p>Elaboration of a fragmentary transcription of the annotations of the Latin 7281
+               manuscript, according to the TEI standard. </p>
+            <p>This work is part of the ERC Alfa research project dedicated to alphonsine
+               astronomy.The objective of this project is to trace the development of the corpus of
+               alphonsin texts from their origin at the end of the fifteenth century. Therefore,
+               manuscripts are at the heart of Alfa's approach because they testify to the different
+               intellectual practices of a given era. </p>
+            <p>The Latin 7281 manuscript is a major collection containing 27 astronomy treatises
+               from the 9th to the 15th century. As part of this codex, it has proved interesting to
+               focus more on annotations, tables, diagrams and inserted leaves which make it
+               specific, rather than on the textual content itself which it have already been
+               edited.</p>
+            <p>This fragmentary transcription is mainly based on the entry given by <ref target="#bibl_02">Jean-Patrice Boudet</ref>in his book <hi rend="italic">Lire dans le ciel: La bibliothèque de Simon de Phares astrologue du XVe siècle</hi>
+            </p>
+         </projectDesc>
+         <schemaRef type="ODD_file" url="odd_manuscrits_ALFA.xml"> <!-- à vérifier -->
+            <!--pour l'odd : décrit ou pointe vers un fichier de personnalisation ou de schéma associé.-->
+            <desc></desc>
+         </schemaRef>
+      </encodingDesc>
+      <profileDesc>
+         <!--fournit une description détaillée des aspects non bibliographiques du texte, notamment les langues utilisées et leurs variantes, les circonstances de sa coduction, les collaborateurs et leur statut.<!-->
+         <!-- est ce que on met le handNote dans le profileDesc? -->
+         <langUsage>
+            <language ident="en">english</language>
+         </langUsage>
+         <creation>
+            <date when="2018-05"/>
+         </creation>
+      </profileDesc>
+   </teiHeader> 
+   <text>
+      <body>
+         <div decls="#MS_BnF_Latin_7281_item2">
+            <note type="marginalia" place="margin" hand="#annotator_01"
+               target="#MS_BnF_Latin_7281_item2">
+               <locus from="17r" target="#unit_prod_2"/>Anno ab incarnatione domini 1271 in festo
+               sti. Laurentii fuerunt anni Arabum perfecti et completi 669. Transactis annis domini
+               1271 apud 25 diem Martii fuerunt anni: Persorum perfecti et completi 640, 2 menses et
+               18 dies. Alexandri perfecti 1582 et 5 menses et 24 dies. </note>
+            <note type="annotation" place="inline" hand="#annotator_01"
+               target="#MS_BnF_Latin_7281_item2">
+               <locus from="18r" target="#unit_prod_2"/>
+            </note>
+            <note type="marginalia" place="margin" hand="#annotator_01"
+               target="#MS_BnF_Latin_7281_item2">
+               <locus from="18r" target="#unit_prod_2"/>
+               <note type="interp">Typical reference signs: simple dots.</note>
+            </note>
+            <note type="marginalia" place="margin" hand="#annotator_01"
+               target="#MS_BnF_Latin_7281_item2">
+               <locus from="20r" target="#unit_prod_2"/>
+               <note type="interp">Paragragph number.</note>
+            </note>
+            <note type="marginalia" place="top" hand="#annotator_01"
+               target="#MS_BnF_Latin_7281_item2">
+               <locus from="20v" target="#unit_prod_2"/> Ex solis altitudine horas diei praesentis
+               extrahere. Sinum altitudinis solis praesentis in sinum medietatis arcus diei
+               multiplica [...] Hec demonstrantur per katam coniunctam a Ptolomaeo traditam in fine
+               capituli 12'i dictionis (?), adiuvante 15'a 5'ti Euclidis. <note type="interp">The
+                  annotator explains a rule for finding the meridian altitude of the Sun per katam,
+                  which probably corresponds to a town already mentionned by Ptolemy in the
+                  Almagest. He is also quoting Euclid’s Elements.</note>
+            </note>
+            <note type="marginalia" place="margin" hand="#annotator_01"
+               target="#MS_BnF_Latin_7281_item2">
+               <locus from="21r" target="#unit_prod_2"/>In hoc libro nihil invenitur de motu 8'ae
+               sphaerae, quod mirum videtur.<note type="interp">Reference to the absence of the
+                  movement of the 8<hi rend="sup">th</hi> sphere.</note>
+            </note>
+            <note type="marginalia" place="top" hand="#annotator_01"
+               target="#MS_BnF_Latin_7281_item2">
+               <locus from="24r" target="#unit_prod_2"/>Secundum Albategni verius fit aequatio veri
+               loci lunae aequando portionem lunae sic [...]<note type="interp">Jo.B is quoting
+                  inter alia Albategni’s Opus astronomicum related to the equation of the Lunar true
+                  longitude, and the way to comput a Lunar portion.</note>
+            </note>
+            <note type="marginalia" place="bottom" hand="#annotator_01"
+               target="#MS_BnF_Latin_7281_item2">
+               <locus from="24r" target="#unit_prod_2"/>
+               <note type="interp">He continues his statement by saying that this can be found in
+                  Albategni and in Canon Ca, which corresponds to Ptolemy’s demonstration in the
+                  Almagest.</note>
+            </note>
+         </div>
+         <div decls="#MS_BnF_Latin_7281_item4">
+            <note type="marginalia" place="bottom" hand="#annotator_01"
+               target="#MS_BnF_Latin_7281_item4">
+               <locus from="30r" target="#unit_prod_1"/>Has tabulas composuit Abensahet, judex regis
+               Maymon Toleto, cujus discipulus Azarchel et alii cum eo, sed Azarchel regebat
+               instrumenta et dirigebat considerations. Postquam a Toleto dictus rex fuit expulsus a
+               Chritianis, Azarchel ruit Cordube et ibi fecit et invenit novas considerationes et
+               fecit tractatum de motu Solis et stellarum fixarum. Post venit Alcamet, discipulus
+               ejus, [marg. similiter discipulus Messalle] et fecit tabulas persianas et quatuor
+               paria tabularum. Post ipsum venit Albubalet Cordubensis, qui consideravit apud
+               Murciam et ipse complevit radices ( ?) et tabulas conjunctionis Solis.<note
+                  type="interp">Jo.B wrote a short biography of Azarchel. This annotation has
+                  probably inspired the notice of Simon de Phares’s, Recueil, III, 66b and VI,
+                  125a.</note>
+            </note>
+            <note type="marginalia" place="top" target="#MS_BnF_Latin_7281_item4"
+               hand="#annotator_01">
+               <locus from="30v" target="#unit_prod_1"/>Anno Christi 1291: in meridie primi diei Jan.
+               fuerunt anni Arabum perfecti 689, et fuit radix 244159, feria 3'a; in meridie 2'ae
+               diei Jan. fuerunt anni Persarum perfecti 659, feria 4'a. Et cum annus Christi 1292
+               incepit ultima die Decembris in meridie, annus Arabum 690 incepit in meridie primae
+               Jan., et annus Persarum 660 incepit in meridie 2'ae diei Jan.<note type="interp">He
+                  wrote also a statement explaining the concordance between the Christian, Arabic
+                  and Persian years taking the example of 1291.</note>
+            </note>
+            <note type="marginalia" place="bottom" target="#MS_BnF_Latin_7281_item4"
+               hand="#annotator_01">
+               <locus from="31v" target="#unit_prod_1"/>Sunt canon(es) similes istis quantum ad
+               principium et quantum ad processum, sed est differentia: Primo, quia non ponunt istum
+               canonem de kardagis et declinationibus. Et pro sinibus utuntur chordis mediatis et
+               tabula chordarum mediatarum secundum Ptolomaeum. (?) in canonibus (?) mobilis in
+               aliquibus est differentia prout notavi in sequentibus. 4'o ponunt canonem latitudinum
+               5 planetarum secundum tabulam Ptolomaei. 5'o in aequatione diversitatis aspectus
+               lunae et in aequatione eclipsium luminarium est differentia ut notavi in sequentibus
+               et in quibusdam quae sequuntur. 6'o et finaliter non habent demonstrationem sinuum et
+               arcuum et inventionem eorum et declinationis.<note type="interp">Short canon on the
+                  Kardaga.</note>
+            </note>
+            <note type="marginalia" target="#MS_BnF_Latin_7281_item4" place ="margin" resp="#annotator_01">
+               <locus from="33r" target="#unit_prod_1"/> 
+               <note type="interp">Two figures representing proportions.</note>
+            </note>
+            <note type="marginalia" place="bottom" target="#MS_BnF_Latin_7281_item4"
+               hand="#annotator_01">
+               <locus from="34v" target="#unit_prod_1"/>Longitudo Toleti a Marsilia, ubi Ray(mun)dus
+               est, per 1 horam et 10'am unius, videlicet 16 gra 30 m'a. Et Marsilia ab Arim distat
+               3 sic distat ab occidente 45 gra praecise, similiter a medio mundi.<note
+                  type="interp"> Note about the difference of longitude between Toledo, Marseille,
+                  Arim, Cremona, Toulouse, Novara, Paris, Aracta and Alexandria. He refers to
+                  Raymond of Marseille.</note>
+            </note>
+            <note type="marginalia" target="#MS_BnF_Latin_7281_item4" hand="#annotator_01">
+               <locus from="37v" target="#unit_prod_1"/>Et provenit argumentum latitudinis, cum quo
+               eclipsim invenies, intrans cum eo tabulas Cordubenses, si volueris operari per eas.
+               Vel si volueris operari cum tabulis Arzachelis, intrabis cum eo tabulas latitudinis
+               lunae, et cum latitudine lunae ibi reperta intrabis tabulas Azarchelis. Intrabis ergo
+               quam volueris cum eo, cum quo intrandum est, ad longitudinem longiorem vel propiorem
+               vel in utramque etc. Ita habetur in aliis canonibus.<note type="interp">Instructions
+                  for finding the argument of Lunar latitude.“Tabula Cordubensis” may refer to
+                  Canons Cc or to Alkhwarizmi’s tables.</note>
+            </note>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="38v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item4"/>Space left blank for a square diagram
+                  which had nevere been traced.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="39v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item4"/>Another empty space for a
+                  diagram.</figDesc>
+            </figure>
+            <figure type="table" resp="#copyist_01">
+               <figDesc>
+                  <locus from="32r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item4"/>Figura Kardagarum.</figDesc>
+            </figure>
+         </div>
+         <div decls="#MS_BnF_Latin_7281_item6">
+            <note type="annotation" place="below" target="#MS_BnF_Latin_7281_item6"
+               hand="#annotator_01">
+               <locus from="45r" target="#unit_prod_1"/>Non plus erat de hoc in libro et repertum est
+               antiquos canones etc;<note type="interp">Instructions for finding the argument of
+                  Lunar latitude.“Tabula Cordubensis” may refer to Canons Cc or to Alkhwarizmi’s
+                  tables.</note>
+            </note>
+         </div>
+         <div decls="#MS_BnF_Latin_7281_item7">
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item7" hand="#annotator_01">
+               <locus from="55v" target="#unit_prod_1"/>
+               <note type="interp">Fractions.</note>
+            </note>
+            <note type="marginalia" place="top" target="#MS_BnF_Latin_7281_item7"
+               hand="#annotator_01">
+               <locus from="71r" target="#unit_prod_1"/>Secundum Albategni est 23 gra 35 m’a 31 2
+                  etc.<note type="interp">Recapitulating the different appreciations of the
+                  obliquity of the ecliptic, which the first two are quoted in text of John of
+                  Sicily’s commentary on Toledan tables canons: 23 n 51 'according to Ptolemy, 23°,
+                  33', 30 'according to the al-Mâmûn astronomers, 23°, 35 '31’ according to
+                  Albategni, 23 ° 28 'according to' Monte Regio '.</note>
+            </note>
+            <note type="marginalia" place="top" target="#MS_BnF_Latin_7281_item7"
+               hand="#annotator_03">
+               <locus from="71r" target="#unit_prod_1"/>Secundum De M onte Regio 23,28; per
+               instrumenta moderna 23,30 “fere” secundum eudem.</note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item7"
+               hand="#annotator_04">
+               <locus from="72r" target="#unit_prod_1"/>Ex X’ a primi magnae constructionis quae
+               Almagestum vocatur.</note>
+            <note type="marginalia" place="top" target="#MS_BnF_Latin_7281_item7"
+               hand="#annotator_04">
+               <locus from="74r" target="#unit_prod_1"/>Secundum (?) Almagesti 11’a et 22’a
+               epitomatis De R’Monte super Almagest., sed brevius per 24’am post 7’am.</note>
+            <note type="annotation" target="#MS_BnF_Latin_7281_item7" hand="#annotator_01">
+               <locus from="89bis" target="#unit_prod_1"/>Istud negandum est, quia nulla est
+               similitude: patet in Theorica etc<note type="interp">Small leaf inserted with
+                  notes.</note>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item7"
+               hand="#annotator_04">
+               <locus from="92v" target="#unit_prod_1"/>Secundum Alphonsium 287d. 0 h’e 24 m’a... </note>
+            <note type="marginalia" place="bottom" target="#MS_BnF_Latin_7281_item7"
+               hand="#annotator_04">
+               <locus from="93r" target="#unit_prod_1"/>Si quem igitur delectet, experiatur tempore
+               suo per instrumenta secundum doctriam a Ptolemaeo et De Regio Monte traditam in 14’a
+               a propositione 3’i Almagesti.</note>
+            <note type="marginalia" place="top" target="#MS_BnF_Latin_7281_item7"
+               hand="#annotator_04">
+               <locus from="93v" target="#unit_prod_1"/>Et haec secundum observationem Ptolemaei, ut
+               ipse demonstrate in 3’a diction c. 7’mo; secundum vero considerationem Alphonsii
+               maxima aequatio sive differentia inter etc. est 2 gra 10 m’a, quae est aequatio arcus
+               92 gra 10 m() motus aequalis, vel 90 gra motus apparentis.</note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item7"
+               hand="#annotator_01">
+               <locus from="94r" target="#unit_prod_1"/>Christi 1290, 8 menes 1d.</note>
+            <note type="marginalia" place="bottom" target="#MS_BnF_Latin_7281_item7"
+               hand="#annotator_01">
+               <locus from="104v" target="#unit_prod_1"/>In theorica Planetarum habetur: Genzahar 3
+               superiorum immobiles sunt nisi quantum ad motum 8’ae sphaerae.</note>
+            <note type="marginalia" place="bottom" target="#MS_BnF_Latin_7281_item7"
+               hand="#annotator_01">
+               <locus from="116v" target="#unit_prod_1"/>Nota, cum sol passurus est eclipsim, si
+               totum esse illius eclipsis conspicere volueris sine oculorum laesione, scilicet
+               quando incipit, quanta sit, quamdiu durat, quando finit, observa casum radii solis
+               per medium alicuius foraminis rotundi facti in fenestra, et considera in assere
+               circulum quem perficit radius solis super quem cadit. Cuius circuli rotunditatem cum
+               videris deficere, eodem tempore deficit claritas in corpore solis, sed in parte
+               opposita: ut si in circulo illo claritas incipit deficere ex parte orientis, tunc
+               incipit sol eclipsari, sed ex parte occidentis. Et quot obscurabuntur partes
+               diametrales illius circuli, tot digiti diametri solis eclipsantur. Et dum decrescit
+               rotunditas circuli illius crescit eclipsis usque ad tantum, et dum recrescit
+               rotunditas, descresit eclipsis, etc., ut dicit G. de Sancto Clodoaldo de quadam
+               eclipsi solis anno Christi 1285. Potest idem probari per candelam ardentem
+               etc.</note>
+            <note type="marginalia" place="top" target="#MS_BnF_Latin_7281_item7"
+               hand="#annotator_04">
+               <locus from="140v" target="#unit_prod_1"/>Altitudo meridiana Solis Parisius, Sol in
+               principio Cancri 64<hi rend="sup">0</hi> 44’ et Capricorni 17<hi rend="sup">0</hi>
+               36’. Maxima declination Solis: 23°24; latitude Parisiensis: 48<hi rend="sup"
+               >0</hi>50.</note>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="61v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Circular diagram.</figDesc>
+            </figure>
+            <figure type="diagram">
+               <figDesc>
+                  <locus from="69v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Circular diagram on the lower margin
+                  representing sphere with horizon, zodiac and tropics.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="70r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Circular diagram.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="72v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Circular diagram.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="74v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Circular diagram with short
+                  captions.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="75r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Quadrated circle for showing altitudes.
+               </figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="76r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Circular diagram.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="78v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Circular diagram on the lower margin with
+                  annotations "F, C, E" to the right.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="85r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Circular diagram.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="85v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Circular diagram with annotation from the
+                  Hand A.Unifinished duplicate, point-names misplaced.</figDesc>
+            </figure>
+            <figure type="table" resp="#copyist_01">
+               <figDesc>
+                  <locus from="89v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Table of the mean motion of the
+                  moon.</figDesc>
+            </figure>
+            <figure type="table" resp="#copyist_01">
+               <figDesc>
+                  <locus from="90r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Table about the mean movement of Saturne,
+                  Jupiter, Mars and Vénus according to Ptolemae tables.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="91v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Circular diagram.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="93r"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Circular diagram.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="95v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Circular diagram.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="98v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Unfinished circular diagram.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="99v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Circular diagram.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="103r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Diagram representing an eclipse Solar or
+                  Lunar on the lower margin.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="106r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Two diagrams a on the upper margin about
+                  the eclipse.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="106r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Diagram on the lower margin about the
+                  eclipse with 2 earths.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="113r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Circular diagram.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="116r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Circular diagram.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="136v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item7"/>Circular diagram.</figDesc>
+            </figure>
+         </div>
+         <div decls="#MS_BnF_Latin_7281_item8">
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="143r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item8"/>Diagram on the upper margin. Saint Cloud
+                  speaks about error which has been left in Mars’motion until the present time.
+                  According to him, the reason might be that it rarely happens that Mars is
+                  retrograde and closely passes a fixed star, once when direct and again when
+                  retrograde, as was the case in the two observations describe above. Further, in
+                  each observation it was close in latitude 1 to the star, so that the time of
+                  conjunction could be estimated precisely enough without an instrument.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="144r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item8"/>Diagram about the camera obscura on the
+                  lower margin.</figDesc>
+            </figure>
+         </div>
+         <div decls="#MS_BnF_Latin_7281_item9">
+            <note type="marginalia" place="bottom" target="#MS_BnF_Latin_7281_item9"
+               hand="#annotator_01">
+               <locus from="148r" target="#unit_prod_1"/>Iste Guillelmus probavit et bene vidit ad
+               oculum quod tabule antique de motibus Ptholomei, Alexandri et Toletane et Tolosane et
+               alie etc.non continent veritatem in motibus planetarum et 8espere. Ideo ex se
+               correxit aliquos medios motus ut melius vidit, et potuit ad oculum addendo vel
+               subtrahendo, et quia sic se sustentavit super illias et non fuit certus unde ille
+               error processit vel ex omnibus illis, vel aliquibus eorum, ut apparet ex suis
+               scriptis. Nec habuit notitiam tabularum Alfonsi que corrigunt defectus hujusmodi
+               tabularum, quia nondum erant in manus hominum.Ideo suum Almanac sic factum et
+               similter Kalendarium ejus defectum continent tabulraum et imprecisionem, quia non
+               consistunt super verra correctione. Licet non forte tantum quantum tabule porpter
+               suam corretcionem, sed quia grossa estimatione processit, ideo non est confidendum in
+               illis <note type="interp">Note about the interest in Saint Cloud’s corrections
+                  compared to the Toledan tables and the Toulouse tables, and his ignorance about
+                  the alphonsine tables.</note>
+            </note>
+            <note type="marginalia" target="#MS_BnF_Latin_7281_item9" hand="#annotator_01">
+               <locus from="148v" target="#unit_prod_1"/>
+               <note type="interp">Jo.B marked "addidi" in front of the part of this second table
+                  related to the years, which seems to place approximately its annotation between
+                  these two dates.</note>
+            </note>
+            <figure type="table" resp="#copyist_01">
+               <figDesc>
+                  <locus from="148r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item9"/>Table intitled "Tabularum latitudinis 7
+                  climatum".</figDesc>
+            </figure>
+            <figure type="table" resp="#copyist_01">
+               <figDesc>
+                  <locus from="148v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item9"/>Table given the day and time of the
+                  entrance of the sun in the signs of the zodiac in 1296.</figDesc>
+            </figure>
+            <figure type="table" resp="#copyist_01">
+               <figDesc>
+                  <locus from="148v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item9"/>Table given the day and time of the
+                  entrance of the sun in the signs of the zodiac for the years 1296 to
+                  1496.</figDesc>
+            </figure>
+         </div>
+         <div decls="#MS_BnF_Latin_7281_item1O">
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item10"
+               hand="#annotator_01">
+               <locus from="156r" target="#unit_prod_1"/>Ista reperi in quondam libro etc.</note>
+         </div>
+         <div decls="#MS_BnF_Latin_7281_item11">
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item11"
+               hand="#annotator_01">
+               <locus from="156v" target="#unit_prod_1"/>
+            </note>
+            <note type="marginalia" place="top" target="#MS_BnF_Latin_7281_item11"
+               hand="#annotator_01">
+               <locus from="159r" target="#unit_prod_1"/>
+            </note>
+            <note type="marginalia" place="bottom" target="#MS_BnF_Latin_7281_item11"
+               hand="#annotator_01">
+               <locus from="160r" target="#unit_prod_1"/>Per Joh annem de Muris credo; mirum videtur
+               quod iste non determinavit de quantitate eccentricitatum deferentis Solis et aliorum
+               planetarum et de quantitate epiciclorum, consequenter de quantitate equationum
+               argumenti Solis, centri et argumenti etc. ceteris planetis convenientium secundum
+               intentionem regis Alfonsii quia alias et differentes posuit ab antiquis, prospecto
+               quod de istis fuit semper diversitas inter consideratores.J.b <note type="interp"
+                  >Jo.B's note with his monogram. He says that the treatise was written by John of
+                  Murs and shows that he understood the importance of that work.</note>
+            </note>
+            <note type="table" resp="#annotator_01">
+               <locus from="162v" to="163r" target="#unit_prod_1"/>Tables made by Jo.B to update the
+               Kalendarium. </note>
+         </div>
+         <div decls="#MS_BnF_Latin_7281_item13">
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item13"
+               hand="#annotator_01">
+               <locus from="171r" target="#unit_prod_1"/>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item13"
+               hand="#annotator_01">
+               <locus from="172r" target="#unit_prod_1"/>
+            </note>
+            <note type="marginalia" place="bottom" target="#MS_BnF_Latin_7281_item13"
+               hand="#annotator_01">
+               <locus from="172v" target="#unit_prod_1"/>Est tractatus cujusdam Parisiensis de
+               commensurabilitate vel incommensurabilitate motuum celestium, incipit “Zenonem et
+               Crisipum majora egisse etc. </note>
+         </div>
+         <div decls="#MS_BnF_Latin_7281_item14">
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item14"
+               hand="#annotator_03">
+               <locus from="173r" target="#unit_prod_1"/>Hic incipit de Cusa hoc opus sibi
+               ascribens.</note>
+            <note type="marginalia" place="top" target="#MS_BnF_Latin_7281_item14"
+               hand="#annotator_01">
+               <locus from="173v" target="#unit_prod_1"/>
+            </note>
+            <note type="marginalia" place="bottom" target="#MS_BnF_Latin_7281_item14"
+               hand="#annotator_01">
+               <locus from="173v" target="#unit_prod_1"/>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item14"
+               hand="#annotator_01">
+               <locus from="174r" to="174v" target="#unit_prod_1"/>
+               <note type="interp">Note and reminder signs on the right and left margin.</note>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item14"
+               hand="#annotator_01">
+               <locus from="174v" target="#unit_prod_1"/>vel verius per Henricum Baten
+               Machliiniensem, ut circa finem tractatus hujus a domino de Cusa sibi ascriptis
+               scriptum invenitur.</note>
+         </div>
+         <div decls="#MS_BnF_Latin_7281_item15">
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item15"
+               hand="#annotator_01">
+               <locus from="175r" to="178r" target="#unit_prod_1"/>
+               <note type="interp">Paragraph number.</note>
+            </note>
+         </div>
+         <div decls="#MS_BnF_Latin_7281_item16">
+            <note type="marginalia" target="#MS_BnF_Latin_7281_item16" hand="#annotator_01">
+               <locus from="178v" to="201v" target="#unit_prod_1"/>
+               <note type="interp">Paragraph number.</note>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item16"
+               hand="#annotator_03">
+               <locus from="179r" target="#unit_prod_1"/>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item16"
+               hand="#annotator_01">
+               <locus from="181r" target="#unit_prod_1"/>
+            </note>
+            <note type="marginalia" place="below" target="#MS_BnF_Latin_7281_item16"
+               hand="#annotator_04">
+               <locus from="182v" target="#unit_prod_1"/>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item16"
+               hand="#annotator_02">
+               <locus from="183r" target="#unit_prod_1"/>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item16"
+               hand="#annotator_04">
+               <locus from="184v" target="#unit_prod_1"/>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item16"
+               hand="#annotator_03">
+               <locus from="185r" target="#unit_prod_1"/>
+            </note>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="179v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item16"/>Two spaces left blank for a
+                  diagram.</figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="198r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item16"/>Space left blank for a diagram.
+               </figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="199r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item16"/>Space left blank for a diagram.
+               </figDesc>
+            </figure>
+         </div>
+         <div decls="#MS_BnF_Latin_7281_item17">
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item17"
+               hand="#annotator_01">
+               <locus from="202r" target="#unit_prod_1"/>
+            </note>
+            <note type="marginalia" place="below" target="#MS_BnF_Latin_7281_item17"
+               hand="#annotator_03">
+               <locus from="204v" target="#unit_prod_1"/>Henricus.<note type="interp">Early
+                  16th-century signature at the bottom of the text.</note>
+            </note>
+            <note type="marginalia" place="bottom" target="#MS_BnF_Latin_7281_item17"
+               hand="#annotator_01">
+               <locus from="204v" target="#unit_prod_1"/>Est alius tractatus Jo.de Lineriis de
+               motibus superiorum corporum in longitudine et latitudine, incipit Spera concentrica
+               vel circulus concentricus dicitur, cujus centrum est centrum terre etc, factus anno
+               Christi 1335°; Licet valde specialis et singularis etc.</note>
+         </div>
+         <div decls="#MS_BnF_Latin_7281_item18">
+            <!--vérifier-->
+            <note type="marginalia" place="top" target="#MS_BnF_Latin_7281_item18">
+               <locus from="206r" target="#unit_prod_1"/>
+               <note type="interp">Note has been cross out on the top margin, near the title.</note>
+            </note>
+         </div>
+         <div decls="#MS_BnF_Latin_7281_item22" resp="#annotator_01">
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item22">
+               <locus from="213r" to="222r" target="#unit_prod_1"/>
+               <note type="interp">Paragraph number.</note>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item22"
+               hand="#annotator_03">
+               <locus from="217r" target="#unit_prod_1"/>
+            </note>
+            <figure type="table" resp="#copyist_01">
+               <figDesc>
+                  <locus from="213v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item16"/>Table.</figDesc>
+            </figure>
+         </div>
+         <div decls="#MS_BnF_Latin_7281_item23" resp="#annotator_01">
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item23">
+               <locus from="222r" to="223r" target="#unit_prod_1"/>
+               <note type="interp">Paragraph number.</note>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item23"
+               hand="#annotator_01">
+               <locus from="225r" target="#unit_prod_1"/>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item23"
+               hand="#annotator_01">
+               <locus from="225r" to="232r" target="#unit_prod_1"/>
+               <note type="interp">Paragraph number.</note>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item23"
+               hand="#annotator_02">
+               <locus from="227r" to="232r" target="#unit_prod_1"/>
+               <note type="interp">Several annotations from Hand B with a paler ink.</note>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item23"
+               hand="#annotator_02">
+               <locus from="227v" target="#unit_prod_1"/>aliter 39.48 </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item23"
+               hand="#annotator_03">
+               <locus from="229r" target="#unit_prod_1"/>
+            </note>
+            <note type="annotation" place="below" target="#MS_BnF_Latin_7281_item23"
+               hand="#annotator_01">
+               <locus from="232r" target="#unit_prod_1"/>Exemplum de operationibus canonum equationum
+               planetarum in longitudine et latitudine super Parisius et super radices anni Christi
+                  1355<hi rend="sup">ti</hi> completi, incipit. Non fuit mortuus qui scientiam
+               vivificavit, etc sed nescio cujus sit.</note>
+            <note type="annotation" place="below" target="#MS_BnF_Latin_7281_item23"
+               hand="#annotator_01">
+               <locus from="232r" target="#unit_prod_1"/>Bonum exemplum de eclipsibus a Johanne de
+               Janua, anno Domini 1337, incipit “Ad investigandum eclipsim Solis, oportet primo
+               querere”, habetur in isto libro. </note>
+            <note type="annotation" place="below" target="#MS_BnF_Latin_7281_item23"
+               hand="#annotator_01">
+               <locus from="232r" target="#unit_prod_1"/>Bonum opus scripsit super canones et tabulas
+               Arzachelis Jo.de Silicia Parisius, anno Christi 1290, incipit « Cum inter cetera
+               philosophice documenta etc. </note>
+            <note type="marginalia" place="below" target="#MS_BnF_Latin_7281_item23"
+               hand="#annotator_03">
+               <locus from="232r" target="#unit_prod_1"/>folio.208 <note type="interp"/>Paler ink.
+               Hand C make a reference to the folio 208.</note>
+            <note type="marginalia" place="below" target="#MS_BnF_Latin_7281_item23"
+               hand="#annotator_03">
+               <locus from="232r" target="#unit_prod_1"/>folio.222 <note type="interp"/>Paler ink.
+               Hand C make a reference to the folio 208.</note>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="225r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item23"/>Spaces left blank for a diagram.
+               </figDesc>
+            </figure>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="230v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item23"/>Spaces left blank for a diagram.
+               </figDesc>
+            </figure>
+         </div>
+         <div decls="#MS_BnF_Latin_7281_item24">
+            <note type="annotation" target="#MS_BnF_Latin_7281_item24" hand="#annotator_03">
+               <locus from="234bis" to="234ter" target="#unit_prod_3"/>
+               <note type="interp">Flyleaf mounted on paper tab with notes and astronomical
+                  calculation.</note>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item24"
+               hand="#annotator_01">
+               <locus from="235r" target="#unit_prod_1"/>
+            </note>
+            <note type="marginalia" place="bottom" target="#MS_BnF_Latin_7281_item24"
+               hand="#annotator_02">
+               <locus from="235r" target="#unit_prod_1"/>
+            </note>
+            <note type="marginalia" place="bottom" target="#MS_BnF_Latin_7281_item24"
+               hand="#annotator_02">
+               <locus from="235r" target="#unit_prod_1"/>
+               <note type="interp">Assessment of land diameter and circumference.</note>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item24"
+               hand="#annotator_02">
+               <locus from="236r" target="#unit_prod_1"/>
+               <note type="interp">Annotations on the right and top margin from the Hand B.</note>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item24"
+               hand="#annotator_01">
+               <locus from="237v" target="#unit_prod_1"/>
+            </note>
+            <note type="marginalia" place="bottom" target="#MS_BnF_Latin_7281_item24"
+               hand="#annotator_01">
+               <locus from="238r" target="#unit_prod_1"/>
+               <note type="interp">Jo.B is astonished that the author’s treatise leans rather for
+                  the theory of trepidation; the annotator also refers to the Albert le Grand’s
+                  Speculum astronomie.</note>
+            </note>
+            <note type="marginalia" place="top" target="#MS_BnF_Latin_7281_item24"
+               hand="#annotator_01">
+               <locus from="238v"/>Portio accessionis et recessionis 8e spere ad annos Christi. </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item24"
+               hand="#annotator_01">
+               <locus from="241r" target="#unit_prod_1"/>
+               <note type="interp">Jo.B compares this table with Campus’s about Novara’s meridian.
+                  He started copying a 1022 stars’list that should be part of the treatise he
+                  attributes to Jean de Troyes. He cross out later these first lines.</note>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item24"
+               hand="#annotator_02">
+               <locus from="248v" to="249r" target="#unit_prod_1"/>
+            </note>
+            <note type="marginalia" place="top" target="#MS_BnF_Latin_7281_item24"
+               hand="#annotator_02">
+               <locus from="249v" to="250v" target="#unit_prod_1"/>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item24"
+               hand="#annotator_01">
+               <!-- vérifier -->
+               <locus from="251v" to="252v" target="#unit_prod_1"/>
+            </note>
+            <note type="table" place="bottom" target="#MS_BnF_Latin_7281_item24"
+               hand="#annotator_01">
+               <locus from="252r" target="#unit_prod_1"/>
+            </note>
+            <note type="table" place="top" target="#MS_BnF_Latin_7281_item24" hand="#annotator_01">
+               <locus from="252v" target="#unit_prod_1"/>
+            </note>
+            <figure type="diagram" resp="#copyist_01">
+               <figDesc>
+                  <locus from="236r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item24"/>Circular diagram about the evaluation of
+                  the ecliptic obliquity.</figDesc>
+            </figure>
+            <figure type="table" resp="#copyist_01">
+               <figDesc>
+                  <locus from="238r" to="238v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item24"/>Equation tables of the roots’ motion of
+                  access and recess of the 8th sphere and the troughs of the sun, according to
+                  Azarquiel and Thebit on one hand, and according to Alponse X on the other hand:
+                  tables planets’ troughs according to Alponse X and Jean de lignères, for the anni
+                  collecti from 20 years in 20 years, from 1420 to 1520 <hi rend="italic"
+                     >completis</hi>.</figDesc>
+            </figure>
+            <figure type="table" resp="#copyist_01">
+               <figDesc>
+                  <locus from="239r" to="239v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item24"/>Tables.</figDesc>
+            </figure>
+            <figure type="table" resp="#copyist_01">
+               <figDesc>
+                  <locus from="240r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item24"/>Eras’tables according Alphonse
+                  X.</figDesc>
+            </figure>
+            <figure type="table" resp="#copyist_01">
+               <figDesc>
+                  <locus from="249v" to="250r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item24"/>Tables.</figDesc>
+            </figure>
+         </div>
+         <div decls="#MS_BnF_Latin_7281_item25">
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item25"
+               hand="#annotator_01">
+               <locus from="259r" to="273r" target="#unit_prod_1"/>
+               <note type="interp">Several little notes, reminder sign and numbering from Hand A(and
+                  also Hand B?) <!--à vérifier-->
+               </note>
+            </note>
+            <note type="marginalia" target="#MS_BnF_Latin_7281_item25" hand="#annotator_01">
+               <locus from="273r" to="273v" target="#unit_prod_1"/>
+               <note type="interp">Jo.B's note suggested by the reading of Nicole Oresme's treatise.
+                  Very long note taken from "De mundo vel seculo" of Abraham Ibn Ezra and from
+                  "Speculum divinorum et quorundam naturalium of Henri Bate of Malines, whose Jo.B
+                  quotes the incipit.</note>
+            </note>
+            <note type="marginalia" place="margin" target="#MS_BnF_Latin_7281_item25"
+               hand="#annotator_01">
+               <locus from="273r" target="#unit_prod_1"/>Avenesre 1147; Bate 1292 </note>
+            <note type="marginalia" place="top" target="#MS_BnF_Latin_7281_item25"
+               hand="#annotator_01">
+               <locus from="273v" target="#unit_prod_1"/>Insuper ad memoriam rediit quod astrologi
+               Ptholomeus... </note>
+            <note type="table" target="#MS_BnF_Latin_7281_item25" hand="#annotator_01">
+               <locus from="273v" target="#unit_prod_1"/>
+               <note type="interp">Jo.B notes also the 120 possible planetary conjunctions: 21
+                  conjunctions of two planets, 35 of three planets, 35 of four planets, 21 of five
+                  planets, 7 of six planets, 1 of seven planets.</note>
+            </note>
+            <figure type="diagram">
+               <!-- mettre dans les notes -->
+               <figDesc>
+                  <locus from="260v" to="261r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item25"/>Three unfinished circular
+                  diagram.</figDesc>
+            </figure>
+            <figure type="diagram">
+               <figDesc>
+                  <locus from="262v" to="263r" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item25"/>Unfinished small circular diagram on the
+                  margins.</figDesc>
+            </figure>
+            <figure type="diagram">
+               <figDesc>
+                  <locus from="264v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item25"/>Unfinished small circular diagram on the
+                  margins.</figDesc>
+            </figure>
+            <figure type="diagram">
+               <figDesc>
+                  <locus from="268r" to="268v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item25"/>Unfinished small circular diagram on the
+                  margins.</figDesc>
+            </figure>
+         </div>
+         <div decls="#MS_BnF_Latin_7281_item27">
+            <figure type="table" resp="#copyist_03">
+               <figDesc>
+                  <locus from="277r" to="279v" target="#unit_prod_1"/>
+                  <ref target="#MS_BnF_Latin_7281_item27"/>Table providing on three columns a list
+                  of syrups and simple ones with healing properties.</figDesc>
+            </figure>
+         </div>
+      </body>
+      <back>
+         <div type="index">
+            <listPerson>
+               <person xml:id="auth_0001" sex="1" role="author">
+                  <persName xml:lang="la">
+                     <surname>Alfraganus</surname>
+                     <ref cRef="http://viaf.org/viaf/64358682"/>
+                  </persName>
+                  <birth notBefore="0700" notAfter="0800"/>
+                  <death when="0861" scope="circa"/>
+                  <occupation>Astronomer and astrologer. He served the caliph Abbassid
+                     al-Ma'mūn.</occupation>
+                  <nationality>Persian</nationality>
+               </person>
+               <person xml:id="auth_0002" sex="1" role="author">
+                  <persName xml:lang="la">
+                     <surname>Azarchel</surname>
+                     <ref cRef="http://viaf.org/viaf/79050497"/>
+                  </persName>
+                  <birth when="1029" scope="circa"/>
+                  <death when="1100" scope="circa"/>
+                  <!-- préciser dans l'ODD que c'est pour les notes approximatives -->
+                  <occupation>Astronomer, mathematician.</occupation>
+                  <nationality>Andalusian</nationality>
+               </person>
+               <person sex="1" xml:id="prov_0001" role="other">
+                  <persName xml:lang="fr">
+                     <surname>Baluze</surname>
+                     <forename>Etienne</forename>
+                     <ref cRef="http://viaf.org/viaf/59178466"/>
+                  </persName>
+                  <birth when="1630-12-24"/>
+                  <death when="1718-07-28"/>
+                  <occupation>Librarian of Colbert (from 1667). Professor of Canon Law at the
+                     College de France. Royal College Inspector.Annotator and publisher of the works
+                     of saint Cyprien.</occupation>
+                  <nationality>French</nationality>
+               </person>
+               <person sex="1" xml:id="prov_0004" role="other">
+                  <persName xml:lang="fr">
+                     <surname>Carcavy (de)</surname>
+                     <forename>Pierre</forename>
+                     <ref cRef="http://viaf.org/viaf/227379690"/>
+                  </persName>
+                  <birth notBefore="1600" notAfter="1700"/>
+                  <death when="1684-04"/>
+                  <occupation>Advisor to the Parliament of Toulouse, the to the Grand Council. Guard
+                     of the King's Library since 1663. Member of the Royal Academy of Sciences since
+                     1666.</occupation>
+                  <nationality>French</nationality>
+               </person>
+               <person sex="1" xml:id="prov_0005" role="other">
+                  <persName xml:lang="fr">
+                     <surname>Colbert</surname>
+                     <forename>Charles-Eléonor</forename>
+                     <ref cRef="http://viaf.org/viaf/304920465"/>
+                  </persName>
+                  <birth when="1689-02-22"/>
+                  <death when="1747-03-27"/>
+                  <occupation>Lord of Seignelay</occupation>
+                  <nationality>French</nationality>
+               </person>
+               <person sex="1" xml:id="prov_0006" role="other">
+                  <persName xml:lang="fr">
+                     <surname>Colbert</surname>
+                     <forename>Jacques-Nicolas</forename>
+                     <ref cRef="http://viaf.org/viaf/36909612"/>
+                  </persName>
+                  <birth when="1655-02-14"/>
+                  <death when="1707-12-10"/>
+                  <occupation>Son of Jean-Baptiste Colbert (1619-1683), Minister of State.
+                     Ecclesiastical. Archbishop of Rouen. Member of the Institute, French Academy
+                     (elected in 1678).</occupation>
+                  <nationality>French</nationality>
+               </person>
+               <person sex="1" xml:id="prov_0007" role="other">
+                  <persName xml:lang="fr">
+                     <surname>Colbert</surname>
+                     <forename>Jean-Baptiste</forename>
+                     <ref cRef="http://viaf.org/viaf/59175183"/>
+                  </persName>
+                  <birth when="1619-08-29"/>
+                  <death when="1683-09-06"/>
+                  <occupation>Statesman, economist and patron. Minister of State (1661-1683).
+                     Superintendent of Royal Buildings, Arts and Manufactures (1664), Comptroller
+                     General of Finance (1695). Secretary of State, in charge of the King's House,
+                     the City of Paris, the Clergy and the Navy (1669). Member of the Institute,
+                     French Academy (elected in 1667).</occupation>
+                  <nationality>French</nationality>
+               </person>
+               <person sex="1" xml:id="prov_0008" role="other">
+                  <persName xml:lang="fr">
+                     <surname>Colbert</surname>
+                     <forename>Jean-Baptiste</forename>
+                     <ref cRef="http://viaf.org/viaf/77848838"/>
+                  </persName>
+                  <birth when="1651-11-01"/>
+                  <death when="1690-11-03"/>
+                  <occupation>Eldest son of Colbert (1619-1683). Collaborator and successor of his
+                     father at the State Secretariat in the Department of the Navy. Took part in
+                     several maritime expeditions.</occupation>
+                  <nationality>French.</nationality>
+               </person>
+               <person xml:id="auth_0006" sex="1" role="author">
+                  <persName xml:lang="la">
+                     <forename>Galfredus</forename>
+                     <surname>Meldis (de)</surname>
+                     <ref cRef=" http://viaf.org/viaf/20071901"/>
+                  </persName>
+                  <birth notBefore="1200" notAfter="1300"/>
+                  <death notBefore="1300" notAfter="1400"/>
+                  <occupation/>
+                  <nationality/>
+               </person>
+               <person sex="1" xml:id="prov_0009" role="other">
+                  <persName xml:lang="la">
+                     <forename>Gerardus</forename>
+                     <surname>Cremonensis</surname>
+                     <ref cRef=" http://viaf.org/viaf/84814786"/>
+                  </persName>
+                  <birth when="1114"/>
+                  <death when="1187"/>
+                  <occupation>Translator of scientific books from Arabic into Latin. One of Gerardus
+                     Cremonensis most famous translations is Ptolemy's Almagest from Arabic texts
+                     found in Toledo.</occupation>
+                  <nationality>Italian</nationality>
+               </person>
+               <person xml:id="auth_0004" sex="1" role="author">
+                  <persName xml:lang="la">
+                     <forename>Guillelmus</forename>
+                     <surname>Sancto Clodoaldo (de)</surname>
+                     <ref cRef="http://viaf.org/viaf/32836216"/>
+                  </persName>
+                  <birth notBefore="1200" notAfter="1300"/>
+                  <death notBefore="1300" notAfter="1400"/>
+                  <occupation>Astronomer close to queens Marie de Brabant and Jeanne de Navarre to
+                     whom he dedicates the French version of his Kalendarium regine and Utilitas
+                     instrumenti quod directorium appellatur. Author of several star tables and some
+                     other astronomical treatise (Almanach planetarum).His writting are located
+                     around 1291-1296.</occupation>
+                  <nationality>French</nationality>
+               </person>
+               <person xml:id="auth_0012" sex="1" role="author">
+                  <persName xml:lang="la">
+                     <forename>Jacobus</forename>
+                     <surname> Partibus (de)</surname>
+                     <ref cRef="http://viaf.org/viaf/7495674"/>
+                  </persName>
+                  <birth when="1380" scope="circa"/>
+                  <death when="1458-01-03"/>
+                  <occupation>Doctor.Chancellor of the University of Paris.</occupation>
+                  <nationality>French</nationality>
+               </person>
+               <person xml:id="prov_0000" sex="1" role="owner">
+                  <persName xml:lang="la">
+                     <forename>Jehan</forename>
+                     <surname>Avis</surname>
+                  </persName>
+                  <birth notBefore="1380" notAfter="1480"/>
+                  <death/>
+                  <occupation>Dean of the faculty of medicine of Paris, and Charles the seventh's
+                     physician and counselor.</occupation>
+                  <nationality>French</nationality>
+               </person>
+               <person sex="1" xml:id="prov_0003" role="other">
+                  <persName xml:lang="la">
+                     <name type="person">Jean II de Bourbon</name>
+                     <ref cRef="http://viaf.org/viaf/152051550"/>
+                  </persName>
+                  <birth when="1426"/>
+                  <death when="1488-04-01"/>
+                  <occupation>Duke of Bourbon and Auvergne from 1456 to his death.</occupation>
+                  <nationality>French</nationality>
+               </person>
+               <person sex="1" xml:id="orig_0001" role="copyist">
+                  <persName type="person" xml:lang="la">Jo.B</persName>
+                  <birth notBefore="1400"/>
+                  <death notAfter="1500"/>
+                  <occupation>He was probably a master of arts, and had a strong expertise in
+                     astronomy.</occupation>
+                  <nationality>French</nationality>
+               </person>
+               <person xml:id="auth_0008" sex="1" role="author">
+                  <persName xml:lang="la">
+                     <forename>Johannes</forename>
+                     <surname>Janua (de)</surname>
+                     <ref cRef="http://viaf.org/viaf/12505313"/>
+                  </persName>
+                  <birth notBefore="1150" notAfter="1290"/>
+                  <death when="1298"/>
+                  <occupation>Dominican.</occupation>
+                  <nationality>Italian</nationality>
+               </person>
+               <person xml:id="prov_0011" sex="1" role="author">
+                  <persName xml:lang="la">
+                     <forename>Johannes</forename>
+                     <surname>Hispalensis</surname>
+                     <ref cRef="http://viaf.org/viaf/311110823"/>
+                  </persName>
+                  <birth from="1135"/>
+                  <death from="1153"/>
+                  <occupation>Mathematician. Translated important works of medicine and philosophy
+                     from Arabic into Latin.</occupation>
+                  <nationality>Spanish</nationality>
+               </person>
+               <person xml:id="auth_0007" sex="1" role="author">
+                  <persName xml:lang="la">
+                     <forename>Johannes</forename>
+                     <surname>Lineriis (de)</surname>
+                     <ref cRef=" http://viaf.org/viaf/22011079"/>
+                  </persName>
+                  <birth notBefore="1300" notAfter="1300"/>
+                  <death when="1516"/>
+                  <occupation>Astronomer, whose Canons of the Tables became a widely used book. The
+                     Canons, a collection of astronomical tables, was adopted as part of the
+                     required educational texts for second-year students at the University of
+                     Bologna in 1344.</occupation>
+                  <nationality>French</nationality>
+               </person>
+               <person xml:id="auth_0005" sex="1" role="author">
+                  <persName xml:lang="la">
+                     <forename>Johannes</forename>
+                     <surname>Muris (de)</surname>
+                     <ref cRef=" http://viaf.org/viaf/316786968"/>
+                  </persName>
+                  <birth when="1300" scope="circa"/>
+                  <death when="1350" scope="circa"/>
+                  <occupation>Astronomer, mathematician and music theorist. Master of Arts from the
+                     University of Paris (1321).</occupation>
+                  <nationality>French</nationality>
+               </person>
+               <person xml:id="auth_0009" sex="1" role="author">
+                  <persName xml:lang="la">
+                     <forename>Johannes</forename>
+                     <surname>Saxonia (de)</surname>
+                     <ref cRef="http://viaf.org/viaf/311106730"/>
+                  </persName>
+                  <birth when="1323"/>
+                  <death when="1355"/>
+                  <occupation>Astronomer.Has taught at the University of Paris from 1327 to
+                     1355.</occupation>
+                  <nationality/>
+               </person>
+               <person xml:id="auth_0003" sex="1" role="author">
+                  <persName xml:lang="la">
+                     <forename>Johannes</forename>
+                     <surname>Sicilia (de)</surname>
+                     <ref cRef=" http://viaf.org/viaf/42233329"/>
+                  </persName>
+                  <birth notBefore="1150" notAfter="1280"/>
+                  <death notBefore="1290" notAfter="1400"/>
+                  <occupation>Astronomer.</occupation>
+                  <nationality/>
+               </person>
+               <person xml:id="auth_0010" sex="1" role="author">
+                  <persName xml:lang="la">
+                     <forename>Johannes</forename>
+                     <surname>Troyes(de)</surname>
+                  </persName>
+                  <birth/>
+                  <death/>
+                  <occupation/>
+                  <nationality/>
+               </person>
+               <person sex="1" xml:id="prov_0002" role="author">
+                  <persName xml:lang="la">
+                     <forename>Louis</forename>
+                     <surname>Beaumont de la Forêt (de)</surname>
+                  </persName>
+                  <birth when="1446"/>
+                  <death when="1492"/>
+                  <occupation>Ecclesiastic who was bishop of Paris from 1472 to his
+                     death.</occupation>
+                  <nationality/>
+               </person>
+               <person xml:id="orig_0002" sex="1" role="owner">
+                  <persName xml:lang="la">
+                     <forename>Louis</forename>
+                     <surname>Puiset (le)</surname>
+                  </persName>
+                  <birth notBefore="1400" notAfter="1500"/>
+                  <death notBefore="1450" notAfter="1600"/>
+                  <occupation/>
+                  <nationality/>
+               </person>
+               <person xml:id="auth_0011" sex="1" role="other">
+                  <persName xml:lang="la">
+                     <forename>Nicolaus</forename>
+                     <surname>Oresmius</surname>
+                     <ref cRef="http://viaf.org/viaf/64010010"/>
+                  </persName>
+                  <birth when="1320" scope="circa"/>
+                  <death when="1382"/>
+                  <occupation>Bishop of Lisieux. Philosopher of the later Middle Ages, who wrote
+                     influential works on economics, mathematics, physics, astrology,astronomy,
+                     philosophy and theology.</occupation>
+                  <nationality>French</nationality>
+               </person>
+               <person xml:id="prov_0010" sex="1" role="owner">
+                  <persName xml:lang="la">
+                     <forename>Simon</forename>
+                     <surname>Phares (de)</surname>
+                     <ref cRef="http://viaf.org/viaf/79147620"/>
+                  </persName>
+                  <birth when="1444" scope="circa"/>
+                  <death notBefore="1499" notAfter="1600"/>
+                  <occupation>Astrologer. Author of the "Collection of the most famous astrologers
+                     and some learned men" composed between 1494 and 1498.</occupation>
+                  <nationality>French</nationality>
+               </person>
+            </listPerson>
+         </div>
+         <listBibl type="bibliography">
+            <bibl xml:id="bibl_01">
+               <author>
+                  <name type="person">
+                     <surname>Boudet</surname>
+                     <forename>Jean-Patrice</forename>
+                     <ref cRef="http://viaf.org/viaf/2579531"/>
+                  </name>
+               </author>
+               <title>Le recueil des plus célèbres astrologues de Simon de Phares</title>
+               <citedRange unit="volume">Tome III</citedRange>
+               <editor>H.Champion</editor>
+               <publisher>Société de l'histoire de France</publisher>
+               <pubPlace>Paris</pubPlace>
+               <date when="1999"/>
+               <biblScope unit="pages">494</biblScope>
+            </bibl>
+            <bibl xml:id="bibl_02">
+               <author>
+                  <name type="person">
+                     <surname>Boudet</surname>
+                     <forename>Jean-Patrice</forename>
+                     <ref cRef=" http://viaf.org/viaf/2579531"/>
+                  </name>
+               </author>
+               <title>Lire dans le ciel. La bibliothèque de Simon de Phares, astrologue du XV° siècle</title>
+               <editor>Centre d'Etude des manuscrits</editor>
+               <publisher>Scriptorium</publisher>
+               <pubPlace>Bruxelles</pubPlace>
+               <date when="1994"/>
+               <biblScope unit="pages">220</biblScope>
+            </bibl>
+            <bibl xml:id="bibl_03">
+               <author>
+                  <name type="person">
+                     <surname>Duhem</surname>
+                     <forename>Pierre</forename>
+                     <ref cRef=" http://viaf.org/viaf/73852904"/>
+                  </name>
+               </author>
+               <title>Le système du monde: Histoire des doctrines cosmologiques de Platon à Copernic</title>
+               <citedRange unit="volume">Volume IV</citedRange>
+               <editor>Hachette</editor>
+               <publisher>A.Hermann</publisher>
+               <pubPlace>Paris</pubPlace>
+               <date when="1913"/>
+               <biblScope unit="pages">597</biblScope>
+            </bibl>
+            <bibl xml:id="bibl_04">
+               <author>
+                  <name type="person">
+                     <surname>Pedersen</surname>
+                     <forename>Fritz S.</forename>
+                     <ref cRef="http://viaf.org/viaf/36913351"/>
+                  </name>
+               </author>
+               <title>Scriptum Johannis de Sicilia super canones Azarchelis de tabulis Toletanis, Part I</title>
+               <citedRange unit="volume">Part I</citedRange>
+               <editor>E.Paludan</editor>
+               <publisher>Cahier de l'Institut du Moyen-Age grec et latin</publisher>
+               <pubPlace>Copenhague</pubPlace>
+               <date when="1986"/>
+               <biblScope unit="pages">400</biblScope>
+            </bibl>
+            <bibl xml:id="bibl_05">
+               <author>
+                  <name type="person">
+                     <surname>Poulle</surname>
+                     <forename>Emmanuel</forename>
+                     <ref cRef=" http://viaf.org/viaf/54152914"/>
+                  </name>
+               </author>
+               <title><hi rend="italic">Astronomie planétaire au Moyen Age latin</hi></title>
+               <editor>Variorum, UK</editor>
+               <publisher/>
+               <pubPlace>United Kingdom</pubPlace>
+               <date when="1996"/>
+               <biblScope unit="pages">336</biblScope>
+            </bibl>
+         </listBibl>
+      </back>
+   </text>
+</TEI>

@@ -1,0 +1,296 @@
+{% extends "TAMASALFABundle:Default:alfa_layout.html.twig" %}
+{% block main %}
+
+
+    <div class="row">
+        <h1 class="col-md-offset-1">The ALFA survey</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <ul class="nav nav-tabs " role="tablist">
+                <li role="manuscripts" class="active">
+                    <a href="#manuscripts" aria-controls="manuscripts" role="tab" data-toggle="tab">
+                        Manuscripts and early printed
+                    </a>
+                </li>
+                <li role="works">
+                    <a href="#works" aria-controls="works" role="tab" data-toggle="tab">
+                        Works
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="manuscripts">
+                    <h2>Manuscript / Early Printed</h2>
+                    <table id="ms-table" class="table table-hover table-browser table-sortable">
+                        <thead class="thead-inverse">
+                        <tr>
+                            <th>Id</th>
+                            <th>Link</th>
+                            <th>Shelfmark</th>
+                            <th>Title</th>
+                            <th>Time of creation</th>
+                            <th>Place</th>
+                            <th>Extent</th>
+                            <th>Work(s)</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+                    <div id="export-ms-table">
+                        <h4>Export the table</h4>
+                    </div>
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="works">
+                    <h2>Work</h2>
+                    <table id="work-table" class="table table-hover table-browser table-sortable">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th>Id</th>
+                                <th>Title</th>
+                                <th>Type</th>
+                                <th>Creation (min)</th>
+                                <th>Creation (max)</th>
+                                <th>Author</th>
+                                <th>In manuscript(s)</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+                    <div id="export-work-table">
+                        <h4>Export the table</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+    <script>
+        //Reload the table when tab change
+        $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+            $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust().draw();
+        } );
+    </script>
+    <script src='{{asset('js/myInternalLink.js')}}'> </script>
+    <script src="{{asset('js/mirador-alfa/mapping.js')}}"></script>
+
+    <script>
+        $(document).ready(function(){
+            /**
+             * this function returns an html string containing the link to the resource
+             */
+            function generateLink(id, title, type){
+                return "<a ref='"+id+"' class='internal-link' tar='"+type+"'>"+title+"</a>";
+            }
+
+            //####################### Generation of the table listing the manuscripts #################################//
+            const manuscripts = {{ jsonMs|raw }};
+            let dataMs = [];
+            for (let i = Object.values(manuscripts).length - 1; i >= 0; i--) {
+                let thatMs = Object.values(manuscripts)[i];
+
+                let title = thatMs.title ? "<i>"+thatMs.title+"</i>" : '';
+                if (thatMs.editor)
+                    title += " " + thatMs.editor;
+
+                let time = thatMs.tpq || '';
+                if (thatMs.taq){
+                    time += (thatMs.tpq ? "-" : "") + thatMs.taq;
+                }
+
+                let place = thatMs.prodPlace || '';
+                let works = '';
+
+                let collection = thatMs.collection ? thatMs.collection + ', ' : '';
+                let shelfmark = thatMs.shelfmark ? collection + thatMs.shelfmark : '';
+                if (thatMs.libName){
+                    shelfmark = thatMs.libName + " | " + shelfmark;
+                    if (thatMs.libCity){
+                        shelfmark = thatMs.libCity + ", " + shelfmark;
+                    }
+                }
+                let extent = thatMs.extent || '';
+                let dimension = thatMs.dimension || '';
+                const dim = extent ? extent + "<br>" + dimension : dimension;
+                let link = '';
+
+
+                //if one manuscript is linked to more than 2 works, we hide the works in a <details> tag
+                if (thatMs.joinWorks.length > 0) {
+                    works += "<ul>";
+                    for (let j = 0; j < thatMs.joinWorks.length; j++) {
+                        const thatWork = thatMs.joinWorks[j];
+                        link = generateLink("work-"+thatWork.id, thatWork.title, "to-row-work");
+                        if (j === 2){
+                            works += "<br/><details><summary> &nbsp;</summary>";
+                        }
+                        works += "<li>"+link+"</li>";
+                        if (j >= 2 && j === (thatMs.joinWorks.length +1)){
+                            works+="</details>";
+                        }
+                    }
+                }
+                let url = "";
+                if (thatMs.url){
+                    url = "<a href='"+thatMs.url+"' target='_blank'><span class='glyphicon glyphicon-book'></span> Online record</a>"
+                }
+
+                // si thatMs.id est une clé de l'array mapping, on fait un lien vers la visualisation.
+                //var link = "";
+                if (mapping[thatMs.id] !== undefined && mapping[thatMs.id] !== ""){
+                    let link = `<a href="/js/mirador-alfa/index.html?id=${thatMs.id}" target="_blank">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <img src="{{asset('img/IIIF_logo.png')}}">viewer
+                                </a>`;
+                    if (url){
+                        url = link + "<br/>" + url;
+                    } else {
+                        url = link;
+                    }
+                }
+                shelfmark = shelfmark || "<span class='noInfo'>No shelfmark provided</span>";
+                shelfmark = title ? `${shelfmark}<br>${title}` : shelfmark;
+
+                dataMs.push({
+                    "DT_RowId": 'ms-' + thatMs.id,
+                    "id": '#ms-' + thatMs.id,
+                    "link": url || "<span class='noInfo'>No digital resource</span>",
+                    "shelfmark": shelfmark/* || "<span class='noInfo'>No shelfmark provided</span>"*/,
+                    "time": time || "<span class='noInfo'>No date provided</span>",
+                    "place": place || "<span class='noInfo'>No place provided</span>",
+                    /*"title": title || "<span class='noInfo'>No title provided</span>",*/
+                    "extent": dim || "<span class='noInfo'>No extend provided</span>",
+                    "works": works || "<span class='noInfo'>No work identified</span>"
+                });
+            }
+
+            //specification of the datatable
+            if ($.fn.dataTable.isDataTable( '#ms-table' ) ){
+                console.log("la table est déjà initialisée")}
+            let msTable = $('#ms-table').DataTable({
+                data: dataMs,
+                columns: [
+                    {data: "id"},
+                    {data: "link"},
+                    {data: "shelfmark"},
+                    /*{data: "title"},*/
+                    {data: "time"},
+                    {data: "place"},
+                    {data: "extent"},
+                    {data: "works"},
+                ],
+                deferRender: true,
+                scrollY: 400,
+                scrollCollapse: true,
+                select: {
+                    style: "os"},
+                columnDefs: [
+                    {targets: [0],
+                        visible: false
+                    }],
+                dom: 'lBfrtip', // This code indicates that the button B goes after the "length" element (pick up the # of line per vue)
+                buttons: {
+                    buttons:[ //the first button is custom, and allow reloading the table after a search
+                        {
+                            text:'Reload',
+                            action: (e, dt, node, config) => {dt.search("").columns().search('').draw()},
+                            class: 'reload'
+                        },
+                        'colvis'
+                    ],
+                }
+            });
+
+            //Generate an additional group of button for the export and situate it at the export-ms-table div.
+            new $.fn.dataTable.Buttons( msTable, {
+                buttons: [
+                    'copy', 'csv', 'excel','pdf'
+                ]
+            } );
+            msTable.buttons( 1, null ).container().appendTo("#export-ms-table");
+
+            //####################### Generation of the table listing the works #################################//
+            const works = JSON.parse('{{jsonWorks|escape("js")}}');
+            let dataWork = [];
+
+            for (let i = Object.values(works).length - 1; i >= 0; i--) {
+                const thatWork = Object.values(works)[i];
+                let ms = '';
+                if (thatWork.joinMs.length > 0) {
+                    ms += '<ul>';
+                    for (let j = 0; j < thatWork.joinMs.length; j++) {
+                        const thatMs = thatWork.joinMs[j];
+                        const link = generateLink("ms-"+thatMs.id, thatMs.title, "to-row-ms");
+                        if (j === 2){
+                            ms += "<br/><details><summary> &nbsp;</summary>";
+                        }
+                        ms += "<li>"+link+"</li>";
+                        if (j >=2 && j === (thatWork.joinMs.length + 1)){
+                            ms += "</details>";
+                        }
+                    }
+                    ms += '</ul>';
+                }
+                dataWork.push({
+                    DT_RowId: 'work-'+thatWork.id,
+                    id: '#work-'+thatWork.id,
+                    /*type: thatWork.type || "<span class='noInfo'>No type provided</span>",*/
+                    title: thatWork.title || "<span class='noInfo'>No title provided</span>",
+                    creation_min: thatWork.tpq || "<span class='noInfo'>No terminus post quem</span>",
+                    creation_max: thatWork.taq || "<span class='noInfo'>No terminus ante quem</span>",
+                    author: thatWork.author || "Anonymous",
+                    ms: ms || "<span class='noInfo'>Not identified within any source</span>"
+                });
+            }
+
+            let workTable = $('#work-table').DataTable({
+                data: dataWork,
+                columns: [
+                    {data: "id"},
+                    {data: "title"},
+                    /*{data: "type"},*/
+                    {data: "creation_min"},
+                    {data: "creation_max"},
+                    {data: "author"},
+                    {data: "ms"},
+                ],
+                deferRender: true,
+                scrollY: 500,
+                scrollCollapse: true,
+                select: {
+                    style: "os"},
+                columnDefs: [
+                    {targets: [0],
+                        visible: false
+                    }],
+                dom: 'lBfrtip',
+                buttons: {
+                    buttons:[{
+                        text:'Reload',
+                        action: function (e, dt, node, config){
+                            dt.search("").columns().search('').draw()},
+                        class: 'reload'}, 'colvis'
+                    ],
+                }
+            });
+
+            new $.fn.dataTable.Buttons( workTable, {
+                buttons: [
+                    'copy', 'csv', 'excel','pdf'
+                ]
+            } );
+
+            workTable.buttons( 1, null ).container().appendTo("#export-work-table");
+        });
+    </script>
+{% endblock %}

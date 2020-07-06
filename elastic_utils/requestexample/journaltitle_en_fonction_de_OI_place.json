@@ -1,0 +1,16 @@
+GET original_text/_search
+{
+    "_source": "edited_texts.secondary_source.journal.journal_title",
+	"query":{
+		"bool": {
+		    "must":[
+		        {"match":
+			    	{"place.id": 11}
+		    	},
+				{"exists":
+			    	{"field": "edited_texts.secondary_source.journal"}
+		    	}
+		    ]
+		}
+    }
+}

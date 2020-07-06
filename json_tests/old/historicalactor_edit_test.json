@@ -1,0 +1,62 @@
+{
+    "historicalactor": {
+	"17": {
+            "actorName": "test",
+            "actorNameOriginalChar": "t",
+            "tpq": "10",
+            "taq": "10",
+	    "place": "11"
+        },
+	"18": {
+            "actorName": "",
+            "actorNameOriginalChar": "",
+            "tpq": "10",
+            "taq": "10",
+	    "place": "9"
+        },
+	"19": {
+            "actorName": "Robert",
+            "actorNameOriginalChar": "r",
+            "tpq": "8",
+            "taq": "10",
+	    "place": "-1"
+        },
+	"20": {
+            "actorName": "Vincent",
+            "actorNameOriginalChar": "v",
+            "tpq": "10",
+            "taq": "10",
+	    "place": {
+		"placeName": "testtest",
+		"placeNameOriginalChar": "",
+		"placeLat": "10",
+		"placeLong": "10"
+	    }
+        },
+ 	"21": {
+            "actorName": "blabla",
+            "actorNameOriginalChar": "b",
+            "tpq": "1",
+            "taq": "10",
+	    "place": {
+		"placeName": "blablaplace",
+		"placeNameOriginalChar": "",
+		"placeLat": "10",
+		"placeLong": "10"
+	    }
+        },
+	"22": {
+            "actorName": "Pascalou",
+            "actorNameOriginalChar": "p",
+            "tpq": "1",
+            "taq": "10",
+	    "place": {
+		"placeName": "",
+		"placeNameOriginalChar": "",
+		"placeLat": "10",
+		"placeLong": "10"
+	    }
+        }
+    }
+}
+

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?> 
+<!--<?xml-stylesheet type="text/xsl" href="manuscript_in_tables.xsl"?>
+-->
+<!--This line must be hidden because of the dom crawler element-->
+<TEI>
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title class="eo">The name of the Rose<i>Red</i></title>
+      </titleStmt>
+      <publicationStmt>
+        <distributor>ALFA</distributor>
+      </publicationStmt>
+      <sourceDesc>
+        <msDesc xml:id="id1" xml:lang="en">
+          <msIdentifier>
+            <country key="fr">France</country>
+            <settlement>Paris</settlement>
+            <institution key="220354">BnF</institution>
+            <repository>Lat</repository>
+            <idno>5212</idno>
+          </msIdentifier>
+          <msContents>
+            <msItem n="1" class="main">
+                <i>Hello test ! </i>
+              <locus to="12v" from="1r"/>
+              <textLang mainLang="fr">Modern French</textLang>
+              <title type="main" xml:lang="en">First Work <i>Coucou1</i></title>
+              <incipit>Prime laboro<locus to="10v" from="1r"/></incipit>
+            </msItem>
+            <msItem n="2" class="main">
+              <locus to="25v" from="13r"/>
+              <textLang mainLang="en"/>
+              <title type="main" xml:lang="en">Second Work <i>Coucou2</i></title>
+              <incipit>Secondo laboro<locus to="25v" from="20r"/></incipit>
+              <author ref="auth_0001">Ptoleme</author>
+              <note>This work is very interesting for many reasons...</note>
+            </msItem>
+            <msItem n="3" class="main">
+              <locus to="60v" from="30r"/>
+              <textLang mainLang="en"/>
+              <title type="main" xml:lang="en">Third Work <i>Coucou3</i></title>
+              <incipit>Tertio laboro</incipit>
+              <author ref="auth_0002">Johanes de Muris</author>
+            </msItem>
+          </msContents>
+          <physDesc>
+            <objectDesc form="codex">
+              <supportDesc material="unknown"/>
+            </objectDesc>
+            <bindingDesc>
+              <binding contemporary="unknown"/>
+            </bindingDesc>
+          </physDesc>
+          <history>
+            <origin>
+              <placeName type="country" key="fr">France</placeName>
+              <p>Bnf</p>
+              <date notBefore="1256-01-01" notAfter="1512-01-01"/>
+            </origin>
+          </history>
+          <additional>
+            <adminInfo>
+              <recordHist>
+                <source>
+                  <persName>Topalian Galla</persName>
+                  <orgName>obsmp</orgName>
+                  <date when="2018-02-12"/>
+                </source>
+              </recordHist>
+            </adminInfo>
+          </additional>
+        </msDesc>
+        <msDesc xml:id="id2" xml:lang="en">
+          <msIdentifier>
+            <country key="fr">France</country>
+            <settlement>Paris</settlement>
+            <institution key="220354">BnF</institution>
+            <repository>Lat</repository>
+            <idno>007</idno>
+          </msIdentifier>
+          <msContents>
+            <msItem n="1" class="main">
+              <locus to="12v" from="1r"/>
+              <textLang mainLang="fr">Modern French</textLang>
+              <title type="main" xml:lang="en">
+                  <test>First Work</test> 
+                  <i>Coucou4 éééààà@@@€€€$$$ &amp;  /cou \cou</i>
+              </title>
+              <incipit>Prime laboro<locus to="10v" from="1r"/></incipit>
+            </msItem>
+            <msItem n="2" class="main">
+              <locus to="25v" from="13r"/>
+              <textLang mainLang="en"/>
+              <title type="main" xml:lang="en">Second Work<i>Coucou5</i></title>
+              <incipit>Secondo laboro<locus to="25v" from="20r"/></incipit>
+              <author ref="auth_0001">Ptoleme</author>
+              <note>This work is very interesting for many reasons...</note>
+            </msItem>
+          </msContents>
+          <physDesc>
+            <objectDesc form="codex">
+              <supportDesc material="unknown"/>
+            </objectDesc>
+            <bindingDesc>
+              <binding contemporary="unknown"/>
+            </bindingDesc>
+          </physDesc>
+          <history>
+            <origin>
+              <placeName type="country" key="fr">France</placeName>
+              <p>Bnf</p>
+              <date notBefore="1256-01-01" notAfter="1512-01-01"/>
+            </origin>
+          </history>
+          <additional>
+            <adminInfo>
+              <recordHist>
+                <source>
+                  <persName>Topalian Galla</persName>
+                  <orgName>obsmp</orgName>
+                  <date when="2018-02-12"/>
+                </source>
+              </recordHist>
+            </adminInfo>
+          </additional>
+        </msDesc>
+        <msDesc xml:id="id3" xml:lang="en">
+          <msIdentifier>
+            <country key="enk">England</country>
+            <settlement>Oxford</settlement>
+            <institution>Bodleian Library</institution>
+            <repository>Ashmole</repository>
+            <idno>191</idno>
+          </msIdentifier>
+          <msContents>
+            <msItem n="4" class="main">
+              <locus to="31v" from="12r"/>
+              <textLang mainLang="en"/>
+              <title type="supplied" xml:lang="en">ephemerides for 1438 and 1439</title>
+            </msItem>
+            <msItem n="5" class="main">
+              <locus to="76r" from="59r"/>
+              <textLang mainLang="en"/>
+              <title type="main" xml:lang="en">Oxford Tables <i>Coucou6</i></title>
+              <author ref="auth_0001">William Rede</author>
+              <note>Canon and tables.</note>
+            </msItem>
+          </msContents>
+          <physDesc>
+            <objectDesc form="codex">
+              <supportDesc material="unknown"/>
+            </objectDesc>
+            <bindingDesc>
+              <binding contemporary="unknown"/>
+            </bindingDesc>
+          </physDesc>
+          <history>
+            <origin>
+              <placeName type="country" key="enk">England</placeName>
+              <date notBefore="1439" notAfter="1700"/>
+            </origin>
+          </history>
+          <additional>
+            <adminInfo>
+              <recordHist>
+                <source>
+                  <persName>Philipp Notaf</persName>
+                </source>
+              </recordHist>
+            </adminInfo>
+          </additional>
+        </msDesc>
+        <msDesc xml:id="id4" xml:lang="en">
+          <msIdentifier>
+            <country key="enk">England</country>
+            <settlement>Oxford</settlement>
+            <institution>Bodleian Library</institution>
+            <repository>Ashmole</repository>
+            <idno>393</idno>
+          </msIdentifier>
+          <msContents>
+            <msItem class="main" n="6">
+              <locus to="41r." from="1r."/>
+              <textLang mainLang="en"/>
+              <note>diverse tables, including Alfonsine apogees 1400-1680</note>
+            </msItem>
+            <msItem n="5" class="main">
+              <locus to="41r." from="1r."/>
+              <textLang mainLang="en"/>
+              <title type="main" xml:lang="en">Oxford Tables <i>Coucou7</i></title>
+              <author ref="auth_0001">William Rede</author>
+              <note>Tables.</note>
+            </msItem>
+          </msContents>
+          <physDesc>
+            <objectDesc form="codex">
+              <supportDesc material="unknown"/>
+            </objectDesc>
+            <bindingDesc>
+              <binding contemporary="unknown"/>
+            </bindingDesc>
+          </physDesc>
+          <history>
+            <origin>
+              <placeName type="country" key="enk">England</placeName>
+              <date notBefore="1400" notAfter="1800"/>
+            </origin>
+          </history>
+          <additional>
+            <adminInfo>
+              <recordHist>
+                <source>
+                  <persName>Philipp Notaf</persName>
+                </source>
+              </recordHist>
+            </adminInfo>
+          </additional>
+        </msDesc>
+        <listPerson>
+          <person xml:id="auth_0001" sex="1">
+            <persName>
+              <forename>Ptoleme</forename>
+              <surname>Jean</surname>
+            </persName>
+            <birth notBefore="0040-01-01" notAfter="0045-01-01"/>
+            <death notBefore="0090-01-01" notAfter="0090-12-01"/>
+          </person>
+          <person xml:id="auth_0002" sex="1">
+            <persName>
+              <forename>Johanes</forename>
+              <surname>de Muris</surname>
+            </persName>
+            <birth notBefore="1200-01-01" notAfter="1210-01-01"/>
+            <death notBefore="1250-01-01" notAfter="1280-01-01"/>
+          </person>
+          <person sex="0" xml:id="acq_0001"/>
+        </listPerson>
+      </sourceDesc>
+    </fileDesc>
+    <encodingDesc>
+      <classDecl>
+        <taxonomy xml:id="tax.mns">
+          <category xml:id="tax.mns.conspectus">
+            <catDesc xml:lang="en">Conspectus</catDesc>
+            <category xml:id="tax.mns.conspectus.090">
+              <catDesc xml:lang="en">Manuscript</catDesc>
+            </category>
+          </category>
+        </taxonomy>
+      </classDecl>
+    </encodingDesc>
+  </teiHeader>
+  <facsimile>
+      Test !!!
+<!--    <graphic/>-->
+  </facsimile>
+</TEI>
+<!--Created with M-Tool On-line 2.0 (04122009).-->
+<!--<?xml-stylesheet type="text/xsl" href="../mes%20documents/test%20xslt/manuscript_description.xsl"?>-->

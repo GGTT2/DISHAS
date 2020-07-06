@@ -1,0 +1,109 @@
+{#src\TAMAS\AstroBundle\Resources\views\ListObject\listFormulaDefinition.html.twig#}
+<div class="dataList hasTable">
+    {%if adminInfo is defined and  adminInfo == 'true'%}
+        <h3>PDFs</h3>
+    {%endif%}
+    {%if pdfFiles is defined and pdfFiles is not empty%}
+        <table class="table table-hover table-browser table-sortable" style="width:100%;" id="by-pdf-file">
+            <thead class="thead-inverse">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                {#                    <th>Table Type</th>#}
+                {%if adminInfo is not defined%}
+                    {#                        <th>Term. Post Quem</th>
+                                            <th>Term. Ante Quem</th>
+                                            <th>Creator(s)</th>
+                                            <th>Translator</th>
+                                            <th>Place of conception</th>#}
+                    {#                        <th>Author</th>#}
+                {%endif%}
+                {%if adminInfo is defined and adminInfo == 'true'%}
+                    <th class="no-sort">Created</th>
+                    <th class="no-sort">Updated</th>
+                {%endif%}
+                {%if editDelete is defined and editDelete == 'true'%}
+                    <th class="no-sort"></th>
+                {%endif%}
+            </tr>
+            </thead>
+            <tbody>
+            {%for pdfFile in pdfFiles %}
+                <tr>
+                    <th scope="row" > {{pdfFile.id}}
+                    </th>
+                    <td>
+                        {% set file_name = 'pdf/' ~ pdfFile.fileName %}
+                        <a href="{{asset(file_name)}}">
+                            {% if pdfFile.fileUserName|default %} <i>{{ pdfFile.fileUserName|truncate(75)}}</i>{%else%}-{%endif%}
+                        </a>
+                    </td>
+                    {#                         <td>
+                                               <a href="{{path('tamas_astro_adminViewFormulaDefinition', {'id': formulaDefinition.id})}} ">
+                                                    {% if formulaDefinition.tableType|default %} <i>{{ formulaDefinition.tableType|truncate(35)}}</i>{%else%}-{%endif%}
+                                                </a>
+                                            </td>#}
+                    {%if adminInfo is not defined%}
+                        {#<td>{% if formulaDefinition.author|default %}{{formulaDefinition.author}}{%else%} -{%endif%}</td>#}
+                        {#<td>{% if work.taq|default %}{{work.taq}}{%else%} -{%endif%}</td>
+                        <td>{% if work.historicalActors is not empty%}
+                            <ul>{%for actor in work.historicalActors%}{% if actor|default%} <li>{{ actor}}</li> {%endif%}{%endfor%}</ul>
+                                {%endif%}
+                        </td>
+                        <td>{% if work.translator|default %}{{work.translator}}{%else%} -{%endif%}</td>
+                        <td>{% if work.place|default%}{{work.place}}{%else%}-{%endif%}</td>
+                        <td>{% if work.originalTexts is not empty%}
+                            <ul>{%for originalText in work.originalTexts %}
+                                {% if originalText.title|default%}  <li><a href="{{path('tamas_astro_adminViewOriginalText', {'id': originalText.id})}}">{{ originalText.title}}</a></li> {%endif%}{%endfor%}
+                            </ul>{%endif%}
+                        </td>#}
+                    {%endif%}
+                    {%if adminInfo is defined and adminInfo == 'true'%}
+                        <td>
+                            {% if pdfFile.created|default %}
+                                {{pdfFile.created|date('d/m/Y')}}
+                            {%else%}
+                                -
+                            {%endif%}
+                        </td>
+                        <td>
+                            {% if pdfFile.updated|default %}
+                                {{pdfFile.updated|date('d/m/Y')}}
+                            {%else%}
+                                -
+                            {%endif%}
+                        </td>
+                    {%endif%}
+                    {%if editDelete is defined and editDelete == 'true'%}
+                        <td class="col-md-2">
+                            <a href="{{path('tamas_astro_adminEditPDFFile', {'id': pdfFile.id})}}" class="btn btn-warning btn-sm edit-reference" user="{{pdfFile.createdBy.id}}" userName="{{pdfFile.createdBy.username}}"> <span class="glyphicon glyphicon-edit"></span> Edit</a>
+                            <a href="{{path('tamas_astro_adminDeleteObject', {'entity': 'PDFFile', 'id': pdfFile.id})}}" class="btn btn-danger btn-sm delete-reference" user="{{pdfFile.createdBy.id}}" userName="{{pdfFile.createdBy.username}}" ><span class="	glyphicon glyphicon-remove-circle"></span> Delete</a>
+                        </td>
+                    {%endif%}
+                </tr>
+            {%endfor%}
+            </tbody>
+            <tfoot>
+            <th></th>
+            <th></th>
+            {%if adminInfo is not defined%}
+                {#                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>#}
+                {#<th></th>#}
+            {%endif%}
+            {%if adminInfo is defined and adminInfo == 'true'%}
+                <th></th>
+            {%endif%}
+            {%if editDelete is defined and editDelete == 'true'%}
+                <th></th>
+            {%endif%}
+            </tfoot>
+
+        </table>
+    {%else%}<h4>No corresponding PDF was found in the database</h4>
+    {%endif%}
+</div>
+

@@ -1,0 +1,20 @@
+{#TAMAS\AstroBundle\Resources\views\PublicView\sideMetadata.html.twig#}
+{% if include == "html" %}
+    <div class="backgroundSidebar" id="side-metadata">
+        <h2>General information</h2>
+        <hr/>
+        {# ASTRONOMICAL PARAMETER SET SIDEBAR #}
+        {% if currentNode == "AP-rec" %}
+            {%  include 'TAMASAstroBundle:PublicView:Sidebar/MetadataTab/parameterMetadata.html.twig' with {'include': 'html'} %}
+        {# OTHER ENTITIES SIDEBAR #}
+        {% else %}
+            {%  include 'TAMASAstroBundle:PublicView:Sidebar/MetadataTab/defaultMetadata.html.twig' with {'include': 'html'} %}
+        {% endif %}
+
+        {% if metadata.visualization|default %}
+            <hr/>
+            <h3>{{ metadata.visualization.title }}</h3>
+            <div id="piechart"></div>
+        {% endif %}
+    </div>
+{% endif %}

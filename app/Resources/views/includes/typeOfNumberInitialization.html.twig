@@ -1,0 +1,15 @@
+
+
+<script>
+{#    name_to_base = {};
+    {% for typeOfNumber in typeOfNumbers %}
+        name_to_base['{{ typeOfNumber.codeName }}'] = JSON.parse('{{ typeOfNumber.baseJSON }}');
+        {% if typeOfNumber.integerSeparatorJSON is not null %}
+        name_to_base['{{ typeOfNumber.codeName }}'].integerSeparators = JSON.parse(_.unescape('{{ typeOfNumber.integerSeparatorJSON }}'));
+        {% endif %}
+    {% endfor %}
+        for (key in name_to_base) {
+            //name_to_base[key][0].reverse();
+            name_to_base[key].name = key;
+        }#}
+</script>

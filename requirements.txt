@@ -1,0 +1,16 @@
+gmpy
+numpy
+simpleodspy
+odfpy
+pylatex
+ipython
+pyinstaller
+memoized
+tqdm
+pyquery
+mypy
+Sphinx < 2.0
+sphinx-js
+pyquery
+sphinxcontrib-phpdomain
+recommonmark

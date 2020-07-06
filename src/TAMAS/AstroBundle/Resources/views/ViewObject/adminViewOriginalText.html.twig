@@ -1,0 +1,242 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\adminViewOriginalText.html.twig#}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+	View {{ object_info.properties.originalText.objectUserInterfaceName }} n°{{ originalText.id }} — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+{% set spec = {'editDelete': false, 'adminInfo': false} %}
+<ul class="nav nav-tabs" role="tablist">
+	<li role="presentation" class="active">
+		<a href="#information" aria-controls="information" role="tab" data-toggle="tab">
+			General information
+		</a>
+	</li>
+	<li role="presentation">
+		<a href="#comment" aria-controls="comment" role="tab" data-toggle="tab">
+			Comment
+		</a>
+	</li>
+</ul>
+
+{# =============================================== TAB CONTENT ==================================== #}
+<div class="row">
+	<div class="col-md-10">
+		<div class="tab-content">
+
+			{# =============================================== TAB ONE ======================================= #}
+			<div role="tabpanel" class="tab-pane active" id="information">
+				<div class="row">
+					<div class="definition-block">
+						<div class="col-md-6">
+							<div class="description-block hasTable">
+								<h4>General information</h4>
+								<table class="table table-hover">
+									<tr>
+										<th class="col-md-3">Title</th>
+										<td>
+											<i>
+												{%if originalText.smallTextTitle|default %}
+													{{originalText.smallTextTitle}}
+												{%elseif originalText.originalTextTitle|default %}
+													{{originalText.originalTextTitle}}
+												{%else%}
+													Unknown original item n°{{originalText.id}}
+												{%endif%}
+												{% if originalText.originalTextTitleOriginalChar %}
+													({{ originalText.originalTextTitleOriginalChar  }})
+												{% endif %}
+											</i>
+										</td>
+									</tr>
+									<tr>
+										<th>Id n°</th>
+										<td>{{originalText.id}}</td>
+									</tr>
+									{% if originalText.language.languageName|default %}
+									<tr>
+										<th>Language</th>
+										<td>{{originalText.language.languageName}}</td>
+									</tr>
+									{% endif %}
+									{% if originalText.script.scriptName|default %}
+									<tr>
+										<th>Script</th>
+										<td>{{originalText.script.scriptName}}</td>
+									</tr>
+									{% endif %}
+									{%if originalText.tpq|default or originalText.taq|default%}
+									<tr>
+										<th>Timeframe of production</th>
+										<td>{%if originalText.tpq|default %} {{originalText.tpq}}
+											{%endif%} – {%if originalText.taq|default%} {{originalText.taq}}
+											{%endif%}</td>
+									</tr>
+									{% endif %}
+									{% if originalText.primarySource|default %}
+									<tr>
+										<th>{{ object_info.properties.primarySource.objectUserInterfaceName|capitalize }}</th>
+										<td>
+											<a href="{{path('tamas_astro_adminViewPrimarySource', {'id': originalText.primarySource.id})}}">
+												{% if originalText.primarySource.library.libraryName|default %}
+													{% set library = originalText.primarySource.library.libraryName %}
+												{% else %}
+													{% set library = "Unknown place of conservation" %}
+													{% set noLib = true %}
+												{% endif %}
+
+												{% if originalText.primarySource.shelfmark|default %}
+													{% set shelfmark = originalText.primarySource.shelfmark %}
+												{% elseif originalText.primarySource.primTitle|default %}
+													{% set shelfmark = originalText.primarySource.primTitle|truncate(35) %}
+												{% else %}
+													{% set shelfmark = "Unknown primary source n°"~primarySource.id %}
+													{% set noShelf = true %}
+												{% endif %}
+
+												{%if noLib is defined and noShelf is defined%}
+													Unknown primary source n° {{originalText.primarySource.id}}
+												{%else%}
+													{{library}} | {{shelfmark}}
+													{%if originalText.pageMin|default or originalText.pageMax|default %}
+														,
+													{%endif%}
+
+													{%if originalText.pageMin|default%}
+														{{originalText.pageMin}}
+													{%else%}
+														[?]
+													{%endif%}
+														–
+													{%if originalText.pageMax|default%}
+														{{originalText.pageMax}}
+													{%else%}
+														[?]
+													{%endif%}
+												{%endif%}
+										</a>
+										{%if originalText.primarySource.primEditor|default %}
+											<br/> Published/Printed by {{originalText.primarySource.primEditor}}
+										{%endif%}
+										<br/>
+										{%if originalText.primarySource.digitalIdentifier|default %}
+											<span class="glyphicon glyphicon-globe"></span> {{originalText.primarySource.digitalIdentifier}}
+										{%endif%}
+										</td>
+									</tr>
+									{%endif%}
+									{%if originalText.place.placeName|default %}
+									<tr>
+										<th>Place of production</th>
+										<td>{{originalText.place.placeName}}</td>
+									</tr>
+									{%endif%}
+									{% if originalText.historicalActor|default %}
+									<tr>
+										<th>Scribal agent</th>
+										<td>{%- if originalText.historicalActor.actorName|default %}
+											{{originalText.historicalActor.actorName|capitalize}} {%else%}Unknown
+											copist n°{{originalText.historicalActor.id}} {% endif%} {% if originalText.historicalActor.tpq|default or originalText.historicalActor.taq|default %}
+											({%if originalText.historicalActor.tpq|default %} {{originalText.historicalActor.tpq }}
+											{%- endif -%} – {%-if originalText.historicalActor.taq|default-%}
+											{{originalText.historicalActor.taq}}) {%-endif-%} {%endif%},
+											{%if originalText.historicalActor.place.placeName|default%} {{originalText.historicalActor.place.placeName}}
+											{%endif%}</td>
+									</tr>
+									{%endif%}
+									{%if originalText.work|default %}
+									<tr>
+										<th>{{ object_info.properties.work.objectUserInterfaceName|capitalize }}</th>
+										<td><a
+											href="{{path('tamas_astro_adminViewWork', {'id': originalText.work.id})}}">
+												{%if originalText.work.title|default %} <i>{{originalText.work.title}}</i>
+												{%elseif originalText.work.incipit|default %} <i>{{originalText.work.incipit}}</i>
+												{%else%} Untitled n°{{originalText.work.id}} {%endif%}
+										</a> {% if originalText.work.historicalActors and originalText.work.historicalActors is not empty%}
+											<br /> Creator(s):
+											<ul>
+												{% for actor in originalText.work.historicalActors %}
+												<li>{% if actor.actorName|default %} {{actor.actorName|capitalize}}
+													{%else%}Unknown actor n°{{actor.id}} {%endif%} {%- if actor.tpq|default or actor.taq|default%}
+													({%-if actor.tpq|default-%} {{actor.tpq}} {%else%}?{%-endif%}
+													– {%if actor.taq|default %} {{actor.taq}} {%else%}?{%endif-%})
+													{%-endif -%} {%- if actor.place.placeName|default -%} , {{actor.place.placeName}}
+													{%endif%}</li>
+												{%endfor%}
+											</ul> {%endif%} {% if originalText.work.place.placeName|default %}Created
+											in {{originalText.work.place.placeName}} {% endif%} {% if originalText.work.tpq|default or originalText.work.taq|default%}
+											({%-if originalText.work.tpq|default-%} {{originalText.work.tpq}}
+											{%endif%} – {%if originalText.work.taq|default%} {{originalText.work.taq}}
+											{%endif-%}) {%endif%}</td>
+									</tr>
+									{%endif%}
+								</table>
+							</div>
+						</div>
+						<!-- /.col-md-4 -->
+						<div id="data-viz-1">
+							{% if visualization[0]|default() %}
+							{% include 'TAMASAstroBundle:DataViz:'~visualization[0]~'.html.twig' with {'include':'html'}%}
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div id="related-content" class="citation-block">
+							<h3>Related {{ object_info.properties.editedText.objectUserInterfaceName|plural }}</h3>
+							<div class="row">
+								{% if editedTexts.listObjects|default() %}
+									{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : spec, 'include': 'html', 'listObjects': editedTexts.listObjects} %}
+								{% else %}
+									<br/>
+									<div class="flash-notice alert alert-warning">
+										<span class="glyphicon glyphicon-info-sign"></span>
+										No corresponding record in the database
+									</div>
+								{% endif %}
+							</div>
+							<hr>
+							<div id="dialog" title="Info"></div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div role="tabpanel" class="tab-pane" id="comment">
+				<h4>Comment</h4>
+				<div class="row">
+					{% include 'TAMASAstroBundle:ViewObject:adminComment.html.twig' with {'object': originalText, 'viewEmpty': true}%}
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.col-lg-12 -->
+	<!-- /.col-md-8 -->
+	<div class="col-md-2 ">
+		{{render(controller("TAMASAstroBundle:AdminView:adminPanel", {'object': originalText}))}}
+	</div>
+</div>
+<!-- /.row -->
+
+<hr>
+{% endblock %}
+{% block javascripts %}
+{{parent()}}
+<script>
+	
+</script>
+{% set spec = {'editDelete': false, 'adminInfo': false} %}
+<script>
+{% if editedTexts.listObjects|default() %}
+
+{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec':spec, 'include':'js', 'listObjects': editedTexts.listObjects } %}
+{% endif %}
+
+</script>
+
+{% if visualization[0]|default() %}
+{% include 'TAMASAstroBundle:DataViz:'~visualization[0]~'.html.twig' with {'include':'js'}%}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,188 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\adminViewOriginalText.html.twig#}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+	View {{ object_info.properties.primarySource.objectUserInterfaceName }} n°{{ primarySource.id }} — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+<!-- Heading Row -->
+<div class="row">
+	<div class="col-md-12">
+		<div class="row">
+			<div class="col-md-5">
+				<div class="description-block hasTable">
+					<h4>General information</h4>
+					<table class="table table-hover">
+						<tr>
+							<th>Source</th>
+							<td>{{ primarySource.title }}</td>
+						</tr>
+						<tr>
+							<th>Id n°</th>
+							<td>{{ primarySource.id }}</td>
+						</tr>
+						{% if primarySource.editor is not null and primarySource.editor != "" %}
+						<tr>
+							<th>Editor/Printer</th>
+							<td>{{ primarySource.editor }}</td>
+						</tr>
+						{% endif %}
+						<tr>
+							<th>Timeframe of production</th>
+							<td>
+								{% if primarySource.type == "ms" %}
+									{{ primarySource.tpq }}–{{ primarySource.taq }}
+								{% else %}
+									{{ primarySource.date }}
+								{% endif %}
+							</td>
+						</tr>
+						{% if primarySource.type == "ep" %}
+						<tr>
+							<th>Repository</th>
+							<td>{{ primarySource.bibRef }}</td>
+						</tr>
+						{% endif %}
+						{% if primarySource.places is not empty %}
+						<tr>
+							<th>Place(s) of production</th>
+							<td>
+								<ul>
+									{% for place in primarySource.places %}
+										{% if place|default %}
+										<li>{{ place }}</li>
+										{% endif %}
+									{% endfor %}
+								</ul>
+							</td>
+						</tr>
+						{% endif %}
+						{% if primarySource.scribes is not empty %}
+						<tr>
+							<th>Scribal agent(s)</th>
+							<td>
+								<ul>
+									{% for scribe in primarySource.scribes %}
+									<li>{{ scribe }}</li>
+									{% endfor %}
+								</ul>
+							</td>
+						</tr>
+						{% endif %}
+						{% if primarySource.digitalIdentifier %}
+						<tr>
+							<th>Online Resources</th>
+							<td>
+								<a href="{{ primarySource.digitalIdentifier }}">
+									Click here
+								</a>
+							</td>
+						</tr>
+						{% endif %}
+					</table>
+				</div>
+			</div>
+			<div class="col-md-5">
+				<div id="data-viz-1">
+					{% if visualization[0]|default() %}
+					{% include 'TAMASAstroBundle:DataViz:'~visualization[0]~'.html.twig' with {'include':'html'} %}
+					{% endif %}
+				</div>
+			</div>
+
+			<div class="col-md-2 ">
+				{{ render(controller("TAMASAstroBundle:AdminView:adminPanel", {'object': primarySourceObject})) }}
+			</div>
+		</div>
+		<!-- /.row -->
+		<div class="row">
+			<div id="related-content" class="citation-block">
+				<h3>Related objects</h3>
+				<label for="related-item">Class by</label>
+				<select class="form-control" id="related-item">
+					<option value="original">{{ object_info.properties.originalText.objectUserInterfaceName|ucfirst }}</option>
+					<option value="work">{{ object_info.properties.work.objectUserInterfaceName|ucfirst }}</option>
+				</select>
+				<div class="row">
+					<div id="original">
+					{% if originalTexts.listObjects|default() %}
+						{% set originalTextSpec = spec|merge({'tableId': 'originalText-list'}) %}
+						{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : originalTextSpec, 'include': 'html', 'listObjects': originalTexts.listObjects} %}
+					{% else %}
+						<br/>
+						<div class="flash-notice alert alert-warning">
+							<span class="glyphicon glyphicon-info-sign"></span>
+							No corresponding record in the database
+						</div>
+					{% endif %}
+					</div>
+				</div>
+				<div class="row">
+					<div id="work" class="hidden">
+					{% if works.listObjects|default() %}
+						{% set workSpec = spec|merge({'tableId': 'work-list'}) %}
+						{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : workSpec, 'include': 'html', 'listObjects': works.listObjects} %}
+					{% else %}
+							<br/>
+							<div class="flash-notice alert alert-warning">
+								<span class="glyphicon glyphicon-info-sign"></span>
+								No corresponding record in the database
+							</div>
+					{% endif %}
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+		</div>
+	</div>
+</div>
+<hr>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+
+{% if originalTexts.listObjects|default() %}
+{% set originalTextSpec = spec|merge({'tableId': '#originalText-list'}) %}
+{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : originalTextSpec, 'include': 'js', 'listObjects': originalTexts.listObjects} %}
+{% endif %}
+
+{% if works.listObjects|default() %}
+{% set workSpec = spec|merge({'tableId': '#work-list'}) %}
+{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : workSpec, 'include': 'js', 'listObjects': works.listObjects} %}
+{% endif %}
+
+function switchRelatedItem(selected) {
+	if ($(selected).val() === "work") {
+		$("#work").removeClass("hidden");
+		$("#original").addClass("hidden");
+		$.fn.dataTable.tables({
+			visible : true,
+			api : true
+		}).columns.adjust().draw();
+	} else {
+		$("#work").addClass("hidden");
+		$("#original").removeClass("hidden");
+		$.fn.dataTable.tables({
+			visible : true,
+			api : true
+		}).columns.adjust().draw();
+	}
+}
+
+switchRelatedItem('#related-item');
+	$(document).ready(function() {
+		
+		$('#related-item').change(function() {
+			switchRelatedItem(this);
+		});
+
+	});
+	
+</script>
+{% if visualization[0]|default() %}
+{% include 'TAMASAstroBundle:DataViz:'~visualization[0]~'.html.twig' with {'include':'js', 'noControl': true} %}
+{% endif %}
+{% endblock %}

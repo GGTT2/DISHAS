@@ -1,0 +1,50 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\team.html.twig#}
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% set currentNode = "partners" %}
+
+{% block title %}
+    DISHAS Partners — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    {% include 'TAMASAstroBundle:Default:Templates/pageHeader.html.twig' with {"title":"Partners", "tag":"h1"} %}
+
+    <div class="col-md-10 col-md-offset-1" style="text-align: center">
+        <div id="partners">
+            <table>
+                <tbody>
+                <tr>
+                    <td class="vertical-align" colspan="2">
+                        <a href="http://www.hamsi.org.nz/">
+                            <img class="img-fluid" src="{{asset('img/hamsi-logo.png')}}" alt="HAMSI Logo"/>
+                        </a>
+                    </td>
+                    <td class="vertical-align" colspan="2">
+                        <a href="https://ptolemaeus.badw.de/project">
+                            <img class="img-fluid" src="{{asset('img/PAL-logo.jpg')}}" alt="PAL Logo"/>
+                        </a>
+                    </td>
+                    <td class="vertical-align" colspan="2">
+                        <a href="https://alfa.hypotheses.org/">
+                            <img class="img-fluid" src="{{asset('img/logo-alfa.png')}}" alt="ALFA Logo"/>
+                        </a>
+                    </td>
+                </tr>
+                <tr style="height: 50px"></tr>
+                <tr>
+                    <td class="vertical-align" colspan="3">
+                        <a href="https://tamas.hypotheses.org/">
+                            <img class="img-fluid" src="{{asset('img/tamas-logo.png')}}" alt="TAMAS Logo"/>
+                        </a>
+                    </td>
+                    <td class="vertical-align" colspan="3">
+                        <a href="https://sites.google.com/site/chamaiuhps/">
+                            <img class="img-fluid" src="{{asset('img/logo-chama.png')}}" alt="CHAMA Logo"/>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+{% endblock %}

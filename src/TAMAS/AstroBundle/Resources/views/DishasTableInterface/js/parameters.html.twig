@@ -1,0 +1,103 @@
+{# On the behaviour of parameters toward the table, see in js/DISHAS_table/DTITable.js#}
+<script type="text/javascript">
+
+{#adding the ref to the right table type to the adder and reloader #}
+reloaders["#refresh-{{form.vars.id}}_parameterSets"].changeParameters({'option': {{tableContent.tableType.id}}});
+const href = $("#add-{{form.vars.id}}_parameterSets").attr("href")+"/{{tableContent.tableType.id}}" 
+$("#add-{{form.vars.id}}_parameterSets").attr("href", href);
+
+
+//The links between the parameter modal and the model modal are set in the web/js/DISHAS_tables/myHandsonTable_table.js
+
+ /**
+  * Return the mathematical parameters currently selected by the user as an object
+  * @return {string} [description]
+  */
+ function getMathematicalParameterSetId() {
+ 	var selection = $('#{{form.vars.id}}_mathematicalParameter :selected');
+ 	var res = selection[0].getAttribute('data-id');
+ 	if (res === null)
+ 		return "";
+ 	return res;
+ }
+
+ /**
+  * Return the astronomical parameters currently selected by the user as an object
+  * @return {[type]} [description]
+  */
+ function getAstronomicalParameterSetIds() {
+ 	var selection = $('#{{form.vars.id}}_parameterSets :selected');
+ 	var res = [];
+ 	for (var i=0; i<selection.length; i++) {
+ 		res.push(selection[i].getAttribute('data-id'));
+ 	}
+ 	return res;
+ }
+
+/**
+ * This function checks if the selected math param is consistent with the template of the table
+ */
+function isValidMathematicalParameters(){
+	let mathParam = table.mathematicalParameters;
+	let empty = true;
+	for (i in mathParam){ // There is always an object mathParam, but if none is selected, all its fields are = 0
+		if(mathParam[i]){
+			empty = false; // if at least one of the field is filled, we need to check the validity of the math param
+			break;
+		}	
+	}
+	if (empty === true)
+		return true;
+	if (mathParam.nargs > table.zones[0].spec.args.length)
+		return false;
+	if (mathParam.entryShift > table.zones[0].spec.args[0].nsteps)
+		return false;
+	if (mathParam.argumentShift > table.zones[0].spec.args[0].nsteps )
+		return false;
+	if ("entryShift2" in mathParam && mathParam.entryShift2 > table.zones[0].spec.args[1].nsteps )
+		return false;
+    if ("argument2Shift" in mathParam && mathParam.argument2Shift > table.zones[0].spec.args[1].nsteps )
+        return false;
+	return true;
+}
+
+
+{% if form.meanMotion|default %}
+    let longSMF = SmartNumberField.generateSMFBinds('{{form.meanMotion.longSmartNumber.vars.id}}','{{form.meanMotion.longFloat.vars.id}}','{{form.meanMotion.longOrigBase.vars.id}}', '{{form.meanMotion.longTypeOfNumber.vars.id}}');
+    let rootSMF = SmartNumberField.generateSMFBinds('{{form.meanMotion.rootSmartNumber.vars.id}}','{{form.meanMotion.rootFloat.vars.id}}','{{form.meanMotion.rootOrigBase.vars.id}}', '{{form.meanMotion.rootTypeOfNumber.vars.id}}')
+    let smartNumberFields = {...longSMF, ...rootSMF }
+{% endif %}
+
+/**
+**This method display the localization parameters (=mean-motion-parameters")
+* Only if the selected sub-type is "collected years"
+*/
+function switchLocalizationParameters(){
+	if ($('#{{form.vars.id}}_meanMotion_subTimeUnit').val() === "1"){
+		$('#mean-motion-parameter').show();
+	}else{
+		$('#mean-motion-parameter').hide();
+	}
+}
+/**
+* This function removes the parameters if the sub-type is not "collected years".
+* It is called at the submit
+*/
+function checkLocalizationParameters(){
+	if ($('#{{form.vars.id}}_meanMotion_subTimeUnit').val() !== "1"){
+		$("#mean-motion-parameter input").val('')
+	}
+}
+
+$('#{{form.vars.id}}_meanMotion_subTimeUnit, #{{form.vars.id}}_argument1NumberUnit').change(switchLocalizationParameters);
+switchLocalizationParameters();
+
+$("#apply-parameter").click(function(e){
+	e.preventDefault();
+	if (!isValidMathematicalParameters()){
+		alert("The mathematical parameters are not consistent with the table template.\nThe corrected values could not be calculated. \nPlease check the mathematical parameters before submitting the data.");
+		return false;
+	}
+	return true;
+});
+</script>

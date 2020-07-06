@@ -1,0 +1,71 @@
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+    {{ action|capitalize }} {{ object_info.properties.library.objectUserInterfaceName }} — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    {% form_theme form 'bootstrap_3_TAMAS.html.twig' %}
+    {{form_start(form, {'attr': {'class': 'form'}})}}
+    {{form_errors(form)}}
+
+<div class="row">
+    <div class="col-md-10">
+        <div class="well">
+            <div id="original-doc-primary-source-library">
+                {{form_row(form.libraryName)}}
+                <div class="row">
+                    <div class="col-md-3">
+                        {{ form_row(form.city)}}
+                    </div>
+                    <div class="col-md-3">
+                        {{form_row(form.libraryCountry)}}
+                    </div>
+
+                    <div class=" col-md-3">
+                        {{form_row(form.libraryIdentifier)}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        {%include 'TAMASAstroBundle:AddObject:adminPannel.html.twig'%}
+    </div>
+    {% endblock %}
+
+    {% block javascripts %}
+        {{parent()}}
+        <script>
+            $("#tamas_astrobundle_library_libraryName").autocomplete({
+                source: function (request, response) {
+                    $.getJSON(
+                        "https://isni.ringgold.com/api/stable/search",
+                        {q: request.term},
+                        function (result) {
+                            response(
+                                $.map(result.institutions, function (value, key) {
+                                    return {
+                                        label: value.name,
+                                        value: value.name,
+                                        isni: value.isni,
+                                        locality: value.locality,
+                                        country: value.country_code
+                                    };
+                                })
+                            );
+                        });
+                },
+                minLength: 1,
+            }).on("autocompleteselect", function (e, ui) {
+                $('#tamas_astrobundle_library_libraryIdentifier').val(ui.item.isni);
+                $('#tamas_astrobundle_library_libraryCountry').val(ui.item.country);
+                $('#tamas_astrobundle_library_city').val(ui.item.locality);
+                $("#original-doc-primary-source-library").find("input, select").parent().addClass('has-success');
+            }).on("autocompletechange", function (e, ui) {
+                if (ui.item === null) {
+                    $("#original-doc-primary-source-library").find("input, select").parent().removeClass('has-success');
+                }
+            });
+        </script>
+    {% endblock %}

@@ -1,0 +1,88 @@
+{
+    "historicalactor": {
+    "56": {
+            "_comment": "valid",
+            "tpq": "1"
+    },
+    "57":{
+            "_comment": "try with an object that have a taq: not valid because tpq is higher",
+            "taq": "15000"
+    },
+    "58":{},
+    "59":{
+            "_comment": "wrong, as the one before: editing an entity with nothing is not ok"
+    },
+    "60":{  "_comment": "wrong: missing the notBlank() fields + empty entity",
+            "actorName": "",
+            "actorNameOriginalChar":"",
+            "tpq":"",
+            "taq":"",
+            "place":"",
+            "viafIdentifier":""
+    },
+    "61":{
+           "_comment": "wrong: this entity is a duplicate from another. UniqueEntity triggers error",
+           "actorName": "test",
+            "actorNameOriginalChar": "",
+            "tpq": "10",
+            "taq": "10",
+            "place": "11",
+            "viafIdentifier": "316880574"
+    },    
+	"49": {
+            "actorName": "test",
+            "actorNameOriginalChar": "",
+            "tpq": "10",
+            "taq": "10",
+	        "place": "11",
+	        "viafIdentifier": "316880574"
+        },
+	"50": {
+            "actorName": "Dinakara",
+            "actorNameOriginalChar": "",
+            "tpq": "1730",
+            "taq": "1800",
+	    "place": "5"
+        },
+	"51": {
+            "actorName": "Dinakara",
+            "actorNameOriginalChar": "",
+            "tpq": "1730",
+            "taq": "1800",
+	    "place": {
+	        "placeName": "Varanasi, Uttar Pradesh, India",
+	        "placeNameOriginalChar": "",
+	        "placeLat": "25.3176452",
+	        "placeLong": "82.97391440000001"
+	    }
+        },
+	"52": {
+            "actorName": "",
+            "actorNameOriginalChar": "",
+            "tpq": "1730",
+            "taq": "1800",
+	    "place": "5"
+        },
+	"53": {
+            "actorName": "test",
+            "actorNameOriginalChar": "",
+            "tpq": "10",
+            "taq": "1",
+	    "place": "11"
+        },
+	"54": {
+            "actorName": "",
+            "actorNameOriginalChar": "",
+            "tpq": "",
+            "taq": "",
+	    "place": ""
+        },
+	"55": {
+            "actorName": "ValidActorCorrectlyEdited",
+            "actorNameOriginalChar": "",
+            "tpq": "",
+	    "place": "11"
+        }
+    }
+}
+

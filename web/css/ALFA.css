@@ -1,0 +1,125 @@
+/* Created on : 6 mars 2018, 15:55:45 - Author : gtopalian */
+
+.main-content{
+    background-color: white;
+}
+
+.info-source {
+    color: rgba(0, 0, 0, 0.75);
+    font-size: 80%;
+    padding: 0 6px;
+}
+
+.disclaimer {
+    text-align: center;
+    font-family: Abel, sans-serif;
+    font-style: italic;
+    font-size: 120%;
+    color: rgba(0, 0, 0, 0.7);
+    padding: 10px 40px;
+    margin: 10px 150px;
+}
+
+.disclaimer p {
+    margin: 0;
+}
+
+.identifier {
+    font-weight: bold;
+    font-size: 90%;
+}
+
+.fixed-size{
+    width: 100px;
+    margin-right: 5px;
+    margin-bottom: 3px;
+}
+
+summary::-webkit-details-marker {
+    display: none
+}
+
+.alfa-content {
+    margin: 30px;
+}
+
+.logo-alfa {
+    background-size: 100%;
+    padding-left: 40px;
+    padding-right: 40px;
+    display: block;
+    height: 32px;
+    margin-top: -5px;
+}
+
+.documentation {
+    padding: 10px 20px;
+    text-align: justify;
+    font-size: 110%;
+}
+
+summary:after {
+    font-weight: bold;
+    text-align: center;
+    width: 20px;
+    margin: -5px 5px 0 0;
+    /*font-family: 'Glyphicons Halflings';
+    content:"\2b \00a0"; !* plus sign + nbsp *!
+    float: left;
+    font-size: 13px;*/
+}
+
+details[open] summary:after {
+    /*font-family: 'Glyphicons Halflings';
+    font-size: 13px;
+    content:"\2212 \00a0"; !* minus sign + nbsp *!*/
+    float: left;
+}
+
+summary h4{
+    display: inline;
+}
+
+.icon-info {
+    margin: 15px 0;
+    padding: 10px;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.highlight{
+    background-color: #428bca;
+    color: white;
+}
+
+.margin-content{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.open-tab:after{
+    font-family: 'Glyphicons Halflings';  
+    font-size: 13px;
+    float: left;
+    content:"\2212 \00a0";
+}
+
+.closed-tab:after{
+    font-family: 'Glyphicons Halflings';
+    content:"\2b \00a0 ";
+    float: left;
+    font-size: 13px;
+}
+
+#alfa-main{
+    background-image: url("../img/ALFA-main.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 250px;
+}
+
+.btn-xxl{
+	padding-top: 30px;
+	padding-bottom: 30px;
+	width: 100%;
+	font-size: x-large;
+}

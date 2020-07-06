@@ -1,0 +1,41 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\Templates\entityDefinitions.html.twig#}
+<div class="section {{ color }}" style="margin-bottom: -100px;">
+    <div class="w-container">
+        <div>
+            <h2 class="{{ color }}">Database entities</h2>
+            <div class="horizontal-bar {{ color }}"></div>
+        </div>
+        <div class="row" style="padding: 25px 0 50px">
+            <table>
+                <tr>
+                    {% include 'TAMASAstroBundle:Default:Templates/entityPicto.html.twig' with {'entity':'formulaDefinition', 'color': color} %}
+                    {% include 'TAMASAstroBundle:Default:Templates/entityPicto.html.twig' with {'entity':'parameterSet', 'color': color} %}
+                    {% include 'TAMASAstroBundle:Default:Templates/entityPicto.html.twig' with {'entity':'primarySource', 'color': color} %}
+                    {% include 'TAMASAstroBundle:Default:Templates/entityPicto.html.twig' with {'entity':'editedText', 'color': color} %}
+                    {% include 'TAMASAstroBundle:Default:Templates/entityPicto.html.twig' with {'entity':'originalText', 'color': color} %}
+                    {% include 'TAMASAstroBundle:Default:Templates/entityPicto.html.twig' with {'entity':'work', 'color': color} %}
+                </tr>
+            </table>
+        </div>
+        <div class="section" style="margin: -30px 0">
+            <div class="w-container">
+                <div data-animation="slide" data-duration="500" data-infinite="1" class="presentations-slider w-slider">
+                    <div class="w-slider-mask">
+                        {% include 'TAMASAstroBundle:Default:Templates/entityDef.html.twig' with {'entity':'formulaDefinition', 'color': color} %}
+                        {% include 'TAMASAstroBundle:Default:Templates/entityDef.html.twig' with {'entity':'parameterSet', 'color': color} %}
+                        {% include 'TAMASAstroBundle:Default:Templates/entityDef.html.twig' with {'entity':'primarySource', 'color': color} %}
+                        {% include 'TAMASAstroBundle:Default:Templates/entityDef.html.twig' with {'entity':'editedText', 'color': color} %}
+                        {% include 'TAMASAstroBundle:Default:Templates/entityDef.html.twig' with {'entity':'originalText', 'color': color} %}
+                        {% include 'TAMASAstroBundle:Default:Templates/entityDef.html.twig' with {'entity':'work', 'color': color} %}
+                    </div>
+                    <div class="left-arrow w-slider-arrow-left">
+                        <span style="margin: 0;position: absolute;top: 50%;-ms-transform: translateY(-50%);transform: translateY(-50%);" class="glyphicon glyphicon-chevron-left"></span>
+                    </div>
+                    <div class="right-arrow w-slider-arrow-right">
+                        <span style="margin: 0;position: absolute;top: 50%;-ms-transform: translateY(-50%);transform: translateY(-50%);" class="glyphicon glyphicon-chevron-right"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

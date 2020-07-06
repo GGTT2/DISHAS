@@ -1,0 +1,80 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\PublicData\astronomicalNavigation.html.twig#}
+
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% block title %}
+	Astronomical navigation — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+	{# PAGE HEADER #}
+	<div>
+		<blockquote class="intro-paragraph">
+			<h1 class="page-title">
+				Astronomical navigation
+				<button type="button" class="btn moreInfo-btn" data-container="body" data-html="true" data-trigger="focus" data-toggle="popover" data-placement="bottom"
+						data-content="{#{{ visualizationDefinition|raw|default }}#}">
+					<span class="glyphicon glyphicon-question-sign moreInfo"></span>
+				</button>
+			</h1>
+			<p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+		</blockquote>
+	</div>
+	<div>
+		<div>
+			<div class="row">
+				<h2>Astronomical object usage</h2>
+				<div class="row" id="chartdiv-type" style="height: 400px"></div>
+				<h2>Edited tables</h2>
+				<div class="row" id="chartdiv-item" style="height: 190px"></div>
+				<h2>Astronomical parameter usage in table editions</h2>
+				<div class="row" id="chartdiv-param" style="height: 190px"></div>
+				<div class="row">
+					<div class="container" id="boxdiv"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{asset('js/amcharts4/core.js')}}"></script>
+	<script src="{{asset('js/amcharts4/charts.js')}}"></script>
+	<script src="{{asset('js/amcharts4/themes/animated.js')}}"></script>
+
+	<script src="{{asset('js/DISHAS_charts/DishasChart.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DishasConfig.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DishasEntity.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DishasBox.js')}}"></script>
+
+	<script src="{{asset('js/DISHAS_charts/DISHAS_dataset/DishasDataset.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DISHAS_dataset/DishasMultiTreemapDataset.js')}}"></script>
+	<script src="{{asset('js/DISHAS_charts/DishasMultiTreemap.js')}}"></script>
+
+	<script>
+		/**
+		 * List of fields that will be retrieve from elasticsearch and will appear in the results ("_source" property)
+		 * @type {string[]}
+		 */
+		const sources = [
+			"id", "kibana_name",
+			"table_contents.parameter_sets.id", "table_contents.parameter_sets.default_title",
+			"table_type.id", "table_type.table_type_name",
+			"table_type.astronomical_object.id", "table_type.astronomical_object.object_name",
+			"original_texts.id", "original_texts.original_text_title",
+			"related_editions.original_texts.id", "related_editions.original_texts.original_text_title"
+		];
+
+		let astroObjects = {{ astroObjects|json_encode|raw }};
+		let paramSets = {{ paramSets|json_encode|raw }};
+
+		$(document).ready(function () {
+			$.getJSON(generateUrl("", "edited_text", sources), response => {
+				const data = new DishasMultiTreemapDataset(response, {type: astroObjects, param: paramSets});
+				treemap = new DishasChart(data, new DishasConfig("400px", false));
+			});
+		});
+
+	</script>
+{% endblock %}

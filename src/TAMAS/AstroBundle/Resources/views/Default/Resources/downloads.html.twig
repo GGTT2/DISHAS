@@ -1,0 +1,12 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\Downloads.html.twig#}
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% set currentNode = "downloads" %}
+
+{% block title %}
+    Downloads — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    {% include 'TAMASAstroBundle:Default:Templates/pageHeader.html.twig' with {"title":"Downloads", "tag":"h1"} %}
+{% endblock %}

@@ -1,0 +1,35 @@
+{#TAMAS\AstroBundle\Resources\views\PublicView\TableEditionView\astronomicalTab.html.twig#}
+{% if include == "html" %}
+    <div id="content-comm" role="tabpanel" class="tab-pane content-wrapper">
+        <h1 class="row">
+            <span class="col-md-1 col-md-offset-1 glyphicon glyphicon-comment"></span>
+            <span class="col-md-10">Commentary</span>
+        </h1>
+        <hr class="black-hr">
+        <div class="row content-panel">
+            {% if comments.edit|default %}
+                <h1 class="col-md-10 col-md-offset-1" style="font-weight: bold">Commentary on the edition</h1>
+                <div class="col-md-10 col-md-offset-1">
+                    <p>{{ comments.edit|raw }}</p>
+                </div>
+            {% endif %}
+            {% if comments.astro|length != 0 %}
+                <h1 class="col-md-10 col-md-offset-1" style="font-weight: bold">Commentary on the table content</h1>
+                {% for id, comment in comments.astro %}
+                    {% if comments.astro|length > 1 %}
+                        {# In case it is a mean motion table, indicate the name of the table contents #}
+                        <h2 class="col-md-10 col-md-offset-1">Comment on the {{ id }} table</h2>
+                        <div class="col-md-10 col-md-offset-1">
+                            <p>{{ comment|raw }}</p>
+                        </div>
+                    {% else %}
+                        <div class="col-md-10 col-md-offset-1">
+                            <p>{{ comment|raw }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% elseif include == "js" %}
+{% endif %}

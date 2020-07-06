@@ -1,0 +1,888 @@
+{% extends "TAMASALFABundle:Default:alfa_layout.html.twig" %}
+{% block main %}
+
+    <div class="margin-content" >
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav">
+                                <li id ="overview-tab" class=" main-nav active"><a href="#overview" data-toggle="tab">Overview</a></li>
+                                <li id ="phys-desc-tab" class="main-nav"><a href="#phys-desc" data-toggle="tab">Physical description</a></li>
+                                <li id="intellectual-content-tab" class="main-nav"><a href="#intellectual-content" data-toggle="tab">Intellectual content</a></li>
+                                <li id="history-tab" class="main-nav"><a href="#history" data-toggle="tab">History</a></li>
+                                <li id="resource-tab" class="main-nav"><a href="#resource" data-toggle="tab">Resource</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        {% include 'TAMASALFABundle:Default:disclaimer.html.twig' %}
+        <div class="tab-content">
+            <div id="overview" class="tab-pane fade in active main-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="citation-block">
+                            <h3>ID card of the manuscript</h3>
+                            <table class="table table-hover has-table">
+                                <tr>
+                                    <th scope="row" class="col-md-3">
+                                        Shelfmark
+                                    </th>
+                                    {%set i  = 1%}
+                                    <td>{%for key, msPart in manuscript.msParts%}
+
+                                        {% if msPart.shelfmark|default() %}
+                                            {%if manuscript.msParts|length > 1%}Ms Part {{key}}: {%endif%}{{msPart.shelfmark|raw()}} {%if msPart != loop.last%}; {%endif%}
+                                        {%endif%}{%endfor%}.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            Date                                    
+                                        </th>
+                                        <td>
+                                            {%for key, msPart in manuscript.msParts%}
+
+                                                {% if msPart.tpq|default() or msPart.taq|default() %}
+                                                    {%if manuscript.msParts|length > 1%}Ms Part {{key}}: {%endif%}{{msPart.tpq|replaceNull("?")}}–{{msPart.taq|replaceNull("?")}} {%if msPart != loop.last%}; {%endif%}
+                                            {%endif%}{%endfor%}.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            Language
+                                        </th>
+                                        <td>
+                                            {%for key, msPart in manuscript.msParts%}
+
+                                                {% if msPart.languages|default()%}
+                                                {%if manuscript.msParts|length > 1%}Ms Part {{key}}: {%endif%}{%for language in msPart.languages%}{{language|capitalize|replaceNull()}}{%if language != loop.last%},{%endif%}{%endfor%}{%if msPart != loop.last%}; {%endif%}
+                                        {%endif%}{%endfor%}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Format
+                                    </th>
+                                    <td>
+                                        {%for key, msPart in manuscript.msParts%}
+
+                                            {% if msPart.format|default()%}
+                                                {%if manuscript.msParts|length > 1%}Ms Part {{key}}: {%endif%}{{msPart.format|capitalize|replaceNull()}}{%if msPart != loop.last%}; {%endif%}
+                                        {%endif%}{%endfor%}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Material
+                                    </th>
+                                    <td>
+                                        {%for key, msPart in manuscript.msParts%}
+
+                                            {% if msPart.material|default()%}
+                                                {%if manuscript.msParts|length > 1%}Ms Part {{key}}: {%endif%}{{msPart.material|capitalize|replaceNull()}}{%if msPart != loop.last%}; {%endif%}
+                                        {%endif%}{%endfor%}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Extent
+                                    </th>
+                                    <td>
+                                        {%for key, msPart in manuscript.msParts%}
+
+                                            {% if msPart.extent|default()%}
+                                                {%if manuscript.msParts|length > 1%}Ms Part {{key}}: {%endif%}{{msPart.extent|capitalize|replaceNull()}}{%if msPart != loop.last%}; {%endif%}
+                                        {%endif%}{%endfor%}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Dimensions
+                                    </th>
+                                    <td>
+                                        {%for key, msPart in manuscript.msParts%}
+
+                                            {% if msPart.dimensions|default()%}
+                                                {%if manuscript.msParts|length > 1%}Ms Part {{key}}: {%endif%}{{msPart.dimensions|capitalize|replaceNull()}}{%if msPart != loop.last%}; {%endif%}
+                                        {%endif%}{%endfor%}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Binding
+                                    </th>
+                                    <td>
+                                        {%for key, msPart in manuscript.msParts%}
+
+                                            {% if msPart.binding|default()%}
+                                                {%if manuscript.msParts|length > 1%}Ms Part {{key}}: {%endif%}{{msPart.binding.material|capitalize|replaceNull()}} {%if msPart.binding.dimensions|default()%}(<i>dimensions: {{msPart.binding.dimensions}}</i>){%endif%}{%if msPart != loop.last%}; {%endif%}
+                                        {%endif%}{%endfor%}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Rights
+                                    </th>
+                                    <td>
+                                        {%if(rights|default())%}
+                                            {{rights|raw()}}
+                                        {%else%} This work is protected by a CC-By licence 
+                                        {%endif%}
+
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="phys-desc" class="tab-pane fade main-content">
+                <div class="panel-group" id="ms-part" role="tablist" aria-multiselectable="true">
+                    {% set i = 0 %}
+                    {% for key, msPart in manuscript.msParts %}
+                        {%set i = i + 1%}
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="ms-part-title-{{i}}">
+                                <h2 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#ms-part-{{i}}" href="#ms-part-{{i}}" aria-expanded="true" aria-controls="ms-part-{{i}}">
+                                        Ms Part: {{key}}
+                                    </a>
+                                </h2>
+                            </div>
+                            <div id="ms-part-{{i}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-one-{{i}}">
+                                <div class="panel-body">
+                                    <div class="definition-block">
+                                        {%if msPart.foliation|default() or msPart.formula|default() or msPart.watermarks|default()%}
+                                            <h3>General information</h3>
+
+                                            {%if msPart.foliation|default()%}
+                                                <h4>Foliation</h4>
+                                                <p>{{msPart.foliation|raw}}</p>
+                                            {%endif%}
+
+                                            {%if msPart.formula|default()%}
+                                                <h4>Formula</h4>
+                                                <p>{{msPart.formula|raw}}</p>
+                                            {%endif%}
+                                            {%if msPart.watermarks|default()%}
+                                                <h4>Watermarks</h4>
+                                                {%for watermark in msPart.watermarks%}
+                                                    <p>{{watermark|raw}}</p>
+                                                {%endfor%}
+                                            {%endif%}
+                                            <hr/>
+                                        {%endif%}
+                                        {# 1: boucler sur les manuscriptparts, dont le "main" fait partie#}
+                                        {#y titre de la msPart}
+                                        {# 2. dans cette boucle, boucler sur les unitProd#}
+                                        {% for key, unitProd in msPart.unitProds%}
+                                            <details>
+                                                <summary>
+                                                    <h4 class="pointer" id="{{unitProd.id}}">{{unitProd.id}}</h4> <span>({{unitProd.locus.string}})</span></summary>
+                                                <div class="row">
+                                                    <div class="col-md-offset-2">
+                                                        <div class="citation-block">
+                                                            <table class="table">
+                                                                <tr>
+                                                                    <th class="col-md-2">Contents</th>
+                                                                    <td>
+                                                                        {%set j = 1%}
+                                                                        {% for content in unitProd.contents%}
+                                                                            <a class="internal-link" tar="to-work" ref="#{{content.id}}" id="link-{{content.id}}]" n='{{j}}'>{{ content.title.uniform|replaceNull()|truncate(20)}}</a>
+                                                                            {%if loop.last != true %} ; {%endif%}                                                           
+                                                                            {%set j = j+1%}
+                                                                        {%endfor%}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Scribes</th>
+                                                                    <td>{%for copyist in unitProd.copyists%} <a class="internal-link" tar="to-hand" ref="#{{copyist.id}}">{%if copyist.person.name|default()%}{{copyist.person.name|replaceNull('Anonymous '~copyist.id)}}{%else%} Anonymous {{copyist.id}}{%endif%}</a>{%if loop.last != true %} ; {%endif%} {%endfor%}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Annotators</th>
+                                                                    <td>{%for annotator in unitProd.annotators%}
+                                                                        <a class="internal-link" tar="to-hand" ref="#{{annotator.id}}">{%if annotator.person.name|default()%}{{annotator.person.name|replaceNull('Anonymous '~annotator.id)}}                                                                        
+                                                                        {%else%} Anonymous {{annotator.id}}{%endif%}</a>{%if loop.last != true %} ; {%endif%} {%endfor%}</a></td>
+                                                                        </tr>{%if unitProd.slips is not null and unitProd.slips is not empty%}
+                                                                        <tr>
+                                                                            <th>Inserted slips</th>
+                                                                            <td> {%for slip in unitProd.slips%}
+                                                                                <button type="button" class="btn btn-secondary" data-toggle="tooltip"  data-placement="top" title="
+                                                                                {%if slip.resp|default()%}Inserted by: {%if slip.resp.person.name|default()%}({{slip.resp.person.name}}){%else%} Anonymous {{slip.resp.id}}{%endif%}{%if slip.locus|default()%}, {%endif%}{%endif%}
+                                                                                {%if slip.locus|default()%}
+                                                                                    {{slip.locus.string}}
+                                                                                {%endif%} {{slip.dimensions}}.">
+                                                                                <span class="glyphicon glyphicon-file"></span>
+                                                                            </button> {%endfor%}
+                                                                        </td>                                                            
+                                                                    </tr>{%endif%}
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                </details>{%endfor%} 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>{%endfor%}
+                            </div>
+                        </div>
+                        <div id="intellectual-content" class="tab-pane fade main-content">
+                            <div class="row">
+                                <div class="col-md-3 plein">
+                                    <h3>Navigation</h3>
+                                    <div id="navigation-tree"></div>
+                                </div>
+                                {%set k = 0%}
+                                {%for msPart in manuscript.msParts%}
+                                    {%set k = k+1%}
+                                    {%set j = 0%}
+                                    {%for work in msPart.works%}  
+                                        {%set j = j+1%}
+                                        <div id="{{work.id}}" class="work-hidden" style="display:none">
+                                            <div class="col-md-6 plein">
+                                                <h3>Work contents</h3>
+                                                <div class="citation-block">
+                                                    <h4>{%if work.title.main|default()%}{{work.title.main|raw}}{%endif%}<small>{%if work.bounds|default()%} {{work.bounds.string}}{%endif%}</small></h4>                                                                                        
+                                                    <table class="table table-hover">{%if work.title.uniform|default()%}
+                                                        <tr>
+                                                            <th scope="row" class="col-md-3">Uniform title</th>
+                                                            <td>{{work.title.uniform}}</td>                                                                                                    
+                                                        </tr>{%endif%}{%if work.title.original|default()%}
+                                                        <tr>
+                                                            <th scope="row"> Original title </th>
+                                                            <td>{{work.title.original}} </td>                                                                                                   
+                                                        </tr> {%endif%}{%if work.title.supplied|default()%}
+                                                        <tr>
+                                                            <th scope="row"> Supplied title</th>                                                                                                   
+                                                            <td>{{work.title.supplied}}</td>                                                                                                   
+                                                        </tr>{%endif%} {%if work.incipit.text|default()%}
+                                                        <tr>
+                                                            <th scope="row">
+                                                                Incipit
+                                                            </th>
+                                                            <td>
+                                                                {{work.incipit.text}}... {%if work.incipit.locus is defined and work.incipit.locus is not empty%}
+                                                                    {{work.incipit.locus.string}}{%endif%}
+                                                                </td>
+                                                            </tr> {%endif%} {%if work.explicit.text|default()%}
+                                                            <tr>
+                                                                <th scope="row">
+                                                                    Explicit
+                                                                </th>
+                                                                <td>
+                                                                    ...{{work.explicit.text}} {%if work.explicit.locus is defined and work.explicit.locus is not empty%}
+                                                                    {{work.explicit.locus.string}}{%endif%}
+                                                                    </td>
+                                                                </tr>{%endif%}{%if work.rubric.text|default()%}
+                                                                <tr>
+                                                                    <th scope="row">
+                                                                        Rubric
+                                                                    </th>
+                                                                    <td>
+                                                                        {{work.rubric.text}} {%if work.rubric.locus is defined and work.rubric.locus is not empty%}
+                                                                            {{work.rubric.locus.string}}{%endif%}
+                                                                        </td>
+                                                                    </tr>{%endif%}
+                                                                    <tr>
+                                                                        <th> Authors</th>                                                                                                
+                                                                        <td><ul>{%for author in work.authors%} {%if author is null%}<li>Anonymous </li>{%else%} <li><a class="internal-link" tar="to-person"ref="#{{author.id}}">{%if author.name|default()%}{{author.name}}{%endif%}</a> </li>{%endif%}{%endfor%}</ul></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th scope="row">Copyist</th>                                                                                              
+                                                                        <td>{%if work.resp is not null and work.resp.person|default()%} <a class="internal-link" tar="to-person" ref="#{{work.resp.person.id}}">{%if work.resp.person.name|default()%}{{work.resp.person.name}}{%else%}{{work.resp.person.id}}{%endif%} </a>{%else%}{{work.resp.id}}{%endif%}<a class="internal-link" tar="to-person" ref="#{{work.resp.id}}"><i>(hand particularisms)</i></a>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Language</th>                                                                                                
+                                                                        <td>{{work.lang|replaceNull()}} </td>                                                                                                
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Codico. unit</th>
+                                                                        <td>{%for unitProd in work.unitProds%}{%if unitProd is not null%} <a class="internal-link" tar="to-unitProd"ref="{{unitProd}}">{{unitProd|replaceNull()}}</a>{%endif%}{%endfor%}</td>                                                           
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th> Particularism </th>                                                           
+                                                                        <td> {%if work.figureByType is defined and work.figureByType is not empty%}{%for type, content in work.figureByType%}{%if content is defined and content is not empty%}
+                                                                            <h4>{{type|capitalize}}</h4>
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    {%for key,table in content%}
+                                                                                        <a class="btn fixed-size trigger-modal" ref="{{key}}">{{table.figure.locus.string}}</a>{%endfor%}</div></div>{%endif%} {%endfor%}{%endif%}
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>               
+                                                            </div>
+                                                            <div class="col-md-3 plein">
+
+                                                                <div id="annotation-ms-content-1" class="note-group">{%if work.notes is not empty %}  <h3>Annotation</h3>{%endif%}
+                                                                    <div>{%set i = 0%}{%for note in work.notes%}{%set i = i+1%}
+                                                                        <div class="well">
+                                                                            {{note.note.locus.string|replaceNull("f. ?")}}:
+                                                                            {%if note.note.text|default()%}"<i>{{note.note.text|truncate(50)}}...</i>"
+                                                                            {%endif%}
+                                                                            <a type="button" data-toggle="modal" data-target="#more-note-modal-{{k~j~i}}">
+                                                                                Read more
+                                                                            </a></div>
+                                                                        <div class="modal fade" id="more-note-modal-{{k~j~i}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                                            <div class="modal-dialog" role="document">
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header">
+                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                                        <h4 class="modal-title" id="myModalLabel">Note{%if note.note.type|default()%}: {{note.note.type}}{%endif%}</h4>
+                                                                                    </div>
+                                                                                    <div class="modal-body">{%if note.note.text|default()%} <i>"{{note.note.text}}"</i>{%endif%}                                                                        
+                                                                                        <span class="cite-author">
+                                                                                            {%if note.hand.person.name|default()%}
+                                                                                                {%set name = note.hand.person.name%}
+                                                                                            {%else%}
+                                                                                                {%set name = "Anonymous" %}
+                                                                                            {%endif%}
+                                                                                            {%if note.hand.person.id|default()%}
+                                                                                                <a class="internal-link" tar="to-person"ref='#{{note.hand.person.id}}'>{{name}}</a>
+                                                                                            {%else%}{{name}}
+                                                                                            {%endif%}
+                                                                                        </span>
+                                                                                        {%if note.hand.id|default()%}
+                                                                                            <a class="internal-link" tar="to-hand" ref='#{{note.hand.id}}'>Hand details</a>
+                                                                                        {%endif%}
+                                                                                        <hr/>
+                                                                                        {%if note.note.interp%}
+                                                                                            <p>{{note.note.interp}}</p>
+                                                                                        {%endif%}
+                                                                                    </div>
+                                                                                    <div class="modal-footer">
+                                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>{%endfor%} 
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>{%endfor%}{%endfor%}
+                                                    </div>
+                                                </div>
+
+                                                <div id="history" class="tab-pane fade main-content">
+                                                    <div role="tablist" aria-multiselectable="true" class="panel-group">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading" role="tab" id="heading-one-2">
+                                                                <h2 class="panel-title">
+                                                                    <a data-toggle="collapse" data-parent="#history" href="#history-history" aria-expanded="false" class="collapsed" aria-controls="history-history" >History
+                                                                    </a>
+                                                                </h2>
+                                                            </div>
+                                                            <div id="history-history" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-one-2">
+                                                                <div class="panel-body"> {%for key,part in manuscript.msParts%}{%if part.origin|default() or part.provenance|default() or part.acquisition|default()%}
+                                                                    <h3>Ms. part {{key}}</h3>{% if part.origin|default() %}     
+
+                                                                    <h4>Origin</h4>
+                                                                    <p>{{part.origin|raw()}} <p>
+                                                                        {%endif%}
+                                                                            {% if part.provenance|default() %}
+                                                                            <h4>Provenance</h4>	
+                                                                            <p>{% if part.provenance|default() %}{{part.provenance|raw()}} {%endif%}</p>{%endif%}{% if part.acquisition|default() %}
+                                                                            <h4>Acquisition</h4>
+                                                                            <p>{{part.acquisition|raw()}}</p>{% endif %}{%endif%}{%endfor%}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading" role="tab" id="heading-one-3">
+                                                                        <h2 class="panel-title">
+                                                                            <a data-toggle="collapse" data-parent="#history" href="#index" aria-expanded="true" aria-controls="index">Index
+                                                                            </a>
+                                                                        </h2>
+                                                                    </div>
+                                                                    <div id="index" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-one-3">
+                                                                        <div class="panel-body">{%for key, persons in indexes%}
+                                                                            <h3>{{key|capitalize}}</h3>{%for person in persons|sortbyfield("name")%}
+                                                                            <details>
+                                                                                <summary><h4 class="pointer" id ="{{person.id}}">{%if person.name|default()%}{{person.name}}{%else%} Anonymous ({{person.id}}){%endif%}</h4></summary>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-offset-2">
+                                                                                        <div class="citation-block">
+                                                                                            <table class="table">
+                                                                                                <tr> <td class="col-md-2">Birth</td>
+                                                                                                    <td>{%if person.birth.notBefore|default() or person.birth.notAfter|default()%}{%if person.birth.notBefore%}Not before: {{person.birth.notBefore}}{%if person.birth.notAfter%}<br/>{%endif%}{%endif%}{%if person.birth.notAfter%} Not after: {{person.birth.notAfter}}{%endif%}{%elseif person.birth.when|default()%}{{person.birth.when}}{%elseif person.birth.scope|default()%}{{person.birth.scope}}{%endif%} </td></tr>
+                                                                                                <tr>
+                                                                                                    <td>Death</td>
+                                                                                                    <td>{%if person.death.notBefore|default() or person.death.notAfter|default()%} {%if person.death.notBefore%}Not before: {{person.death.notBefore}}{%if person.death.notAfter%}<br/>{%endif%}{%endif%}{%if person.death.notAfter%}Not after: {{person.death.notAfter}}{%endif%}{%elseif person.death.when|default()%}{{person.death.when}}{%elseif person.death.scope|default()%}{{person.death.scope}}{%endif%}</td> </tr>
+
+                                                                                                <tr>
+                                                                                                    <td>Nationality</td>
+                                                                                                    <td>{{person.nationality|replaceNull()}}</td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td>Occupation</td>
+                                                                                                    <td>{{person.occupation|replaceNull()}}</td>
+                                                                                                </tr>{%if person.works is not empty%}                                                                       
+                                                                                                <tr>
+                                                                                                    <td>Works<small> of this mss</small></td>
+                                                                                                    <td><ul>
+                                                                                                            {%for work in person.works%}
+                                                                                                                <li><a class="internal-link" tar="to-work" ref="{{work.id}}">{{work.title.main|raw}}</a> </li>
+                                                                                                                {%endfor%}
+                                                                                                        </ul>
+                                                                                                    </td>
+                                                                                                </tr>{%endif%}{%if person.externalRef%}
+                                                                                                <tr>
+                                                                                                    <td>External reference</td>
+                                                                                                    <td>
+                                                                                                        <a href="{{person.externalRef}}">{{person.externalRef}}</a>
+                                                                                                    </td>
+                                                                                                </tr>{%endif%}
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </details>{%endfor%}{%endfor%}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                {#===================================================================================#}
+
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading" role="tab" id="heading-one-4">
+                                                                        <h2 class="panel-title">
+                                                                            <a data-toggle="collapse" data-parent="#history" href="#hand" aria-expanded="true" aria-controls="hand">Hands
+                                                                            </a>
+                                                                        </h2>
+                                                                    </div>
+                                                                    <div id="hand" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-one-4">
+
+                                                                        <div class="panel-body">
+                                                                            <h3>Copyist</h3>{%for hand in hands if hand.role == "copyist"%}    
+
+                                                                            <details>
+                                                                                <summary><h4 id ="{{hand.id}}">{{hand.id}}{%if hand.person.id|default()%}<a class="internal-link" tar="to-person"ref="#{{hand.person.id}}">{%if hand.person.name|default()%}{{hand.person.name}}{%else%} Anonymous ({{hand.person.id}}){%endif%}</a>{%endif%}</h4></summary>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-offset-2">
+                                                                                        <div class="citation-block">
+                                                                                            <table class="table">
+                                                                                                <tr>
+                                                                                                    <td class='col-md-2'>Role</td>
+                                                                                                    <td>{{hand.role|replaceNull()}}{%if hand.scope|default()%} ({{hand.scope}}){%endif%}
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td>Notice</td>
+                                                                                                    <td>{{hand.notice|replaceNull()}}</td>
+                                                                                                </tr>{%if hand.unitProds is not empty%}
+                                                                                                <tr>
+                                                                                                    <td>Codicological Unit</td>
+                                                                                                    <td>
+                                                                                                        {%for unitProd in hand.unitProds%}
+                                                                                                            <a class="internal-link" tar="to-unitProd" ref="{{unitProd}}">{{unitProd}}</a> {%if not loop.last%},{%endif%}
+                                                                                                        {%endfor%}
+                                                                                                    </td>
+                                                                                                </tr>{%endif%}{%if hand.works is not empty%}                                                                       
+                                                                                                <tr>
+                                                                                                    <td>Works</td>
+                                                                                                    <td><ul>
+                                                                                                            {%for work in hand.works%}
+                                                                                                                <li><a class="internal-link" tar="to-work" ref="{{work.id}}">{{work.title.main|raw}}</a> </li>
+                                                                                                                {%endfor%}
+                                                                                                        </ul>
+                                                                                                    </td>
+                                                                                                </tr>{%endif%}
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </details>{%endfor%}
+                                                                            <h3>Annotators</h3>{%for hand in hands if hand.role == "annotator"%}    
+
+                                                                            <details>
+                                                                                <summary><h4 id ="{{hand.id}}">{{hand.id}}{%if hand.person.id|default()%}<a class="internal-link" tar="to-person"ref="#{{hand.person.id}}">{%if hand.person.name|default()%}{{hand.person.name}}{%else%} Anonymous ({{hand.person.id}}){%endif%}</a>{%endif%}</h4></summary>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-offset-2">
+                                                                                        <div class="citation-block">
+                                                                                            <table class="table">
+                                                                                                <tr>
+                                                                                                    <td class='col-md-2'>Role</td>
+                                                                                                    <td>{{hand.role|replaceNull()}}{%if hand.scope|default()%} ({{hand.scope}}){%endif%}
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td>Notice</td>
+                                                                                                    <td>{{hand.notice|replaceNull()}}</td>
+                                                                                                </tr>{%if hand.unitProds is not empty%}
+                                                                                                <tr>
+                                                                                                    <td>Codicological Unit</td>
+                                                                                                    <td>
+                                                                                                        {%for unitProd in hand.unitProds%}
+                                                                                                            <a class="internal-link" tar="to-unitProd" ref="{{unitProd}}">{{unitProd}}</a> {%if not loop.last%},{%endif%}
+                                                                                                        {%endfor%}
+                                                                                                    </td>
+                                                                                                </tr>{%endif%}{%if hand.works is not empty%}                                                                       
+                                                                                                <tr>
+                                                                                                    <td>Works</td>
+                                                                                                    <td><ul>
+                                                                                                            {%for work in hand.works%}
+                                                                                                                <li><a class="internal-link" tar="to-work" ref="{{work.id}}">{{work.title.main|raw}}</a> </li>
+                                                                                                                {%endfor%}
+                                                                                                        </ul>
+                                                                                                    </td>
+                                                                                                </tr>{%endif%}
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </details>{%endfor%}
+
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                {#==============================================================#}
+                                                            </div>
+                                                        </div>
+                                                        <div id="resource" class="tab-pane fade main-content">
+                                                            <div class="panel-group" id="accordion5" role="tablist" aria-multiselectable="true">
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading" role="tab" id="resourse-panel-title">
+                                                                        <h2 class="panel-title">
+                                                                            <a data-toggle="collapse" data-parent="#accordion5" href="#resources-resource" aria-expanded="true" aria-controls="resources-resource">Resources
+                                                                            </a>
+                                                                        </h2>
+                                                                    </div>
+                                                                    <div id="resources-resource" class="panel-collapse collapse" role="tabpanel" aria-labelledby="resourse-panel-title">
+                                                                        <div class="panel-body">
+                                                                            <h3>Download XML</h3> 
+                                                                            <h3>Download ODD</h3> 
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading" role="tab" id="heading-one-4">
+                                                                        <h2 class="panel-title">
+                                                                            <a data-toggle="collapse" data-parent="#accordion5" href="#resources-license" aria-expanded="true" aria-controls="resources-license">Using this document
+                                                                            </a>
+                                                                        </h2>
+                                                                    </div>
+                                                                    <div id="resources-license" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-one-4">
+                                                                        <div class="panel-body">
+                                                                            <h3>License</h3>
+                                                                            <p>
+                                                                                {%if(rights|default())%}
+                                                                                    {{rights|raw()}}
+                                                                                {%else%} This work is protected by a CC-By licence 
+                                                                                {%endif%}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading" role="tab" id="heading-one-4">
+                                                                        <h2 class="panel-title">
+                                                                            <a data-toggle="collapse" data-parent="#accordion5" href="#resources-encoding" aria-expanded="true" aria-controls="resources-encoding">
+                                                                                About the encoding
+                                                                            </a>
+                                                                        </h2>
+                                                                    </div>
+                                                                    <div id="resources-encoding" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-one-5">
+                                                                        <div class="panel-body">
+                                                                            <h3>Encoding informations</h3>
+                                                                            <table class="table table-hover">
+                                                                                <tr>
+                                                                                    <th scope="row" class="col-md-2">
+                                                                                        Edition
+                                                                                    </th>
+                                                                                    <td>
+                                                                                        {%if(manuscript.edition|default())%}
+                                                                                            {{manuscript.edition|raw()}}
+                                                                                        {%endif%}  
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>
+                                                                                        Responsabilities
+                                                                                    </th>
+                                                                                    <td>
+                                                                                        {%if manuscript.responsabilities is not empty%}
+                                                                                            {%for resp in manuscript.responsabilities%}
+                                                                                                <p>{{resp.resp}}: {%for name in resp.persNames%}{{name}}{%if not loop.last%}, {%endif%}{%endfor%}.</p>
+                                                                                            {%endfor%}
+                                                                                        {%endif%} 
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>
+                                                                                        Distributor
+                                                                                    </th>
+                                                                                    <td>
+                                                                                        {%if(manuscript.distributor|default())%}
+                                                                                            {{manuscript.distributor|raw()}}
+                                                                                        {%else%}The distributor of this project is ALFA.
+                                                                                        {%endif%} 
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>
+                                                                                        Project description
+                                                                                    </th>
+                                                                                    <td>
+                                                                                        {%if(manuscript.projectDesc|default())%}
+                                                                                            {{manuscript.projectDesc|raw()}}
+                                                                                        {%endif%}
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading" role="tab" id="heading-one-5">
+                                                                        <h2 class="panel-title">
+                                                                            <a data-toggle="collapse" data-parent="#accordion6" href="#resources-bibliographical" aria-expanded="true" aria-controls="resources-bibliographical">Bibliographical informations
+                                                                            </a>
+                                                                        </h2>
+                                                                    </div>
+                                                                    <div id="resources-bibliographical" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-one-6">
+                                                                        <div class="panel-body">
+                                                                            <h3>Bibliography</h3>
+                                                                            <p id="biblio"></p>
+                                                                            {%if(bibliography|default())%}
+                                                                                {{bibliography|raw()}}
+                                                                            {%endif%}                                        </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="note-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                <h4 class="modal-title" id="note-type"></h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p id="note-text">
+                                                                </p>
+                                                                <p id="note-resp">
+                                                                    <span id="link-resp"></span></span>
+                                                                </p> 
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+
+
+                                                {% endblock %}
+                                                    {% block javascripts %}
+                                                        {{parent()}}
+{# <<<<<<< HEAD#}
+{#                                                         <script src='{{asset('js/bootstrap-treeview.js')}}'> </script>#}
+{#                                                         <script type="text/javascript">#}
+{#                                                             function scrollToTarget(targetId) {#}
+{#                                                                 console.log("scroll to target");#}
+{#                                                                 $('html, body').animate({scrollTop: $(targetId).offset().top}, '400'); //Attention, parfois le # est contenu dans le target id#}
+{#                                                                 $(targetId).effect({"effect": "highlight", "duration": 5000, "color": "#428bca"});#}
+{#                                                                 //$(targetId).addClass("highlight", function(){setTimeout(function(){$("#copyist_01").removeClass("highlight");}, 1000);});#}
+{#                                                             }#}
+{# =======#}
+                                                        <script src='{{asset('js/bootstrap-treeview/bootstrap-treeview.js')}}'> </script>
+                                                        <script src='{{asset('js/myInternalLink.js')}}'> </script>
+                                                        <script type="text/javascript">
+                                                            
+// >>>>>>> master
+                                                            $(document).ready(function () {
+                                                                $('.collapse').on('shown.bs.collapse', function () {
+                                                                    openTab($(this));
+                                                                    //$(this).parent().find(".panel-title a").removeClass("closed-tab").addClass("open-tab");
+                                                                }).on('hide.bs.collapse', function () {
+                                                                    closeTab($(this));
+                                                                    // $(this).parent().find('.panel-title a').removeClass("open-tab").addClass("closed-tab");
+                                                                });
+
+                                                                $('.collapse').each(function (e) {
+                                                                    var isExpanded = $(this).attr("aria-expanded");
+                                                                    if (isExpanded) {
+                                                                        openTab($(this));
+                                                                    } else {
+                                                                        closeTab($(this));
+                                                                    }
+                                                                });
+
+
+                                                                function closeTab(tab) {
+                                                                    $(tab).parent().find('.panel-title a').removeClass("open-tab").addClass("closed-tab");
+                                                                }
+
+                                                                function openTab(tab) {
+                                                                    $(tab).parent().find(".panel-title a").removeClass("closed-tab").addClass("open-tab");
+                                                                }
+
+
+                                                                var myTree = [];
+                                                                manuscript = JSON.parse("{{jsonStructure|escape('js')}}");
+                                                                var tree = [];
+                                                                function fillTree(parent, array) {
+                                                                    if (Array.isArray(array)) {
+                                                                        for (var val of array) {
+                                                                            if (val.type === "work") {
+                                                                                var href = "#" + val.ref;
+                                                                                var enableLinks = true;
+                                                                            } else {
+                                                                                var href = "#";
+                                                                                var enableLinks = false;
+                                                                            }
+                                                                            var selectable = true;
+
+                                                                            text = val.text.replace(/_/g, ' ');
+                                                                            parent.push({text, href, enableLinks, selectable});
+                                                                        }
+                                                                    } else {
+                                                                        for (var key in array) {
+                                                                            var text = key.replace(/_/g, ' ');
+                                                                            ;
+                                                                            var nodes = [];
+                                                                            var selectable = true;
+                                                                            fillTree(nodes, array[key]);
+                                                                            parent.push({text, nodes, selectable});
+                                                                        }
+                                                                    }
+                                                                }
+                                                                tree.push(fillTree(tree, manuscript));
+                                                                jsonTree = JSON.stringify(tree);
+                                                                $("#navigation-tree").treeview({data: tree});
+
+                                                                $("#navigation-tree").on("nodeSelected", function (event, data) {
+                                                                    console.log(data);
+                                                                    $(".work-hidden").hide();
+                                                                    if (data.href !== undefined) {
+                                                                        $(data.href).show();
+                                                                    }
+                                                                });
+                                                                notes = JSON.parse("{{notes|escape('js')}}");
+
+                                                                $(".trigger-modal").click(function (e) {
+                                                                    e.preventDefault;
+
+
+
+
+                                                                    var link = $(this).attr("ref");
+                                                                    var thatNote = notes[link];
+                                                                    $("#note-type").html(thatNote.figure.type);
+                                                                    $("#note-text").html(thatNote.figure.text);
+                                                                    var name = "Anonymous";
+                                                                    if (thatNote.hand !== null && thatNote.hand.person !== null) {
+                                                                        var name = "Anonymous";
+                                                                        if (thatNote.hand.person.fullName !== undefined && thatNote.hand.person.fullName !== '')
+                                                                            name = thatNote.hand.person.fullName;
+                                                                        if (thatNote.hand.person.id !== undefined) {
+                                                                            $("#link-resp").html("<a ref='" + thatNote.hand.person.id + "' class='internal-link' tar='to-person' >" + name + "</a>");
+                                                                            //$("#link-resp").attr("ref", thatNote.hand.person.id).attr("tar", "to-person");
+                                                                        }
+                                                                    } else {
+                                                                        $("#name-resp").html("Anonymous");
+                                                                    }
+                                                                    $("#note-modal").modal();
+                                                                });
+
+
+                                                            {#Génération de la bibliographie#}
+                                                                    var data = JSON.parse("{{citation|escape('js')}}");
+                                                                    var biblio = citeData(data, locale, csl);
+
+
+                                                            {#Activation des liens internes#}
+                                                                    $(document).on('click', '.internal-link', function (e) {
+                                                                        e.preventDefault();
+                                                                        console.log("click sur internal link");
+                                                                        $(".modal").modal("hide");
+                                                                        var targetType = $(this).attr('tar');
+                                                                        var targetId = $(this).attr('ref');
+                                                                        if (!targetId.startsWith("#")) {
+                                                                            targetId = "#" + targetId;
+                                                                        }
+                                                                        var tabId = $(targetId).closest(".tab-pane").attr('id');
+
+                                                                        $("a[href='#" + tabId + "'").tab('show');
+                                                                        $(targetId).closest(".collapse").collapse("show");
+
+                                                                        if (targetType === 'to-work') {
+                                                                            var node = $('#navigation-tree').treeview('findNodes', ['^' + targetId + '$', 'href'])[0];
+                                                                            //ici faire un tableau avec d'un côté les parts et de l'autre les id des targets. 
+                                                                            $('#navigation-tree').treeview('selectNode', node);
+
+                                                                        }
+                                                                        setTimeout(function(){scrollToTarget(targetId);}, 300);
+                                                                        
+
+
+                                                                        return true;
+                                                                    });
+                                                                });
+                                                        </script>
+                                                    {%endblock%}
+
+                                                    {#                                       function followInternalLink(targetType, targetId) {
+                                                                                               var part = '';
+                                                                                               if (targetType === 'to-work') {
+                                                                                                   var node = $('#navigation-tree').treeview('findNodes', ['^' + targetId + '$', 'href'])[0];
+                                                                                                   //ici faire un tableau avec d'un côté les parts et de l'autre les id des targets. 
+                                                                                               }
+                                                                                              var linkReferencial = {
+                                                                                                   'to-person': {
+                                                                                                       title: 'person',
+                                                                                                       tab: 'history',
+                                                                                                       collapse: 'index'
+                                                                                                   },
+                                                                                                   'to-hand': {
+                                                                                                       title: 'hand',
+                                                                                                       tab: 'history',
+                                                                                                       collapse: 'hand'
+                                                                                                   },
+                                                                                                   'to-work': {
+                                                                                                       title: 'work',
+                                                                                                       tab: 'intellectual-content',
+                                                                                                       node: node
+                                                                                                   },
+                                                                                                   'to-unitProd': {
+                                                                                                       title: 'unit-prod',
+                                                                                                       tab: 'phys-desc',
+                                                                                                       collapse: part
+                                                                                                   }
+                    
+                                                                                               };
+                                                                                               $(".modal").modal("hide");
+                                                                                               $(".panel-collapse").collapse("hide");
+                                                                                               var targ = linkReferencial[targetType];
+                                                                                               $("a[href='#" + targ.tab + "'").tab('show');
+                                                                                               if (targ.collapse !== undefined) {
+                                                                                                   $("#" + targ.collapse).collapse('show');
+                                                                                                   console.log("arrivé ici");
+                    
+                                                                                               }
+                                                                                               if (targ.node !== undefined) {
+                                                                                                   $('#navigation-tree').treeview('selectNode', targ.node);
+                                                                                               }
+                                                                                               $('html, body').animate({scrollTop: $(targetId).offset().top}, '100'); //Attention, parfois le # est contenu dans le target id
+                                                                                               $(targetId).toggle({"effect": "highlight", "duration": 5000});
+                                                                                               console.log(targetId);
+                    
+                    
+
+                                                                                           }#}
+

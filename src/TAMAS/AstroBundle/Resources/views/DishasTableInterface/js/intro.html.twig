@@ -1,0 +1,333 @@
+<script src='{{asset("js/intro.js-2.9.3/intro.js")}}'></script>
+<link rel="stylesheet" href="{{asset("js/intro.js-2.9.3/introjs.css")}}">
+
+<style>
+.introjs-overlay {
+	z-index: -1000;
+}
+.introjs-tooltipReferenceLayer {
+	z-index: 1045;
+}
+</style>
+
+<script>
+
+/**
+ * Function to display a video.
+ * Just put a video in the /web/video directory of the project and pass its name
+ * as an argument (only its name, not the path)
+ * @param  {String} url     name of the file
+ * @param  {Number} width   desired with
+ * @param  {Number} height  desired height
+ * @return {undefined}
+ */
+function showVideo(url, width, height) {
+	$('#dialog-video').modal('show');
+	$('#video-div').html(' <video id="tuto-video" width="' + width + '" height="' + height + '" controls loop><source src="/video/' + url + '" type="video/mp4">Your browser does not support the video tag.</video>');
+	document.getElementById("tuto-video").play();
+}
+
+/**
+ * Create a grey div on top of the specified element
+ * @param  {String} selector  CSS selector
+ * @return {undefined}
+ */
+function greyElement(selector) {
+	var that = $($(selector)[0]);
+	var parent = that.parent();
+	var top = that.css('top');
+	var left = that.css('left');
+	var width = that.css('width');
+	var height = that.css('height');
+	parent.append('<div class="intro-layer intro-grey" style="top:'+top+'; left:'+left+'; width:'+width+'; height:'+height+';"></div>');
+}
+
+/**
+ * Destroy the grey div on top of the specified element
+ * (that was created by the greyElement function)
+ * @param  {String} selector  CSS selector
+ * @return {undefined}
+ */
+function ungreyElement(selector) {
+	var that = $($(selector)[0]);
+	var new_element = that.siblings('div.intro-grey');
+	if(new_element.length === 0)
+		return;
+	new_element = new_element[0];
+	new_element.remove();
+}
+
+/*
+ * Several function to grey and un-grey specific zones of the interface
+ * Useful because the tour library does not allow to highlight several elements
+ */
+function greyBackground() {
+	$('#background').css('background-color', 'grey');
+	$('#tabular-content-application').css('background-color', 'grey');
+}
+
+function ungreyBackground() {
+	$('#background').css('background-color', 'white');
+	$('#tabular-content-application').css('background-color', 'white');
+}
+
+function greyRootZones() {
+	greyElement('#middle-zone');
+	greyElement('#middle-right-zone');
+	greyElement('#bottom-zone');
+	greyElement('#bottom-right-zone');
+}
+
+function ungreyRootZones() {
+	ungreyElement('#middle-zone');
+	ungreyElement('#middle-right-zone');
+	ungreyElement('#bottom-zone');
+	ungreyElement('#bottom-right-zone');
+}
+
+function ungrayAll() {
+	ungreyBackground();
+	ungreyRootZones();
+	ungreyElement('#toolbar');
+}
+
+var tour = introJs();
+
+// Here we define the several steps of the tour
+// This steps must be changed in the new interface
+tour.setOptions({
+	steps: [
+		{
+			intro: "Welcome to the guided tour. Click next to continue.",
+			onbeforechange: function() {
+				ungrayAll();
+				greyBackground();
+				greyRootZones();
+				greyElement('#toolbar');
+			}
+		},
+		{
+			element: document.querySelector('#button-tour'),
+			intro: "You can later start again the guided tour by clicking on this button",
+			onbeforechange: function() {
+				ungrayAll();
+				greyBackground();
+				greyRootZones();
+				greyElement('#toolbar');
+			}
+		},
+		{
+			element: document.querySelector('#middle-zone'),
+			intro: "This is the main zone, containing the table and its values. Try to input some values in it.",
+			onbeforechange: function() {
+				ungrayAll();
+				greyBackground();
+				greyElement('#middle-right-zone');
+				greyElement('#bottom-zone');
+				greyElement('#bottom-right-zone');
+				greyElement('#toolbar');
+			}
+		},
+		{
+			element: document.querySelector('#middle-right-zone'),
+			intro: "This zone will contain information on the table, like for example 1st differences.",
+			onbeforechange: function() {
+				ungrayAll();
+				greyBackground();
+				greyElement('#middle-zone');
+				greyElement('#bottom-right-zone');
+				greyElement('#toolbar');
+			}
+		},
+		{
+			element: document.querySelector('#bottom-right-zone'),
+			intro: "This zone will contain informations about the selected cells, with a tab for inputing commentaries.",
+			onbeforechange: function() {
+				ungrayAll();
+				greyBackground();
+				greyElement('#middle-zone');
+				greyElement('#middle-right-zone');
+				greyElement('#bottom-zone');
+				greyElement('#toolbar');
+			}
+		},
+		{
+			element: document.querySelector('#toolbar'),
+			intro: "This is the tool bar. It contains all the tools allowing to input a table more efficiently.",
+			onbeforechange: function() {
+				ungrayAll();
+				greyBackground();
+				greyRootZones();
+			}
+		},
+		{
+			element: document.querySelector('#selection-group'),
+			intro: "<b>1)</b> The super select button allows you to expand the current selection in the table to the Super-Cell level.<br>\
+			<b>shortcut: Shift + Space</b><br><hr>\
+			" + "<b>2)</b>The column select button allows you to expand the current selection in the table to the column level.<br><b>shortcut: Shift + S or Shift + W</b><br>"
+			+ " <img src=\"/DISHAS_icons/keyboard_template_ws.svg\" style=\"height: 100px;\" alt=\"shortcut\" class=\"center\">" + "<b><hr>\
+			3)</b> The line select button allows you to expand the current selection in the table to the column level.<br><b>shortcut: Shift + A or Shift + D</b>" + 
+			" <img src=\"/DISHAS_icons/keyboard_template_ad.svg\" style=\"height: 100px;\" alt=\"shortcut\" class=\"center\"><br><hr>",
+			position: "right",
+			onbeforechange: function() {
+				ungrayAll();
+				greyBackground();
+				greyElement('#middle-right-zone');
+				greyElement('#bottom-zone');
+				greyElement('#bottom-right-zone');
+				greyElement('#toolbar');
+			}
+		},
+		{
+			element: document.querySelector('#tools-group'),
+			intro: "<b>1)</b> The forward interpolation allows you to predict the next value, based on the previous super cells.<br><b>shortcut: W, A, S, or D (depending on the direction)</b>\
+			" + " <img src=\"/DISHAS_icons/keyboard_template_wasd.svg\" style=\"height: 100px;\" alt=\"shortcut\" class=\"center\"><br><hr>" + "<b>2)</b> The in-between interpolation allows you to predict new values between 2 super cells already filled.<br><b>shortcut: B</b><br><hr>\
+			" + "<b>3)</b> You can use astronomical model to auto-fill the table.",
+			position: "right",
+			onbeforechange: function() {
+				ungrayAll();
+				greyBackground();
+				greyElement('#middle-right-zone');
+				greyElement('#bottom-zone');
+				greyElement('#bottom-right-zone');
+				greyElement('#toolbar');
+			},
+			onafterchange: function() {
+				$('.introjs-tooltipReferenceLayer').css('z-index', 1045);
+				$('.introjs-helperLayer').css('z-index', 1045);
+			}
+		},
+		{
+			element: document.querySelector('#button-parameter'),
+			intro: "Link this table with parameters in the database.",
+			position: "right",
+			onbeforechange: function() {
+				ungrayAll();
+				greyBackground();
+				greyElement('#middle-right-zone');
+				greyElement('#bottom-zone');
+				greyElement('#bottom-right-zone');
+				greyElement('#toolbar');
+			}
+		},
+		{
+			element: document.querySelector('#button-validate'),
+			intro: "Validate the selected values.<br><b>shortcut: Space</b>",
+			position: "right",
+			onbeforechange: function() {
+				ungrayAll();
+				greyBackground();
+				greyElement('#middle-right-zone');
+				greyElement('#bottom-zone');
+				greyElement('#bottom-right-zone');
+				greyElement('#toolbar');
+			}
+		},
+		{
+			element: document.querySelector('#button-commentary'),
+			intro: "Add commentary to the selected super cell.<br><b>shortcut: C</b>",
+			position: "right",
+			onbeforechange: function() {
+				ungrayAll();
+				greyBackground();
+				greyElement('#middle-right-zone');
+				greyElement('#bottom-zone');
+				greyElement('#toolbar');
+			}
+		},
+		{
+			element: document.querySelector('#visualization-group'),
+			intro: "<b>1)</b> You can display informations about the values (such as 1st differences).<br><hr>\
+			<b>2)</b> The table can be represented as a function graph.",
+			position: "right",
+			onbeforechange: function() {
+				ungrayAll();
+				greyBackground();
+				greyElement('#middle-zone');
+				greyElement('#bottom-right-zone');
+				greyElement('#toolbar');
+			},
+			onafterchange: function() {
+				$('.introjs-tooltipReferenceLayer').css('z-index', 1045);
+				$('.introjs-helperLayer').css('z-index', 1045);
+			}
+		}
+		{% if not public is defined or not public %}
+		,
+		{
+			element: document.querySelector('#save-button'),
+			intro: "Save the table in the database, as a draft.<br><b>shortcut: Ctrl + S</b>",
+			position: "right",
+			onbeforechange: function() {
+				ungrayAll();
+				greyBackground();
+				greyElement('#middle-zone');
+				greyElement('#middle-right-zone');
+				greyElement('#bottom-zone');
+				greyElement('#bottom-right-zone');
+				greyElement('#toolbar');
+			}
+		},
+		{
+			element: document.querySelector('#tamas_astrobundle_tablecontent_submit'),
+			intro: "Submit the table in the database",
+			position: "right",
+			onbeforechange: function() {
+				ungrayAll();
+				greyBackground();
+				greyElement('#middle-zone');
+				greyElement('#middle-right-zone');
+				greyElement('#bottom-zone');
+				greyElement('#bottom-right-zone');
+				greyElement('#toolbar');
+			}
+		}
+		{% endif %}
+	],
+	keyboardNavigation: false,
+	exitOnOverlayClick: false,
+	overlayOpacity: 0
+})
+
+/*
+ * Little hack found on the web to allow the binding of actions to several tour events directly in tour.setOptions(...)
+ */
+function createStepEvents( guideObject, eventList ){
+
+  //underscore loop used here, foreach would work just as well
+  _.each( eventList, function( event ){
+
+    //for the guid object's <event> attribute...
+    guideObject[event]( function(){
+
+      //get its steps and current step value
+      var steps       = this._options.steps,
+          currentStep = this._currentStep;
+
+      //if it's a function, execute the specified <event> type
+      if( _.isFunction(steps[currentStep][event]) ){
+        steps[currentStep][event]();
+      }
+    });
+
+  }, this );
+}
+//setup the events per step you care about for this guide
+createStepEvents( tour, ['onchange','onbeforechange','onafterchange']);
+
+tour.onexit(function() {
+	ungrayAll();
+})
+
+$(document).on("click", '#button-tour', function(e) {
+	if(table === undefined) {
+		alert('Please create a table first, thanks to to the menu File->Template');
+		return ;
+	}
+	setTimeout(function(){
+		$('.introjs-overlay').css('z-index', -1);
+	}, 1000)
+	tour.start();
+});
+
+</script>

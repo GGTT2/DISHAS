@@ -1,0 +1,17 @@
+<form action="{{ path('tamas_astro_search') }}" method="post">
+    <button type="submit"
+            name="query"
+            value='{"query": "","title": "All records","entity":"{{ object_info.properties[entity].objectDatabaseName }}"}'
+            title="Find all {{ object_info.properties[entity].objectUserInterfaceName|plural() }}"
+            class="btn-link">
+        {% if clickableArea == "default" %}
+            <div class="picto-background {{ entity }}">
+                <img class="picto-size"
+                     src="{{ asset('img/pictograms/'~ entity ~ '.png') }}"
+                     alt="{{ object_info.properties[entity].objectUserInterfaceName }} pictogram">
+            </div>
+        {% else %}
+            {{ clickableArea|raw }}
+        {% endif %}
+    </button>
+</form>

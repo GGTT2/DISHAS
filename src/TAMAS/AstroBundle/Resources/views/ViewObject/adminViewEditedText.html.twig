@@ -1,0 +1,339 @@
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+	View {{ object_info.properties.editedText.objectUserInterfaceName }} n°{{ editedText.id }} — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+
+	<!-- Heading Row -->
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation" class="active">
+			<a href="#information" aria-controls="information" role="tab" data-toggle="tab">General information</a>
+		</li>
+		<li role="presentation">
+			<a href="#comment" aria-controls="comment" role="tab" data-toggle="tab">Comment</a>
+		</li>
+		<li role="presentation">
+			<a href="#content" aria-controls="content" role="tab" data-toggle="tab">Table Content(s)</a>
+		</li>
+	</ul>
+
+	{# =============================================== TAB CONTENT ==================================== #}
+	<div class="row">
+		<div class="col-md-12">
+			<div class="tab-content">
+
+				{# =============================================== TAB ONE ======================================= #}
+				<div role="tabpanel" class="tab-pane active" id="information">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-5">
+									<div class="description-block hasTable">
+										<h4>General information</h4>
+										<table class="table table-hover">
+											{% if editedText.editedTextTitle|default or editedText.smallEditedTextTitle|default%}
+												<tr>
+													<th>Title</th>
+													<td>
+														<i>
+															{% if editedText.editedTextTitle|default()%}
+																{{editedText.editedTextTitle|truncate(35)}}
+															{% else %}
+																Untitled edition n°{{editedText.id}}
+															{% endif %}
+														</i>
+													</td>
+												</tr>
+											{% endif %}
+											<tr>
+												<th>Id n°</th>
+												<td>{{editedText.id}}</td>
+											</tr>
+											{% if editedText.date|default%}
+												<tr>
+													<th>Year of edition</th>
+													<td>{{editedText.date}}</td>
+												</tr>
+											{% endif %}
+											{% if editedText.type|default%}
+												<tr>
+													<th>Edition type</th>
+													<td>Type-{{editedText.type}};
+														<i>for more information about this vocabulary,
+															<a href="{{path('tamas_astro_adminSelectEditedType')}}">
+																click here
+															</a>
+														</i>
+													</td>
+												</tr>
+											{% endif %}
+											{% if editedText.historian is not null and editedText.historian.lastName|default%}
+												<tr>
+													<th>{{ object_info.properties.historian.objectUserInterfaceName|capitalize }}</th>
+													<td>
+														Based on {% if editedText.historian.firstName|default%}
+															{{editedText.historian.firstName}} {% endif %} {{editedText.historian.lastName}}
+														{%- if editedText.historian.lastName matches '{s$}' -%} ' {%else -%}'s
+														{%- endif%} unpublished work
+													</td>
+												</tr>
+											{% endif %}
+											{% if editedText.secondarySource is not null%}
+												<tr>
+													<th>Bib. ref.</th>
+													<td>
+														{% if editedText.secondarySource.historians is not empty%}
+															{% for historian in editedText.secondarySource.historians%}
+																{% if historian.firstName|default%}
+																{{historian.firstName}} {% endif %} {%- if historian.lastName|default -%}
+																{{- historian.lastName -}} , {%- endif -%}
+															{% endfor %}
+														{% endif %}
+														{% if editedText.secondarySource.secTitle|default%}
+															<i>{{editedText.secondarySource.secTitle}}</i>,
+														{% endif %}
+														{% if editedText.secondarySource.secPubDate|default%}
+															{{editedText.secondarySource.secPubDate}}
+														{% endif %}
+														{% if editedText.pageRange %}
+															(p. {{editedText.pageRange}})
+														{% endif %}
+													</td>
+												</tr>
+											{% endif %}
+											{% if editedText.onlineResource%}
+												<tr>
+													<th><span class="glyphicon glyphicon-globe"></span></th>
+													<td>
+														<a href="{{editedText.onlineResource}}">
+															Click here to access the full edition online
+														</a>
+													</td>
+												</tr>
+											{% endif %}
+											<tr>
+												<th>Table type</th>
+												<td>{{editedText.tableType}}</td>
+											</tr>
+											{% if editedText.era|default()%}
+												<tr>
+													<th>Base calendar</th>
+													<td>{{editedText.era.calendar|title}}: {{editedText.era|title}}</td>
+												</tr>
+											{% endif %}
+										</table>
+									</div>
+								</div>
+
+								<div class="col-md-5">
+									<div id="data-viz-1">
+										{% if visualization[0]|default() %}
+											{% include 'TAMASAstroBundle:DataViz:'~visualization[0]~'.html.twig' with {'include':'html'}%}
+										{% endif %}
+									</div>
+								</div>
+								<div class="col-md-2 ">
+									{{render(controller("TAMASAstroBundle:AdminView:adminPanel", {'object': editedText}))}}
+								</div>
+							</div>
+							<!-- /.col-md-4 -->
+							<div class="row">
+								<div id="related-content" class="citation-block">
+									<h3>Related objects</h3>
+									<label for="related-item">Class by</label>
+									<select class="form-control" id="related-item">
+										<option value="original">Directly related {{ object_info.properties.originalText.objectUserInterfaceName|plural() }}</option>
+										<option value="related">Directly related {{ object_info.properties.editedText.objectUserInterfaceName|plural() }}</option>
+									</select>
+									<div class="row">
+										<div id="original">
+										{% if originalTexts.listObjects.data|default() %}
+											{% set originalTextSpec = spec|merge({'tableId': 'originalText-list'})  %}
+											{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : originalTextSpec, 'include': 'html', 'listObjects': originalTexts.listObjects} %}
+										{% else %}
+											<br/>
+											<div class="flash-notice alert alert-warning"><span class="glyphicon glyphicon-info-sign"></span> No corresponding record in the database</div>
+										{% endif %}
+										</div>
+									</div>
+									<div class="row">
+									<div id="related" class="hidden">
+									{% if editedTexts.listObjects.data|default() %}
+										{% set relatedEditionsSpec = spec|merge({'tableId': 'relatedEdition-list'})  %}
+										{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : relatedEditionsSpec, 'include': 'html', 'listObjects': editedTexts.listObjects} %}
+									{% else %}
+										<br/>
+										<div class="flash-notice alert alert-warning">
+											<span class="glyphicon glyphicon-info-sign"></span>
+											No corresponding record in the database
+										</div>
+									{% endif %}
+									</div>
+								</div>
+							</div>
+						</div>
+						</div>
+					</div>
+				</div>
+
+				{# ================================================================================================================================================================================= #}
+				<div role="tabpanel" class="tab-pane" id="comment">
+					<h4>Comment on this edition</h4>
+					<div class="row">
+						{% include 'TAMASAstroBundle:ViewObject:adminComment.html.twig' with {'object': editedText, 'viewEmpty': true} %}
+					</div>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="content">
+					{% if editedText.tableContents%}
+						<div class="alert alert-info">
+							<span class="glyphicon glyphicon-info-sign"></span>&nbsp;
+							This edition contains {{editedText.tableContents|length}}
+							{% if editedText.tableContents|length > 1%}
+								{{"table"|plural}}
+							{% else %}
+								table
+							{% endif %}
+							.
+						</div>
+						{% set rank = 1 %}
+						{% for tableContent in editedText.tableContents%}
+							{% set thisTableContent = null%}
+							<h4>{{rank}}.{{tableContent}}
+								<small><i> id n°{{tableContent.id}}</i></small>
+							</h4>
+							<div class="row">
+								<div class="col-md-12">
+									<a class="btn btn-info see-table" id="see-table-{{rank}}" rank="{{rank}}"
+									   href="{{path('tamas_astro_adminViewTableContent', {'id': tableContent.id} )}}">
+										<span class="glyphicon glyphicon-list-alt"></span>
+										See table content
+									</a>
+									{% set id = tableContent.id %}
+									{% for currentTableContent in tableContents%}
+										{% if currentTableContent.id == id%}
+											{% set thisTableContent = currentTableContent %}
+										{% endif %}
+									{% endfor %}
+
+									{% if thisTableContent|default()%}
+										<div class="description-block hasTable"
+											 id="content-metadata-{{rank}}" rank="{{rank}}"
+											 title="{{thisTableContent.tableType}}">
+											<h5>Metadata of the table</h5>
+											<table class="table table-hover">
+												<tbody>
+												<tr>
+													<th scope="row">Table type</th>
+													<td>{{thisTableContent.tableType}}</td>
+												</tr>
+												<tr>
+													<th scope="row">Arguments</th>
+													<td>
+														<ol>
+															{% if thisTableContent.argument1.name|default()%}
+																<li>
+																	{{thisTableContent.argument1.name}}
+																	- {{thisTableContent.argument1.typeOfNumber}}
+																	- {{thisTableContent.argument1.numberUnit}}
+																</li>
+															{% endif %}
+															{% if thisTableContent.argument2.name|default()%}
+																<li>
+																	{{thisTableContent.argument2.name}}
+																	- {{thisTableContent.argument2.typeOfNumber}}
+																	- {{thisTableContent.argument2.numberUnit}}
+																</li>
+															{% endif %}
+															{% if thisTableContent.argument3.name|default()%}
+																<li>
+																	{{thisTableContent.argument3.name}}
+																	- {{thisTableContent.argument3.typeOfNumber}}
+																	- {{thisTableContent.argument3.numberUnit}}
+																</li>
+															{% endif %}
+														</ol>
+													</td>
+												<tr>
+													<th scope="row">Entries</th>
+													<td>
+														{% if thisTableContent.entry.typeOfNumber|default() and thisTableContent.entry.numberUnit|default() %}
+															{{ thisTableContent.entry.typeOfNumber }} - {{ thisTableContent.entry.numberUnit }}
+														{% endif %}
+													</td>
+												<tr>
+													<th scope="row">Astronomical parameter set</th>
+													<td>
+														<ul>
+															{% for parameterSet in thisTableContent.parameterSets%}
+																<li>{{ parameterSet.title }}</li>
+															{% endfor %}
+														</ul>
+													</td>
+												</tr>
+												{% if thisTableContent.mathematicalParameter != ''%}
+													<tr>
+														<th scope="row">Mathematical parameters</th>
+														<td>{{thisTableContent.mathematicalParameter}}</td>
+													</tr>
+												{% endif %}
+												</tbody>
+											</table>
+										</div>
+									{% endif %}
+									<br><br> {#problème de chevauchement avec cette div!#}
+									<div class="mathematical-table">{#remplacer par le véritable contenu#}</div>
+									<br><br> {#problème de chevauchement avec cette div!#}
+								</div>
+							</div>
+							{% include 'TAMASAstroBundle:ViewObject:adminComment.html.twig' with {'object': tableContent}%}
+							{% set rank = rank+1%}
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block javascripts %}
+	{{parent()}}
+	<script>
+
+		{% if originalTexts.listObjects.data|default() %}
+		{% set originalTextSpec = spec|merge({'tableId': '#originalText-list'})  %}
+		{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : originalTextSpec, 'include': 'js', 'listObjects': originalTexts.listObjects} %}
+		{% endif %}
+
+		{% if  editedTexts.listObjects.data|default()  %}
+		{% set relatedEditionsSpec = spec|merge({'tableId': '#relatedEdition-list'})  %}
+		{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : relatedEditionsSpec, 'include': 'js', 'listObjects': editedTexts.listObjects} %}
+		{% endif %}
+		function switchRelatedItem(selected){
+			if($(selected).val() === "related"){
+				$("#related").removeClass("hidden");
+				$("#original").addClass("hidden");
+				$.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust().draw();
+			} else {
+				$("#related").addClass("hidden");
+				$("#original").removeClass("hidden");
+				$.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust().draw();
+			}
+		}
+
+		switchRelatedItem("#related-item");
+
+		$(document).ready(function () {
+			$("#related-item").change(function () {
+				switchRelatedItem(this);
+			});
+
+		});
+	</script>
+
+	{% if visualization[0]|default() %}
+		{% set specificNodeId  = "e"~editedText.id %}
+		{% include 'TAMASAstroBundle:DataViz:'~visualization[0]~'.html.twig' with {'include':'js', 'specificNodeId': specificNodeId}%}
+	{% endif %}
+
+{% endblock %}

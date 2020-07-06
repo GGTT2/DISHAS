@@ -1,0 +1,18 @@
+
+{% extends "TAMASAstroBundle:ALFA:alfa_layout.html.twig" %}
+{% block content %}
+    <div class="container" >
+      Coucou 
+        <div class="row">
+            {% for key, val in array %}
+            <div style="background-color:{{val.couleur}}" class="col-md-2">
+                C'est ma div {{key}}
+            </div>
+        {% endfor %}
+    </div>
+
+    {% endblock %}
+    {% block javascripts %}
+        {{parent()}}
+        {%endblock%}
+

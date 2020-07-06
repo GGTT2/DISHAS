@@ -1,0 +1,1132 @@
+<script>
+//############################################################################### CATE MANAGEMENT ############################################################################
+//============================================= modal interface management interacting with CATE ===========================================================
+function turnLedLight(on){
+	if (on){
+		$('.led-cate').removeClass('red-led');
+        $('.led-cate').addClass('green-led');
+	} else {
+        $('.led-cate').removeClass('green-led');
+        $('.led-cate').addClass('red-led');
+	}
+}
+
+/**
+ * Grey out the choices for CATE strategy (will be called if the CATE switch is OFF)
+ * @return {[type]} [description]
+ */
+function disableCateElements() {
+	 turnLedLight(false);
+	 // $('#fill-template-done').attr('disabled','disabled');
+    $('#cate-strategies select').attr('disabled', true);
+    $('#cate-strategies input').attr('disabled', true);
+}
+
+/**
+ * Enable the choices for CATE strategy (will be called if the CATE switch is ON)
+ * @return {[type]} [description]
+ */
+function enableCateElements() {
+	turnLedLight(true);
+	$('#fill-template-done').removeAttr('disabled');
+	
+    $('#cate-strategies select').attr('disabled', false);
+    $('#edition-choice input').attr('disabled', false);
+    $('#cate-strategies input.edition-siglum').attr('disabled', false);
+    $('#cate-strategies input.edition-select').attr('disabled', false);
+    if($('#edition-choice input[value="' + 'by-weight' + '"]').prop('checked')) {
+        $('#cate-strategies input.edition-weight').attr('disabled', false);
+    }
+}
+
+
+/**
+ * Function called when the CATE switch is toggled.
+ * Grey out or enable options accordingly
+ * @return {[type]} [description]
+ */
+function checkCateSwitch() {
+    if($('.toggle-cate').is(":checked")) {
+        enableCateElements();
+        setTimeout(()=> {        
+        $('#{{form.vars.id}}_import').attr("disabled", "true");
+        $('#template input').attr('readonly', 'true');
+        //The select cannot be readonly, halas! 
+        //We need to make any other option than the selcted one disabled ! 
+        $('#template select').attr('readonly', 'true'); // this only for graphical question
+        $('#template select option:not(:selected)').hide();
+        $('#template #difference-table').hide()//these are checkboxes. We can stop the user to check or uncheck them as readonly, and we still want them to be in the form (so not disabled)
+        $('.cate-is-on').html('<span class="print-info">This functionnality is not accessible while CATE is on. Please turn CATE off before using it.</span>');
+        }, 7000) // solution pour le moment, à améliorer
+    }
+    else {    	
+        disableCateElements();        
+        $('#{{form.vars.id}}_import').removeAttr("disabled");
+        $('#template input').removeAttr('readonly');
+        //The select
+        $('#template select').removeAttr('readonly');
+        $('#template select option:not(:selected)').show();
+        $('#template #difference-table').show()
+
+        $('.cate-is-on').html('');
+    }
+}
+
+
+ /**
+  * Enable or disbale weights based on CATE options
+  * @return {[type]} [description]
+  */
+ function cateStrategyInterface(){
+ 	var editionChoice = $('#edition-choice input[type="radio"]:checked').val();
+ 	if(editionChoice === "by-weight" && $('.toggle-cate').is(":checked")){
+ 	    $('.edition-weight').prop('disabled', false);
+ 	} else {
+     	$('.edition-weight').prop('disabled', true);
+     	$('.edition-weight').val('');
+ 	}
+ } 
+
+//If CATE is ON, disable the Apply button of the other template options
+ $('#template-tab a, #import-tab a, #duplicate-tab a ').on('show.bs.tab', function(e) {
+  if($('.toggle-cate').is(":checked")) {
+      $('#fill-template-done').attr('disabled', 'disabled');
+  }else{
+  	$('#fill-template-done').removeAttr('disabled'); }
+ });
+
+ $('#cate-tab a ').on('show.bs.tab', function(e) {
+    $('#fill-template-done').removeAttr('disabled');
+  /*if($('.toggle-cate').is(":checked")) {
+      $('#fill-template-done').removeAttr('disabled');
+  }else{
+  	$('#fill-template-done').attr('disabled','disabled'); }*/
+ });
+
+
+
+//============================================================ initialization ================================================ 
+
+	
+$('.toggle-cate').bootstrapSwitch();
+// bind the CATE switch event to the right function
+$('.toggle-cate').on('switchChange.bootstrapSwitch', function() {
+    checkCateSwitch();
+});
+
+// Initialize CATE in a OFF state
+$('.toggle-cate').prop('checked', false);
+checkCateSwitch();
+
+//Initizalize the "weight rule" check
+cateStrategyInterface();
+$('#edition-choice').change(function(){
+	cateStrategyInterface();
+})
+
+
+/**
+ * This variable keep the current CATE state.
+ * It is updated only when Apply is clicked from the CATE template interface
+ * @type {Object}
+ */
+cateState = {
+    "activated": $('.toggle-cate').is(":checked"),
+    "tables":{},
+    "option":"by-majority",
+    "baseEdition":null
+}
+
+ /**
+  * Global variable containing the information of the base editions (as specified by the PhP $comparedTable variable)
+  * @type {Object}
+  */
+editions = {{comparedTable|raw}};
+
+ // ->
+ for(var key in editions) {
+     $('#compare-table-list').append('<option value="' + key + '">' + editions[key].editedTextTitle + '</option>');
+ }
+  
+
+
+//============================================================================== Cate to form  ==================================================
+
+
+
+/**
+ * Copy the current CATE state (passed in the state parameter) to the CATE form fields
+ * @param  {Object} state  current CATE state
+ * @return {undefined}       [description]
+ */
+function cateStateToForm(state) {
+    if(cateState.activated) {
+        $('.toggle-cate').prop('checked', true).change();
+    }
+    else {
+        $('.toggle-cate').prop('checked', false).change();
+    }
+    $('input[value="' + state.option + '"]').prop('checked', true).change();
+    $('#edition-choice input').prop('checked', false);
+    $('#edition-choice input[value="' + cateState.option + '"]').prop('checked', true);
+    $('input.edition-select').prop('checked', false);
+    for(var tableId in cateState.tables) {
+        var table = cateState.tables[tableId];
+        $('#row-' + table.editedTextId + ' input.edition-select').prop('checked', true);
+        $('#row-' + table.editedTextId + ' input.edition-siglum').val(table.siglum);
+        $('#row-' + table.editedTextId + ' input.edition-weight').val(table.weight);
+    }
+    if(cateState.baseEdition !== null) {
+        $('#base-edition option[value="' + cateState.baseEdition + '"]').prop('selected', true);
+    }
+}
+
+
+
+
+//=============================================================================== Cate algorythm (TODO : déplacer vers un fichier asstes/js ?) ======= 
+
+ /**
+  * Helper function for the compareTemplates function
+  * @param  {[type]}  t1      [description]
+  * @param  {[type]}  t2      [description]
+  * @param  {Boolean} verbose [description]
+  * @return {[type]}          [description]
+  */
+ function compareSubTemplate(t1, t2, verbose=false) {
+     if(t1.decpos !== t2.decpos) {
+         if(verbose)
+             return [false, 'number of cells (and/or number of significant places) is different'];
+         return false;
+     }
+     if(t1.ncells !== t2.ncells) {
+         if(verbose)
+             return [false, 'number of cells (and/or number of significant places) is different'];
+         return false;
+     }
+     if(t1.type !== t2.type) {
+         if(verbose)
+             return [false, 'type of number is different'];
+         return false;
+     }
+     if(t1.nsteps !== t2.nsteps) {
+         if(verbose)
+             return [false, 'number of steps is different'];
+         return false;
+     }
+     if(!verbose)
+         return true;
+     else
+         return [true, "", ""];
+ }
+
+ /**
+  * Function used to compare two template (specs). Used to determine if some tables can be compared with CATE
+  * @param  {[type]}  t1      [description]
+  * @param  {[type]}  t2      [description]
+  * @param  {Boolean} verbose [description]
+  * @return {[type]}          [description]
+  */
+ function compareTemplates(t1, t2, verbose=false) {
+     if(t1.args.length !== t2.args.length) {
+         if(verbose)
+             return [false, 'argument number', 'not the same number of arguments'];
+         return false;
+     }
+     if(t1.entries.length !== t2.entries.length) {
+         if(verbose)
+             return [false, 'difference', ''];
+         return false;
+     }
+     for(var i=0; i<t1.args.length; i++) {
+         var res = compareSubTemplate(t1.args[i], t2.args[i], verbose);
+         if(verbose && !res[0]) {
+             return [false, 'Argument ' + String(i + 1), res[1]];
+         }
+         if(!verbose && !res)
+             return false;
+     }
+     for(var j=0; j<t1.entries.length; j++) {
+         var res = compareSubTemplate(t1.entries[j], t2.entries[j], verbose);
+         if(verbose && !res[0]) {
+             if(j === 0) {
+                 var name = 'Entry';
+             }
+             else {
+                 var name = 'Difference';
+             }
+             return [false, name, res[1]];
+         }
+         if(!verbose && !res)
+             return false;
+     }
+     if(!verbose)
+         return true;
+     else
+         return [true, "", ""];
+ }
+
+
+
+/**
+ * Create a JSON table based on the selected CATE strategy
+ * @param  {Object} result  Selected CATE strategy (for exemple issued from the generateFromCate function)
+ * @return {[type]}        [description]
+ */
+function generateFromEditions(result) {
+
+        var comparedTable = editions;
+        var originalJsons = [];
+        for(var i=0; i<result['tables'].length; i++) {
+                originalJsons.push(result['tables'][i].json.original);
+            }
+        // Here we must check if templates are the same or not
+
+        if(result['option'] === 'by-base') {
+            var data = undefined;
+            for(var i=0; i<result['tables'].length; i++) {
+                if(result['tables'][i].editedTextId === Number(result['baseEdition'])) {
+                    data = result['tables'][i].json;
+                }
+            }
+            var resultJson = data;
+            // loadJSON(data);
+        }
+        else { // by-weight or by-majority
+            var weights = [];
+            for(var i=0; i<result['tables'].length; i++) {
+                if(result['option'] === "by-weight")
+                    weights.push(Number(result['tables'][i].weight));
+                else
+                    weights.push(1.0);
+            }
+
+            function vote(values, weights) {
+                var box = {}
+                for(var v=0; v<values.length; v++) {
+                    if(box[values[v]] === undefined)
+                        box[values[v]] = 1 * weights[v];
+                    else
+                        box[values[v]] += 1 * weights[v];
+                }
+                var max = -1;
+                var val = -1;
+                for(var key in box) {
+                    if(box[key] >= max) {
+                        max = box[key];
+                        val = key;
+                    }
+                }
+                return val;
+            }
+
+            function voteList(value_lists, weights) {
+                var res = [];
+                for(var l=0; l<value_lists[0].length; l++) {
+                    var values = [];
+                    for(var k=0; k<value_lists.length; k++) {
+                        values.push(value_lists[k][l]);
+                    }
+                    res.push(vote(values, weights));
+                }
+                return res;
+            }
+
+            var nargs = 0;
+            var resultOriginalJson = JSON.parse(JSON.stringify(originalJsons[0]));
+            for(var arg in resultOriginalJson.args) {
+                nargs += 1;
+                for(var i=0; i<resultOriginalJson.args[arg].length; i++) {
+                    valueLists = [];
+                    for(var t=0; t<originalJsons.length; t++) {
+                        valueLists.push(originalJsons[t].args[arg][i].value);
+                    }
+                    resultOriginalJson.args[arg][i].value = voteList(valueLists, weights);
+                }
+            }
+            for(var i=0; i<resultOriginalJson.entry.length; i++) {
+                if(nargs === 1) {
+                    valueLists = [];
+                    for(var t=0; t<originalJsons.length; t++) {
+                        valueLists.push(originalJsons[t].entry[i].value);
+                    }
+                    resultOriginalJson.entry[i].value = voteList(valueLists, weights);
+                }
+                else {
+                    for(var j=0; j<resultOriginalJson.entry[i].length; j++) {
+                        valueLists = [];
+                        for(var t=0; t<originalJsons.length; t++) {
+                            valueLists.push(originalJsons[t].entry[i][j].value);
+                        }
+                        resultOriginalJson.entry[i][j].value = voteList(valueLists, weights);
+                    }
+                }
+            }
+            //TODO : ici le json ne comprend pas le number-unit ! 
+            
+            var resultJson = JSON.parse(JSON.stringify(result.tables[0].json));
+            resultJson.original = JSON.stringify(resultOriginalJson);
+        }
+        loadJSON(resultJson);
+        turnCateOn(result);
+}
+
+
+
+ /**
+  * This function is called when generating a table from the CATE interface (after clicking on apply)
+  * @return {[type]} [description]
+  */
+ function generateFromCate() {
+     var comparedTable = editions;
+ 	//Find id of table that are selected
+ 	var listId = []; //will get the id of the table selected either in a span (only1 choice) or from a select (e.g. mean motion : multiple table per edition)
+ 	var spanId = [];
+ 	$('.edition-select:checked').closest('tr').find('span.table-content-id').each(function(){ //for each table content that is selected
+ 		var id = $(this).attr('value');
+ 		var weight = $(this).closest('tr').find('input.edition-weight').val();
+        var siglum = $(this).closest('tr').find('input.edition-siglum').val();
+ 		spanId.push({'id':id, 'weight':weight, 'siglum': siglum})
+ 	});
+     listId = listId.concat(spanId);	
+     var selectId = [];
+     $('.edition-select:checked').closest('tr').find('select.table-content-id').each(function(){ //in case of multiple table per edition, we get the selected one of the select list
+     	var id = $(this).val();
+     	var weight = $(this).closest('tr').find('input.edition-weight').val();
+         var siglum = $(this).closest('tr').find('input.edition-siglum').val();
+     	selectId.push({'id' : id, 'weight':weight, 'siglum': siglum});
+     })
+     listId = listId.concat(selectId);	//List of selected id in the cate list
+
+     var tableList = [];
+     for (var i=0; i<listId.length ; i++){
+ 		var id = listId[i].id;
+ 		var detailedTable = comparedTable[id];
+ 		detailedTable.weight = listId[i].weight;
+         detailedTable.siglum = listId[i].siglum;
+ 		detailedTable.tableId = id;
+ 		tableList.push(detailedTable); //fill the list of the selected table
+     }
+
+     var option = $('#edition-choice input[type="radio"]:checked').val();
+     var baseEdition = null;
+     if (option == 'by-base'){
+ 		baseEdition = $('#base-edition').val();
+         }
+
+     var result = {
+         'tables':tableList,
+         'option':option,
+         'baseEdition':baseEdition
+     };
+
+     var template_error = false;
+     var warning_differences = false;
+     var error_params = undefined;
+
+     for(var i=0; i < result.tables.length; i++) {
+         for(var j=0; j < i; j++) {
+             var comparison = compareTemplates(result.tables[i].json.template, result.tables[j].json.template, verbose=true);
+             if(!comparison[0]) {
+                 if(comparison[1] !== "difference") {
+                     error_code = true;
+                     error_params = [result.tables[i].editedTextTitle, result.tables[j].editedTextTitle, comparison[1], comparison[2]];
+                     break ;
+                 }
+                 else {
+                     warning_differences = true;
+                 }
+             }
+         }
+     }
+
+     if($('.toggle-cate').is(":checked")) {
+         if(template_error) {
+             processErrorCode('cate_template', error_params);
+             return ;
+         }
+         if(warning_differences) {
+             if(!processErrorCode('cate_differences'))
+             	return ;
+         }
+         if(result.tables.length < 2) {
+             processErrorCode('cate_table_number');
+             return ;
+         }
+         if(result.option === "by-base") {
+             var found = false;
+             for(var i=0; i<result.tables.length; i++) {
+                 if(String(result.tables[i].editedTextId) === String(result.baseEdition)) {
+                     found = true;
+                     break;
+                 }
+             }
+             if(!found) {
+                 processErrorCode('cate_base_edition');
+                 return ;
+             }
+         }
+         if(createdOnce && !processErrorCode('cate_confirm_active'))
+         	return ;
+         activateSpinning();
+         setTimeout(function(){ 
+             try {
+                 generateFromEditions(result);
+             }
+             catch(e) {
+
+             }
+             deactivateSpinning();
+         }, 100);
+     }
+     else {
+         if(createdOnce && cateState.activated && !processErrorCode('cate_confirm_inactive'))
+         	return ;
+         cateState.activated = false;
+         turnCateOff();
+         table.render();
+         $('#textarea-critical-apparatus').attr("readonly", false);
+         cancelled = false;
+         $('#dialog-template').modal('hide');
+     }
+ }
+
+ //====================================================================== cate in / off ============================================================== 
+
+/**
+ * Effectively disable CATE in the current table object (not in term of interface, but in term of automatic corrections when input numbers). This does not erase the critical apparatus of the current table
+ * @return {undefined} [description]
+ */
+function turnCateOff() {
+    for(var metacell of table.selectedMetaZone.getAllMetaCells()) {
+        metacell.props.edition_value = {};
+    }
+    if(typeof table.selectedMetaZone.edition_tables !== "undefined")
+        table.selectedMetaZone.edition_tables.activated = false;
+}
+
+/**
+ * Enable CATE automation in the current table object. This will update its critical apparatus, and when the user input a number, the critical apparatus is automatically updated
+ * @param  {Object} result  The result of the generateFromEditions option
+ * @return {[type]}        [description]
+ */
+function turnCateOn(result) {
+    // result is the return of cate interface
+    // with current table values
+    // and with weights and edition numbers
+
+        var originalJsons = [];
+        for (let i=0; i<result['tables'].length; i++) {
+            originalJsons.push(result['tables'][i].json.original);
+        }
+        // create apparatus here:
+
+        var currentJSON = JSON.parse(table.zones[0].asOriginalJSON());
+
+        var nargs = Object.keys(currentJSON.args).length;
+
+        var a = 0;
+
+        // remove potential previous apparatus
+        for(var metacell of table.selectedMetaZone.getAllMetaCells()) {
+            metacell.props.critical_apparatus = "";
+            metacell.props.edition_value = {};
+        }
+
+        var shallow_tables = {};
+        var shallow_result = {
+            baseEdition: result.baseEdition,
+            option: result.option,
+            tables: shallow_tables
+        };
+
+        for (var t=0; t<result.tables.length; t++) {
+            shallow_tables[result.tables[t].tableId] = {
+                editedTextId: result.tables[t].editedTextId,
+                editedTextTitle: result.tables[t].editedTextTitle,
+                tableId: result.tables[t].tableId,
+                weight: result.tables[t].weight,
+                siglum: result.tables[t].siglum
+            };
+        }
+        table.selectedMetaZone.edition_tables = JSON.parse(JSON.stringify(shallow_result));
+        table.selectedMetaZone.edition_tables.activated = true;
+
+        for(var arg in currentJSON.args) {
+            for(var i=0; i<currentJSON.args[arg].length; i++) {
+                for(var c=0; c<currentJSON.args[arg][i].value.length; c++) {
+                    for(var t=0; t<originalJsons.length; t++) {
+                        var cell = table.selectedMetaZone.zones[a + 1].zones[i].zones[c];
+                        cell.props.edition_value[result['tables'][t].tableId] = originalJsons[t].args[arg][i].value[c];
+                        if(currentJSON.args[arg][i].value[c] !== originalJsons[t].args[arg][i].value[c]) {
+                            cell.updateCriticalApparatus();
+                        }
+                    }
+                }
+            }
+            a++;
+        }
+        for (var i=0; i<currentJSON.entry.length; i++) {
+            if(nargs === 1) {
+                for(var c=0; c<currentJSON.entry[i].value.length; c++) {
+                    for(var t=0; t<originalJsons.length; t++) {
+                        var cell = table.selectedMetaZone.zones[0].zones[i].zones[c];
+                        cell.props.edition_value[result['tables'][t].tableId] = originalJsons[t].entry[i].value[c];
+                        if(currentJSON.entry[i].value[c] !== originalJsons[t].entry[i].value[c]) {
+                            cell.updateCriticalApparatus();
+                        }
+                    }
+                }
+            }
+            else {
+                for(var j=0; j<currentJSON.entry[i].length; j++) {
+                    for(var c=0; c<currentJSON.entry[i][j].value.length; c++) {
+                        for(var t=0; t<originalJsons.length; t++) {
+                            var cell = table.selectedMetaZone.zones[0].zones[i].zones[j].zones[c];
+                            cell.props.edition_value[result['tables'][t].tableId] = originalJsons[t].entry[i][j].value[c];
+                            if(currentJSON.entry[i][j].value[c] !== originalJsons[t].entry[i][j].value[c]) {
+                                cell.updateCriticalApparatus();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        cateState = JSON.parse(JSON.stringify(result));
+        cateState.activated = true;
+        cateStateToForm(cateState);
+
+        table.render();
+        $('#textarea-critical-apparatus').attr("readonly", true);
+        cancelled = false;
+        $('#dialog-template').modal('hide');
+
+        deactivateSpinning();
+
+        // return result;
+
+    	// Récupérer les options
+    	// Faire le calcul...
+}
+
+//######################################################################################### MEAN MOTION SPECIAL ###############################################
+
+//TODO : le sub-type doit changer en fonction de l'Unit (on doit pouvoir retrouver l'id du unit depuis le subtype et l'intégrer dans le form)
+//TODO : il n'y a que des 1 arg pour les mean motions (vérifier avant de restreindre). 
+//TODO : le sub-type doit disparaître si Unit != year ou month, il est alors = à 0. 
+
+// _____________________________________ Sub type ___________________________ //
+
+function displaySubTimeUnit(){
+    let subTimeField = $("#sub-time-unit");
+    let unit = $("#{{form.vars.id}}_argument1NumberUnit").val();
+    //do not display the subunit if unit != 11 or 12
+    if(unit === "11" | unit === "12"){
+           subTimeField.show();
+           filterSubTimeUnit(unit);
+           filterFistMonth(unit);
+
+    }else{
+        subTimeField.hide();
+        $("#{{form.vars.id}}_meanMotion_subTimeUnit").val(null);
+    }
+
+}
+
+function filterSubTimeUnit(parentType){
+    $("#{{form.vars.id}}_meanMotion_subTimeUnit > option[parent-unit!="+parentType+"]").hide();
+    $("#{{form.vars.id}}_meanMotion_subTimeUnit > option[parent-unit="+parentType+"]").show();
+    if($("#{{form.vars.id}}_meanMotion_subTimeUnit option:selected").attr('parent-unit') !== parentType ){
+        let firstValue = $("#{{form.vars.id}}_meanMotion_subTimeUnit > option[parent-unit="+parentType+"]").val();
+        $("#{{form.vars.id}}_meanMotion_subTimeUnit").val(firstValue);
+    } 
+    
+}
+
+displaySubTimeUnit();
+$("#{{form.vars.id}}_argument1NumberUnit").change(function(){
+    displaySubTimeUnit()
+})
+
+//_________________________________________ First month ___________________________________//
+//First month only shows up if the unit is month. 
+
+function filterFistMonth(monthUnit){
+    if (monthUnit === "12"){
+        $('#first-month').show();
+        //if the month is selected, there must be a "first month"
+        if ($('#{{form.vars.id}}_meanMotion_firstMonth').val() == null)
+            $('#{{form.vars.id}}_meanMotion_firstMonth').val("1");
+
+    }
+    else{
+        $('#first-month').hide();
+        $('#{{form.vars.id}}_meanMotion_firstMonth').val(null);
+    }
+                
+}
+
+//TESTS : 
+// If I am not in MM : no "sub-unit". 
+// If I am in MM : sub-units are linked with unit
+// If I am in MM : units are either "hidden" are they must have a value. 
+// When I reload a table: if MM, the unit and the sub-unit must be the one persisted with the object
+// If it is not a MM // if it is not a type that accepts a subtype : the sub-type must be = 0
+
+
+//######################################################################################### GENERATE TABLE FROM CUSTOM TEMPLATE ################################################################################ 
+
+/**
+ * Function called when the number of argument is changed in the template
+ * @param  {number} number [description]
+ * @return {[type]}        [description]
+ */
+function changeNumberOfArgument(number) {
+    var arg2 = $("#arg2");
+    var arg3 = $("#arg3");
+    if (number == 2) {
+        arg2.removeClass('hidden');
+        arg3.addClass('hidden');
+    } else if (number == 3) {
+        arg2.removeClass('hidden');
+        arg3.removeClass('hidden');
+    } else {
+        arg2.addClass('hidden');
+        arg3.addClass('hidden');
+    }
+}
+
+
+changeNumberOfArgument($("#{{form.vars.name}}_argNumber").val());
+$('#{{form.vars.name}}_argNumber').change(function () {
+    var numberOfArguments = $(this).val();
+    changeNumberOfArgument(numberOfArguments);
+});
+
+/**
+ * Fills the custom template form fields with a template (spec) object
+ * @param  {Object} spec [description]
+ * @return {[type]}      [description]
+ */
+function specToTemplate(spec) {
+    $('#{{form.vars.id}}_argNumber').val(spec.args.length).change();
+    if(spec.args[0].subUnit){
+        $('#{{form.vars.id}}_meanMotion_subTimeUnit').val(spec.args[0].subUnit).change();
+    }
+    if(spec.args[0].firstMonth){
+         $('#{{form.vars.id}}_meanMotion_firstMonth').val(spec.args[0].firstMonth).change();
+    }
+    for (var i = 0; i < spec.args.length; i++) {
+        var arg = spec.args[i];
+        $('#{{form.vars.id}}_argument' + String(i + 1) + 'Name').val(arg.name).change();
+        $('#{{form.vars.id}}_argument' + String(i + 1) + 'Name').change();
+        // TODO
+        //arg.type = $('#{{form.vars.id}}_argument' + String(i + 1) + 'TypeOfNumber option:selected').text().replace(/ /g, '_');
+        $('#{{form.vars.id}}_argument' + String(i + 1) + 'NumberOfCell').val(arg.decpos);
+        $('#{{form.vars.id}}_argument' + String(i + 1) + 'NumberOfCell').change();
+        $('#{{form.vars.id}}_argument' + String(i + 1) + 'SignificantFractionalPlace').val(arg.ncells - arg.decpos);
+        $('#{{form.vars.id}}_argument' + String(i + 1) + 'SignificantFractionalPlace').change();
+        $('#{{form.vars.id}}_argument' + String(i + 1) + 'NumberOfSteps').val(arg.nsteps);
+        $('#{{form.vars.id}}_argument' + String(i + 1) + 'NumberOfSteps').change();
+        $('#{{form.vars.id}}_argument' + String(i + 1) + 'TypeOfNumber').val(arg.type).change();
+        $('#{{form.vars.id}}_argument' + String(i + 1) + 'NumberUnit').val(arg.unit).change();
+    }
+    var entry = spec.entries[0];
+    $('#{{form.vars.id}}_entryNumberOfCell').val(entry.decpos);
+    $('#{{form.vars.id}}_entryNumberOfCell').change();
+    $('#{{form.vars.id}}_entrySignificantFractionalPlace').val(entry.ncells - entry.decpos);
+    $('#{{form.vars.id}}_entrySignificantFractionalPlace').change();
+    $('#{{form.vars.id}}_entryTypeOfNumber').val(entry.type).change();
+    $('#{{form.vars.id}}_entryNumberUnit').val(entry.unit).change();
+    if (spec.entries.length > 1) {
+        $('#{{form.vars.id}}_hasDifferenceTable').prop('checked', true);
+        $('#{{form.vars.id}}_hasDifferenceTable').change();
+    } else {
+        $('#{{form.vars.id}}_hasDifferenceTable').prop('checked', false);
+        $('#{{form.vars.id}}_hasDifferenceTable').change();
+    }
+}
+
+ /**
+  * Helper function to parse an integer
+  * @param  {String} val [description]
+  * @return {Number}     [description]
+  */
+ function myParseInt(val) {
+     if($.isNumeric(val)) {
+         var res = Number(val);
+         if(Number.isInteger(res)) {
+             return res;
+         }
+         return NaN;
+     }
+     else
+         return NaN;
+ }
+  
+ 
+/**
+ * Generate a table form the custom template option
+ * @return {[type]} [description]
+ */
+function generateFromTemplate() {
+    var error_message = 'All fields are compulsory';
+    var spec = {};
+    var nargs = $('#{{form.vars.id}}_argNumber').val();
+    spec.args = [];
+    spec.entries = [];
+    for (var i = 0; i < nargs; i++) {
+        var arg = {};
+        arg.name = $('#{{form.vars.id}}_argument' + String(i + 1) + 'Name').val();
+        if(arg.name.trim() === "") {
+            processErrorCode("template_name", ["Argument " + String(i + 1)], ["argument" + String(i + 1)]);
+            return ;
+        }
+        arg.type = $('#{{form.vars.id}}_argument' + String(i + 1) + 'TypeOfNumber option:selected').text().replace(/ /g, '_');
+        arg.unit = myParseInt($('#{{form.vars.id}}_argument' + String(i + 1) + 'NumberUnit option:selected').val());
+        arg.decpos = myParseInt($('#{{form.vars.id}}_argument' + String(i + 1) + 'NumberOfCell').val());
+        if (arg.decpos < 0 | isNaN(arg.decpos)) {
+            processErrorCode("template_integer_places", ["Argument " + String(i + 1)], ["argument" + String(i + 1)]);
+            return;
+        }
+        var fracpos = myParseInt($('#{{form.vars.id}}_argument' + String(i + 1) + 'SignificantFractionalPlace').val());
+        if (fracpos < 0 | isNaN(fracpos)) {
+            processErrorCode("template_fractional_places", ["Argument " + String(i + 1)], ["argument" + String(i + 1)]);
+            return;
+        }
+        arg.ncells = fracpos + arg.decpos;
+        arg.nsteps = myParseInt($('#{{form.vars.id}}_argument' + String(i + 1) + 'NumberOfSteps').val());
+        if (arg.nsteps <= 0 | isNaN(arg.nsteps)) {
+            processErrorCode("template_steps", ["Argument " + String(i + 1)], ["argument" + String(i + 1)]);
+            return;
+        }
+        spec.args.push(arg);
+    }
+    spec.args[0].subUnit = myParseInt($('#{{form.vars.id}}_subTimeUnit').val());
+    spec.args[0].firstMonth = myParseInt($('#{{form.vars.id}}_meanMotion_firstMonth').val());
+    var entry = {};
+    entry.name = 'Entry';
+    entry.type = $('#{{form.vars.id}}_entryTypeOfNumber option:selected').text().replace(/ /g, '_');
+    entry.unit = myParseInt($('#{{form.vars.id}}_entryNumberUnit').val());
+    entry.decpos = myParseInt($('#{{form.vars.id}}_entryNumberOfCell').val());
+    if (entry.decpos < 0 | isNaN(entry.decpos)) {
+        processErrorCode("template_integer_places", ["Entry"], ["entry"]);
+        return;
+    }
+    var fracpos = myParseInt($('#{{form.vars.id}}_entrySignificantFractionalPlace').val());
+    if (fracpos < 0 | isNaN(fracpos)) {
+        processErrorCode("template_fractional_places", ["Entry"], ["entry"]);
+        return;
+    }
+    entry.ncells = fracpos + entry.decpos;
+    spec.entries.push(entry);
+
+    var diffEntry = JSON.parse(JSON.stringify(entry));
+    diffEntry.name = 'DifferenceEntry';
+    if ($('#{{form.vars.id}}_hasDifferenceTable').is(':checked'))
+        spec.entries.push(diffEntry);
+
+    if (nargs <= 0 || nargs > 2) {
+        alert(error_message);
+        return;
+    }
+
+    spec.table_type = "{{tableContent.tableType.id}}";
+
+    var has_difference = (spec.entries.length > 1);
+    var post_size = roughSizeOfObject(JSON.stringify((fakeAsJSON(spec, has_difference))));
+    if (post_size > 15000000) {
+        if (!has_difference)
+            alert("The table you are creating is too large !");
+        else
+            alert("The table you are creating is too large !\n Try unchecking the option \"Has difference table\"");
+        return;
+    }
+
+    cancelled = false;
+    $('#dialog-template').modal('hide');
+
+    removeCateAndApartus();
+    applySpecs(spec);
+
+    if($('#{{form.vars.id}}_hasSymetry').is(':checked')) {
+        openNav();
+    }
+}
+
+
+//#################################################################################### GENERATE TABLE FROM IMPORT ############################################################################
+
+/**
+ * Generate a table by importing a JSON file from the user computer
+ * @return {undefined} [description]
+ */
+function generateFromImport(){
+	//Récupérer le document
+	//Vérifier qu'il est bien formé
+	//Générer le template à partir du document
+	importJSON('#{{form.vars.id}}_import', false, true);
+    cancelled = false;
+    $('#dialog-template').modal('hide');
+}
+
+//#################################################################################### GENERATE TABLE FROM DUPLICATE ############################################################################
+ 
+
+
+/**
+ * Generate a table by duplicating an already existing table from the DB
+ * @return {undefined} [description]
+ */
+function generateFromDuplicate(){
+	//Get the operation
+	var operation = $('#{{form.vars.id}}_switchDuplicate input[type="radio"]:checked').val();
+	//Get the tableContent
+	var sourceTableContent = $("#{{form.vars.id}}_sourceDuplicate").val();
+	// Get the json from database
+	$.getJSON(Routing.generate('tamas_astro_getTableContentJson', {'id': sourceTableContent}), function(data){
+        if(createdOnce && !processErrorCode("duplicate_erase"))
+            return ;
+        if(operation === "content") {
+            loadJSON(data);
+        }
+        else {
+            loadJSON(data, true);
+        }
+		//générer le template à partir de ce callback pour résoudre pb d'assynchronisme.
+		//renvoyer le data en fonction du json et de la variable operation : soit "template", soit "duplicate". 
+		//Dans le cas operation === 'template' : on veut toutes les métadonnées et le template vide
+		//Dans le cas operation === 'contnent' : on veut toutes les métadonnées et le template + les valeurs
+		cancelled = false;
+        $('#dialog-template').modal('hide');
+	});
+		
+}
+
+
+
+//########################################################################################### MODAL LEVEL ##########################################################################################
+
+
+//################################################################ GENERALITIES : ALL TYPE OF TEMPLATES
+/**
+ * Function used to approximate the rough byte size of an object
+ * @param  {Object} object [description]
+ * @return {[type]}        [description]
+ */
+function roughSizeOfObject(object) {
+    var objectList = [];
+    var stack = [object];
+    var bytes = 0;
+    while (stack.length) {
+        var value = stack.pop();
+        if (typeof value === 'boolean') {
+            bytes += 4;
+        } else if (typeof value === 'string') {
+            bytes += value.length * 2;
+        } else if (typeof value === 'number') {
+            bytes += 8;
+        } else if
+        (
+            typeof value === 'object'
+            && objectList.indexOf(value) === -1
+            )
+        {
+            objectList.push(value);
+            for (var i in value) {
+                stack.push(value[ i ]);
+            }
+        }
+    }
+    return bytes;
+}
+
+/**
+ * Approximate the rough size a table would have with the specified template (spec)
+ * Usefull to prevent the creation of a table too big
+ * TODO replace this function by an actual approximation
+ * @param  {Object}  spec    [description]
+ * @param  {Boolean} hasDiff [description]
+ * @return {[type]}          [description]
+ */
+function fakeAsJSON(spec, hasDiff) {
+    if (spec.args.length === 1) {
+        var floatJSON = {
+            args: {
+                argument1: []
+            },
+            entry: []
+        };
+        var originalJSON = {
+            args: {
+                argument1: []
+            },
+            entry: []
+        };
+        for (var i = 0; i < spec.args[0].nsteps; i++) {
+            floatJSON.args.argument1.push(-1.123456789123456789);
+            var typical_arg1_value = {
+                comment: "",
+                suggested: false,
+                values: []
+            };
+            for (var c = 0; c < spec.args[0].ncells; c++)
+                typical_arg1_value.values.push("**");
+            originalJSON.args.argument1.push(typical_arg1_value);
+
+            floatJSON.entry.push(-1.123456789123456789);
+            var typical_entry_value = {
+                comment: "",
+                suggested: false,
+                values: []
+            };
+            for (var c = 0; c < spec.entries[0].ncells; c++)
+                typical_entry_value.values.push("**");
+            originalJSON.args.argument1.push(typical_entry_value);
+        }
+    } else {
+        var floatJSON = {
+            args: {
+                argument1: [],
+                argument2: []
+            },
+            entry: []
+        };
+        var originalJSON = {
+            args: {
+                argument1: [],
+                argument2: []
+            },
+            entry: []
+        };
+
+        for (var j = 0; j < spec.args[1].nsteps; j++) {
+            floatJSON.args.argument2.push(-1.123456789123456789);
+            var typical_arg2_value = {
+                comment: "",
+                suggested: false,
+                values: []
+            };
+            for (var c = 0; c < spec.args[1].ncells; c++)
+                typical_arg2_value.values.push("**");
+            originalJSON.args.argument2.push(typical_arg2_value);
+        }
+
+        for (var i = 0; i < spec.args[0].nsteps; i++) {
+            floatJSON.args.argument1.push(-1.123456789123456789);
+            var typical_arg1_value = {
+                comment: "",
+                suggested: false,
+                values: []
+            };
+            for (var c = 0; c < spec.args[0].ncells; c++)
+                typical_arg1_value.values.push("**");
+            originalJSON.args.argument1.push(typical_arg1_value);
+
+            floatJSON.entry.push([]);
+            originalJSON.entry.push([]);
+
+            for (var j = 0; j < spec.args[1].nsteps; j++) {
+                floatJSON.entry[i].push(-1.123456789123456789);
+                var typical_entry_value = {
+                    comment: "",
+                    suggested: false,
+                    values: []
+                };
+                for (var c = 0; c < spec.entries[0].ncells; c++)
+                    typical_entry_value.values.push("**");
+                originalJSON.entry[i].push(typical_entry_value);
+            }
+
+        }
+    }
+    if (hasDiff) {
+        return {
+            correctedFloatValue: JSON.parse(JSON.stringify(floatJSON)),
+            floatValue: JSON.parse(JSON.stringify(floatJSON)),
+            originalValue: JSON.parse(JSON.stringify(originalJSON)),
+            differenceFloatValue: JSON.parse(JSON.stringify(floatJSON)),
+            differenceOriginalValue: JSON.parse(JSON.stringify(originalJSON))
+        };
+    } else {
+        return {
+            correctedFloatValue: JSON.parse(JSON.stringify(floatJSON)),
+            floatValue: JSON.parse(JSON.stringify(floatJSON)),
+            originalValue: JSON.parse(JSON.stringify(originalJSON))
+        };
+    }
+}
+
+ 
+// If there is a mainJSON (i.e. if the table was loaded from the DB), create the corresponding table //TODO A déplacer dans le js main.html => Idéalement oui, mais pour l'instant ne marche pas (loadJSON a besoin de fonctions présentes ailleurs que dans le main ?)
+if(mainJSON && mainJSON.template)
+    loadJSON(mainJSON, false, true);
+
+// If no table was created, prompt the user with the template interface //TODO A déplacer dans le js main.html => Idéalement oui, mais pour l'instant ne marche pas (loadJSON a besoin de fonctions présentes ailleurs que dans le main ?)
+if(!createdOnce) {
+    {% if readonly is not defined or not readonly %}
+        $('#dialog-template').modal('show');
+    {% endif %}
+}
+
+
+/**
+ * Return the currently selected template method (for exemple "cate", "template", "import" or "duplicate")
+ * @return {[type]} [description]
+ */
+function getTemplateMethod(){
+	return $("#dialog-template").find('div.tab-pane.active').attr('id');
+}
+
+ //TODO : pas clair pourquoi on fait les mêmes opérations au moment de l'ouverture et de la fermeture de CATE. Perte de temps ?  
+$('#dialog-template').on('shown.bs.modal', function() {
+    if(table !== undefined && table !== null) {
+        specToTemplate(table.zones[0].spec);
+    }
+    cateStateToForm(cateState);
+});
+
+$('#dialog-template').on('hidden.bs.modal', function () {
+    specToTemplate(table.zones[0].spec);
+    cateStateToForm(cateState);
+});
+
+function removeCateAndApartus() {
+    if(table !== undefined) {
+        turnCateOff();
+        for(var metacell of table.zones[0].getAllMetaCells()) {
+            metacell.props.critical_apparatus = "";
+            metacell.props.edition_value = {};
+        }
+        table.render();
+        $('.toggle-cate').prop('checked', false).change();
+        cateState.activated = false;
+        generateFromCate();
+    }
+}
+
+/**
+ * Select the appropriate generation method when clicking on the apply button
+ * @param  {[type]} ){    var method        [description]
+ * @return {[type]}         [description]
+ */
+$('#fill-template-done').click(function(){
+	var method = getTemplateMethod();
+	switch(method) {
+	case 'template':
+		generateFromTemplate();
+	break;
+	case 'cate':
+		generateFromCate();
+	break;
+	case 'import':
+		generateFromImport();
+	break;
+	case 'duplicate':
+		generateFromDuplicate();
+	break;
+	}
+})
+
+</script>

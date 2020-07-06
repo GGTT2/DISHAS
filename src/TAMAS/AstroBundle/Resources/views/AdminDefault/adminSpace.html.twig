@@ -1,0 +1,276 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\adminSpace.html.twig#}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+{% block title %}
+    Home — {{ parent() }}
+{% endblock %}
+{% block tamasastro_body %}
+    {# =============================================== TAB ==================================== #}
+    <div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#last-works" aria-controls="last-works" role="tab" data-toggle="tab">Last works</a>
+            </li>
+            <li role="presentation">
+                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a>
+            </li>
+        </ul>
+
+        {# =============================================== TAB CONTENT ==================================== #}
+        <div class="tab-content">
+
+            {# =============================================== TAB ONE ======================================= #}
+            <div role="tabpanel" class="tab-pane " id="profile">
+                <div class="row">
+                    <br/>
+                    <div class="col-md-10">
+                        <div id="admin-identity" class="citation-block">
+                            <h4 style="margin-top: -3px;">Admin Credential</h4>
+                            <table class="table">
+                                <tr>
+                                    <td>Name:</td>
+                                    <td>{{ app.user.username}}</td>
+                                </tr>
+                                <tr>
+                                    <td>E-mail:</td>
+                                    <td>{{ app.user.email}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Last login:</td>
+                                    <td>{{ app.user.lastLogin|date("d/m/Y")}}</td>
+                                </tr>
+                            </table>
+                            <a class="btn btn-primary" href="{{path('fos_user_profile_edit')}}">Edit credential</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# =============================================== TAB TWO ======================================= #}
+            <div role="tabpanel" class="tab-pane active" id="last-works">
+                <div id="pick-entity" class="row">
+                    <div class="col-md-4">
+                        <div class="adminSpace-table panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Main entities</h3>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr id="originalText">
+                                        <th class="col-md-6">
+                                            <h4 style="margin-top: -3px;">{{object_info.properties.originalText.objectUserInterfaceName|capitalize}}</h4>
+                                        </th>
+                                        <td>
+                                            <a class="get-data" href="#">
+                                                <span class="glyphicon glyphicon-user"></span>
+                                                Data
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="get-draft" href="#">
+                                                <span class="glyphicon glyphicon-wrench"></span>
+                                                Drafts
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr id="editedText">
+                                        <td class="col-md-6">
+                                            <h4 style="margin-top: -3px;">{{ object_info.properties.editedText.objectUserInterfaceName|capitalize }}</h4></td>
+                                        <td>
+                                            <a class="get-data" href="#">
+                                                <span class="glyphicon glyphicon-user"></span>
+                                                Data
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="get-draft" href="#">
+                                                <span class="glyphicon glyphicon-wrench"></span>
+                                                Drafts
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr id="tableContent">
+                                        <td class="col-md-6">
+                                            <h4 style="margin-top: -3px;">{{ object_info.properties.tableContent.objectUserInterfaceName|capitalize }}</h4></td>
+                                        <td>
+                                            <a class="get-data" href="#">
+                                                <span class="glyphicon glyphicon-user"></span>
+                                                Data
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="get-draft" href="#">
+                                                <span class="glyphicon glyphicon-wrench"></span>
+                                                Drafts
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="adminSpace-table panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Material source of <b>{{object_info.properties.originalText.objectUserInterfaceName}}</b></h3>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-hover">
+                                    <tbody>
+                                    <tr id="primarySource">
+                                        <td class="col-md-8" style="border: none;">{{object_info.properties.primarySource.objectUserInterfaceName|capitalize}}</td>
+                                        <td style="border: none;">
+                                            <a class="get-data" href="#">
+                                                <span class="glyphicon glyphicon-user"></span>
+                                                Data
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr id="work">
+                                        <td class="col-md-8">{{object_info.properties.work.objectUserInterfaceName|capitalize}}</td>
+                                        <td>
+                                            <a class="get-data" href="#">
+                                                <span class="glyphicon glyphicon-user"></span>
+                                                Data
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr id="historicalActor">
+                                        <td class="col-md-8">{{object_info.properties.historicalActor.objectUserInterfaceName|capitalize}}</td>
+                                        <td>
+                                            <a class="get-data" href="#">
+                                                <span class="glyphicon glyphicon-user"></span>
+                                                Data
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr id="place">
+                                        <td class="col-md-8">{{object_info.properties.place.objectUserInterfaceName|capitalize}}</td>
+                                        <td>
+                                            <a class="get-data" href="#">
+                                                <span class="glyphicon glyphicon-user"></span>
+                                                Data
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr id ="library">
+                                        <td class="col-md-8">{{object_info.properties.library.objectUserInterfaceName|capitalize}}</td>
+                                        <td>
+                                            <a class="get-data" href="#">
+                                                <span class="glyphicon glyphicon-user"></span>
+                                                Data
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="adminSpace-table panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Material source of <b>{{object_info.properties.editedText.objectUserInterfaceName}}</b></h3>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-hover">
+                                    <tbody>
+                                    <tr id="historian">
+                                        <td class="col-md-8" style="border: none;">{{object_info.properties.historian.objectUserInterfaceName|capitalize}}</td>
+                                        <td style="border: none;">
+                                            <a class="get-data" href="#">
+                                                <span class="glyphicon glyphicon-user"></span>
+                                                Data
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr id="secondarySource">
+                                        <td class="col-md-8">{{object_info.properties.secondarySource.objectUserInterfaceName|capitalize}}</td>
+                                        <td>
+                                            <a class="get-data" href="#">
+                                                <span class="glyphicon glyphicon-user"></span>
+                                                Data
+                                            </a>
+                                        </td>
+                                    <tr id="journal">
+                                        <td class="col-md-8">{{object_info.properties.journal.objectUserInterfaceName|capitalize}}</td>
+                                        <td>
+                                            <a class="get-data" href="#">
+                                                <span class="glyphicon glyphicon-user"></span>
+                                                Data
+                                            </a>
+                                        </td>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="adminSpace-table panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Parameter of <b>{{object_info.properties.tableContent.objectUserInterfaceName}}</b></h3>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-hover">
+                                    <tbody>
+                                    <tr id="parameterSet">
+                                        <td class="col-md-8" style="border: none;">{{object_info.properties.parameterSet.objectUserInterfaceName|capitalize}}</td>
+                                        <td style="border: none;">
+                                            <a class="get-data" href="#">
+                                                <span class="glyphicon glyphicon-user"></span>
+                                                Data
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr id="mathematicalParameter">
+                                        <td class="col-md-8">{{object_info.properties.mathematicalParameter.objectUserInterfaceName|capitalize}}</td>
+                                        <td>
+                                            <a class="get-data" href="#">
+                                                <span class="glyphicon glyphicon-user"></span>
+                                                Data
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <h2 id="data-title" class="col-md-offset-1">Click on a category to manage your data</h2>
+                        <div id="loading-block" class="loading description-block" style="margin-top: 35px;height: 100px">
+                            <div class="row hidden">
+                                <div class="col-md-offset-5">
+                                    <img id="loading" alt="Loader" src="{{asset('img/loader.gif')}}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="visualize-data"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{parent()}}
+    <script>
+        $(document).ready(function () {
+            $(".get-data, .get-draft").click(function (e) {
+                $("#loading-block").remove();
+                e.preventDefault;
+                let status;
+                var entity = $(this).parent().parent().attr('id');
+                var user = "{{app.user.id}}";
+                if ($(this).is(".get-data")) {
+                    status = "data";
+                } else if($(this).is(".get-draft")) {
+                    status = "draft";
+                }
+
+                var route = Routing.generate('tamas_astro_fillTable', {'entityName': entity, 'adminId': user, 'status': status});
+
+                //document.getElementById("visualize-data").scrollIntoView({behavior: "smooth"});
+
+                //var route = Routing.generate('tamas_astro_fillTable', {'entityName': entity, 'adminId': user, 'status': status});
+                $("#data-title").html(`${objects[entity].objectUserInterfaceName.capitalize()} records you have created`);
+                myAutofillTable(route);
+            });
+        });
+    </script>
+{% endblock %}

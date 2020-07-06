@@ -1,0 +1,18 @@
+{% set object = astronomical_objects.astronomicalObject[objectId] %}
+
+<div id="{{ object.name }}-entry" class="def-entry hidden {{ object.title|first|upper }} all">
+    <div class="row" style="text-align: left; padding: 25px 0">
+        <div class="col-md-2">
+            <div class="picto-background {{ object.name }}" style="margin: 0 30%;">
+                <img class="picto-size"
+                     src="{{ asset('img/pictograms/'~ object.name ~'.png')}}"
+                     alt="{{ object.title|capitalize }} pictogram">
+            </div>
+        </div>
+        <div class="col-md-10">
+            <h2 class="lightgrey">{{ object.title|capitalize }}</h2>
+            <div class="horizontal-bar lightgrey"></div>
+        </div>
+    </div>
+    <p class="lightgrey desc">{{ object.definition|raw }}</p>
+</div>

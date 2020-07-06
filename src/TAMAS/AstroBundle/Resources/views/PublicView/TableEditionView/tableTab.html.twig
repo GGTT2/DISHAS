@@ -1,0 +1,26 @@
+{#TAMAS\AstroBundle\Resources\views\PublicView\TableEditionView\tableTab.html.twig#}
+{% if include == "html" %}
+    <div id="content-tabl" role="tabpanel" class="tab-pane content-wrapper active in">
+        <h1 class="row">
+            <span class="col-md-1 col-md-offset-1 glyphicon glyphicon-th"></span>
+            <span class="col-md-10">Table content</span>
+        </h1>
+        <hr class="black-hr">
+    </div>
+{% elseif include == "js" %}
+    <script type="text/javascript" src="{{asset('js/DISHAS_table/conversion.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/DISHAS_table/Zone.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/DISHAS_table/MetaZone.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/DISHAS_table/MetaCell.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/DISHAS_table/SuperCell.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/DISHAS_table/Layout.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/DISHAS_table/area.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/DISHAS_table/PublicTable.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/DISHAS_table/PublicTableContainer.js')}}"></script>
+
+    <script>
+        let tableContents = {{ tableContents|json_encode|raw }};
+        tables = new PublicTableContainer();
+        tables.createPublicTable(tableContents);
+    </script>
+{% endif %}

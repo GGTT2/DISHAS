@@ -1,0 +1,89 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\team.html.twig#}
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% set currentNode = "team" %}
+
+{% block title %}
+    DISHAS Team — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    <link rel="stylesheet" href="{{ asset('css/homepage.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/static-pages.css')}}">
+    {% include 'TAMASAstroBundle:Default:Templates/pageHeader.html.twig' with {"title":"Team", "tag":"h1"} %}
+    <div class="container team-section">
+
+        {% if public_team.textContent|default %}
+            <div class="documentation">
+                {{ public_team.textContent|raw }}
+            </div>
+        {% endif %}
+
+        <div class="row">
+            {% for member in team|sort((a, b) => a.lastName <=> b.lastName) %}
+                {% include 'TAMASAstroBundle:Default:Templates/teamCard.html.twig' with {'member': member} %}
+            {% endfor %}
+        </div>
+
+        <div style='text-align: center'>
+            <a class="btn btn-beige" href="{{path('tamas_astro_partners')}}">Partners</a>
+        </div>
+    </div>
+
+    {#<div>
+        <h3>Research team</h3>
+
+        TAMAS is associating 14 scholars in the field of ancient astronomy from 9 nations on 4 continents: New Zealand, China, Japan Canada, USA, Germany, Spain, England and France.
+        TAMAS cover sources in the major languages for ancient sciences: Cuneiform, Greek, Arabic, Hebrew, Latin, Sanskrit and Chinese.
+        <ul>
+            <li>
+                Chabás, José (Pompeu Fabra University Barcelona, Spain)
+            </li>
+            <li>
+                <a href="http://www.bennovandalen.de/CV/cv.html">Dalen, Benno van</a> (Bavarian Academy of Sciences and Humanities, Germany)
+            </li>
+            <li>
+                <a href="http://www.hist.cam.ac.uk/directory/dr-sebastian-falk">Falk, Seb</a> (Cambridge University, United Kingdom)
+            </li>
+            <li>
+                <a href="http://www.hps.pitt.edu/profile/goldstein.php">Goldstein, Bernard R. </a>(Pittsburgh University, USA)
+            </li>
+            <li>
+                <a href="https://syrte.obspm.fr/spip/science/histoire/membres-de-l-equipe/article/matthieu-husson">Husson, Matthieu</a> (PI) (CNRS, SYRTE-Observatoire de Paris, France)
+            </li>
+            <li>
+                <a href="http://dartmouth.edu/faculty-directory/richard-lynn-kremer">Kremer, Richard</a> (Darmouth College, USA)
+            </li>
+            <li>
+                <a href="http://sourcedb.cas.cn/sourcedb_ihns_cas/en/pe/201306/t20130617_3867244.html">Li, Liang</a> (Beijing Institute for the History of Natural Science, Chinese Academy of Science, China)
+            </li>
+            <li>
+                <a href="https://syrte.obspm.fr/spip/science/histoire/membres-de-l-equipe/article/michela-malpangotto">Malpangotto, Michela</a> (CNRS, SYRTE-Observatoire de Paris, France)
+            </li>
+            <li>
+                Misra, Anuj (TAMAS postdoctoral Fellow, Observatoire de Paris, France)
+            </li>
+            <li>
+                <a href="http://www.canterbury.ac.nz/spark/researcher.aspx?researcherid=2172311">Montelle, Clemency</a> (Canterbury University, New Zealand)
+            </li>
+            <li>
+                <a href="http://www.sphere.univ-paris-diderot.fr/spip.php?article1465">Morgan, Daniel P.</a> (CNRS, Sphère-Paris 7, SAW Project)
+            </li>
+            <li>
+                <a href="https://www.philosophie.hu-berlin.de/en/personen-en/mitarbeiter/1687400">Ossendrijver, Mathieu </a>(Humboldt University Berlin, Germany)
+            </li>
+            <li>
+                <a href="http://www.math.union.edu/people/faculty/plofkerk.html">Plofker, Kim</a> (Union College New York, USA)
+            </li>
+            <li>
+                <a href="http://en.hsss.ustc.edu.cn/Institutions/hsta/201107/t20110707_115591.html">Shi, Yunli</a> (Beijing Institute for the History of Natural Science, Chinese Academy of Science, China)
+            </li>
+            <li>
+                <a href="http://www.f.waseda.jp/sidoli/">Sidoli, Nathan</a> (Waseda University Tokyo, Japan)
+            </li>
+            <li>
+                <a href="https://questu.ca/directory/faculty/glen-van-brummelen/">Van Brummelen, Glen</a> (Quest University, Canada)
+            </li>
+        </ul>
+    </div>#}
+{% endblock %}

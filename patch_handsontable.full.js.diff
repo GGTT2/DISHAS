@@ -1,0 +1,62 @@
+--- old_handsontable.full.js	2019-05-22 15:41:10.683201759 +0200
++++ handsontable.full.js	2018-10-01 15:20:17.649430837 +0200
+@@ -17313,8 +17313,51 @@
+ 
+     return true;
+   };
++  
++  this.selectMultipleCell = function (selections) {
++        var scrollToCell = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
++        var changeListener = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
++        for(var ind=0; ind<selections.length; ind++) {
++            var row = selections[ind][0];
++            var col = selections[ind][1];
++            var endRow = selections[ind][2];
++            var endCol = selections[ind][3];
++            if (typeof row !== 'number' || row < 0 || row >= instance.countRows()) {
++              return false;
++            }
++            if (typeof col !== 'number' || col < 0 || col >= instance.countCols()) {
++              return false;
++            }
++            if ((0, _mixed.isDefined)(endRow)) {
++              if (typeof endRow !== 'number' || endRow < 0 || endRow >= instance.countRows()) {
++                return false;
++              }
++              if (typeof endCol !== 'number' || endCol < 0 || endCol >= instance.countCols()) {
++                return false;
++              }
++            }
++            
++            if(ind === 0)
++                selection.selectedRange.set(new _src.CellCoords(row, col));
++            else
++                selection.selectedRange.add(new _src.CellCoords(row, col));
+ 
+-   /**
++            if (changeListener) {
++              instance.listen();
++            }
++
++            if ((0, _mixed.isUndefined)(endRow)) {
++              selection.setRangeEnd(selection.selectedRange.current().from, scrollToCell);
++            } else {
++              selection.setRangeEnd(new _src.CellCoords(endRow, endCol), scrollToCell);
++            }
++            selection.finish();
++        }
++
++    return true;
++  };
++
++  /**
+    * Select the cell specified by the `row` and `prop` arguments, or a range finishing at `endRow`, `endProp`.
+    * By default, viewport will be scrolled to selection.
+    *
+@@ -59960,4 +60003,4 @@
+ 
+ /***/ })
+ /******/ ])["default"];
+-});
++});
+\ Pas de fin de ligne à la fin du fichier

@@ -1,0 +1,88 @@
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+    {{ action|capitalize }} team member — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+{% form_theme form 'bootstrap_3_TAMAS.html.twig'
+    'jquery.collection.html.twig' %}
+
+   <div class="row">
+        <div class="col-md-10">
+            <div class="well">
+                {{form_start(form)}}
+                <div class="row">
+                    <div class="col-md-3">
+                        {{form_row(form.lastName)}}
+                    </div>
+                    <div class="col-md-3">
+                        {{form_row(form.firstName)}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{form_row(form.picture)}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{form_row(form.affiliation)}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{form_row(form.support)}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{form_row(form.role)}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{form_row(form.presentation)}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{form_row(form.links)}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+                {%include 'TAMASAstroBundle:AddObject:adminPannel.html.twig'%}
+                {{form_rest(form)}}
+                {{form_end(form)}}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}  
+    <script src="{{ asset('js/jquery.collection.js') }}"></script>
+    <script>
+
+    $(".collection").collection({
+        min: 0, 
+        max: 4, 
+        add_at_the_end: true,
+        up: '<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-arrow-up"></span></a>',
+        down: '<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span></a>',
+        add: '<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span></a>',
+        remove: '<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></a>'
+        
+    });
+
+
+    $("#{{form.vars.id}}_picture_imageFile").bind('change', function(e){
+        if (parseInt(this.files[0].size) > 1000000){
+            alert("This file is too large. Please select a lighter image. Current size :"+this.files[0].size+" octet");
+            $(this).val('');
+        }
+        
+    })
+    </script>
+{% endblock %}

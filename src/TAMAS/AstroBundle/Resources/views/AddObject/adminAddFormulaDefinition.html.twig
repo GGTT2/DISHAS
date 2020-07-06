@@ -1,0 +1,541 @@
+{# empty Twig template #}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+    {{ action|capitalize }} {{ object_info.properties.formulaDefinition.objectUserInterfaceName }} — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+{% form_theme form 'bootstrap_3_TAMAS.html.twig'
+    'jquery.collection.html.twig' %}
+<div class="row">
+	<div class="col-md-10">
+		<div class="well">
+
+			<ul class="nav nav-tabs " role="tablist">
+				<li role="presentation" class="active"><a href="#general"
+					aria-controls="general" role="tab" data-toggle="tab">General
+						Contents</a></li>
+				<li role="presentation"><a href="#formula"
+					aria-controls="formula" role="tab" data-toggle="tab">Formula</a></li>
+
+			</ul>
+
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="general">
+					{{form_start(form)}}
+					{{form_row(form.name)}}
+					{{form_row(form.tableType)}}
+					{{form_row(form.image)}}
+					{{form_row(form.explanation)}}
+					{{form_row(form.modernDefinition)}}
+					{{form_row(form.parameterExplanation)}}
+					{{form_row(form.estimatorDefinition)}}
+					{{form_row(form.tip)}}
+					{{form_row(form.bibliography)}}
+					{{form_row(form.author)}}
+				</div>
+
+				<div role="tabpanel" class="tab-pane" id="formula">
+                    {{form_row(form.argNumber)}}
+					<div class='row'>
+						<div class='col-md-8'>
+							{{form_row(form.parameters)}}
+						</div>
+						<div class='col-md-4'>
+							<span class='align-form'> <br /> Generate form fields for
+								the selected parameters?
+							</span> <br /> <a id="button-generate" style=""
+								class="btn btn-circle btn-success"> <span
+								class="glyphicon glyphicon-ok"></span>
+							</a>
+						</div>
+					</div>
+					<div id='input-formula' hidden="hidden" class="numbers">
+
+
+						<div class="panel-group" id="documentation" role="tablist"
+							aria-multiselectable="true">
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="heading-doc">
+									<h4 class="panel-title">
+										<a class="accordion-toggle collapse in" role="button"
+											data-toggle="collapse" data-parent="documentation"
+											href="#collapse-doc" aria-expanded="true"
+											aria-controls="collapse-doc"> Documentation</a>
+									</h4>
+								</div>
+								<div id="collapse-doc" class="panel-collapse collapse in"
+									role="tabpanel" aria-labelledby="heading-doc">
+									<div class="panel-body">
+										<div id="input-formula-documentation" class="">
+											<div class="row">
+												<div class="col-md-4" id="variables-documentation">
+													<ul id="list-variables" class="list-doc">
+													</ul>
+												</div>
+												<div class="col-md-8" id="math-documentation">
+													<ul id="list-math" class="list-doc">
+
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<div id="main-formula">
+							{{ form_row(form.latexFormula) }}
+							<div class="form-group">
+								<label class="control-label">Main formula </label>
+
+								<textarea id="main-formula-text" class="form-control"></textarea>
+							</div>
+                            <div class="form-group">
+                                <label class="control-label">Derivation with respect to <span class="formula-variable">x</span> </label>
+
+                                <textarea id="derivation-arg-1-text" class="form-control"></textarea>
+                            </div>
+                            <div id="derivation-arg-2" class="form-group">
+                                <label class="control-label">Derivation with respect to <span class="formula-variable">y</span> </label>
+
+                                <textarea id="derivation-arg-2-text" class="form-control"></textarea>
+                            </div>
+						</div>
+
+						<div class="panel-group" id="derivatives" role="tablist"
+							aria-multiselectable="true"></div>
+						{{form_row(form.formulaJSON)}}
+
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+	<div class="col-md-2">
+		{%include 'TAMASAstroBundle:AddObject:adminPannel.html.twig'%}
+		{{form_rest(form)}}
+		{{form_end(form)}}
+	</div>
+</div>
+
+<div id="test-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Try your model</h4>
+      </div>
+      <div class="modal-body">
+
+        <div id="test-parameter-values">
+        </div>
+        <hr>
+        <div id="test-argument-values">
+        </div>
+        <div class="row">
+            <button type="button" id="compute-button"class="btn-default btn col-md-2">Compute</button>
+            <div id="compute-result" class="col-md-5 numbers">
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock%}
+
+{% block javascripts %}
+{{parent()}}
+
+<script type="text/javascript"
+	src="{{asset('js/DISHAS_table/conversion.js')}}"></script>
+<script type="text/javascript"
+	src="{{asset('js/DISHAS_table/Zone.js')}}"></script>
+<script type="text/javascript"
+	src="{{asset('js/DISHAS_table/area.js')}}"></script>    
+<script type="text/javascript"
+	src="{{asset('js/DISHAS_table/Tools.js')}}"></script>      
+<script type="text/javascript"
+	src="{{asset('js/DISHAS_table/MetaCell.js')}}"></script>
+<script type="text/javascript"
+	src="{{asset('js/DISHAS_table/model.js')}}"></script>
+<script type="text/javascript"
+	src="{{asset('js/DISHAS_table/smartNumberFillField.js')}}"></script>
+ 
+<script type="text/javascript"
+	src="{{asset('js/ckeditor/adapters/jquery.js')}}"></script>
+<script>
+
+ $("#{{form.vars.id}}_image_imageFile").bind('change', function(e){
+        if (parseInt(this.files[0].size) > 1000000){
+            alert("This file is too large. Please select a lighter image. Current size :"+this.files[0].size+" octet");
+            $(this).val('');
+        }
+    })
+
+model = undefined;
+function ucfirst(string) 
+{    return string.charAt(0).toUpperCase() + string.slice(1);
+
+}
+
+
+$(document).ready(function () {
+    function onChangeArgNumber() {
+        if($('#{{form.vars.id}}_argNumber').val() <= 1) {
+            $('#derivation-arg-2').attr('hidden', 'hidden');
+        }
+        else {
+            $('#derivation-arg-2').removeAttr('hidden');
+        }
+    }
+    $('#{{form.vars.id}}_argNumber').change(function() {
+        onChangeArgNumber();
+    });
+    onChangeArgNumber();
+    $('#{{form.vars.id}}_tableType').change(function(e) {
+        variableDocumentation = {};
+        $('#input-formula').attr('hidden', 'hidden');
+        $('#derivatives').html('');
+        onTableTypeChange(this);
+    });
+    $('#button-generate').click(function() {
+        generate();
+    });
+    $('form').submit(function (e) {
+        $('#{{form.image.fileUserName.vars.id}}').val($('#{{form.name.vars.id}}').val().toLowerCase()+'_scheme');
+        fillHiddenForm();
+        return true;
+    });
+    hiddenToFields();
+
+    //management of the image field
+   
+});
+    function onTableTypeChange(that) {
+        var tableType = that.selectedOptions[0].value;
+        $("#{{form.vars.id}}_parameters option:selected").prop("selected", false);
+        $('#{{form.vars.id}}_parameters option').attr('hidden', 'hidden');
+        $('#{{form.vars.id}}_parameters').find('[table-type="' + tableType + '"]').removeAttr('hidden');
+    }
+    onTableTypeChange($('#{{form.vars.id}}_tableType')[0]);
+
+    function generate() {
+        variableDocumentation = {};
+        $('#input-formula').attr('hidden', 'hidden');
+        $('#derivatives').html('');
+        $('#input-formula').removeAttr('hidden');
+        $('#test-parameter-values').html('');
+        $("#{{form.vars.id}}_parameters option:selected").each(function(e) {
+            variableDocumentation[$(this).text().split('=')[0].split(':')[1].trim()] = '$p_' + $(this).val();
+            generateParameterFormula('$p_' + $(this).val(), $(this).text().split('=')[0].split(':')[1].trim());
+            generateParameterTest('$p_' + $(this).val(), $(this).text().split('=')[0].split(':')[1].trim());
+        });
+        fillDoc();
+    }
+
+    $('#{{form.vars.id}}_Test').click(function() {
+      generateArgumentTest($('#{{form.vars.id}}_argNumber').val());
+      model = tryModel();
+      var pbs = model.checkDerivates();
+      var liste_pbs = [];
+      for (var it = pbs.values(), val = null; val = it.next().value;) {
+        if(val !== 'Cx' && val !== 'Cy') {
+          if(val === 'x' || val === 'y')
+            liste_pbs.push(val);
+          else
+            liste_pbs.push('$_p' + val);
+        }
+      }
+      if(liste_pbs.length > 0) {
+        warning = "Warning ! Derivatives with respect to:\n";
+        for(var i=0; i<liste_pbs.length; i++) {
+          warning += liste_pbs[i] + '\n';
+        }
+        warning += 'are wrong !';
+        alert(warning);
+      }
+    });
+
+    function generateArgumentTest(narg) {
+        var html = "";
+        for(var i=0; i<narg; i++) {
+            var letter = 'x';
+            if(i === 1)
+                letter = 'y';
+            if(i === 2)
+                letter = 'z';
+            html += `
+<div class="row">
+    <div class="col-md-3">
+        Argument ` + (i+1) + ` 
+    </div>
+    <div class="col-md-2"><span class="formula-variable">` + letter + `</span>:
+    </div>
+    <div class="col-md-3">
+        <input id="test-arg-` + i + `-value" class="form-control numbers" type="text">
+    </div>
+    <div class="col-md-4">
+        <div id="test-derivate-arg-` + i + `" class="numbers"></div>
+    </div>
+</div>
+            `
+        }
+        $('#test-argument-values').html(html);
+    }
+
+    function generateParameterTest(parameterId, parameterName) {
+        var parameterHtmlId = parameterId.substr(1);
+        html = `
+<div class="row">
+    <div class="col-md-3">
+        ` + parameterName + ` 
+    </div>
+    <div class="col-md-2"><span class="formula-variable">` + parameterId + `</span>:
+    </div>
+    <div class="col-md-3">
+        <input id="test-parameter-` + parameterHtmlId + `-value" class="form-control numbers" type="text">
+    </div>
+    <div class="col-md-4">
+      <div id="test-derivate-` + parameterHtmlId + `" class="numbers"></div>
+    </div>
+</div>
+            `
+        $('#test-parameter-values').append(html);
+    }
+
+    function generateParameterFormula(parameterId, parameterName) {
+        var parameterHtmlId = parameterId.substr(1);
+        var html = `
+        	<div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading-`+parameterHtmlId+`">
+        			<h4 class="panel-title">
+                    <a class="accordion-toggle collapsed" role="button" data-toggle="collapse" data-parent="#derivatives" href="#collapse-`+parameterHtmlId+`" aria-expanded="false" aria-controls="collapse-`+parameterId+`">
+                      `+ucfirst(parameterName) +` <span class="formula-variable">` + parameterId + ` </span>
+                    </a>
+                    </h4>
+                </div>
+                <div id="collapse-`+parameterHtmlId+`" class="panel-collapse collapse" role="tabpanel" aria-expanded="false" aria-labelledby="heading-`+parameterHtmlId+`">
+                  <div class="panel-body">
+                      <div id="parameter-short-name-` + parameterHtmlId + `">
+                      <div class="form-group">
+                          <label class="control-label formula-label"><span class="formula-important latex"> </span>name for <span class="formula-variable">` + parameterId + ` </span> (` + parameterName +`) </label>
+                      
+                          <textarea id="parameter-short-name-` + parameterHtmlId + `-text" class="form-control ckeditor"></textarea>
+                      </div>
+                  </div>
+                  <div id="parameter-default-` + parameterHtmlId + `">
+                      <div class="form-group">
+                          <label class="control-label formula-label">Default value for <span class="formula-variable">` + parameterId + ` </span>(` + parameterName +`)</label>
+                      
+                          <textarea id="parameter-default-` + parameterHtmlId + `-value" class="form-control"></textarea>
+                      </div>
+                  </div>
+                  <div id="parameter-transform-short-name-` + parameterHtmlId + `">
+                      <div class="form-group">
+                          <label class="control-label formula-label"><span class="formula-important latex"> </span>name for <span class="formula-important">transformation</span> <span class="formula-variable">` + '$t' + parameterHtmlId + ` </span>(transformation of ` + parameterName +`)</label>
+                      
+                          <textarea id="parameter-transform-short-name-` + parameterHtmlId + `-text" class="form-control ckeditor"></textarea>
+                      </div>
+                  </div>
+                  <div id="parameter-direct-` + parameterHtmlId + `">
+                      <div class="form-group">
+                          <label class="control-label formula-label"><span class="formula-important">Direct transformation</span> for <span class="formula-variable">` + parameterId + `</span> (` + parameterName +`)</label>
+                      
+                          <textarea id="parameter-direct-` +parameterHtmlId+ `-text" class="form-control"></textarea>
+                      </div>
+                  </div>
+                  <div id="parameter-reverse-` + parameterHtmlId + `">
+                      <div class="form-group">
+                          <label class="control-label formula-label"><span class="formula-important">Reverse transformation</span> from <span class="formula-variable">` + '$t' + parameterHtmlId + `</span> (transformation of ` + parameterName +`)</label>
+                      
+                          <textarea id="parameter-reverse-` + parameterHtmlId + `-text" class="form-control"></textarea>
+                      </div>
+                  </div>
+                  <div id="parameter-formula-` + parameterHtmlId + `">
+                      <div class="form-group">
+                          <label class="control-label formula-label"><span class="formula-important">Derivation</span> with respect to <span class="formula-variable">` + '$t' + parameterHtmlId + `</span> (transformation of ` + parameterName +`)</label>
+                      
+                          <textarea id="parameter-formula-` + parameterHtmlId + `-text" class="form-control"></textarea>
+                      </div>
+                  </div>              
+              </div>
+            </div>
+          </div>  `  
+//         <hr style="height:2px;border:none;color:#333;background-color:#333;" />
+        
+        $('#derivatives').append(html);
+        //CKEDITOR.appendTo('parameter-short-name-' + parameterId.substr(1) + '-text', {}, 'coucou');
+        //CKEDITOR.inline($('#parameter-short-name-' + parameterId.substr(1) + '-text')[0]);
+        //CKEDITOR.inline($('#parameter-transform-short-name-' + parameterId.substr(1) + '-text')[0]);
+        //CKEDITOR.appendTo('parameter-short-name-' + parameterId.substr(1) + '-text', {}, 'coucou');
+        //CKEDITOR.appendTo('parameter-transform-short-name-' + parameterId.substr(1) + '-text', {}, 'coucou');
+        $('#parameter-short-name-' + parameterId.substr(1) + '-text').ckeditor();
+        $('#parameter-transform-short-name-' + parameterId.substr(1) + '-text').ckeditor();
+    }
+
+    var mathDocumentation = {
+        'Algebraic operations':{
+            'addition': '+',
+            'substraction': '-',
+            'multiplication': '*',
+            'division': '/',
+            'modulo': '%',
+            'exponentiation': '**'
+        },
+        'Trigonometrical functions':{
+            'sin(x)': 'Math.sin(x)',
+            'cos(x)': 'Math.cos(x)',
+            'tan(x)': 'Math.tan(x)',
+            'cotan(x)': '1 / Math.tan(x)',
+            'asin(x)': 'Math.asin(x)',
+            'acos(x)': 'Math.acos(x)',
+            'atan(x)': 'Math.atan(x)',
+            'sqrt(x)': 'Math.sqrt(x)'
+        }
+    }
+
+    var variableDocumentation = {};
+
+    function fillDoc() {
+        var listMath = $("#list-math");
+        var res = '<div class="row">';
+        for(var title in mathDocumentation){
+            res += `<div class='col-md-6'><span class="function-title">`+title+`</span>
+            <ul class="list-doc">`;
+            for (var origin in mathDocumentation[title]){
+                res+= `
+                    <div class="row">
+                    <div class="col-md-6"><span class="origin">` + origin + `</span>: </div>
+                    <div class="col-md-6"><span class="translated math-variable " >` +mathDocumentation[title][origin] + `</span></div></div>`;
+            }
+            
+		res+='</div>';
+        }
+        res += '</div>';
+        listMath.html(res);
+
+        res = '';
+        for (var origin in variableDocumentation) {
+            res+= `<span class="function-title">Variables</span><li><div class="row"><div class="col-md-6"><span class="origin">` + ucfirst(origin) + `</span>: </div>
+            <div class="col-md-6"><span class="formula-variable">`+variableDocumentation[origin] + `</span></div></div></li>`;
+        }
+        $("#list-variables").html(res);
+    }
+
+    function fillHiddenForm() {
+        var res = {};
+        res.main_formula = $('#main-formula-text').val();
+        res.main_formula_latex = CKEDITOR.instances.{{form.vars.id}}_latexFormula.getData();
+        res.derivatives = {};
+        res.parameters = {};
+        for(var origin in variableDocumentation) {
+            var parameterCode = variableDocumentation[origin];
+            res.derivatives[parameterCode] = $('#parameter-formula-' + parameterCode.substr(1) + '-text').val();
+            res.parameters[parameterCode] = {};
+            var default_value = $('#parameter-default-' + parameterCode.substr(1) + '-value').val();
+            if(default_value !== '') {
+              res.parameters[parameterCode].default = Number(default_value);
+            }
+            var direct_value = $('#parameter-direct-' + parameterCode.substr(1) + '-text').val();
+            var reverse_value = $('#parameter-reverse-' + parameterCode.substr(1) + '-text').val();
+            if(direct_value !== '') {
+              res.parameters[parameterCode].direct = direct_value;
+            }
+            if(reverse_value !== '') {
+              res.parameters[parameterCode].reverse = reverse_value;
+            }
+            res.parameters[parameterCode].latex_name = CKEDITOR.instances['parameter-short-name-' + parameterCode.substr(1) + '-text'].getData();
+            res.parameters[parameterCode].transform_latex_name = CKEDITOR.instances['parameter-transform-short-name-' + parameterCode.substr(1) + '-text'].getData();
+        }
+        res.derivatives.x = $('#derivation-arg-1-text').val();
+        if($('#{{form.vars.id}}_argNumber').val() > 1) {
+            res.derivatives.y = $('#derivation-arg-2-text').val();
+        }
+
+        $('#{{form.vars.id}}_formulaJSON').val(JSON.stringify(res));
+    }
+
+    function hiddenToFields() {
+        if($('#{{form.vars.id}}_formulaJSON').val().length === 0) {
+            generate();
+            return;
+        }
+        var value = JSON.parse($('#{{form.vars.id}}_formulaJSON').val());
+        if (value){
+            $('#main-formula-text').val(value.main_formula);
+            $("#{{form.vars.id}}_parameters option:selected").prop("selected", false);
+            for(var parameterCode in value.parameters) {
+                $("#{{form.vars.id}}_parameters [value=\"" + parameterCode.split('_')[1] + "\"]").prop("selected", true);
+            }
+            generate();
+            for(var parameterCode in value.parameters) {
+                console.log('parameterCode');
+                $('#parameter-formula-' + parameterCode.substr(1) + '-text').val(value.derivatives[parameterCode]);
+                $('#parameter-default-' + parameterCode.substr(1) + '-value').val(value.parameters[parameterCode].default);
+                $('#parameter-direct-' + parameterCode.substr(1) + '-text').val(value.parameters[parameterCode].direct);
+                $('#parameter-reverse-' + parameterCode.substr(1) + '-text').val(value.parameters[parameterCode].reverse);
+                ed1 = 'parameter-short-name-' + parameterCode.substr(1) + '-text';
+                ed2 = 'parameter-transform-short-name-' + parameterCode.substr(1) + '-text';
+                CKEDITOR.instances[ed1].setData(value.parameters[parameterCode].latex_name);
+                CKEDITOR.instances[ed2].setData(value.parameters[parameterCode].transform_latex_name);
+                //CKEDITOR.instances[ed1].setData('');
+                //CKEDITOR.instances[ed2].setData('');
+            }
+            $('#derivation-arg-1-text').val(value.derivatives.x);
+            if($('#{{form.vars.id}}_argNumber').val() > 1) {
+                $('#derivation-arg-2-text').val(value.derivatives.y);
+            }
+            $('#{{form.vars.id}}_latexFormula').val(value.main_formula_latex);
+        }
+    }
+
+    function tryModel() {
+        fillHiddenForm();
+        var model = loadModelJSON($('#{{form.vars.id}}_formulaJSON').val());
+        return model;
+    }
+
+    $('#compute-button').click(function(){
+      computeModel();
+    });
+
+    function computeModel() {
+      var model_params = {};
+      var params = {};
+      $('div#test-parameter-values input').each(function(){
+        var param = 'o' + $(this).attr('id').split('-')[2].split('_')[1];
+        var value = $(this).val();
+        params[param] = Number(value);
+      });
+      var args = [];
+      $('div#test-argument-values input').each(function(){
+        args.push(Number($(this).val()));
+      });
+      console.log(args);
+      console.log(params);
+      model_params = JSON.parse(JSON.stringify(params));
+      model_params['Cx'] = 0.0;
+      model_params['Cy'] = 0.0;
+      // console.log(model_params, args);
+      // console.log(model.apply(model_params, args));
+      $('#compute-result').html(model.apply(model_params, args));
+      for(var key in params) {
+        if(key in model.jsDerivatives)
+          $('#test-derivate-p_' + key).html(model.applyDerivate(model_params, args, key));
+      }
+      $('#test-derivate-arg-0').html(model.applyDerivate(model_params, args, 'x'));
+
+    }
+
+    </script>
+
+{% endblock %}

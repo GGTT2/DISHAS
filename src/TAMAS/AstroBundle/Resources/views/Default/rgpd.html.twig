@@ -1,0 +1,80 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\about.html.twig#}
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% block title %}
+	RGPD — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+	<div class="citation-block">
+		{% include 'TAMASAstroBundle:Default:Templates/pageHeader.html.twig' with {"title":"GDPR (General Data Protection Regulation)", "tag":"h1"} %}
+		<div class="documentation">
+			<h3>Recorded data</h3>
+			DISHAS' administrators inform you that certain information is required
+			to access specific features of the web site. If you refuse to provide
+			required entries, you may not be able to access certain services. Some
+			personnal data are collected in order to access the "admin" part of
+			the website and for the contact page :
+			<ul>
+				<li>First name</li>
+				<li>Last name</li>
+				<li>E-mail adress</li>
+				<li>Last login</li>
+			</ul>
+			<h3>Data recipients</h3>
+			The data is accessible to
+			<ul>
+				<li>Webmasters, site administrators of the Observatoire de Paris
+					and the DISHAS' project</li>
+				<li>Authenticated administrators of dishas.obspm.fr website</li>
+			</ul>
+
+			<h3>Data transfer outside the European Union</h3>
+			<p>No data transfer outside the European Union is carried out.</p>
+
+			<h3>Personal rights</h3>
+			<p>In compliance with the applicable legal and regulatory
+				provisions, in particular Law No. 78-17 of 6 January amended relating
+				to data processing, files and freedoms and European Regulation No.
+				2016/679/EU of 27 April 2016 (applicable since 25 May 2018), you have
+				the following rights :</p>
+
+			<p>If you are an Authenticated contributor:</p>
+
+			<ul>
+				<li>Update or delete your data by logging into your account and
+					configuring its settings</li>
+			</ul>
+
+			<p>If you are a User:</p>
+
+			<ul>
+				<li>Exercise your right of access, to know the personal data
+					concerning you</li>
+				<li>Request the updating of your data, if it is inaccurate</li>
+
+				<li>Request portability or erasure of your data</li>
+
+				<li>Request the deletion of your account</li>
+
+				<li>Request the limitation of the processing of your data</li>
+
+				<li>Oppose, for legitimate reasons, the processing of your data</li>
+
+				<li>Withdraw your consent to the processing of your data.</li>
+
+			</ul>
+
+			<p>To exercice these rights,<a href={{path('tamas_astro_contact')   }}> contact DISHAS' team </a></p>
+			<p>You can also contact the Data Protection Officer at the following address:<br/><br/>
+				DPD <br/>
+				17, rue Notre Dame des Pauvres<br/>
+				54519 Vandoeuvre lès Nancy Cedex
+			</p>
+
+			<h3>Right to lodge a claim</h3>
+			<p>If, after contacting us, you believe that your rights in the field of Information Technology and Liberties are not respected,
+				you are entitled to file a claim online with the <a href="https://www.cnil.fr/">CNIL</a> online or by post.</p>
+		</div>
+	</div>
+{% endblock %}

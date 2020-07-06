@@ -1,0 +1,15 @@
+{#TAMAS\AstroBundle\Resources\views\ViewObject\adminViewFormulaDefinition.html.twig#}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+{% block title %}
+    View {{ object_info.properties.formulaDefinition.objectUserInterfaceName }} n°{{ formulaDefinition.id }} — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+<div class="citation-block">
+	{% include 'TAMASAstroBundle:ViewObject:adminViewFormulaDefinitionBase.html.twig'  %}
+</div>
+{% endblock %}
+{% block javascripts %}
+{{parent()}}
+
+{% endblock %}

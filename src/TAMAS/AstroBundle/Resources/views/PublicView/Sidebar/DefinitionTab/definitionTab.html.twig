@@ -1,0 +1,42 @@
+{#TAMAS\AstroBundle\Resources\views\PublicView\sideMetadata.html.twig#}
+{% if include == "html" %}
+    <div class="backgroundSidebar" id="side-definition">
+        <div class="row head-picto">
+            <div class="col-md-5"></div>
+            <div class="picto col-md-2 {{ entityName }}">
+                <img class="pictogram"
+                     src="{{asset('img/pictograms/'~object_info.properties[objectEntityName].objectEntityName~'.png')}}"
+                     alt="{{ object_info.properties[objectEntityName].objectUserInterfaceName|capitalize }} pictogram">
+            </div>
+        </div>
+
+        <h2 style="padding: 10px;">{{ object_info.properties[objectEntityName].objectUserInterfaceName|capitalize }}
+            definition</h2>
+        <hr/>
+        <div style="padding: 1em;">
+            {{ object_info.properties[objectEntityName].shortDefinition|raw }}
+        </div>
+        {% if currentNode == "TT-rec" %}
+            <hr style="padding: 25px 0 0"/>
+            <div class="row head-picto">
+                <div class="col-md-5"></div>
+                <div class="picto col-md-2 {{ entityName }}">
+                    <img class="pictogram"
+                         src="{{asset('img/pictograms/'~entityName~'.png')}}"
+                         alt="{{ object_info.properties[objectEntityName].objectUserInterfaceName|capitalize }} pictogram">
+                </div>
+            </div>
+
+            <h2 style="padding: 10px;">{{ astroObject["title"] }} definition</h2>
+            <hr/>
+            <div style="padding: 1em;">
+                {{ astroObject["definition"]|raw }}
+            </div>
+        {% endif %}
+
+        <div style="text-align: center">
+            <a href="{{ path("tamas_astro_glossary") }}" class="btn btn-beige">Glossary</a>
+        </div>
+
+    </div>
+{% endif %}

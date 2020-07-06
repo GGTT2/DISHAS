@@ -1,0 +1,12 @@
+{% if objectEntityName|default and attribute(object_info.properties, objectEntityName)|default %}
+    {% set object =  attribute(object_info.properties, objectEntityName) %}
+    {% set name = object.objectUserInterfaceName %}
+    {% set definition = object.longDefinition %}
+{% else %}
+    {% set name = "" %}
+    {% set definition = "" %}
+{% endif %}
+<div class="description-block">
+    <h4>What is {{ name|determinant() }}</h4>
+    <p> {{ definition|raw }}</p>
+</div>

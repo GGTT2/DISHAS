@@ -1,0 +1,126 @@
+{% if include == "html" %}
+    <div class="row">
+        <div class="content-panel">
+            <h2 style="text-align: center">Table model definition</h2>
+
+            <h3>Explanation</h3>
+            {% if entity.explanation|default %}
+                {{ entity.explanation|raw }}
+            {% else %}
+                <p><span class="noInfo">No explanation provided</span></p>
+            {% endif %}
+
+            <h3>Formula</h3>
+            <div class="formula-definition">
+                <div style="text-align: center; font-size: 20px; margin: 30px 0 20px;">
+                    {% if entity.latexFormula|default %}
+                        {{ entity.latexFormula|raw }}
+                    {% else %}
+                        <p><span class="noInfo">No formula provided</span></p>
+                    {% endif %}
+                </div>
+                {% if entity.formulaJSON.parameters|default %}
+                    <h4>{{ entity.formulaJSON.parameters|length > 1 ? "Parameters" : "Parameter" }}</h4>
+                    <table class="table">
+                        <tbody>
+                        {% for id, param in entity.formulaJSON.parameters %}
+                            <tr style="height:30px">
+                                <th scope="row" colspan="2">{{ parameterFormats[id]|capitalize }}</th>
+                                <td class="dataCell" colspan="3">
+                                    {% if param.latex_name %}
+                                        {{ param.latex_name|raw }}
+                                    {% else %}
+                                        <span class="noInfo">Undesignated parameter</span>
+                                    {% endif %}
+                                    {% if param.transform_latex_name|default %}
+                                        <div class="col-md-2" style="padding: 0">{{ param.transform_latex_name|raw }}</div>
+                                        <div class="col-lg-10">(parameter transformation)</div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {#<p>
+                        {% for id, param in entity.formulaJSON.parameters %}
+                            <h4 class="col-md-offset-1">{{ parameterFormats[id]|capitalize }}</h4><br/>
+                            {% set type = {
+                                "default" : "Default value",
+                                "direct" : "Direct transformation",
+                                "reverse" : "Reverse transformation",
+                                "latex_name" : "Parameter name in formula",
+                                "transform_latex_name" : "Transformation in formula"
+                            } %}
+                            <table class="table">
+                                <tbody>
+                                {% for key, val in param %}
+                                    <tr style="height:30px">
+                                        <th scope="row" colspan="2">{{ type[key] }}</th>
+                                        <td class="dataCell" colspan="3">{{ val|raw }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endfor %}
+                    </p>#}
+                {% endif %}
+            </div>
+
+            <h3>Modern definition</h3>
+            {% if entity.modernDefinition|default %}
+                {{ entity.modernDefinition|raw }}
+            {% else %}
+                <p><span class="noInfo">No definition provided</span></p>
+            {% endif %}
+
+            {% if entity.tip|default %}
+                <h3>Parameter estimation tip</h3>
+                {{ entity.tip|raw }}
+            {% endif %}
+
+            {% if entity.parameterExplanation|default %}
+                <h3>Parameter explanation</h3>
+                {{ entity.parameterExplanation|raw }}
+            {% endif %}
+
+            {#{% if entity.formulaJSON.derivatives|default %}
+                <h3>Derivatives</h3>
+                {% set derivation = {
+                    "y" : "Derivation with respect to « y »",
+                    "x" : "Derivation with respect to « x »"
+                } %}
+                {% for id, param in entity.formulaJSON.derivatives %}
+                    {% if id starts with "$p" %}
+                        {% set derivation = derivation|merge({(id) : parameterFormats[id]|capitalize}) %}
+                    {% endif %}
+                {% endfor %}
+                <table class="table">
+                    <tbody>
+                    {% for key, derivative in entity.formulaJSON.derivatives %}
+                        <tr style="height:30px">
+                            <th scope="row" colspan="2">{{ derivation[key] }}</th>
+                            <td class="dataCell" colspan="3">{{ derivative|raw }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}#}
+
+            {% if entity.estimatorDefinition|default %}
+                <h3>Estimator definition</h3>
+                {{ entity.estimatorDefinition|raw }}
+            {% endif %}
+
+            {% if entity.image|default %}
+                <h3>Graphical representation</h3>
+                <div style="text-align: center;">
+                    <img src="{{ asset("image/" ~ entity.image.fileName) }}"
+                         alt="{{ entity.name }} representation"
+                         style="border: 2px solid rgb(230, 230, 230); max-width: 100%;">
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+{% elseif include == "js" %}
+{% endif %}

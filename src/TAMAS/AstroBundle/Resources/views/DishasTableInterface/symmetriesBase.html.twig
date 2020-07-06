@@ -1,0 +1,89 @@
+{% if czSymmetry|default() and czSymmetry == true %}
+{% set base_id = '1' %}
+{% else %}
+{% set base_id = 'suggest' %}
+{% endif %}
+
+<div class="form-group" style="border-bottom: 2px solid #ddd;">
+	<div class="recordset">
+		<div class="row">
+			<div class="col-md-1">
+				<span id='direction-title-{{ base_id }}'>Direction of the symmetry</span>
+			</div>
+			<div class="col-md-2">
+				<span>Source arguments</span>
+			</div>
+			<div class="col-md-3">
+				<span>Symmetry type</span>
+			</div>
+			<div class="col-md-2">
+				<span>Symmetry parameter</span>
+			</div>
+			<div class="col-md-1" hidden>
+				<span>Symmetry displacement</span>
+			</div>
+			<div class="col-md-2">
+				<span>Target arguments</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% if czSymmetry|default() and czSymmetry == true %}
+<div class="form-group" id="cz-symmetry">
+{% else %}
+<div class="form-group">
+{% endif %}
+{# <div class="form-group" id="cz-symmetry"> #}
+	<div id="first">
+		<div data-id="symmetry_{{ base_id }}_row" class="recordset"
+			style="border-bottom: 1px solid #ddd; margin-bottom: 8px; padding-bottom: 8px;">
+			<div class="row">
+				<div class="col-md-1">
+						<select data-id="id_{{ base_id }}_direction">
+							<option value="1" selected>Along arg 1</option>
+							<option value="2">Along arg 2</option>
+						</select>
+				</div>
+				<div class="col-md-1">
+						<input data-id="id_{{ base_id }}_source_start" class="form-control numbers"
+						type="text" placeholder="From" />
+				</div>
+				<div class="col-md-1">
+						<input data-id="id_{{ base_id }}_source_end" class="form-control numbers"
+						type="text" placeholder="To" />
+				</div>
+				<div class="col-md-3">
+					<select class="form-control" data-id="id_{{ base_id }}_symmetry">
+						<option value="mirror-symmetric">Mirror - Symmetric</option>
+						<option value="mirror-antisymmetric">Mirror -
+							Antisymmetric</option>
+						<option value="periodic-positive">Periodic - Positive</option>
+						<option value="periodic-negative">Periodic - Negative</option>
+					</select>
+				</div>
+				<div class="col-md-2">
+					<div class="input-group">
+						<div class="input-group-addon"
+							data-id="id_{{ base_id }}_symmetry_label_parameter">Symmetry point</div>
+						<input type="text" class="form-control"
+							data-id="id_{{ base_id }}_symmetry_parameter" placeholder="0">
+					</div>
+				</div>
+				<div class="col-md-1" hidden>
+					<input class="form-control numbers" type="text"
+						data-id="id_{{ base_id }}_symmetry_displacement" value="0" />
+				</div>
+				<div class="col-md-1">
+					<input class="form-control numbers" type="text"
+						placeholder="From" data-id="id_{{ base_id }}_target_start" />
+				</div>
+				<div class="col-md-1">
+					<input class="form-control numbers" type="text"
+						placeholder="To" data-id="id_{{ base_id }}_target_end" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

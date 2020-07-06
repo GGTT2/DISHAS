@@ -1,0 +1,92 @@
+<div class="description-block">
+	<div id='formula-name'>
+		<h4>
+			{% if formulaDefinition|default and formulaDefinition.name|default %}
+			{{formulaDefinition.name}}
+			{% endif %}
+		</h4>
+	</div>
+	<div class="thumbnail" id='formula-image'>
+		{% if  formulaDefinition|default() and formulaDefinition.image|default and formulaDefinition.image.fileName|default %}
+		<a href="{{asset('image/'~formulaDefinition.image.fileName)}}"> <img
+			src="{{asset('image/'~formulaDefinition.image.fileName)}}"
+			alt="{{formulaDefinition.name ~ ' scheme'}}"
+			class="definition-scheme"> {#<div class="caption"> <p>Lorem
+			ipsum...</p> </div>#}
+		</a>
+		{% endif %}
+	</div>
+	
+	{% if formulaDefinition|default() and formulaDefinition.latexFormula|default() or formulaDefinition.modernDefinition|default()%}
+
+	<div id='formula-explanation'>
+		<h5>{{ object_info.properties.formulaDefinition.objectUserInterfaceName }}</h5>
+		<p>
+			{{formulaDefinition.latexFormula|raw()}}
+		</p>
+		<p>{{ formulaDefinition.modernDefinition|raw() }}</p>
+	</div>
+	{% endif %}
+	{# <h1>\(\sin\delta=\sin\lambda\sin\varepsilon\)</h1>#}
+	{% if formulaDefinition|default() and formulaDefinition.explanation|default() %}
+
+	<div id='formula-explanation'>
+		<h5>Explanation</h5>
+		<p>
+			{{formulaDefinition.explanation|raw()}}
+		</p>
+	</div>
+	{% endif %}
+	{% if formulaDefinition|default() and formulaDefinition.modernDefinition|default() %}
+
+	<div id='formula-modern-definition'>
+		<h5>Modern definition</h5>
+		<p>
+			{{formulaDefinition.modernDefinition|raw()}}
+		</p>
+	</div>
+	{% endif %}
+	{% if formulaDefinition|default() and formulaDefinition.parameterExplanation|default() %}
+
+	<div id='formula-parameter-explanation'>
+		<h5>Parameter explanation</h5>
+		<p>
+			{{formulaDefinition.parameterExplanation|raw()}}
+		</p>
+	</div>
+	{% endif %}
+
+{# 	{% if formulaDefinition|default() and formulaDefinition.estimatorDefinition|default() %}#}
+
+{# 	<div id='formula-estimator-definition'>#}
+{# 		<h5>Estimator in DISHAS</h5>#}
+{# 		<p>#}
+{# 			{{formulaDefinition.estimatorDefinition|raw()}}#}
+{# 		</p>#}
+
+{# 	</div>#}
+{# 	{% endif %}#}
+
+{# 	{% if formulaDefinition|default() and formulaDefinition.tip|default() %}#}
+
+{# 	<div id='formula-tip'>#}
+{# 		<h5>Tips</h5>#}
+{# 		<p>#}
+{# 			{{formulaDefinition.tip|raw()}}#}
+{# 		</p>#}
+
+{# 	</div>#}
+{# 	{% endif %}#}
+
+	{% if formulaDefinition|default() and formulaDefinition.bibliography|default() %}
+
+	<div id='formula-bibliography'>
+		<h5>Bibliography</h5>
+		<p>
+			{{formulaDefinition.bibliography|raw()}}
+		</p>
+
+	</div>
+	{% endif %}
+
+</div>

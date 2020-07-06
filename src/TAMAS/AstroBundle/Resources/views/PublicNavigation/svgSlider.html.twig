@@ -1,0 +1,17 @@
+<div class="w-container">
+    <div data-animation="slide" data-duration="500" data-infinite="1" class="presentations-slider w-slider">
+        <div class="w-slider-mask">
+            {% for svg in svgPaths %}
+                <div class="presentation-slide w-slide">
+                    {% include 'TAMASAstroBundle:PublicNavigation:'~ svg ~'.html.twig' %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="left-arrow w-slider-arrow-left">
+            <span style="margin: 0;top: 50%;-ms-transform: translateY(-50%);transform: translateY(-50%);" class="glyphicon glyphicon-chevron-left"></span>
+        </div>
+        <div class="right-arrow w-slider-arrow-right">
+            <span style="margin: 0;top: 50%;-ms-transform: translateY(-50%);transform: translateY(-50%);" class="glyphicon glyphicon-chevron-right"></span>
+        </div>
+    </div>
+</div>

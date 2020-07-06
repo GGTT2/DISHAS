@@ -1,0 +1,73 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\adminAddEditedText.html.twig#}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+    {{ action|capitalize }} edited text — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    <div id="view-graph">
+        Coucou
+    </div>
+
+    <style type="text/css">
+        #mynetwork {
+            width: 600px;
+            height: 400px;
+            border: 1px solid lightgray;
+        }
+    </style>
+</head>
+<body>
+    <div id="mynetwork">
+
+    </div>
+
+{%endblock%}
+
+{% block javascripts %}
+    {{parent()}}
+    <script type="text/javascript" src="{{asset('js/addDisabled.js')}}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css"/>
+    <script type="text/javascript" src="{{asset('js/myGraph.js')}}"></script>
+    <script>
+        function createNetwork(graph) {
+            var visGraph = graph.generateVisGraph();
+            var nodes = new vis.DataSet(visGraph.nodes);
+            // create an array with edges
+            var edges = new vis.DataSet(visGraph.edges);
+            // create a network
+            var container = document.getElementById('mynetwork');
+            // provide the data in the vis format
+            var data = {
+                nodes: nodes,
+                edges: edges
+            };
+            var options = {
+                edges: {
+                    arrows: 'from'
+                }};
+            // initialize your network!
+            var network = new vis.Network(container, data, options);
+            return network;
+        }
+            
+        $(document).ready(function () {
+            
+
+            var dependanceTree = JSON.parse("{{dependanceTree|escape('js')}}");
+            graphTreeTest = new TreeGraph();
+            graphTreeTest.loadJSONTree(dependanceTree);
+            
+            var nodeList = [graphTreeTest.nodes["e46"]];
+            
+            copy = graphTreeTest.descendantGraph(nodeList);
+
+            network = createNetwork(copy);
+            
+
+        });
+
+    </script>   
+{%endblock%}

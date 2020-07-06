@@ -1,0 +1,617 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\adminAddEditedText.html.twig#}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+	{{ action|capitalize }} {{ object_info.properties.editedText.objectUserInterfaceName }} — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+	{% form_theme form 'bootstrap_3_TAMAS.html.twig' %}
+	<div id="my_form" class="row">
+		<div class="col-md-10 well">
+			{{form_start(form, {'attr': {'class': 'form'}})}}
+			<ul class="nav nav-tabs " role="tablist">
+				<li role="presentation" class="active">
+					<a href="#general" aria-controls="general" role="tab" data-toggle="tab">General contents *</a>
+				</li>
+				<li role="presentation">
+					<a id='tab-edition-sources'
+					   href="#material" aria-controls="material" role="tab"
+					   data-toggle="tab">Edition sources</a>
+				</li>
+				<li role="presentation">
+					<a href="#source" aria-controls="source"
+					   role="tab" data-toggle="tab">{{ object_info.properties.secondarySource.objectUserInterfaceName|capitalize }} *</a>
+				</li>
+			</ul>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="general">
+					<div class="row">
+						<div class="col-md-12">
+							{{form_row(form.editedTextTitle)}}
+						</div>
+
+					</div>
+					{{form_row(form.tableType)}}
+
+
+					<div class="print-info">
+						<p>&nbsp;Except for mean motion and syzygy tables, only one set
+							of tabular values can be associated with an edited text.</p>
+					</div>
+
+					{% include 'TAMASAstroBundle:SelectObject:selectCalendar.html.twig' with {'includeType': 'html'} %}
+
+					{{form_row(form.comment)}}
+				</div>
+				<div role="tabpanel" class="tab-pane" id="material">
+					<span class="print-main-info">Item following the icon <span class='glyphicon glyphicon-wrench'></span>are works in progress; they are not yet public and might be edited at any time.</span>
+
+					{% if (form.relatedEditions is defined)%}
+						{{form_row(form.relatedEditions)}}
+					{%endif%}
+					{% if form.originalTexts is defined %}
+
+						{{form_row(form.originalTexts)}}
+					{% endif %}
+					<div class="description-block">
+						<h1>Graph of the source editions</h1>
+						<div id="view-graph"></div>
+					</div>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="source">
+			<span class="print-main-info">Secondary source designates the intellectual property of that edition. Fill the secondary source select with an actual edition if this table was already edited
+			or click on "No known previous edition" and fill the intellectual author field with the name of the author of this edition (usually the person who fills this table).<b>This field does not stand for bibliographic references</b>.</span>
+					<div class="row">
+						<div class="col-md-9">
+							{{form_row(form.secondarySource)}}
+						</div>
+						<div class="col-md-3">
+							{{form_row(form.pageRange)}}
+						</div>
+					</div>
+					<input type="checkbox" id="noSource"> <label for="noSource">No
+						known previous edition </label>
+					<div id="historian">
+						<div class="row">
+							<div class="col-md-3">
+								{{form_row(form.date)}}
+							</div>
+							<div class="col-md-9">
+								{{form_row(form.historian)}}
+							</div>
+						</div>
+						{# ________________________________________________ Graph
+                        vizualisation__________________________________________#}
+
+					</div>
+				</div>
+			</div>
+		</div>
+		{% if action == "add" %}
+			{# If we are dealing with a new text edition, there is no reason why we should show the table content select which is necessarely empty
+            (one edited text may have multiple table content, but one table content has only one edited text ; it can only be created through the edited text interface ;
+            orphan table content are automatically removed from the DB #}
+			<div hidden>
+				{{ form_row(form.tableContents) }}
+			</div>
+		{% endif %}
+		<div class="col-md-2">
+			{%include 'TAMASAstroBundle:AddObject:adminPannel.html.twig'%}
+		</div>
+	</div>
+	{% if editedText.id|default()%}
+		{% set editedTextId = editedText.id%}
+	{%else%}
+		{%set editedTextId = ""%}
+	{%endif%}
+
+{%endblock%}
+
+{% block javascripts %}
+	{{parent()}}
+	<script type="text/javascript" src="{{asset('js/addDisabled.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/myGraph.js')}}"></script>
+	<script type="text/javascript"
+			src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+	<script type="text/javascript" src="{{asset('js/myVis.js')}}"></script>
+
+	{#/*________________________________________________ Calendar logic ______________________________________  */#}
+
+	{% include 'TAMASAstroBundle:SelectObject:selectCalendar.html.twig' with {'includeType': 'js'} %}
+
+	<script>
+		$(document).ready(function () {
+
+			//======================================== General variable ==================================
+			var previousTableType = {}; //This object stores the current table type and tabletype-1
+			var tableContentTypeId = checkTableContentTypeId(); //get the current tableContent->tableType. It must be coerrent otherwise an exception is thrown
+			var tableType = getTableType(); //Gets the current tabletype
+			var associatedSource = {};
+			var option = JSON.parse("{{option|escape('js')}}"); //Option of the edited text: allowed type of edition A, B, C ; identifier ; table-type. Only this element is updated with the form.
+
+			// =========================================Graph logic========================================
+
+			var dependanceTree = JSON.parse("{{dependanceTree|escape('js')}}"); //====> loader en ajax à chaque fois que le 'load' de related edition ou related source est appelé.
+			var graphFromDB = new TreeGraph();//This graph reflects the state of the edition and original text in the database before the loading of the page.
+			var editedGraph = new TreeGraph(); //This graph will implement the change at it is stated in the form.
+			graphFromDB.loadJSONTree(dependanceTree);
+
+			var network = undefined; //The network is the object composed by vis.js to graphically show the graph.
+			var positions = {}; //Coordonate of the node in the network -> when the network is reloaded we want to keep it organised the same way.
+			var thisEditionId = '';
+			var isNew = undefined;
+			// Case 1 : edition of an edited text :
+			if ("{{editedText.id}}" !== "") {
+				thisEditionId = 'e' + "{{editedText.id}}";
+				var thisEditionNode = graphFromDB.nodes[thisEditionId];
+				thisEditionNode.options.visLabel = "Current edition (ID n°{{editedText.id}})"; //We change the label, so that it doesn't rely on the name that one might change during the edition.
+				isNew = false;
+			} else { //Case 2 : new edited text:
+				thisEditionId = "Current edition";
+				var thisEditionNode = graphFromDB.addNode(thisEditionId, {tableType: parseInt(tableType), editionType: "{{editedText.type}}"});
+				isNew = true;
+			}
+
+
+			/**
+			 *This function updates the graph depending on the graph from db and the selected objects.
+			 * it includes a sub-function connectnode.
+			 */
+			function controlSources() {
+				if (network !== undefined) { //If the network has already been declarated, we reconstruct the position of the nodes.
+					var new_positions = network.getPositions();
+					for (var key in new_positions) {
+						positions[key] = new_positions[key];
+					}
+				}
+				editedGraph = graphFromDB.copyGraph();
+				editedGraph.removeChildren(editedGraph.nodes[thisEditionId]);
+
+				function connectNodes(sourceList, sourceType) {
+					for (var i = 0; i < sourceList.length; i++) {
+						var thatNodeId = sourceType + sourceList[i];
+						var thatNode = editedGraph.nodes[thatNodeId];
+						editedGraph.connect(editedGraph.nodes[thisEditionNode.label], thatNode);
+					}
+				}
+
+				var relatedEditions = associatedSource[tableType]['valueRelatedEdition'];
+				var originalTexts = associatedSource[tableType]['valueOriginalText'];
+				connectNodes(relatedEditions, "e");
+				connectNodes(originalTexts, "o");
+
+				var subGraph = editedGraph.descendantGraph([editedGraph.nodes[thisEditionNode.label]]);
+				network = createVisNetwork(subGraph, '#view-graph', thisEditionId, positions);
+
+				// we change the font of descendant edited texts in the select box
+				$('#{{form.vars.id}}_relatedEditions>option').removeClass('descendant-node');
+				$('#{{form.vars.id}}_originalTexts>option').removeClass('descendant-node');
+				for (var label in subGraph.nodes) {
+					if (label.startsWith('e')) {
+						var id = label.substr(1);
+						$('#{{form.vars.id}}_relatedEditions>option[value="' + id + '"]').addClass('descendant-node');
+					} else if (label.startsWith('o')) {
+						var id = label.substr(1);
+						$('#{{form.vars.id}}_originalTexts>option[value="' + id + '"]').addClass('descendant-node');
+					}
+				}
+			}
+
+			//Reload graph each time the tab is clicked
+			$('#tab-edition-sources').on('shown.bs.tab', function (e) {
+				controlSources();
+			});
+
+
+
+			// ===================================== General function dealing with the filtering of the field according to tabletype  ================================
+
+			/**
+			 *This function retrieves the table type and stores the last selected tableType
+			 *@return {integer} TableType: the identifier of the currently selected tableType
+			 */
+			function getTableType() {
+				var tableType = $("#{{form.vars.id}}_tableType").val();
+				if(previousTableType.present !== undefined){
+					previousTableType.past = previousTableType.present
+				}
+				previousTableType.present = tableType;
+				return tableType;
+			}
+
+			/**
+			 *This function filters the original text and edited text depending on the table type.
+			 *If associatedSource[tableType] for a given table type is undefined, it defines the two fieds original text and related edition to empty list
+			 */
+			function filterDependantSelect() {
+				if (associatedSource[tableType] === undefined) {
+					associatedSource[tableType] = {valueOriginalText: [], valueRelatedEdition: []};
+				}
+				filterOriginalText();
+				filterEditedText();
+			}
+
+			/**
+			 * This function helps re-selecting related editions depending on the table type.
+			 * ex : the user selects tabletype id#3, and 2 related editions based on this table type.
+			 * Then, the user selects tabletype id#2. The related editions are then unselected.
+			 * Then the user selects tabletype id#3 again. The related editions are automatically re-selected.
+			 *
+			 */
+			function addSelectedSource(field, selectList) {
+				selectList.each(function () {
+					var value = $(this).attr('value').toString();
+					var fieldName = 'value' + field;
+					if (associatedSource[tableType][fieldName].indexOf(value) > -1) {
+						$(this).attr('selected', 'selected');
+					}
+				});
+			}
+
+			/**
+			 * this function filters the editedtext list and the original text list depending on the selected table type
+			 */
+			$("#{{form.vars.id}}_tableType").change(function () {
+				tableType = getTableType();
+				filterDependantSelect();
+				//showCalendar();
+			});
+
+			filterDependantSelect();
+
+			/* _______________________________________ Table Content logic ________________________________ */
+
+			function allowMultipleContent(){
+				if($("#{{form.vars.id}}_tableType").find(':selected').attr("multiple-content") === "true"){
+					return true;
+				}
+			}
+
+			/**
+			 * This function returns the identifier of the table type of the associated table content.
+			 * It checks if all the table content share the same table type for consistency
+			 * It is used especially in the case of edition, if the owner changes the main table type
+			 * @return {integer} TableTypeId.
+			 */
+			function checkTableContentTypeId(){
+				var id = [];
+				if($("#{{form.vars.id}}_tableContents").val() !== null){
+					$("#{{form.vars.id}}_tableContents option:selected").each(function(){
+						thatId = $(this).attr('tabletype-id');
+						if(id.length === 0){
+							id.push(thatId);
+						}else if (thatId !== id[0]){
+							throw "the table content are not consistent (not the same table type)";
+						}
+					})
+				}else{
+					id[0] = null;
+				}
+				return id[0];
+			}
+
+			/**
+			 * this function checks if one edition can be associated with multiple table contents
+			 * @return {boolean} True if the table type allows more than one table content
+			 */
+			function controlMultipleTableContent(addContent){
+				var tableContentNumber = $("#{{form.vars.id}}_tableContents option:selected").length;  //TODO : if < 1 => ok
+				if(addContent){
+					tableContentNumber = tableContentNumber + 1; // If we click on submitAndFill, we virtually added 1 tableContent to the form
+				}
+				var acceptMultiple = allowMultipleContent();
+				if(acceptMultiple){
+					return true;
+				}
+				if (!acceptMultiple && tableContentNumber > 1) {
+					alert("Only one table content can be associated to this edition due to its table type");
+					return false;
+				} else { // if not accept multiple and tableContent number is <1
+					return true;
+				}
+			}
+
+			/**
+			 *This function checks which table content was unselected by the user during the edition of the data.
+			 * Table content that are unselected will be deleted ; as such they appear with a specific class reminding their deletion.
+			 * @return {array} it returns the list of the unselected options.
+			 */
+			function removeTableContent(select){
+				var select = $("#{{form.vars.id}}_tableContents");
+				var unselected = [] ;
+				$(select).find(" option:not(:selected)").each(function(){
+					unselected.push($(this).text());
+					$(this).addClass('remove');
+				})
+
+				$(select).find(" option:selected").each(function(){
+					$(this).removeClass('remove');
+				})
+				return unselected;
+			}
+
+
+			/**
+			 * This function checks if the selected table type matches the table content's table type.
+			 * If it doesn't match it, the user can chose to go back to the previously selected table type.
+			 */
+			$("#{{form.vars.id}}_tableType").change(function(e){
+				var agree = true;
+				if($("#{{form.vars.id}}_tableContents").val()!== null && tableContentTypeId !== tableType  ){
+					agree = confirm("This table type doesn't match the selected table contents. The unmatching table contents will be deleted. Are you sure ?");
+				}
+				if (agree === true){
+					$("#{{form.vars.id}}_tableContents option").each(function(){
+						if($(this).attr('tabletype-id') !== tableType){
+							$(this).prop('selected', false);
+							$(this).attr('disabled', 'disabled');
+						}else{
+							$(this).removeAttr('disabled');
+						}
+					})
+				}else if (agree === false){
+					$("#{{form.vars.id}}_tableType").val('');
+					$("#{{form.vars.id}}_tableType option[value="+previousTableType.past+"]").prop("selected", true);
+				}
+				removeTableContent();
+			})
+
+			$("#{{form.vars.id}}_tableContents").change(function() {
+				removeTableContent();
+			})
+
+			removeTableContent();
+
+			/*_________________________________________________ Related edition logic ______________________________ */
+
+
+			/**
+			 *This function filters the edited text depending on the option of this editedtable (table type and type of edition A, B or C)
+			 * It also checks the loaded option so that the parent of the edited table (table that are based on this edited table) are not selectable.
+			 */
+			function filterEditedText() {
+				option.tableType = tableType;
+				var jsonOption = JSON.stringify(option);
+				if(reloaders["#refresh-tamas_astrobundle_editedtext_relatedEditions"])
+					reloaders["#refresh-tamas_astrobundle_editedtext_relatedEditions"].changeParameters({"option":jsonOption}).update();
+				addSelectedSource("RelatedEdition", $("#{{form.vars.name}}_relatedEditions option"));
+				controlSources();
+
+				/**
+				 *This function disables the ancestors of the current node which won't be selectable as child of the current edition (avoid cycle)
+				 */
+				function disableAncestorsOption() {
+					$('#{{form.vars.id}}_relatedEditions>option').removeAttr('disabled');
+					var ancestors = thisEditionNode.getAncestors();
+					for (var i = 0; i < ancestors.length; i++) {
+						var id = ancestors[i].label.substr(1);
+						$('#{{form.vars.id}}_relatedEditions>option[value="' + id + '"]').attr('disabled', 'disabled');
+					}
+				}
+				disableAncestorsOption();
+			}
+
+			/**
+			 * This function ressets the associated edition per table type.
+			 * For each table type, we store the previously selected related edition, in order to be able to switch easily from one table type to another
+			 * Without loosing the work on the graph.
+			 **/
+			function refreshRelatedEditions() {
+				$("#{{form.vars.id}}_relatedEditions").each(function () {
+					associatedSource[tableType]['valueRelatedEdition'] = $(this).val();
+					if ($(this).val() === null) {
+						associatedSource[tableType]['valueRelatedEdition'] = [];
+					}
+					controlSources();
+				});
+			}
+
+			$("body").on('change', "#{{form.vars.id}}_relatedEditions", function () {
+				refreshRelatedEditions();
+			});
+
+
+			refreshRelatedEditions();
+
+			/*______________________________________ Original Text logic ________________________________ */
+
+
+
+			/**
+			 *This function reloads the original text selection depending on the selected table type
+			 * It stores the valid selection for the given table type
+			 * It defines the graph according to the selection
+			 */
+			function filterOriginalText() {
+				if(reloaders["#refresh-tamas_astrobundle_editedtext_originalTexts"])
+					reloaders["#refresh-tamas_astrobundle_editedtext_originalTexts"].changeParameters({"option":tableType}).update();
+				addSelectedSource("OriginalText", $("#{{form.vars.name}}_originalTexts option"));
+				controlSources();
+			}
+
+			/**
+			 * This function ressets the original edition per table type.
+			 * For each table type, we store the previously selected original text, in order to be able to switch easily from one table type to another
+			 * Without loosing the work on the graph.
+			 **/
+			function refreshOriginalTexts() {
+				$("#{{form.vars.id}}_originalTexts").each(function () {
+					//remplir le tableau de valeur de originalText.
+					associatedSource[tableType]['valueOriginalText'] = $(this).val();
+					checkOriginalTextValidity(this);
+					if ($(this).val() === null) {
+						associatedSource[tableType]['valueOriginalText'] = [];
+					}
+					controlSources();
+				});
+			}
+
+
+			var lastValidOriginalTextSelection = null;
+			/**
+			 * This function checks that a type A edition is not linked with more than one original source.
+			 **/
+			function checkOriginalTextValidity(originalTextSelect) {
+
+				if ("{{editedText.type}}" === "a") {
+					if ($(originalTextSelect).val()!== null && $(originalTextSelect).val().length > 1) {
+						$(originalTextSelect).val(lastValidOriginalTextSelection);
+						associatedSource[tableType]['valueOriginalText'] = [lastValidOriginalTextSelection];
+						alert("You can only select one original item with type-A edition");
+					} else {
+						lastValidOriginalTextSelection = $(originalTextSelect).val();
+					}
+				}
+			}
+
+			$("body").on('change', "#{{form.vars.id}}_originalTexts", function () {
+				refreshOriginalTexts();
+			});
+
+
+			refreshOriginalTexts();
+
+
+// _____________________________________________________ no source event ____________________________________ */
+
+			/**
+			 * in case of edition of an editedText, we need to check if the secodary source is empty, otherwise the mecanism crashes the historian and/or date ref
+			 **/
+			if(!$("#{{form.vars.id}}_secondarySource").val()){
+				$('#noSource').prop('checked', true);
+			}
+
+			showHistorian("#noSource");
+			$("#noSource").click(function () {
+				showHistorian(this);
+			});
+
+
+			/**
+			 * This function depends on the "noSourceButton". If this button is checked, the fields year and historian are editable.
+			 * The field secondary source is disabled.
+			 * The contrary happends if the "noSourceButton" is not checked
+			 * The fields that are not editabled are made empty
+			 **/
+			function showHistorian(noSourceButton){
+				if ($(noSourceButton).is(':checked')) {
+					$("#{{form.vars.id}}_historian").removeAttr("disabled");
+					$("#{{form.vars.id}}_date").removeAttr("disabled");
+					$("#{{form.vars.id}}_secondarySource").attr("disabled", "disabled")
+							.val("");
+					$("#{{form.vars.id}}_pageRange").attr("disabled", "disabled")
+							.val("");
+				} else {
+					$("#{{form.vars.id}}_historian").attr("disabled", "disabled")
+							.val("");
+					$("#{{form.vars.id}}_date").attr("disabled", "disabled")
+							.val("");
+					$("#{{form.vars.id}}_secondarySource").removeAttr("disabled");
+					$("#{{form.vars.id}}_pageRange").removeAttr("disabled");
+				}
+			}
+
+
+			/*________________________________________ fill list from ajax ____________________________________________________________________ */
+
+			//The list of possible related objects is calculated by a specific PHP controller
+			if(reloaders["#refresh-tamas_astrobundle_editedtext_originalTexts"]){
+				reloaders["#refresh-tamas_astrobundle_editedtext_originalTexts"].changeSynchronous(true);
+				reloaders["#refresh-tamas_astrobundle_editedtext_originalTexts"].changeActivate(false);
+
+				reloaders["#refresh-tamas_astrobundle_editedtext_originalTexts"].changeDoBefore(function(){
+							filterOriginalText();
+							//reloader le tree
+							reloadTreeAjax();
+							refreshOriginalTexts();
+						}
+				);
+			}
+
+
+			if (reloaders["#refresh-tamas_astrobundle_editedtext_relatedEditions"]){
+				reloaders["#refresh-tamas_astrobundle_editedtext_relatedEditions"].changeSynchronous(true);
+				reloaders["#refresh-tamas_astrobundle_editedtext_relatedEditions"].changeActivate(false);
+
+				reloaders["#refresh-tamas_astrobundle_editedtext_relatedEditions"].changeDoBefore(function(){
+							filterEditedText();
+							reloadTreeAjax();
+							refreshRelatedEditions();
+						}
+				);
+			}
+
+			function reloadTreeAjax(){
+				var route = "{{path('tamas_astro_loadTree')}}"
+				$.ajax({
+					dataType:"json",
+					url: route,
+					async: false,
+					success: function(data){
+						var tree = JSON.parse(data);
+						graphFromDB = new TreeGraph();
+						graphFromDB.loadJSONTree(tree);
+						thisEditionNode = graphFromDB.addNode(thisEditionId, {tableType: parseInt(tableType), editionType: "{{editedText.type}}"});
+
+					}
+				});
+			}
+
+
+
+//__________________________________________________________ submit _________________________________________________
+			{# $("form").submit(function(e){
+			   e.preventDefault();
+			})  #}//note : firefox is able to determine what "button submit" was clicked and we could have one only function submit.
+			//It is not the case for chrome and other browser ; hence, we need two different options
+
+			//CASE 1: the user wants to add a new tablecontent
+			$("#{{form.vars.id}}_submitAndFill").click(function(e){
+				e.preventDefault();
+				submitForm(true);
+			})
+
+			//CASE 2: the user wants to save the edited text only
+			$("#{{form.vars.id}}_submit").click(function(e){
+				e.preventDefault();
+				submitForm(false);
+			})
+
+			function submitForm(addContent){
+				//1: warning about the table content that will be removed from the database
+				var unselected = removeTableContent($("#{{form.vars.id}}_tableContents")); //List of the unselected tableContent, in case of edition
+				if (unselected.length > 0) {
+					var string = "By submitting this form, you are going to remove permanently the following table content from the database :";
+					for (var i = 0; i < unselected.length; i++) {
+						string += unselected[i];
+						if (i <= (unselected.length - 2)) {
+							string += "; ";
+						}
+					}
+
+					string += ". Are you sure ? ";
+					var answer = confirm(string);
+					if (answer === false) {
+						return false;
+						//e.preventDefault();
+					}
+				}
+
+				//2: Check if multiple table content are allowed according to this table type
+				$("#{{form.vars.id}}_submitValue").val(addContent);
+				if (!controlMultipleTableContent(addContent)){
+					return false;
+				}
+
+				//3: remove hidden calendar if not in MeanMotion
+				if(!allowMultipleContent()){
+					$("#{{form.vars.id}}_era").val('');
+				}
+				$("form").submit();
+			}
+		});
+
+	</script>
+
+{%endblock%}

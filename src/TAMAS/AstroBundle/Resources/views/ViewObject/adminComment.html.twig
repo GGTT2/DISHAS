@@ -1,0 +1,27 @@
+{#TAMAS\AstroBundle\Resources\views\ViewObject\adminComment.html.twig#}
+{% if object.comment|default %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="citation-block">
+                {{object.comment|raw}}
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-9">
+                        <span>Written by {{object.createdBy}} ({{object.created|date('Y-m-d')}})</span>
+                        {% if object.updatedBy|default %}
+                            {% if object.updatedBy ==object.createdBy %}
+                                <span>(last update {{object.updated|date('Y-m-d')}})</span>
+                            {% endif%}
+                            {% if object.updatedBy !=object.createdBy %}
+                                <span> Edited by {{object.updatedBy}} ({{object.updated|date('Y-m-d')}})</span>
+                            {%endif%}
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{%elseif viewEmpty|default and viewEmpty == true%}
+    <div class="flash-notice alert alert-warning">
+        <span class="glyphicon glyphicon-info-sign"></span> The comment section is empty.
+    </div>
+{%endif%}

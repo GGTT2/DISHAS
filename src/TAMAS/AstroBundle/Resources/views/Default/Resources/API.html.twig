@@ -1,0 +1,680 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\Downloads.html.twig#}
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% set currentNode = "api" %}
+
+{% block title %}
+    API documentation — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    <link rel="stylesheet" href="{{ asset('css/api.css')}}">
+    {% include 'TAMASAstroBundle:Default:Templates/pageHeader.html.twig' with {"title":"API documentation", "tag":"h1"} %}
+    <div class="docu">
+        <h2 id="overview">Overview</h2>
+        <div class="horizontal-bar lightgrey"></div>
+        <div class="intro">
+            <p class="description">
+                DISHAS API is available at the URL <span class="code">https://dishas.obspm.fr{{ path('tamas_astro_elastic') }}</span>:
+                it offers a fast access to DISHAS's raw data with advanced search functionalities.
+                It relies for now on the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html">elasticsearch query language</a>
+                expressed in a JSON format. Only public data are accessible; draft won't appear in the results.
+            </p>
+            <p class="description">
+                All main entities of DISHAS database are queryable. They correspond to an elasticsearch index:
+            </p>
+            <table class="description table" style="width: 60%; margin: auto">
+                <thead>
+                <tr>
+                    <th colspan="3">Entity name</th>
+                    <th colspan="3">Index name</th>
+                    <th>Structure</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td colspan="3">Table edition</td>
+                    <td colspan="3"><span class="code">edited_text</span></td>
+                    <td class="center"><a href="#edited-text">#</a></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Table content</td>
+                    <td colspan="3"><span class="code">table_content</span></td>
+                    <td class="center"><a href="#table-content">#</a></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Table witness</td>
+                    <td colspan="3"><span class="code">original_text</span></td>
+                    <td class="center"><a href="#original-text">#</a></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Primary source</td>
+                    <td colspan="3"><span class="code">primary_source</span></td>
+                    <td class="center"><a href="#primary-source">#</a></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Work</td>
+                    <td colspan="3"><span class="code">work</span></td>
+                    <td class="center"><a href="#work">#</a></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Parameter set</td>
+                    <td colspan="3"><span class="code">parameter_set</span></td>
+                    <td class="center"><a href="#parameter-set">#</a></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Formula definition</td>
+                    <td colspan="3"><span class="code">formula_definition</span></td>
+                    <td class="center"><a href="#formula-definition">#</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="description">
+                Each index is structured according to a particular mapping that defines
+                where each metadata is accessible in the JSON object representing the entity.
+                For more details on how metadata fields are defined for each index, see the <a href="#mapping">"Data structure"</a> section.
+            </p>
+            <p class="description">
+                The URL of the API admits 6 arguments (optional or mandatory) that define the query
+                that will be sent to the elasticsearch database.
+            </p>
+            <table class="description table">
+                <thead>
+                <tr>
+                    <th>Argument</th>
+                    <th colspan="4">Description</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><span class="code">index</span></td>
+                    <td colspan="4">Mandatory: the index that is going to be queried. It is not now possible to perform cross-index queries.</td>
+                    <td>Index name</td>
+                </tr>
+                <tr>
+                    <td><span class="code">query</span></td>
+                    <td colspan="4">
+                        The query in itself restricting the number records of the chosen index that will be returned. The query must be formulated in the elasticsearch query language. For examples, see the
+                        <a href="#elastic">corresponding section</a>. No query means all records will be returned.
+                    </td>
+                    <td>JSON query</td>
+                </tr>
+                <tr>
+                    <td><span class="code">source</span></td>
+                    <td colspan="4">Defines the fields of metadata that are going to appear in the results. For example, if only identifiers are needed, <span class="code">["id"]</span> can be provided as source.</td>
+                    <td>Array</td>
+                </tr>
+                <tr>
+                    <td><span class="code">hits</span></td>
+                    <td colspan="4">If set to <span class="code">true</span>, the result object will only contain the array of matching records, without the header of every elasticsearch query.</td>
+                    <td>Boolean value</td>
+                </tr>
+                <tr>
+                    <td><span class="code">size</span></td>
+                    <td colspan="4">Maximum number of records contained in the result object (by default, set to <span class="code">10</span>. Maximal value: <span class="code">200</span>)</td>
+                    <td>Number</td>
+                </tr>
+                <tr>
+                    <td><span class="code">from</span></td>
+                    <td colspan="4">Defines the offset from the first result you want to fetch (by default, set to<span class="code">0</span>). Useful in case there is more than 200 matching records.</td>
+                    <td>Number</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2 id="example">Examples</h2>
+        <div class="horizontal-bar lightgrey"></div>
+        <h4>List all records</h4>
+        <p class="description">Endpoint to retrieve a list of all records of a given entity (e.g.: all primary sources)</p>
+        <div class="api-result">
+            <div class="url">https://dishas.obspm.fr{{ path('tamas_astro_elastic') }}<span class="arguments">?index=primary_source</span></div>
+            <div class="output">
+{
+    "took":1,
+    "timed_out":false,
+    "_shards":{
+    "total":5,
+    "successful":5,
+    "skipped":0,
+    "failed":0
+    },
+    "hits":{
+        "total":13,
+        "max_score":1.0,
+        "hits":[
+        {"_index":"primary_source",
+        "_type":"primary_source",
+        "_id":"5",
+        "_score":1.0,
+        "_source":{
+           "id":"5",
+           "prim_type":"ep",
+           "digital_identifier":null,
+           "prim_title":"Tabule astronomice illustrissimi Alfonsii regis Castelle",
+           "prim_title_original_char":null,
+           "date":"1483",
+           "library":{
+              "kibana_name":"London, Royaume-Uni, The British Library",
+              "kibana_id":"Library6"
+           },
+           "kibana_name":"London, The British Library | 000061853, Tabule astronomice illustrissimi Alfonsii regis Castelle, E. Ratdolt, 1483",
+           "default_title":"000061853 | The British Library",
+           "kibana_id":"PrimarySource5",
+           "original_texts":[ <span class="more">...</span> ],
+           "tpq":null,
+           "taq":null,
+           "tpq_date":null,
+           "taq_date":null,
+           "places":[ <span class="more">...</span> ]
+        }
+     }, { <span class="more">...</span> }
+ }
+            </div>
+        </div>
+
+        <h4>Show only hits</h4>
+        <p class="description">To retrieve only the results of the query, add <span class="code">&hits=true</span> in the arguments of the URL.</p>
+        <div class="api-result">
+            <div class="url">https://dishas.obspm.fr{{ path('tamas_astro_elastic') }}<span class="sub-arguments">?index=primary_source</span><span class="arguments">&hits=true</span></div>
+            <div class="output">
+[
+    {
+       "id":"5",
+       "prim_type":"ep",
+       "digital_identifier":null,
+       "prim_title":"Tabule astronomice illustrissimi Alfonsii regis Castelle",
+       "prim_title_original_char":null,
+       "date":"1483",
+       "library":{
+          "kibana_name":"London, Royaume-Uni, The British Library",
+          "kibana_id":"Library6"
+       },
+       "kibana_name":"London, The British Library | 000061853, Tabule astronomice illustrissimi Alfonsii regis Castelle, E. Ratdolt, 1483",
+       "default_title":"000061853 | The British Library",
+       "kibana_id":"PrimarySource5",
+       "original_texts":[ <span class="more">...</span> ],
+       "tpq":null,
+       "taq":null,
+       "tpq_date":null,
+       "taq_date":null,
+       "places":[ <span class="more">...</span> ]
+     }, { <span class="more">...</span> }
+ ]
+            </div>
+        </div>
+
+        <h4>Show only certain fields</h4>
+        <p class="description">To retrieve only certain fields of metadata, add the array of fields you want to appear to the <span class="code">source</span> argument of the URL (e.g. show only the the identifiers of work and the name of their creators).</p>
+        <div class="api-result">
+            <div class="url">https://dishas.obspm.fr{{ path('tamas_astro_elastic') }}<span class="sub-arguments">?index=work&hits=true</span><span class="arguments">&source=["id","historical_actors.kibana_name"]</span></div>
+            <div class="output">
+[
+   {
+      "historical_actors":[
+         {
+            "kibana_name":"John of Saxony (1327-1335)"
+         }
+      ],
+      "id":"5"
+   },
+   {
+      "historical_actors":[
+         {
+            "kibana_name":"Martín Cortés de Albacar (1510–1582)"
+         }
+      ],
+      "id":"8"
+   },
+   {
+      "historical_actors":[
+         {
+            "kibana_name":"John of Genoa (1320-1337)"
+         }
+      ],
+      "id":"4"
+   },
+   {
+      "historical_actors":[
+         {
+            "kibana_name":"John of Lignières (1290-1350)"
+         }
+      ],
+      "id":"6"
+   },
+   {
+      "historical_actors":[
+         {
+            "kibana_name":"John of Lignières (1290-1350)"
+         }
+      ],
+      "id":"7"
+   }
+]
+            </div>
+        </div>
+
+        <h4>Find specific resources</h4>
+        <p class="description">To search for specific resources, any elasticsearch query can be passed to the <span class="code">query</span> argument of the URL (e.g. find the work titled "Table of 1322").</p>
+        <div class="api-result">
+            <div class="url">https://dishas.obspm.fr{{ path('tamas_astro_elastic') }}<span class="sub-arguments">?index=work&hits=true&source=["id","title"]</span><span class="arguments">&query={"match":{"title":"Table of 1322"}}</span></div>
+            <div class="output">
+[
+    {
+        "title":"Table of 1322",
+        "id":"7"
+    }
+]
+            </div>
+        </div>
+
+        <p class="description">
+            To find a resource using its identifier, the <span class="code">id</span> argument of the URL can be use (e.g. find the work that has the id 7).
+            <br>Note that only one record will be returned, i.e. it won't be contained in an array, even if you don't specify <span class="code">hits=true</span>.
+        </p>
+        <div class="api-result">
+            <div class="url">https://dishas.obspm.fr{{ path('tamas_astro_elastic') }}<span class="sub-arguments">?index=work&source=["id","title"]</span><span class="arguments">&id=7</span></div>
+            <div class="output">
+{
+    "title":"Table of 1322",
+    "id":"7"
+}
+            </div>
+        </div>
+
+        <h2 id="mapping">Data structure</h2>
+        <div class="horizontal-bar lightgrey"></div>
+
+        <h4 id="edited-text">Table edition</h4>
+        <div class="mapping">
+"edited_text" : {
+    "id" : <span class="more">"edited text id"</span>,
+    "edited_text_title" : <span class="more">"edited text title"</span>,
+    "date" : <span class="more">"edition date"</span>,
+    "type" : <span class="more">"edition type"</span>,
+    "online_resource" : <span class="more">"edition URL"</span>,
+    "comment" : <span class="more">"commentary on the edition"</span>,
+    "public" : true,
+    "secondary_source" : <span class="more">"title of the secondary source if one exists"</span>,
+    "table_type" : {
+      "astronomical_object" : {
+        "id" : <span class="more">"astronomical object id"</span>,
+        "object_name" : <span class="more">"astronomical object name"</span>,
+        "color" : <span class="more">"astronomical object color"</span>,
+        "object_definition" : <span class="more">"astronomical object color"</span>
+      },
+      "id" : <span class="more">"table type id"</span>,
+      "table_type_name" : <span class="more">"table type name"</span>,
+      "astro_definition" : <span class="more">"table type definition"</span>,
+      "kibana_name" : <span class="more">"table type complete name"</span>
+    },
+    "historian" : {
+      "kibana_name" : <span class="more">"intellectual author name"</span>,
+      "kibana_id" : <span class="more">"Historian + intellectual author id"</span>
+    },
+    "page_range" : <span class="more">"edition page range in the secondary source"</span>,
+    "original_texts" : [
+        { <span class="more">...</span> }, { <span class="more">...</span> }
+    ],
+    "related_editions_ext" : null,
+    "created" : <span class="more">"creation date of the record"</span>,
+    "updated" : <span class="more">"update date of the record"</span>,
+    "table_contents" : [
+        { <span class="more">...</span> }, { <span class="more">...</span> }
+    ],
+    "era" : <span class="more">"starting date of the edited table"</span>,
+    "kibana_name" : <span class="more">"edited text complete title"</span>,
+    "kibana_id" : <span class="more">"EditedText + edited text id"</span>
+}
+        </div>
+
+        <h4 id="table-content">Table content</h4>
+        <div class="mapping">
+"table_content" : {
+    "argument1_number_of_steps" : <span class="more">"number of rows in table"</span>,
+    "argument2_number_of_steps" : <span class="more">"number of columns (in case there is two arguments"</span>,
+    "id" : <span class="more">"table content id"</span>,
+    "value_original" : {
+      "args" : {
+        "argument1" : [ <span class="more">every first argument values in table content in the original type of number</span> ],
+        ("argument2" : [ <span class="more">every second argument values in table content in the original type of number if there is one</span> ])
+      },
+      "entry" : [ <span class="more">every entry values in table content in the original type of number</span> ],
+      "template" : {
+        "table_type" : <span class="more">"table type id of the table content"</span>,
+        "readonly" : <span class="more">"if the table values are only to be read"</span>,
+        "args" : [
+          {
+            "name" : <span class="more">"name of the first argument"</span>,
+            "type" : <span class="more">"type of number of the argument"</span>,
+            "unit" : <span class="more">"number unit id of the argument"</span>,
+            "nsteps" : <span class="more">"number of row/column for the argument"</span>,
+            "ncells" : <span class="more">"total number of cells (fractional and non fractional part)"</span>,
+            "decpos" :  <span class="more">"number of cell before the fractional part"</span>,
+            "subUnit" :  <span class="more">"sub unit"</span>,
+            "firstMonth" : <span class="more">"first month of the year (for certain type of tables)"</span>
+          }
+        ],
+        "entries" : [
+          {
+            "name" : <span class="more">"name of the entries"</span>,
+            "type" : <span class="more">"type of number of the entries"</span>,
+            "ncells" : <span class="more">"total number of cells (fractional and non fractional part)"</span>,
+            "decpos" : <span class="more">"number of cell before the fractional part"</span>,
+            "unit" : <span class="more">"number of unit id of the entries"</span>
+          }
+        ]
+      }
+    },
+    "value_float" : { <span class="more">same as value original but in float</span> }
+    },
+    "corrected_value_float" : { <span class="more">same as value float but with corrected values</span> }
+    },
+    "entry_type_of_number" : <span class="more">"type of number name of the entries"</span>,
+    "entry_number_unit" : <span class="more">"number unit name of the entries"</span>,
+    "entry_significant_fractional_place" : <span class="more">"number of cell after the fractional part for the entries"</span>,
+    "entry_number_of_cell" : <span class="more">"total number of cell for the entries"</span>,
+    "argument1_name" : <span class="more">"name of the first argument"</span>,
+    "argument1_type_of_number" : <span class="more">"type of number name of the first argument"</span>,
+    "argument1_number_unit" : <span class="more">"number of unit id of the first argument"</span>,
+    "argument1_number_of_cell" : <span class="more">"total number of cell for the first argument"</span>,
+    "argument1_significant_fractional_place" : <span class="more">"number of cell after the fractional part for the first argument"</span>,
+    "argument2_name" : <span class="more">"name of the second argument"</span>,
+    "argument2_type_of_number" : <span class="more">"type of number name of the second argument"</span>,
+    "argument2_number_unit" : <span class="more">"number of unit id of the second argument"</span>,
+    "argument2_number_of_cell" : <span class="more">"total number of cell for the second argument"</span>,
+    "argument2_significant_fractional_place" : <span class="more">"number of cell after the fractional part for the second argument"</span>,
+    "comment" : <span class="more">"comment on the table content"</span>,
+    "mathematical_parameter" : <span class="more">"mathematical parameter complete name"</span>,
+    "parameter_sets" : [
+        { <span class="more">...</span> }, { <span class="more">...</span> }
+    ],
+    "created" : <span class="more">"creation date of the table content record"</span>,
+    "updated" : <span class="more">"update date of the table content"</span>,
+    "public" : true,
+    "mean_motion" : <span class="more">"is the table content part of a mean motion"</span>,
+    "kibana_name" : <span class="more">"table content complete title"</span>,
+    "kibana_id" : <span class="more">"TableContent + table content id"</span>
+}
+        </div>
+
+        <h4 id="original-text">Table witness</h4>
+        <div class="mapping">
+"original_text" : {
+    "id" : <span class="more">"original text id"</span>,
+    "text_type" : "astronomicalTable",
+    "original_text_title" : <span class="more">"original text title transliterated"</span>,
+    "original_text_title_original_char" : <span class="more">"original text title in original character"</span>,
+    "language" : <span class="more">"original text language"</span>,
+    "script" : <span class="more">"original text script"</span>,
+    "tpq" : <span class="more">"original text terminus ante quem"</span>,
+    "tpq" : <span class="more">"original text terminus post quem"</span>,
+    "page_min" : <span class="more">"minimal page in which the original text is to be found"</span>,
+    "page_max" : <span class="more">"maximal page in which the original text is to be found"</span>,
+    "is_folio" : <span class="more">is the original text in a folioed primary source</span>,
+    "comment" : <span class="more">"comment on the original text"</span>,
+    "public" : true,
+    "created" : <span class="more">"creation date of the record"</span>,
+    "updated" : <span class="more">"update date of the record"</span>,
+    "table_type" : <span class="more">"table type name"</span>,
+    "place" : {
+        "location" : <span class="more">"latitude,longitude of the original text place of creation"</span>,
+        "kibana_name" : <span class="more">"place of creation name of the original text"</span>,
+        "kibana_id" : <span class="more">"Place + original text creation place id"</span>
+    },
+    "primary_source" : { <span class="more">...</span> },
+    "work" : { <span class="more">...</span> },
+    "historical_actor" : {
+        "viaf_identifier" : <span class="more">"original text scribal agent VIAF identifier"</span>,
+        "kibana_name" : <span class="more">"original text scribal agent complete name"</span>,
+        "kibana_id" : <span class="more">"HistoricalActor + original text scribal agent id"</span>
+    },
+    "edited_texts" : [
+        { <span class="more">...</span> }, { <span class="more">...</span> }
+    ],
+    "tpq_date" : <span class="more">"original text normalized terminus post quem (YYYY-01-01)"</span>,
+    "taq_date" : <span class="more">"original text normalized terminus ante quem"</span>,
+    "kibana_name" : <span class="more">"original text complete title"</span>,
+    "kibana_id" : <span class="more">"OriginalText + original text id"</span>
+}
+        </div>
+
+        <h4 id="primary-source">Primary source</h4>
+        <div class="mapping">
+"primary_source" : {
+    "id" : <span class="more">"primary source id"</span>,
+    "prim_type" : <span class="more">"primary source type: ep/ms"</span>,
+    "digital_identifier" : <span class="more">"primary source URL in the catalogue of the curation library"</span>,
+    "prim_title" : <span class="more">"primary source edition title transliterated"</span>,
+    "prim_title_original_char" : <span class="more">"primary source edition title in original character"</span>,
+    "date" : <span class="more">"primary source edition date"</span>,
+    "library" : {
+        "kibana_name" : <span class="more">"library complete name"</span>,
+        "kibana_id" : <span class="more">"Library + library id"</span>
+    },
+    "kibana_name" : <span class="more">"primary source complete name"</span>,
+    "default_title" : <span class="more">"primary source shelfmark | primary source library"</span>,
+    "kibana_id" : <span class="more">"PrimarySource + primary source id"</span>,
+    "original_texts" : [
+        { <span class="more">...</span> }, { <span class="more">...</span> }
+    ],
+    "tpq" : <span class="more">"primary source terminus ante quem"</span>,
+    "tpq" : <span class="more">"primary source terminus post quem"</span>,
+    "tpq_date" : <span class="more">"primary source normalized terminus post quem (YYYY-01-01)"</span>,
+    "taq_date" : <span class="more">"primary source normalized terminus ante quem"</span>,
+    "places" : [
+      {
+        "location" : <span class="more">"latitude,longitude of the primary source place of creation"</span>,
+        "kibana_name" : <span class="more">"place of creation name of the primary source"</span>,
+        "kibana_id" : <span class="more">"Place + primary source creation place id"</span>
+      }, { <span class="more">...</span> }
+    ]
+}
+        </div>
+
+        <h4 id="work">Work</h4>
+        <div class="mapping">
+"work" : {
+    "id" : <span class="more">"work id"</span>,
+    "incipit" : <span class="more">"work incipit"</span>,
+    "incipit_original_char" : <span class="more">"work incipit in original character"</span>,
+    "title" : <span class="more">"work title"</span>,
+    "title_original_char" : <span class="more">"work title in original character"</span>,
+    "taq" : <span class="more">"work terminus ante quem"</span>,
+    "tpq" : <span class="more">"work terminus post quem"</span>,
+    "place" : {
+      "location" : <span class="more">"latitude,longitude of the work place of creation"</span>,
+      "kibana_name" : <span class="more">"place of creation name of the work"</span>,
+      "kibana_id" : <span class="more">"Place + work creation place id"</span>
+    },
+    "historical_actors" : [
+      {
+        "viaf_identifier" : <span class="more">"work creator VIAF identifier"</span>,
+        "kibana_name" : <span class="more">"work creator complete name"</span>,
+        "kibana_id" : <span class="more">"HistoricalActor + work creator id"</span>
+      }
+    ],
+    "translator" : {
+      "viaf_identifier" : <span class="more">"work translator VIAF identifier"</span>,
+      "kibana_name" : <span class="more">"work translator complete name"</span>,
+      "kibana_id" : <span class="more">"HistoricalActor + work translator id"</span>
+    },
+    "original_texts" : [
+        { <span class="more">...</span> }, { <span class="more">...</span> }
+    ],
+    "tpq_date" : <span class="more">"work normalized terminus post quem (YYYY-01-01)"</span>,
+    "taq_date" : <span class="more">"work normalized terminus ante quem"</span>,
+    "kibana_name" : <span class="more">"work complete title"</span>,
+    "kibana_id" : <span class="more">"Work + work id"</span>,
+    "default_title" : <span class="more">"work default title"</span>
+}
+        </div>
+
+        <h4 id="parameter-set">Parameter set</h4>
+        <div class="mapping">
+"parameter_set" : {
+    "id" : <span class="more">"parameter id"</span>,
+    "created" : <span class="more">"parameter record creation date"</span>,
+    "table_type" : {
+      "astronomical_object" : {
+        "id" : <span class="more">"astronomical object id"</span>,
+        "object_name" : <span class="more">"astronomical object name"</span>,
+        "color" : <span class="more">"astronomical object color"</span>,
+        "object_definition" : <span class="more">"astronomical object definition"</span>
+      },
+      "id" : <span class="more">"table type id"</span>,
+      "table_type_name" : <span class="more">"table type name"</span>,
+      "astro_definition" : <span class="more">"table type definition"</span>,
+      "kibana_name" : <span class="more">"table type complete name"</span>
+    },
+    "parameter_values" : [
+      {
+        "type_of_number" : <span class="more">"parameter value type of number"</span>,
+        "parameter_format" : {
+          "id" : <span class="more">"parameter value name id"</span>,
+          "parameter_name" : <span class="more">"parameter value name"</span>,
+          "parameter_type" : <span class="more">"explicit/implicit"</span>,
+          "parameter_unit" : <span class="more">"parameter value units for entry and/or arguments"</span>
+        },
+        "kibana_name" : <span class="more">"parameter value complete name"</span>,
+        "kibana_id" : <span class="more">"ParameterValue + parameter value id"</span>,
+        "default_title" : <span class="more">"parameter values concatenated"</span>,
+        "values" : {
+          "original" : {
+            "value" : <span class="more">"value of the parameter in original type of number"</span>,
+            "arg1" : {
+              "from" : <span class="more">"minimum value for the first argument in original type of number"</span>,
+              "to" : <span class="more">"maximum value for the first argument in original type of number"</span>
+            },
+            "arg2" : {
+              "from" : <span class="more">"minimum value for the second argument in original type of number"</span>,
+              "to" : <span class="more">"maximum value for the second argument in original type of number"</span>
+            },
+            "arg3" : {
+              "from" : <span class="more">"minimum value for the entries in original type of number"</span>,
+              "to" : <span class="more">"maximum value for the entries in original type of number"</span>
+            }
+          },
+          "float" : { <span class="more">same as original but values expressed in float</span> }
+        }
+      }, { <span class="more">...</span> }
+    ],
+    "table_contents" : [
+      {
+        "edited_text" : {
+          "kibana_id" : <span class="more">"EditedText + edited text id"</span>
+        },
+        "kibana_name" : <span class="more">"edited text complete title"</span>,
+        "kibana_id" : <span class="more">"TableContent + table content id"</span>
+      }, { <span class="more">...</span> }
+    ],
+    "default_title" : <span class="more">"parameter set original values"</span>,
+    "kibana_name" : <span class="more">"parameter set complete name"</span>,
+    "kibana_id" : <span class="more">"ParameterSet + parameter set id"</span>
+}
+        </div>
+
+        <h4 id="formula-definition">Formula definition</h4>
+        <div class="mapping">
+"formula_definition" : {
+    "id" : <span class="more">"formula id"</span>,
+    "name" : <span class="more">"formula name"</span>,
+    "author" : {
+      "kibana_name" : <span class="more">"author complete name"</span>,
+      "kibana_id" : <span class="more">"Historian + author id"</span>
+    },
+    "explanation" : <span class="more">"formula explanation"</span>,
+    "tip" : <span class="more">"formula tip"</span>,
+    "modern_definition" : <span class="more">"formula modern definition"</span>,
+    "bibliography" : <span class="more">"formula bibliography"</span>,
+    "parameter_explanation" : <span class="more">"formula parameter explanation"</span>,
+    "estimator_definition" : <span class="more">"formula estimator definition"</span>,
+    "arg_number" : <span class="more">"number of arguments in for the formula"</span>,
+    "table_type" : {
+      "astronomical_object" : {
+        "id" : <span class="more">"astronomical object id"</span>,
+        "object_name" : <span class="more">"astronomical object name"</span>,
+        "color" : <span class="more">"astronomical object color"</span>,
+        "object_definition" : <span class="more">"astronomical object definition"</span>
+      },
+      "id" : <span class="more">"table type id"</span>,
+      "table_type_name" : <span class="more">"table type name"</span>,
+      "astro_definition" : <span class="more">"definition of the table type"</span>,
+      "kibana_name" : <span class="more">"table type complete name"</span>
+    },
+    "kibana_name" : <span class="more">"formula complete name"</span>,
+    "kibana_id" : <span class="more">"FormulaDefinition + formula id"</span>
+}
+        </div>
+
+        <h2 id="elastic">Elasticsearch query language</h2>
+        <div class="horizontal-bar lightgrey"></div>
+        <p class="description">
+            You can find detailed examples of elasticsearch queries in this
+            <a href="https://github.com/Segolene-Albouy/Memoire-TNAH2019/wiki/ElasticSearch">wiki</a>.
+        </p>
+
+        <h4>Geo query</h4>
+        <p class="description">
+            The <span class="code">location</span> property in an index
+            indicate that it is possible to perform a
+            <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/geo-queries.html">geo query</a>
+            on this field.
+        </p>
+        <div class="api-result">
+            <div class="url">https://dishas.obspm.fr{{ path('tamas_astro_elastic') }}<span class="sub-arguments">?index=primary_source</span><span class="arguments">&query={"bool":{"filter":{"geo_distance":{"distance":"100km","original_texts.place.location":{"lat":48.8,"lon":2.3}}}}}</span></div>
+            <div class="output">
+All primary sources that containing at least one table that has been copied or printed within
+a radius of less than 100 km from Paris (lat. 48.8 - long. 2.3)
+
+<span class="more">{
+  "bool": {
+    "filter": {
+      "geo_distance": {
+        "distance": "100km",
+        "original_texts.place.location": {
+          "lat": 48.8,
+          "lon": 2.3
+        }
+      }
+    }
+  }
+}</span>
+            </div>
+        </div>
+
+        <h4>Query on parameter values</h4>
+        <p class="description">
+            The <span class="code">parameter_values</span> property of the <span class="code">parameter_set</span> index
+            is of a special data type, i.e. nested data type. It allows to perform
+            <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-nested-query.html">nested queries</a>
+            that execute several filters on the same parameter value.
+        </p>
+        <div class="api-result">
+            <div class="url">https://dishas.obspm.fr{{ path('tamas_astro_elastic') }}<span class="sub-arguments">?index=parameter_set</span><span class="arguments">&query={"nested":{"path":"parameter_values","query":{"bool":{"must":[{"range":{"parameter_values.values.float.value":{"gte":2,"lte":3}}},{"match":{"parameter_values.parameter_format.id":"50"}}]}}}}</span></div>
+            <div class="output">
+All parameter sets that have at least one value for the solar eccentricity (parameter format n°50)
+that is between 2 and 3.
+
+<span class="more">{
+  "nested": {
+    "path": "parameter_values",
+    "query": {
+      "bool": {
+        "must": [
+          {
+            "range": {"parameter_values.values.float.value": {"gte": 2,"lte": 3}}
+          },
+          {
+            "match": {"parameter_values.parameter_format.id": "50"}
+          }
+        ]
+      }
+    }
+  }
+}</span>
+            </div>
+        </div>
+    </div>
+{% endblock %}

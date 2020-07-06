@@ -1,0 +1,43 @@
+{#TAMAS\AstroBundle\Resources\views\PublicView\TableEditionView\tabs.html.twig#}
+{% if include == "html" %}
+
+    {% set width = 100 / nbTabs %}
+    <div id="tab-container">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item active" style="width: {{ width }}%">
+                <a id="tab-tabl" role="tab" data-toggle="tab" class="nav-link tab-title" href="#content-tabl">
+                    <span class="tab-label editedText"><span class="tab-text">Table content</span></span>
+                </a>
+            </li>
+            {% if commTab %}
+                <li id="tab-comm" class="nav-item" style="width: {{ width }}%">
+                    <a role="tab" data-toggle="tab" class="nav-link tab-title" href="#content-comm">
+                        <span class="tab-label editedText"><span class="tab-text">Commentary</span></span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if editTab %}
+                <li id="tab-edit" class="nav-item" style="width: {{ width }}%">
+                    <a role="tab" data-toggle="tab" class="nav-link tab-title" href="#content-edit">
+                        <span class="tab-label editedText"><span class="tab-text">Editorial context</span></span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if astroTab %}
+                <li id="tab-astr" class="nav-item" style="width: {{ width }}%">
+                    <a role="tab" data-toggle="tab" class="nav-link tab-title" href="#content-astr">
+                        <span class="tab-label editedText"><span class="tab-text">Astronomical context</span></span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if histTab %}
+                <li id="tab-hist" class="nav-item" style="width: {{ width }}%">
+                    <a role="tab" data-toggle="tab" class="nav-link tab-title" href="#content-hist">
+                        <span class="tab-label editedText"><span class="tab-text">Historical context</span></span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+{% elseif include == "js" %}
+{% endif %}

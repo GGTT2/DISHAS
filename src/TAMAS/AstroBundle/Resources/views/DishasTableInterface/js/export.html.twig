@@ -1,0 +1,288 @@
+<script>
+/**
+ * The objective of this script is to retrieve the export options selected by the user, and to create the correct POST data 
+ to be sent to the tamas_astro_export route (TAMASAstroBundle:Python:ajaxExport controller)
+ */
+
+let exportButton = $("#button-export");
+let exportSelect = $("#export-format");
+let exportOptions = $(".export-option");
+let wipExport = $("#wip-export");
+let wipExportWip = $("#wip-export-wip");
+let CSVcheck = $('input#export-headers-metadata');
+
+// hide all export options; they will be added later depending on what the user chooses
+exportOptions.hide();
+var visibility = [];
+
+/**
+ * Show or hides several options in the export box, according to the export choice of the user
+ * @return {[type]} [description]
+ */
+function updateExportOptions() {
+    var wip = false;
+    wipExport.html('');
+    wipExportWip.html('');
+    /**
+     * visibility will contain the elements to un-hide
+     * @type {Array}
+     */
+    visibility = [];
+    switch (exportSelect.val()) {
+        case 'csv':
+            visibility.push('template-export-option');
+            visibility.push('export-headers');
+
+            visibility.push('cell-export-option');
+            visibility.push('export-multipleCells');
+            visibility.push('export-asFloat');
+            visibility.push('export-asString');
+
+            visibility.push('table-export-option');
+            visibility.push('export-headers-metadata');
+            break;
+        case 'ods':
+            visibility.push('template-export-option');
+            visibility.push('export-headers');
+
+            visibility.push('cell-export-option');
+            visibility.push('export-multipleCells');
+            visibility.push('export-asFloat');
+            visibility.push('export-asString');
+
+            visibility.push('metadata-export-option');
+            visibility.push('export-errors');
+            break;
+        case 'pdf':
+            if (table.selectedMetaZone.spec.args.length === 1) {
+                visibility.push('template-export-option');
+                visibility.push('export-headers');
+
+                visibility.push('cell-export-option');
+                visibility.push('export-multipleCells');
+                visibility.push('export-asFloat');
+                visibility.push('export-asString');
+
+                visibility.push('metadata-export-option');
+                visibility.push('export-errors');
+            } else {
+                wip = true;
+            }
+            break;
+        case 'latex':
+            if (table.selectedMetaZone.spec.args.length === 1) {
+                visibility.push('template-export-option');
+                visibility.push('export-headers');
+
+                visibility.push('cell-export-option');
+                visibility.push('export-multipleCells');
+                visibility.push('export-asFloat');
+                visibility.push('export-asString');
+
+                visibility.push('metadata-export-option');
+                visibility.push('export-errors');
+            } else {
+                wip = true;
+            }
+            break;
+        case 'json':
+            visibility.push('dips-export-option');
+            visibility.push('export-DIPS');
+            break;
+    }
+    // if there is a difference table and the selected export option isn't JSON
+    if (table.zones[0].spec.entries.length === 2 && !wip && exportSelect.val() !== 'json') {
+        visibility.push('difference-export-option');
+        visibility.push('export-difference');
+        visibility.push('export-main-table');
+    }
+    /**
+     * Special text if PDF or Latex with a 2-arg table
+     * @param  {[type]} wip [description]
+     * @return {[type]}     [description]
+     */
+    if (wip) {
+        wipExportWip.html('<button type="button" class="button-wip btn-xl btn-circle" data-toggle="tooltip" data-placement="right" title="Work In Progress"></button> ');
+        wipExport.html('<br/><b>Latex/PDF export for 2 argument tables is not available yet !</b><br/><br/>');
+    }
+    // hide options and show only the ones in visibility
+    exportOptions.hide();
+    for (let i = 0; i < visibility.length; i++) {
+        $('#' + visibility[i]).closest('.export-option').show();
+    }
+}
+
+// Set all checkboxes to disabled when the option
+// to export table as CSV with headers and metadata is selected
+CSVcheck.prop( "checked", false );
+CSVcheck.change(function(){
+    if($(this).is(':checked')) {
+        $(".export-option input").prop("disabled", true);
+        $(this).prop("disabled", false);
+    } else {
+        $(".export-option input").prop("disabled", false);
+    }
+});
+
+exportSelect.change(function () {
+    updateExportOptions();
+    CSVcheck.prop( "checked", false );
+    $(".export-option input").prop("disabled", false);
+});
+
+/**
+ * Return the export options selected by the user as a js object
+ * @return {object} [description]
+ */
+function getExportOptions() {
+    var options = {
+        'export-headers': false,
+        'export-diffFiles': false,
+        'export-multipleCells': false,
+        'export-asFloat': false,
+        'export-doubleDigits': false,
+        'export-errors': false,
+        'export-comments': false,
+        'export-difference': false
+    };
+    var format = undefined;
+    format = exportSelect.val();
+    for (let i = 0; i < visibility.length; i++) {
+        options[visibility[i]] = $('#' + visibility[i]).is(':checked');
+    }
+    return {'format': format, 'options': options};
+}
+
+/**
+ * Actually perform the table export when the export button is clicked
+ * @return {[type]}   [description]
+ */
+exportButton.click(function () {
+    // first we save the table (if we are in the private interface)
+    ajaxSave(false, false, false);
+
+    let filename = undefined;
+    // we choose whether to export the main table or the difference table
+    var zone_index = 0;
+    if (table.zones[0].spec.entries.length === 2 && $('#export-difference').is(':checked'))
+        zone_index = 1;
+
+    // retrieve the selected options
+    updateExportOptions();
+    let options = getExportOptions();
+    let arguments;
+
+    let basename = '{{tableContent.tableType.astronomicalObject.objectName~"_"~tableContent.tableType.tableTypeName}}'.replace(/:/g, '_').replace(/ /g, '_');
+    // JSON export for DIPS
+    if (options.format === "json" && options.options["export-DIPS"]){
+        exportDIPS();
+        return;
+    }
+
+    if (options.format === "csv" && options.options["export-headers-metadata"]){
+        const csv = `{{ tableContent.contentToCsv() }}`;
+        const csvObject = new Blob([csv]);
+        const csvURL = window.URL.createObjectURL(csvObject);
+        downloadFile(csvURL, basename, "csv");
+        return;
+    }
+
+    // build arguments (the POST data) and filename
+    // for now the export-diffFiles is ALWAYS put to -1
+    // we export the whole table, not only its argument or its entry
+    if (!options['options']['export-diffFiles']) {
+        options['options']['export-diffFiles'] = -1;
+        arguments = {
+            'exportFormat': options['format'],
+            'exportOptions': options['options'],
+            'tableContent': idTable,// The JSON representation of the table will be managed by the controller. 
+            'inputSpec': table.zones[zone_index].spec
+        };
+        if (basename === '' || basename === "_")
+            basename = 'table';
+        if (options['format'] === 'latex')
+            filename = basename + '.tex';
+        else
+            filename = basename + '.' + options['format'];
+        
+    } else {
+        for (index of [0, 1, 2]) {
+            options['options']['export-diffFiles'] = index;
+            arguments = {
+                'exportFormat': options['format'],
+                'exportOptions': options['options'],
+                'tableContent': idTable,
+                'inputSpec': table.zones[zone_index].spec
+            };
+        }
+    }
+
+    // if we are in the public interface (or if there is no table ID),
+    // we insert a JSON representation of the table into the POST data.
+    if (public || arguments['tableContent'] === "") {
+         updateJSON();
+         arguments['tableContentJSON'] = {
+            original: JSON.parse(JSONOriginal),
+            decimal: JSON.parse(JSONDecimal),
+            corrected: JSON.parse(JSONCorrectedDecimal),
+            differenceOriginal: JSON.parse(diffJSONOriginal),
+            differenceDecimal: JSON.parse(diffJSONDecimal), 
+            template: table.zones[0].spec, 
+            mathematicalParameterId: getMathematicalParameterSetId(), 
+            astronomicalParameterIds: getAstronomicalParameterSetIds(), 
+            editedText: idEditedText,
+            userId: idUser,
+            username: nameUser
+        }
+    }
+    if (filename !== undefined)
+        arguments['filename'] = filename;
+
+    // perform the POST request to the tamas_astro_export route
+    // this corresponds to the TAMASAstroBundle:Python:ajaxExport controller
+    var data_post = {
+        option: JSON.stringify(arguments)
+    };
+    var url = Routing.generate('tamas_astro_export');
+    var dataform = new FormData();
+    for (let key in data_post) {
+        dataform.append(key, data_post[key]);
+    }    
+    var req = new XMLHttpRequest(); //This request enables the controller to send the result in a new tab
+    req.open("POST", url, true);
+    req.responseType = "blob";
+    req.onreadystatechange = function () {
+        if (req.readyState === 4 && req.status === 200) {
+            // test for IE
+            if (typeof window.navigator.msSaveBlob === 'function') {
+                window.navigator.msSaveBlob(req.response, filename);
+            } else {
+                var blob = req.response;
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = filename;
+                // append the link to the document body
+                document.body.appendChild(link);
+                link.click();
+            }
+        }
+    };
+    req.send(dataform);
+});
+
+//____________________ EXPORT JSON FOR DIPS _____________________//
+function exportDIPS() {
+    if (public) {
+        // in the public interface
+        ajaxSendForm('tamas_astro_export_JSON', null, false, true, "download", {{tableContent.tableType.id}});
+    } else if (arguments['tableContent'] === "") {
+        window.alert("There is no table content to export!");
+    } else {
+        // in the admin interface
+        $.getJSON(Routing.generate('tamas_astro_export_JSON', {"id": {{tableContent.id|default('A')}}}), (response) => {
+            let filename = '{{tableContent.tableType.astronomicalObject.objectName~"_"~tableContent.tableType.tableTypeName}}'.replace(/:/g, '_').replace(/ /g, '_');
+            downloadFile(encodeURIComponent(JSON.stringify(response)), filename, "json");
+        });
+    }
+}
+</script>

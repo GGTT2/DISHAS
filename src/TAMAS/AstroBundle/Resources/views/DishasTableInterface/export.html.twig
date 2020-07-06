@@ -1,0 +1,178 @@
+<div class="modal fade" id="dialog-export"{# tabindex="-1" #} role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Export Options</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class='col-md-12'>
+                        <div class='form-group'>
+                            <label for='export-format' class='control-label'>Export Format </label>
+                            <select id='export-format' class="form-control">
+                                <option value="csv">CSV</option>
+                                <option value="latex">LaTeX</option>
+                                <option value="pdf">PDF</option>
+                                <option value="ods">ODS</option>
+                                <option value="json">JSON</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-11" id="wip-export-wip" style="height: 0"></div>
+                </div>
+
+                <div class="row">
+                    <div class='col-md-12'>
+                        <div id='wip-export' style='color: red;'></div>
+                        <div id="template-export-option" class="export-option">
+                            <label>Template</label>
+                            <div class='form-group'>
+                                <div class="checkbox">
+                                    <label for="export-headers">
+                                        <input id="export-headers" type="checkbox" checked/>
+                                        Headers&nbsp;&nbsp;
+                                        <button class="noClick btn btn-primary btn-formatInfo"
+                                                data-toggle="tooltip" data-placement="bottom"
+                                                title="{{ "Print headers with the name of the arguments"|trans }}">?</button>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="cell-export-option" class="export-option">
+                            <label>Cell layout</label>
+                            <div class='form-group'>
+                                <div class="checkbox">
+                                    <label for="export-multipleCells">
+                                        <input id="export-multipleCells" name="representation" type="radio" checked/>
+                                        Export as multiple cells per value (original type of number)&nbsp;&nbsp;
+                                        <button class="noClick btn btn-primary btn-formatInfo"
+                                                data-toggle="tooltip" data-placement="bottom"
+                                                title="{{ "Print the table as it is"|trans }}">?</button>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class='form-group'>
+                                <div class="checkbox">
+                                    <label for="export-asString">
+                                        <input id="export-asString" name="representation" type="radio"/>
+                                        Export as 1-cell per value (original type of number)&nbsp;&nbsp;
+                                        <button class="noClick btn btn-primary btn-formatInfo"
+                                                data-toggle="tooltip" data-placement="bottom"
+                                                title="{{ 'Each value is represented in a single cell. e.g. "1; 39; 17"'|trans }}">?</button>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class='form-group'>
+                                <div class="checkbox">
+                                    <label for="export-asFloat">
+                                        <input id="export-asFloat" name="representation" type="radio"/>
+                                        Export as 1-cell per value (decimal)&nbsp;&nbsp;
+                                        <button class="noClick btn btn-primary btn-formatInfo"
+                                                data-toggle="tooltip" data-placement="bottom"
+                                                title="{{ "Convert each value in decimal"|trans }}">?</button>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="metadata-export-option" class="export-option">
+                            <label>Metadata output</label>
+                            <div class='form-group'>
+                                <div class="checkbox">
+                                    <label for="export-errors">
+                                        <input id="export-errors" type="checkbox"/>
+                                        Errors&nbsp;&nbsp;
+                                        <button class="noClick btn btn-primary btn-formatInfo"
+                                                data-toggle="tooltip" data-placement="bottom"
+                                                title="{{ 'Display cells with errors in red'|trans }}">?</button>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class='form-group' hidden="hidden">
+                                <div class="checkbox">
+                                    <label for="export-comments">
+                                        <input id="export-comments" type="checkbox" checked/>Comments
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="difference-export-option" class="export-option">
+                            <label>Difference-table option</label>
+                            <div class='form-group'>
+                                <div class="checkbox">
+                                    <label for="export-main-table">
+                                        <input id="export-main-table" name="table-choice" type="radio" checked/>Export main table
+                                    </label>
+                                </div>
+                            </div>
+                            <div class='form-group'>
+                                <div class="checkbox">
+                                    <label for="export-difference">
+                                        <input id="export-difference" name="table-choice" type="radio"/>Export difference table
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div id="table-export-option" class="export-option">
+                         {% if readonly|default() %}
+                            <label>Template & Metadata</label>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label for="export-headers-metadata">
+                                        <input id="export-headers-metadata" type="checkbox"/>
+                                        Headers & Metadata (critical apparatus and comments)&nbsp;&nbsp;
+                                        <button class="noClick btn btn-primary btn-formatInfo"
+                                                data-toggle="tooltip" data-placement="bottom"
+                                                title="{{ "Export table content framed by column and row headers, along with critical apparatus and comments associated to the table cells"|trans }}">?</button>
+                                    </label>
+                                </div>
+                            </div>
+                            {% elseif not (public|default())%}
+                                <p style="font-style: italic">
+                                    To export this table in CSV with the critical apparatus and comments,
+                                    first save the table as public, then reload this table by following
+                                    <a href="{{ path('tamas_astro_adminViewTableContent', {'id': tableContent.id}) }}" target="_blank" >this link</a>.
+                                    This export only works on the "read" version of the table.
+                                </p>
+                            {% elseif public|default() and tableContent.editedText.id|default() and tableContent.editedText.public|default()%}
+                                <p style="font-style: italic">
+                                    To export this table in CSV with the critical apparatus and comments,
+                                    go to the <a href="{{ path('tamas_astro_viewTableEdition', {'id':tableContent.editedText.id}) }}" target="_blank" >
+                                        table edition page
+                                    </a>. This export won't take into account the modifications you might have done to the table.
+                                </p>
+                            {% endif %}
+                        </div>
+                        
+
+                        <div id="dips-export-option" class="export-option">
+                            <label>DIPS Format</label>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label for="export-DIPS">
+                                        <input id="export-DIPS" type="checkbox"/>
+                                        JSON format for DIPS&nbsp;&nbsp;
+                                        <button class="noClick btn btn-primary btn-formatInfo"
+                                                data-toggle="tooltip" data-placement="bottom"
+                                                title="{{ "Export table in a JSON format usable by DIPS (DISHAS Interactive Parameter Squeezer)"|trans }}">?</button>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="button-export" type="button" class="btn btn-primary" data-dismiss="modal">Download</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -1,0 +1,10 @@
+<td style="text-align: center">
+    <div class="col-md-1 picto-bundle" id="{{ entity }}">
+        <div class="picto-background {{ entity }}" id="{{ entity }}" title="See definition" style="margin: 0 30%;">
+            <img class="picto-size" id="{{ entity }}"
+                 src="{{ asset('img/pictograms/'~ entity ~'.png')}}"
+                 alt="{{ object_info.properties[entity].objectUserInterfaceName|capitalize }} pictogram">
+            <h4 class="{{ color }} entity-label">{{ object_info.properties[entity].objectUserInterfaceName|capitalize }}</h4>
+        </div>
+    </div>
+</td>

@@ -1,0 +1,79 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\Glossary.html.twig#}
+{% extends 'TAMASAstroBundle::layout.html.twig' %}
+
+{% set currentNode = "glossary" %}
+
+{% block title %}
+    Glossary — {{ parent() }}
+{% endblock %}
+
+{% block tamasastro_body %}
+    <style>
+        svg {
+            position: relative;
+            left: 75%;
+            -webkit-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            transform: translateX(-50%);
+            width: 150%;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ asset('css/glossary.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/homepage.css')}}">
+
+    {% include 'TAMASAstroBundle:Default:Templates/pageHeader.html.twig' with {"title":"Glossary", "tag":"h1"} %}
+
+    <div class="row">
+        <div id="database-model" class="col-md-7">
+            {% include 'TAMASAstroBundle:Default:Illustrations/databaseModel.html.twig' %}
+        </div>
+        <div id="definitions" class="col-md-5">
+            <div class="def-card" style="padding-top: 40%">
+                <h3>Click on the database schema to access the definitions of the represented entities</h3>
+            </div>
+            {% include 'TAMASAstroBundle:Default:Glossary/entityCard.html.twig' with {'entity':'work'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/entityCard.html.twig' with {'entity':'primarySource'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/entityCard.html.twig' with {'entity':'originalText'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/entityCard.html.twig' with {'entity':'historicalActor'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/entityCard.html.twig' with {'entity':'place'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/entityCard.html.twig' with {'entity':'library'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/entityCard.html.twig' with {'entity':'editedText'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/entityCard.html.twig' with {'entity':'tableContent'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/entityCard.html.twig' with {'entity':'historian'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/entityCard.html.twig' with {'entity':'secondarySource'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/entityCard.html.twig' with {'entity':'journal'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/entityCard.html.twig' with {'entity':'parameterSet'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/entityCard.html.twig' with {'entity':'mathematicalParameter'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/entityCard.html.twig' with {'entity':'astronomicalObject'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/entityCard.html.twig' with {'entity':'tableType'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/entityCard.html.twig' with {'entity':'formulaDefinition'} %}
+            {% include 'TAMASAstroBundle:Default:Glossary/entityCard.html.twig' with {'entity':'numberUnit'} %}
+        </div>
+    </div>
+    {% include 'TAMASAstroBundle:Default:Glossary/alphabet.html.twig' with {'include':'html', 'admin':false} %}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% include 'TAMASAstroBundle:Default:Glossary/alphabet.html.twig' with {'include':'js'} %}
+    <script>
+        $(document).ready(function() {
+            $('.entity-picto').click(function(ev) {
+                $(".def-card").addClass("hidden");
+                const id = $(this).parents('.entity-picto').first().context.id;
+                if (document.getElementById(`def-${id}`)){
+                    $(`#def-${id}`).removeClass('hidden');
+                } else {
+                    console.log(id);
+                }
+            });
+            $('.interactive-element').click(function(ev) {
+                const id = $(this).parents('.interactive-element').first().context.id.replace("-icon", "");
+                if (document.getElementById(`def-${id}`)){
+                    document.getElementById(`def-${id}`).scrollIntoView({behavior: "smooth"});
+                } else {
+                    console.log(id);
+                }
+            });
+        });
+    </script>
+{% endblock %}

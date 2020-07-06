@@ -1,0 +1,79 @@
+{% if include == "html" %}
+    <style>
+        body {
+            padding: 0;
+        }
+        .section.image {
+            padding-top: 140px;
+            padding-bottom: 100px;
+            background-position: 50% 50%;
+            background-size: cover;
+            background-attachment: fixed;
+            margin-top: -10px;
+            margin-left: -200px;
+            margin-right: -200px;
+        }
+    </style>
+    <div id="about-section" class="section image" style="background-image: url({{ asset('img/banner-parallax.jpg')}});">
+        <div class="search-bar">
+            <section class="search-sec">
+                <div class="container">
+                    <div class="row" id="jumbotron-element">
+                        <div class="col-lg-3 col-md-3 p-0">
+                            <div class="dropdown">
+                                <button id="dLabel" class="dropdown-select search-element" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Select a type of content
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dLabel">
+                                    <li><span entity="formula_definition">{{ object_info.properties.formulaDefinition.objectUserInterfaceName|capitalize }}</span></li>
+                                    <li><span entity="parameter_set">{{ object_info.properties.parameterSet.objectUserInterfaceName|capitalize }}</span></li>
+                                    <li><span entity="primary_source">{{ object_info.properties.primarySource.objectUserInterfaceName|capitalize }}</span></li>
+                                    <li><span entity="edited_text">{{ object_info.properties.editedText.objectUserInterfaceName|capitalize }}</span></li>
+                                    <li><span entity="original_text">{{ object_info.properties.originalText.objectUserInterfaceName|capitalize }}</span></li>
+                                    <li><span entity="work">{{ object_info.properties.work.objectUserInterfaceName|capitalize }}</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-8 col-md-8 p-0">
+                            <input type="text" class="form-control search-element" id="search-term" placeholder="Search ...">
+                        </div>
+
+                        <div class="col-lg-1 col-md-1 p-0">
+                            <div class="col-lg-1 col-md-1 p-0">
+                                <button id="send-query" type="button" class="btn btn-danger wrn-btn search-element">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <h3 id="browse-title">Browse database records</h3>
+                        <div style="margin-top:-40px; margin-bottom:-25px" id="copy-query">
+                            <div style="height: 67px"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+{% elseif include == "js" %}
+    <script>
+        // in order to display the name of the selected entity
+        $('.dropdown-menu li').on('click', function() {
+            $("#dLabel").css("background-color", "#ffffff")
+                .css("color", "#696969");
+            const li = $(this).html();
+            $('.dropdown-select').html(li).append("<span class='caret'></span>");
+
+            if (document.getElementById("parameter-search")){
+                const entity = $(this).children("span").attr("entity");
+                $("#parameter-search").empty();
+                if (entity === "parameter_set"){
+                    generateParameterDisclaimer();
+                }
+            }
+        });
+    </script>
+{% endif %}

@@ -1,0 +1,12 @@
+{
+    "journal": [{
+            "journalTitle": "test"
+        },
+ 	{
+            "journalTitle": "test"
+        },
+	{
+            "journalTitle": ""
+        }]
+}
+

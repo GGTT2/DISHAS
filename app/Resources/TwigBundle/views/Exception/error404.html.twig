@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="{{ asset('logo/favicon.png') }}" />
+        <title>An error occurred {{status_text}}</title>
+        {% block stylesheets %}
+            {% include '/includes/stylesheets.html.twig' %}
+        {% endblock %}
+    </head>
+    <body>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <h1>An error occured</h1>
+                <h2>The server returned a "{{ status_code }} {{ status_text }}".</h2>
+                <img src="{{asset('img/404.jpg')}}" alt="An error has occurred"/>
+                <div>
+                    <p>This page doesn't exist!</p>
+                </div>
+            </div>
+        </div>
+    </body>
+
+
+</html>
+{# empty Twig template #}

@@ -1,0 +1,164 @@
+{# empty Twig template #}
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\adminViewWork.html.twig#}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+	View {{ object_info.properties.work.objectUserInterfaceName }} n°{{ work.id }} — {{ parent() }}
+{% endblock %}
+{% block tamasastro_body %}
+<!-- Heading Row -->
+<div class="row">
+	<div class="col-md-12">
+		<div class="row">
+			<div class="col-md-5">
+				<div class="description-block hasTable">
+					<h4>General information</h4>
+					<table class="table">
+						{% if work.title|default() %}
+						<tr>
+							<th scope="row">Title</th>
+							<td><i>{{work.title}}{% if work.titleOriginalChar %} ({{ work.titleOriginalChar }}){% endif %}</i></td> 
+						</tr>
+						{% endif %}
+						<tr>
+							<th scope="row">Incipit</th>
+							<td>{%if work.incipit|default%} {{work.incipit}} {% if work.incipitOriginalChar %} ({{ work.incipitOriginalChar }}){% endif %} {%else%} 
+								work n°{{work.id}} (missing incipit) {%endif%}</td>
+						</tr>
+
+						<tr>
+							<th scope="row">Id n°</th>
+							<td>{{work.id}}</td>
+						</tr>
+						{% if work.historicalActors is not empty%}
+						<tr>
+							<th scope="row">Creator(s)</th>
+							<td>
+								<ul>
+									{% for historicalActor in work.historicalActors%}
+									<li>{%if historicalActor.actorName|default%} {{historicalActor.actorName|capitalize}}
+										{%else%}Unknown actor n°{{historicalActor.id}} {%endif%} {%if historicalActor.tpq|default or historicalActor.tpq|default%}
+										({%-if historicalActor.tpq|default-%} {{historicalActor.tpq}}
+										{%-else-%}? {%-endif-%} - {%-if historicalActor.tpq|default-%}
+										{{historicalActor.taq}} {%-else-%}?{%-endif-%} ){%endif%}</li>
+									{%endfor%}
+								</ul>
+							</td>
+						</tr>
+						{%endif%}
+						{% if work.translator|default %}
+						<tr>
+							<th scope="row">Translator</th>
+							<td>{%if work.translator.actorName|default%} {{work.translator.actorName|capitalize}}
+								{%else%}Unknown actor n°{{work.translator.id}} {%endif%} {%if work.translator.tpq|default or work.translator.tpq|default%}
+								({%-if work.translator.tpq|default-%} {{work.translator.tpq}} {%-else-%}?
+								{%-endif-%} - {%-if work.translator.tpq|default-%} {{work.translator.taq}}
+								{%-else-%}?{%-endif-%} ){%endif%}</td>
+						</tr>
+						{%endif%}
+						{% if work.tpq|default or work.taq|default %}
+						<tr>
+							<th scope="row">Timeframe of conception</th>
+							<td>{%if work.tpq|default%} {{work.tpq}} {%else%}?{%endif%}–{%if work.tpq|default%}
+								{{work.taq}} {%else%}?{%endif%}</td>
+						</tr>
+						{%endif%}
+						{%if work.place is not null %}
+						<tr>
+							<th scope="row">Place of conception</th>
+							<td>{%if work.place.placeName|default%} {{work.place.placeName}}
+								{%else%}Unknown Place n°{{work.place.id}} {%endif%}</td>
+						</tr>
+						{%endif%}
+					</table>
+				</div>
+			</div>
+			<div class="col-md-5">
+				<div id="data-viz-1">
+					{% if visualization[0]|default() %}
+					{% include 'TAMASAstroBundle:DataViz:'~visualization[0]~'.html.twig' with {'include':'html'}%}
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-md-2 ">
+				{{render(controller("TAMASAstroBundle:AdminView:adminPanel", {'object': work}))}}
+
+			</div>
+		</div>
+		<div class="row">
+			<div id="related-content" class="citation-block">
+				<h3>Related objects</h3>
+				<label for="related-item">Class by</label>
+				<select class="form-control" id="related-item">
+					<option value="original">{{ object_info.properties.originalText.objectUserInterfaceName|ucfirst }}</option>
+					<option value="primarySource">{{ object_info.properties.primarySource.objectUserInterfaceName|ucfirst }}s</option>
+				</select>
+				<div class="row">
+					<div id="original">
+					{% if originalTexts.listObjects|default() %}
+						{% set originalTextSpec = spec|merge({'tableId': 'originalText-list'})  %}
+						{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : originalTextSpec, 'include': 'html', 'listObjects': originalTexts.listObjects} %}
+					{% else %}
+						<br/>
+						<div class="flash-notice alert alert-warning">
+							<span class="glyphicon glyphicon-info-sign"></span>
+							No corresponding record in the database
+						</div>
+					{% endif %}
+					</div>
+				</div>
+				<div class="row">
+					<div id="primarySource" class="hidden">
+					{% if primarySources.listObjects|default() %}
+						{% set primarySourceSpec = spec|merge({'tableId': 'primarySource-list'})  %}
+						{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : primarySourceSpec, 'include': 'html', 'listObjects': primarySources.listObjects} %}
+					{% else %}
+						<br/>
+						<div class="flash-notice alert alert-warning">
+							<span class="glyphicon glyphicon-info-sign"></span>
+							No corresponding record in the database
+						</div>
+					{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr>
+		{% endblock %}
+		{% block javascripts %}
+		{{ parent() }}
+		<script>
+		    {% if originalTexts.listObjects|default() %}
+		    {% set originalTextSpec = spec|merge({'tableId': '#originalText-list'})  %}
+			{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : originalTextSpec, 'include': 'js', 'listObjects': originalTexts.listObjects} %}
+			{% endif %}
+
+			{% if primarySources.listObjects|default() %}
+			{% set primarySourceSpec = spec|merge({'tableId': '#primarySource-list'})  %}
+			{% include 'TAMASAstroBundle:ListObject:generalListTemplate.html.twig' with {'spec' : primarySourceSpec, 'include': 'js', 'listObjects': primarySources.listObjects} %}
+			{% endif %}
+
+		     function switchRelatedItem(selected){
+				 if ($(selected).val() === "primarySource"){
+					 $("#primarySource").removeClass("hidden");
+					 $("#original").addClass("hidden");
+					 $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust().draw();
+				 } else {
+					 $("#primarySource").addClass("hidden");
+					 $("#original").removeClass("hidden");
+					 $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust().draw();
+				 }
+	         }
+
+	     $('#related-item').change(function () {
+	         switchRelatedItem(this);
+	     });
+	     switchRelatedItem('#related-item');
+
+		
+		</script>
+		{% if visualization[0]|default() %}
+		{% include 'TAMASAstroBundle:DataViz:'~visualization[0]~'.html.twig' with {'include':'js'}%}
+		{% endif %}
+
+		{% endblock %}

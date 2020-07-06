@@ -1,0 +1,45 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+#    _defaults:
+#        autowire: true      
+#        # Automatically injects dependencies in your services.
+#        autoconfigure: true 
+#        # Automatically registers your services as commands, event subscribers, etc.
+#        public: false       
+#        # Allows optimizing the container by removing unused services; this also means
+#        # fetching services directly from the container via $container->get() won't work.
+#        # The best practice is to be explicit about your dependencies anyway.
+##    service_name:
+##        class: AppBundle\Directory\ClassName
+##        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]aprè
+
+
+   
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        #public: true 
+        public: false
+        bind: 
+            $projectDir: '%kernel.project_dir%'
+            $elastic: {host: '%elastic_host%', port: '%elastic_port%', username: '%elastic_username%', password: '%elastic_password%'}
+            #$elastic: {host:'dishas', port:'9200', username:'elastic', password: '18eRlIYlPrWTq05fgGTx'}
+            #$elasticPort: '%elastic_port%'
+            #$elasticUser: '%elastic_username%'
+            #$elasticPassword : '%elastic_password%'
+    # makes classes in src/AppBundle available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    TAMAS\AstroBundle\:
+        resource: '../../src/TAMAS/AstroBundle/*'
+        exclude: '../../src/TAMAS/AstroBundle/{Tests,Admin}/*' 
+        #exclude: '../../src/TAMAS/AstroBundle/Tests/*' 
+    
+    #Helps sorting twig array by key
+    twig.extension.sortbyfield:
+        class: Snilius\Twig\SortByFieldExtension
+        tags: 
+            - {name: twig.extension}

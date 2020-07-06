@@ -1,0 +1,62 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\layoutAdmin.html.twig#}
+{%  extends "::layoutAdmin.html.twig"  %}
+
+{%  block title  %}
+    {{ parent() }}
+{%  endblock  %}
+
+{%  block mainContent  %}
+    {# On définit un nouveau bloc, que les vues du bundle pourront remplir #}
+    {%  for type, flashes in app.session.flashbag.all  %}
+        {% for flash in flashes %}
+            <div class="flash-notice alert alert-{{type}} fade in">
+                {{ flash }}
+            </div>
+        {%  endfor  %}
+    {%  endfor  %}
+    {% if objectEntityName|default and attribute(object_info.properties, objectEntityName)|default  %}
+        {% set object = attribute(object_info.properties, objectEntityName) %}
+        {% if action|default and action == "list" %}
+            <h2>  
+	            {% if object.userInterfaceColor|default %}
+	            	<span style="color: {{object.userInterfaceColor}}">▶ </span>
+	            {% endif %}
+	            {{object.objectUserInterfaceName|title}} List
+            </h2>
+        {% elseif action|default and action == "add" %}         
+            <h2>  
+	            {% if object.userInterfaceColor|default %}
+	            	<span style="color: {{object.userInterfaceColor}}">▶ </span>
+	            {% endif %}
+	            Add a new {{object.objectUserInterfaceName}}
+            </h2>
+        {% elseif action|default and action == "view" %}         
+            <h2>  
+	            {% if object.userInterfaceColor|default %}
+		            <span style="color: {{object.userInterfaceColor}}">▶ </span>
+	            {% endif %}
+	            {{object.objectUserInterfaceName|title}} <small>Full record</small>
+            </h2>
+        {% elseif action|default and action == "edit" %}         
+            <h2>  
+	            {% if object.userInterfaceColor|default %}
+		            <span style="color: {{object.userInterfaceColor}}">▶ </span>
+	            {% endif %}
+	            Edit {{object.objectUserInterfaceName}}
+            </h2>
+        {% endif %}
+    {% endif %}
+    {% if form.vars.valid is defined and form.vars.valid == false %}
+        <div class="flash-notice alert alert-danger fade in">
+            <span class="glyphicon glyphicon-exclamation-sign"></span> The form is not valid. Please check on the incorrect fields - <i>in case of multiple-tab form, the incorrect fields might be located in a secondary tab.</i>
+        	{% if form|uniqueEntity == false %}
+        	    <br/>
+                <b>Cause: This object is already recorded in the database.</b>
+        	{% endif %}
+        	
+        </div>
+    {%endif%}
+
+    {% block tamasastro_body %}
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,125 @@
+{#Symfony\src\TAMAS\AstroBundle\Resources\views\Default\addEdition.html.twig#}
+{% extends 'TAMASAstroBundle::layoutAdmin.html.twig' %}
+
+{% block title %}
+	{{ action|capitalize }} {{ object_info.properties.originalText.objectUserInterfaceName }} — {{ parent() }}
+{% endblock %}
+{% block tamasastro_body %}
+<div id="my_form" class="row">
+
+	<div class="col-md-10 well">
+		{% form_theme form 'bootstrap_3_TAMAS.html.twig' %}
+		{{form_start(form, {'attr': {'class': 'form'}})}}
+		{{form_errors(form)}}
+
+		<ul class="nav nav-tabs " role="tablist">
+			<li role="presentation" class="active"><a href="#general"
+				aria-controls="general" role="tab" data-toggle="tab">General
+					Contents</a></li>
+			<li role="presentation"><a href="#place" aria-controls="place"
+				role="tab" data-toggle="tab">Place *</a></li>
+			<li role="presentation"><a href="#work" aria-controls="work"
+				role="tab" data-toggle="tab">Work</a></li>
+			<li role="presentation"><a href="#primarySource"
+				aria-controls="primarySource" role="tab" data-toggle="tab">Primary
+					Source *</a></li>
+		</ul>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="general">
+				<div id="original-doc-data">
+					<div class="row">
+						<div class="col-md-11">
+							{{form_row(form.textType)}}
+							{{form_row(form.tableType)}}
+							{{form_row(form.originalTextTitle)}}
+							{{ form_row(form.originalTextTitleOriginalChar) }}
+
+							{{form_row(form.imageUrl)}}
+							<div class="row">
+								<div class="col-md-5">
+									{{form_row(form.language)}}
+								</div>
+								<div class="col-md-5">
+									{{form_row(form.script)}}
+								</div>
+							</div>
+
+							{{form_row(form.historicalActor)}}
+
+							<label>Timeframe of production of the original item</label>
+							<div class="row">
+								<div class="col-md-3">
+									{{form_row(form.tpq)}}
+								</div>
+								<div class="col-md-3">
+									{{ form_row(form.taq) }}
+								</div>
+								<div class="col-md-6 print-info">
+									<p>
+										For a specific year, specify the value in both boxes. <br />For
+										an approximate timeframe, e.g. ca XIV century, specify
+										TPQ:&nbsp;"1300" and TAQ:&nbsp;"1399".
+									</p>
+								</div>
+							</div>
+							{{form_row(form.comment)}}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="place">
+
+				{{form_row(form.place)}}
+
+			</div>
+			<div role="tabpanel" class="tab-pane" id="work">
+
+				{{form_row(form.work)}}
+
+			</div>
+			<div role="tabpanel" class="tab-pane" id="primarySource">
+
+				{{form_row(form.primarySource)}}
+
+				<div class="row">
+					<div class="col-md-3">
+						{{form_row(form.pageMin)}}
+					</div>
+					<div class="col-md-3">
+						{{form_row(form.pageMax)}}
+					</div>
+					<div class="col-md-3">
+						{{form_row(form.isFolio)}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-md-2 ">
+		{%include 'TAMASAstroBundle:AddObject:adminPannel.html.twig'%}
+	</div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+{{parent()}}
+
+
+
+<script type="text/javascript" src="{{asset('js/gMap.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/addField.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/addDisabled.js')}}"></script>
+<script type="text/javascript"
+	src="{{asset('js/autocompleteFromController.js')}}"></script>
+<script type="text/javascript"
+	src="{{asset('js/addContextualInfo.js')}}"></script>
+<script>
+
+
+</script>
+{% endblock %}
