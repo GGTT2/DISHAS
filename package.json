@@ -23,7 +23,7 @@
     "jszip": "^3.2.2",
     "mathjax": "^2.7.7",
     "pdfmake": "^0.1.62",
-    "underscore": "^1.9.1",
+    "underscore": "^1.12.1",
     "vis.js": "^1.1.0",
     "xmldom": "^0.1.27"
   }
