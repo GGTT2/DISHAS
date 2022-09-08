@@ -20,7 +20,7 @@
     "jquery": "^3.4.1",
     "jquery-ui": "^1.12.1",
     "jsdom": "^13.0.0",
-    "jszip": "^3.2.2",
+    "jszip": "^3.7.0",
     "mathjax": "^2.7.7",
     "pdfmake": "^0.1.62",
     "underscore": "^1.9.1",
